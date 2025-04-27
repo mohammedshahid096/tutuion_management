@@ -1,6 +1,7 @@
 const express = require("express");
 const UserRoutes = require("./users/user.routes");
 const BoardRoutes = require("./board/board.routes");
+const SubjectRoutes = require("./subject/subject.routes");
 
 // Route config
 const IndexRoutes = express.Router();
@@ -14,6 +15,11 @@ IndexRoutes.use("/user", UserRoutes);
 //  board  routes
 // ----------------------------------------
 IndexRoutes.use("/board", BoardRoutes);
+
+// ----------------------------------------
+//  subject  routes
+// ----------------------------------------
+IndexRoutes.use("/subject", SubjectRoutes);
 
 // export the routes
 module.exports = IndexRoutes;
