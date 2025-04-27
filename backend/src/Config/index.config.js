@@ -1,0 +1,38 @@
+const dotenv = require("dotenv");
+//   env load
+dotenv.config();
+
+module.exports = {
+  SERVER_PORT: process.env.PORT || 8001,
+  DEVELOPMENT_MODE: process.env.DEVELOPMENT_MODE || "development",
+  DEVELOPMENT_MONGODB_URL: process.env.DB_URL_DEV,
+  PRODUCTION_MONGODB_URL: process.env.DB_URL,
+
+  // token keys
+  ACCESS_TOKEN_KEY: process.env.ACCESS_TOKEN_KEY,
+  ACCESS_TOKEN_KEY_TIME: process.env.ACCESS_TOKEN_KEY_TIME,
+  ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
+
+  // cors
+  CORS_ALLOW_ORIGINS: process.env.ALLOW_ORIGINS_ACCESS,
+
+  // Cloudinary
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET_KEY: process.env.CLOUDINARY_API_SECRET_KEY,
+
+  // Google
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  GOOGLE_REDIRECT_URI: process.env.GOOGLE_CALL_BACK_URL,
+
+  // webhooks
+  BARKAT_BOT_WEBHOOK: process.env.BARKAT_BOT_WEBHOOK,
+  SERVER_STATUS_WEBHOOK: process.env.SERVER_STATUS_WEBHOOK,
+
+  // Aws SES credentials
+  AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+  AWS_REGION: process.env.AWS_REGION,
+  AWS_SES_SENDER: process.env.AWS_SES_SENDER,
+};

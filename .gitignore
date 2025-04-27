@@ -1,0 +1,5 @@
+
+backend/.env
+frontend/.env
+*.zip
+
