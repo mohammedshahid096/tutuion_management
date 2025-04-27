@@ -2,6 +2,7 @@ const httpErrors = require("http-errors");
 const SUBJECT_CONSTANTS = require("../../Constants/subject.constants");
 const logger = require("../../Config/logger.config");
 const subjectModel = require("../../Schema/subject/subject.model");
+const chapterModel = require("../../Schema/chapters/chapter.model");
 const errorHandling = require("../../Utils/errorHandling");
 const sortConstants = require("../../Constants/sort.constants");
 
@@ -11,10 +12,13 @@ const createNewSubjectController = async (req, res, next) => {
       "Controllers - subject - subject.controller - createNewSubjectController - Start"
     );
 
-    let { name, description, code } = req.body;
+    let { name, description, code, classRoom, boardType, chapters } = req.body;
     let details = {
       name,
       code,
+      class: classRoom,
+      boardType,
+      batch: req.batch._id,
       description: description ?? "this subject is about " + name,
       createdBy: req.user._id,
       updatedBy: req.user._id,
@@ -28,8 +32,49 @@ const createNewSubjectController = async (req, res, next) => {
       );
     }
 
-    const data = new subjectModel(details);
-    await data.save();
+    let subjectData = new subjectModel(details);
+    await subjectData.save();
+
+    let chaptersArray = chapters?.map((singleChapter, order) => {
+      let singleChapterDetails = {
+        title: singleChapter?.title || "",
+        content: singleChapter?.content || "",
+        imageURL: singleChapter?.imageURL || "",
+        subject: subjectData?._id,
+        order: order,
+        createdBy: req.user._id,
+        updatedBy: req.user._id,
+        batch: req.batch._id,
+      };
+
+      let subChapterDetails = singleChapter?.subchapters?.map(
+        (singleSubChapter, subOrder) => {
+          let newDetails = {
+            title: singleSubChapter?.title || "",
+            content: singleSubChapter?.content || "",
+            imageURL: singleSubChapter?.imageURL || "",
+            order: subOrder,
+          };
+          return newDetails;
+        }
+      );
+
+      singleChapterDetails.subChapters = subChapterDetails;
+
+      return singleChapterDetails;
+    });
+
+    let insertedChapters = await chapterModel.insertMany(chaptersArray);
+
+    // Extract the IDs of the newly created chapters
+    const chapterIds = insertedChapters.map((chapter) => chapter._id);
+
+    // Update the subject with the new chapter IDs
+    let finalData = await subjectModel.findByIdAndUpdate(
+      subjectData._id,
+      { $set: { chapters: chapterIds } },
+      { new: true }
+    );
 
     logger.info(
       "Controllers - subject - subject.controller - createNewSubjectController- End"
@@ -38,7 +83,7 @@ const createNewSubjectController = async (req, res, next) => {
       success: true,
       statusCode: 201,
       message: SUBJECT_CONSTANTS.SUCCESSFULLY_SUBJECT_CREATED,
-      data,
+      data: finalData,
     });
   } catch (error) {
     logger.error(
@@ -58,7 +103,8 @@ const getSingleSubjectDetailController = async (req, res, next) => {
     const { subjectID } = req.params;
     const subjectData = await subjectModel
       .findById(subjectID)
-      .populate("createdBy updatedBy", "name")
+      .populate("createdBy updatedBy boardType", "name")
+      .populate("chapters")
       .lean();
 
     if (!subjectData) {

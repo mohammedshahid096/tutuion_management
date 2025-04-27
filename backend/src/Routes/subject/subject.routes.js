@@ -16,6 +16,9 @@ const {
   updateSubjectValidation,
 } = require("../../validators/subjects/subject.joi");
 const { ADMIN } = require("../../Constants/roles.constants");
+const {
+  currentBatchDetailMiddleWare,
+} = require("../../Middlewares/batch.middleware");
 
 const SubjectRoutes = express.Router();
 
@@ -23,6 +26,7 @@ SubjectRoutes.route("/new-subject").post(
   Authentication,
   Authorization(ADMIN),
   createSubjectValidation,
+  currentBatchDetailMiddleWare,
   createNewSubjectController
 );
 

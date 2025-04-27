@@ -6,6 +6,32 @@ const createSubjectValidation = celebrate({
     name: Joi.string().required().min(2).max(50).label("Subject Name"),
     code: Joi.string().required().min(2).max(10).label("Subject Code"),
     description: Joi.string().max(500).optional().label("Description"),
+    classRoom: Joi.number().min(1).max(12).required().label("class"),
+    boardType: Joi.string().required().label("Board Type"),
+    chapters: Joi.array()
+      .items(
+        Joi.object({
+          title: Joi.string().required().min(2).max(100).label("Chapter Title"),
+          content: Joi.string().max(500).optional().label("content"),
+          imageURL: Joi.string().optional().label("Image URL"),
+          subchapters: Joi.array()
+            .items(
+              Joi.object({
+                title: Joi.string()
+                  .required()
+                  .min(2)
+                  .max(100)
+                  .label("Subchapter Title"),
+                content: Joi.string().optional().label("content"),
+                imageURL: Joi.string().optional().label("Image URL"),
+              })
+            )
+            .optional()
+            .label("Subchapters"),
+        })
+      )
+      .optional()
+      .label("Chapters"),
   }),
 });
 

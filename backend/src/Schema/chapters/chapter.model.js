@@ -2,36 +2,49 @@ const mongoose = require("mongoose");
 const {
   subjects,
   user,
-  boards,
   chapters,
   batches,
 } = require("../../Constants/model.constants");
 
 const ModelSchema = new mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
       lowercase: true,
     },
-    description: {
+    content: {
       type: String,
       lowercase: true,
     },
-    code: {
+    imageURL: {
       type: String,
-      uppercase: true,
-      required: true,
     },
-    class: {
-      type: Number,
-      required: true,
-      min: 1,
-      max: 12,
-    },
-    boardType: {
+    subject: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: boards,
+      ref: subjects,
+      required: true,
+    },
+    subChapters: [
+      {
+        title: {
+          type: String,
+          required: true,
+        },
+        content: {
+          type: String,
+        },
+        imageURL: {
+          type: String,
+        },
+        order: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    order: {
+      type: Number,
       required: true,
     },
     batch: {
@@ -39,12 +52,6 @@ const ModelSchema = new mongoose.Schema(
       ref: batches,
       required: true,
     },
-    chapters: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: chapters,
-      },
-    ],
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: user,
@@ -59,6 +66,6 @@ const ModelSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const subjectModel = mongoose.model(subjects, ModelSchema);
+const chapterModel = mongoose.model(chapters, ModelSchema);
 
-module.exports = subjectModel;
+module.exports = chapterModel;
