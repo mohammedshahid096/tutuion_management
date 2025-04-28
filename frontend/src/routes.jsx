@@ -1,4 +1,5 @@
 import AuthWrapper from './views/layouts/AuthWrapper';
+import Batches from './views/pages/Batches';
 import Dashboard from './views/pages/Dashboard';
 import Home from './views/pages/Home';
 import Login from './views/pages/Login';
@@ -17,6 +18,14 @@ const allRoutesMapper = [
     component: (
       <AuthWrapper>
         <Dashboard />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/batches',
+    component: (
+      <AuthWrapper>
+        <Batches />
       </AuthWrapper>
     ),
   },

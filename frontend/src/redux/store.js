@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { LoginReducer } from './login/reducer';
 import { UserProfileReducer } from './userProfile/reducer';
+import { BatchReducer } from './batch/reducer';
 
 const initialState = {};
 
 const reducer = {
   loginState: LoginReducer,
   userProfileState: UserProfileReducer,
+  batchState: BatchReducer,
 };
 const store = configureStore({
   reducer,

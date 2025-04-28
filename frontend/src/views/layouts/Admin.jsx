@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  Hourglass,
   School,
-  Calendar,
   Users,
   Settings2,
   ChevronRight,
@@ -11,8 +9,7 @@ import {
   Wallet,
   CreditCard,
   Clock,
-  Receipt,
-  GalleryThumbnails,
+  GraduationCap,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -65,6 +62,17 @@ const data = {
       ],
     },
 
+    {
+      title: 'Batch',
+      url: '#',
+      icon: GraduationCap,
+      items: [
+        {
+          title: 'Batches',
+          url: '/batches',
+        },
+      ],
+    },
     {
       title: 'Students',
       url: '#',
