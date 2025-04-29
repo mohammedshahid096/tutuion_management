@@ -16,3 +16,17 @@ export function cleanObject(obj) {
     (val) => _.isEmpty(val) || _.isNil(val)
   ); // Remove empty strings, null, or undefined
 }
+
+export function objectToQueryString(obj) {
+  if (!_.isObject(obj)) return '';
+
+  const queryString = Object.entries(obj)
+    .map(([key, value]) => {
+      if (_.isNil(value) || value === '') return '';
+      return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+    })
+    .filter(Boolean)
+    .join('&');
+
+  return queryString ? `?${queryString}` : '';
+}

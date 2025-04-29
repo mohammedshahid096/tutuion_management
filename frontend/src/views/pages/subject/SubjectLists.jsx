@@ -4,6 +4,7 @@ import SubjectsListComponent from '@/views/features/subject/SubjectsListComponen
 import SubjectListSkeleton from '@/views/features/subject/SubjectListSkeleton';
 import { useSelector, useDispatch } from 'react-redux';
 import { boardActions, subjectActions } from '@/redux/combineActions';
+import BoardList from '@/views/features/board/BoardList';
 
 const breadCrumbs = [{ label: 'Subject Lists', href: null }];
 const classrooms = Array.from({ length: 12 }, (_, i) => i + 1);
@@ -31,22 +32,45 @@ const SubjectsListPage = () => {
         optionsLoading: false,
         boardType: boardsList?.[0]?._id || '',
       }));
+      let query = {
+        classRoom: info?.classRoom,
+        boardType: boardsList?.[0]?._id || '',
+      };
+      fetchSubjectsListHandler(query);
     }
   }, [boardsList]);
 
-  useEffect(() => {
-    if (!subjectsList) {
-      fetchSubjectsListHandler();
-    }
-  }, []);
+  const handleChangeFilterFunction = useCallback(
+    (key, value) => {
+      setInfo((prev) => ({
+        ...prev,
+        [key]: value,
+      }));
+    },
+    [info?.classRoom, info?.boardType, info?.name]
+  );
 
   const fetchBoardsListHandler = useCallback(async () => {
     dispatch(getBoardsListAction());
   }, [boardsList]);
 
-  const fetchSubjectsListHandler = useCallback(async () => {
-    dispatch(getSubjectsListAction());
-  }, [subjectsList]);
+  const fetchSubjectsListHandler = useCallback(
+    async (query) => {
+      dispatch(getSubjectsListAction(query));
+    },
+    [subjectsList, info?.classRoom, info?.boardType, info?.name]
+  );
+
+  const handleFilterSearchFunction = useCallback(() => {
+    let query = {
+      classRoom: info?.classRoom,
+      boardType: info?.boardType,
+    };
+    if (info?.name) {
+      query.name = info?.name;
+    }
+    fetchSubjectsListHandler(query);
+  }, [info?.classRoom, info?.boardType, info?.name]);
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
@@ -56,8 +80,9 @@ const SubjectsListPage = () => {
         <SubjectsListComponent
           classrooms={classrooms}
           boards={boardsList}
-          responseData={null}
           info={info}
+          handleChangeFilterFunction={handleChangeFilterFunction}
+          handleFilterSearchFunction={handleFilterSearchFunction}
         />
       )}
     </MainWrapper>

@@ -11,7 +11,13 @@ import { Label } from '@/components/ui/label';
 import { useSelector } from 'react-redux';
 import { Button } from '@/components/ui/button';
 
-const SubjectsListComponent = ({ classrooms, responseData, boards, info }) => {
+const SubjectsListComponent = ({
+  classrooms,
+  boards,
+  info,
+  handleChangeFilterFunction,
+  handleFilterSearchFunction,
+}) => {
   // State for filters
   const { subjectsList } = useSelector((state) => state.subjectState);
 
@@ -34,7 +40,7 @@ const SubjectsListComponent = ({ classrooms, responseData, boards, info }) => {
           <Label htmlFor="boardType">Class Room</Label>
           <Select
             value={info?.classRoom}
-            //   onValueChange={(value) => setFieldValue('classRoom', value)}
+            onValueChange={(value) => handleChangeFilterFunction('classRoom', value)}
             //   disabled={isSubmitting}
           >
             <SelectTrigger>
@@ -54,7 +60,7 @@ const SubjectsListComponent = ({ classrooms, responseData, boards, info }) => {
           <Label htmlFor="boardType">Board Type </Label>
           <Select
             value={info?.boardType}
-            // onValueChange={(value) => setFieldValue('boardType', value)}
+            onValueChange={(value) => handleChangeFilterFunction('boardType', value)}
             // disabled={isSubmitting}
           >
             <SelectTrigger>
@@ -70,7 +76,7 @@ const SubjectsListComponent = ({ classrooms, responseData, boards, info }) => {
           </Select>
         </div>
 
-        <Button>Search</Button>
+        <Button onClick={handleFilterSearchFunction}>Search</Button>
       </div>
 
       {/* Subjects Table */}
@@ -107,7 +113,7 @@ const SubjectsListComponent = ({ classrooms, responseData, boards, info }) => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   {subject?.name}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-20 truncate">
                   {subject?.description}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -117,7 +123,7 @@ const SubjectsListComponent = ({ classrooms, responseData, boards, info }) => {
                   Class {subject?.class}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {subject?.boardType}
+                  {subject?.boardType?.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {subject?.chapters?.length}
