@@ -10,6 +10,7 @@ import {
   CreditCard,
   Clock,
   GraduationCap,
+  University,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -68,8 +69,19 @@ const data = {
       icon: GraduationCap,
       items: [
         {
-          title: 'Batches',
+          title: 'Year Batches',
           url: '/batches',
+        },
+      ],
+    },
+    {
+      title: 'Education Boards',
+      url: '#',
+      icon: University,
+      items: [
+        {
+          title: 'Boards',
+          url: '/boards',
         },
       ],
     },

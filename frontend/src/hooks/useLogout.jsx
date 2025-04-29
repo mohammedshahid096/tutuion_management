@@ -2,7 +2,7 @@ import { clearAll } from '@/helpers/local-storage';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginActions, userActions } from '@/redux/combineActions';
+import { loginActions, userActions, batchActions, boardActions } from '@/redux/combineActions';
 
 const useLogout = () => {
   const navigate = useNavigate();
@@ -13,6 +13,8 @@ const useLogout = () => {
 
     dispatch(loginActions.resetLoginAction());
     dispatch(userActions.resetUserProfileAction());
+    dispatch(batchActions.resetBatchAction());
+    dispatch(boardActions.resetBoardAction());
     navigate('/');
     clearAll();
   }, []);
