@@ -11,6 +11,7 @@ import {
   Clock,
   GraduationCap,
   University,
+  Book,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -82,6 +83,21 @@ const data = {
         {
           title: 'Boards',
           url: '/boards',
+        },
+      ],
+    },
+    {
+      title: 'Tuition Subject',
+      url: '#',
+      icon: Book,
+      items: [
+        {
+          title: 'Subjects',
+          url: '/subjects',
+        },
+        {
+          title: 'Create Subject',
+          url: '/subject/create-subject',
         },
       ],
     },

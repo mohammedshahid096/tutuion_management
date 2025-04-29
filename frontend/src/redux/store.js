@@ -3,6 +3,7 @@ import { LoginReducer } from './login/reducer';
 import { UserProfileReducer } from './userProfile/reducer';
 import { BatchReducer } from './batch/reducer';
 import { BoardReducer } from './boards/reducer';
+import { SubjectReducer } from './subjects/reducer';
 
 const initialState = {};
 
@@ -11,6 +12,7 @@ const reducer = {
   userProfileState: UserProfileReducer,
   batchState: BatchReducer,
   boardState: BoardReducer,
+  subjectState: SubjectReducer,
 };
 const store = configureStore({
   reducer,

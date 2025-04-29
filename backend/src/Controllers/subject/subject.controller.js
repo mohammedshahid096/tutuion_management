@@ -25,10 +25,15 @@ const createNewSubjectController = async (req, res, next) => {
     };
     const existingSubject = await subjectModel.findOne({
       name: name.toLowerCase(),
+      class: classRoom,
+      boardType,
     });
     if (existingSubject) {
       return next(
-        httpErrors.BadRequest(SUBJECT_CONSTANTS.SUBJECT_ALREADY_EXISTS)
+        httpErrors.BadRequest(
+          SUBJECT_CONSTANTS.SUBJECT_ALREADY_EXISTS +
+            "with given class and Board"
+        )
       );
     }
 
