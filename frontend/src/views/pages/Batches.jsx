@@ -16,11 +16,11 @@ const Batches = () => {
 
   useEffect(() => {
     if (!batchesList) {
-      fetchBoardsListHandler();
+      fetchBatchesListHandler();
     }
   }, []);
 
-  const fetchBoardsListHandler = useCallback(async () => {
+  const fetchBatchesListHandler = useCallback(async () => {
     dispatch(getBatchesListAction());
   }, [batchesList]);
 
