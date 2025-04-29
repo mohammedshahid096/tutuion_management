@@ -3,21 +3,21 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Badge } from '@/components/ui/badge';
 import moment from 'moment';
 
-const BatchCard = ({ board }) => {
+const BatchCard = ({ batch }) => {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       <Card className="hover:shadow-lg transition-shadow">
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle className="text-xl font-semibold">{board.name}</CardTitle>
+              <CardTitle className="text-xl font-semibold">{batch?.name}</CardTitle>
               <CardDescription className="mt-1">
-                {moment(board.startDate).format('MMM d, yyyy')} -{' '}
-                {moment(board.endDate).format('MMM d, yyyy')}
+                {moment(batch?.startDate).format('MMM d, yyyy')} -{' '}
+                {moment(batch?.endDate).format('MMM d, yyyy')}
               </CardDescription>
             </div>
-            <Badge variant={board.isActive ? 'default' : 'secondary'}>
-              {board.isActive ? 'Active' : 'Inactive'}
+            <Badge variant={batch?.isActive ? 'default' : 'secondary'}>
+              {batch?.isActive ? 'Active' : 'Inactive'}
             </Badge>
           </div>
         </CardHeader>
@@ -25,19 +25,19 @@ const BatchCard = ({ board }) => {
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div className="space-y-1">
               <p className="text-muted-foreground">Created By</p>
-              <p>{board.createdBy.name}</p>
+              <p>{batch?.createdBy?.name}</p>
             </div>
             <div className="space-y-1">
               <p className="text-muted-foreground">Updated By</p>
-              <p>{board.updatedBy.name}</p>
+              <p>{batch?.updatedBy?.name}</p>
             </div>
             <div className="space-y-1">
               <p className="text-muted-foreground">Created At</p>
-              <p>{moment(board.createdAt).format('MMM d, yyyy h:mm a')}</p>
+              <p>{moment(batch?.createdAt).format('MMM d, yyyy h:mm a')}</p>
             </div>
             <div className="space-y-1">
               <p className="text-muted-foreground">Updated At</p>
-              <p>{moment(board.updatedAt).format('MMM d, yyyy h:mm a')}</p>
+              <p>{moment(batch?.updatedAt).format('MMM d, yyyy h:mm a')}</p>
             </div>
           </div>
         </CardContent>

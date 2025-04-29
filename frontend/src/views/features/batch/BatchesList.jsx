@@ -10,13 +10,13 @@ const BatchesList = ({ info, setInfo }) => {
   const { loading, batchesList } = useSelector((state) => state.batchState);
 
   const filteredBoards = useMemo(() => {
-    let results = batchesList?.filter((board) =>
-      board.name.toLowerCase().includes(info?.searchTerm.toLowerCase())
+    let results = batchesList?.filter((singleBatch) =>
+      singleBatch?.name?.toLowerCase().includes(info?.searchTerm?.toLowerCase())
     );
     return results;
   }, [info?.searchTerm, batchesList]);
 
-  const filterBoardListHandleChange = useCallback(
+  const filterBatchListHandleChange = useCallback(
     (e) => {
       setInfo((prev) => ({
         ...prev,
@@ -35,11 +35,11 @@ const BatchesList = ({ info, setInfo }) => {
             placeholder="Search batch..."
             className="w-full md:w-64"
             value={info?.searchTerm}
-            onChange={filterBoardListHandleChange}
+            onChange={filterBatchListHandleChange}
           />
           <Button className="whitespace-nowrap">
             <Plus className="mr-2 h-4 w-4" />
-            Add New Board
+            Add New Batch
           </Button>
         </div>
       </div>
@@ -48,7 +48,7 @@ const BatchesList = ({ info, setInfo }) => {
         <BatchSkeleton />
       ) : filteredBoards?.length > 0 ? (
         filteredBoards?.map((singleBoard) => (
-          <BatchCard board={singleBoard} key={singleBoard?._id} />
+          <BatchCard batch={singleBoard} key={singleBoard?._id} />
         ))
       ) : (
         <div className="flex flex-col items-center justify-center py-12 border rounded-lg">
@@ -57,7 +57,7 @@ const BatchesList = ({ info, setInfo }) => {
           </p>
           <Button variant="outline">
             <Plus className="mr-2 h-4 w-4" />
-            Create New Board
+            Create New Batch
           </Button>
         </div>
       )}
