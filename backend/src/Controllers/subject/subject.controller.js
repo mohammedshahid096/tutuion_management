@@ -140,7 +140,12 @@ const getSubjectsListController = async (req, res, next) => {
       "Controllers - subject - subject.controller - getSubjectsListController - Start"
     );
 
-    const { sort } = req.query;
+    const { sort, classRoom, boardType, name } = req.query;
+    const query = {};
+
+    if (classRoom) query.class = Number(classRoom);
+    if (boardType) query.boardType = boardType;
+    if (name) query.name = { $regex: name, $options: "i" };
 
     let sortQuery = sortConstants["-createdAt"];
     if (sort) {
@@ -148,7 +153,7 @@ const getSubjectsListController = async (req, res, next) => {
     }
 
     const subjectData = await subjectModel
-      .find()
+      .find(query)
       .populate("createdBy updatedBy", "name")
       .sort(sortQuery)
       .lean();

@@ -51,6 +51,9 @@ const listSubjectsValidation = celebrate({
       .valid("-createdAt", "+createdAt")
       .optional()
       .label("Sort Order"),
+    boardType: Joi.string().optional().label("Board Type"),
+    classRoom: Joi.number().min(1).max(12).optional().label("Class Room"),
+    name: Joi.string().optional().label("Name"),
   }),
 });
 
