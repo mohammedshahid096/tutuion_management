@@ -5,6 +5,7 @@ import Dashboard from './views/pages/Dashboard';
 import Home from './views/pages/Home';
 import Login from './views/pages/Login';
 import CreateSubjectPage from './views/pages/subject/CreateSubject';
+import SubjectLists from './views/pages/subject/SubjectLists';
 
 const allRoutesMapper = [
   {
@@ -36,6 +37,14 @@ const allRoutesMapper = [
     component: (
       <AuthWrapper>
         <Boards />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/subjects',
+    component: (
+      <AuthWrapper>
+        <SubjectLists />
       </AuthWrapper>
     ),
   },
