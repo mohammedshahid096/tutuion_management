@@ -25,8 +25,17 @@ const createNewBoardController = async (req, res, next) => {
       return next(httpErrors.BadRequest(BOARD_CONSTANTS.BOARD_ALREADY_EXISTS));
     }
 
-    const data = new boardModel(details);
-    await data.save();
+    let data = await boardModel.create(details);
+    data = data.toObject();
+
+    data.createdBy = {
+      _id: req.user._id,
+      name: req.user.name,
+    };
+    data.updatedBy = {
+      _id: req.user._id,
+      name: req.user.name,
+    };
 
     logger.info(
       "Controllers - board - board.controller - createNewBoardController - End"
