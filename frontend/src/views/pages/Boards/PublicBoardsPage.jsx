@@ -125,7 +125,7 @@ const PublicBoardsPage = () => {
   }, [boardsList]);
 
   const navigateToSubjectsPage = useCallback((boardId) => {
-    navigate(boardId);
+    navigate('/subjects/' + boardId);
   }, []);
 
   return (

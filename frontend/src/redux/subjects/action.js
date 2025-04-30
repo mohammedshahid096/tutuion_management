@@ -1,8 +1,14 @@
-import { SUBJECTS_LIST, CLEAR_SUBJECT_ERRORS, RESET_SUBJECT_STATE } from './constant';
+import {
+  SUBJECTS_LIST,
+  CLEAR_SUBJECT_ERRORS,
+  RESET_SUBJECT_STATE,
+  PUBLIC_SUBJECTS_LIST,
+} from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
 import { getAccessToken } from '@/helpers/local-storage';
 import { objectToQueryString } from '@/helpers';
+import _ from 'lodash';
 
 const getSubjectsListAction =
   (queryObject = null) =>
@@ -19,6 +25,32 @@ const getSubjectsListAction =
     } else {
       dispatch({
         type: SUBJECTS_LIST.fail,
+        payload: response[1],
+      });
+    }
+  };
+
+const getPublicSubjectsListAction =
+  (queryObject = null) =>
+  async (dispatch) => {
+    dispatch({ type: PUBLIC_SUBJECTS_LIST.request });
+    const token = getAccessToken();
+    let query = queryObject ? objectToQueryString(queryObject) : '';
+    const response = await Service.fetchGet(
+      `${API.BASE_SUBJECT}${API.SUBJECT_ACTIONS_TYPES.LIST}${query}`,
+      token
+    );
+    if (response[0] === true) {
+      let groupedData = _.groupBy(response[1]?.data, 'class');
+      let payload = {
+        ...queryObject,
+        docs: groupedData,
+      };
+
+      dispatch({ type: PUBLIC_SUBJECTS_LIST.success, payload });
+    } else {
+      dispatch({
+        type: PUBLIC_SUBJECTS_LIST.fail,
         payload: response[1],
       });
     }
@@ -47,6 +79,7 @@ const resetSubjectAction = () => (dispatch) => {
 export default {
   getSubjectsListAction,
   createNewSubjectAction,
+  getPublicSubjectsListAction,
   clearSubjectErrorsAction,
   resetSubjectAction,
 };

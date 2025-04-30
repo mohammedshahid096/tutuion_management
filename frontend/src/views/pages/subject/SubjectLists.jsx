@@ -4,7 +4,6 @@ import SubjectsListComponent from '@/views/features/subject/SubjectsListComponen
 import SubjectListSkeleton from '@/views/features/subject/SubjectListSkeleton';
 import { useSelector, useDispatch } from 'react-redux';
 import { boardActions, subjectActions } from '@/redux/combineActions';
-import BoardList from '@/views/features/board/BoardList';
 
 const breadCrumbs = [{ label: 'Subject Lists', href: null }];
 const classrooms = Array.from({ length: 12 }, (_, i) => i + 1);
