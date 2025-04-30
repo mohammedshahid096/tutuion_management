@@ -101,16 +101,20 @@ const PublicSubjectsPage = () => {
     animateSubjectCards();
   }, [info?.selectedClass]);
 
+  // for not calling multiple times
   useEffect(() => {
+    if (!boardsList) {
+      fetchBoardsListHandler();
+    }
     if (!publicSubjectsList || publicSubjectsList?.boardType !== boardId) {
       let query = {
         boardType: boardId,
       };
       fetchSubjectsListHandler(query);
     }
-    if (!boardsList) {
-      fetchBoardsListHandler();
-    }
+  }, []);
+
+  useEffect(() => {
     if (boardsList) {
       let currentBoardType = _.find(boardsList, { _id: boardId });
       setInfo((prev) => ({ ...prev, boardTypeDetails: currentBoardType || null }));

@@ -154,7 +154,7 @@ const getSubjectsListController = async (req, res, next) => {
 
     const subjectData = await subjectModel
       .find(query)
-      .populate("createdBy updatedBy boardType", "name")
+      .populate("createdBy updatedBy boardType batch", "name")
       .sort(sortQuery)
       .lean();
 
