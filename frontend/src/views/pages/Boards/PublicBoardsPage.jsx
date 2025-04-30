@@ -17,6 +17,7 @@ import Header from '@/views/components/navbar/Header';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useSelector, useDispatch } from 'react-redux';
 import { boardActions } from '@/redux/combineActions';
+import { useNavigate } from 'react-router-dom';
 
 // Sample board data (you would replace this with your actual data)
 const boardsData = [
@@ -90,6 +91,7 @@ const BoardCardSkeleton = () => {
 const PublicBoardsPage = () => {
   const { getBoardsListAction } = boardActions;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, boardsList } = useSelector((state) => state.boardState);
 
   // GSAP animations
@@ -121,6 +123,10 @@ const PublicBoardsPage = () => {
   const fetchBoardsListHandler = useCallback(async () => {
     dispatch(getBoardsListAction());
   }, [boardsList]);
+
+  const navigateToSubjectsPage = useCallback((boardId) => {
+    navigate(boardId);
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -155,14 +161,9 @@ const PublicBoardsPage = () => {
                 </CardContent>
                 <CardFooter>
                   <Button
-                    // variant="outline"
                     size="sm"
                     className="w-full"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      console.log(`Navigate to subjects for Board: ${board._id}`);
-                      // Implement your routing logic here
-                    }}
+                    onClick={() => navigateToSubjectsPage(board?._id)}
                   >
                     Show Subjects
                   </Button>

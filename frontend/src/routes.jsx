@@ -5,6 +5,7 @@ import PublicBoardsPage from './views/pages/Boards/PublicBoardsPage';
 import Dashboard from './views/pages/Dashboard';
 import Home from './views/pages/Home';
 import Login from './views/pages/Login';
+import NotFound from './views/pages/NotFound';
 import CreateSubjectPage from './views/pages/subject/CreateSubject';
 import SubjectLists from './views/pages/subject/SubjectLists';
 
@@ -60,6 +61,10 @@ const allRoutesMapper = [
         <CreateSubjectPage />
       </AuthWrapper>
     ),
+  },
+  {
+    path: '*',
+    component: <NotFound />,
   },
 ];
 
