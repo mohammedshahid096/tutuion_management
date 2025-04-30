@@ -27,8 +27,8 @@ BoardRoutes.route("/new-board").post(
 );
 
 BoardRoutes.route("/list").get(
-  Authentication,
-  Authorization(ADMIN),
+  // Authentication,
+  // Authorization(ADMIN),
   listBoardsValidation,
   getBoardsListController
 );
