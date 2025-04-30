@@ -8,6 +8,7 @@ const { ADMIN, STUDENT } = require("../../Constants/roles.constants");
 const errorHandling = require("../../Utils/errorHandling");
 const { decryptPasswordFunction } = require("../../Utils/encryption");
 const { StrongPasswordValidation } = require("../../validators/users/user.joi");
+const moment = require("moment");
 
 const LoginUserController = async (req, res, next) => {
   try {
@@ -63,25 +64,72 @@ const LoginUserController = async (req, res, next) => {
   }
 };
 
-const RegisterController = async (req, res, next) => {
+const RegisterStudentController = async (req, res, next) => {
   try {
     logger.info("Controller-user.controller-RegisterController-Start");
 
-    const userServiceClass = new UserServiceClass();
-    const userExist = await userServiceClass.getUserFindOne({
-      email: req.body.email,
-    });
-
+    const { email } = req.body;
+    const userExist = await userModel.findOne({ email });
     if (userExist) {
       return next(httpErrors.BadRequest(USER_CONSTANTS.USER_ALREADY_EXISTS));
     }
 
-    await userServiceClass.createUserDocument(req.body);
+    let details = {
+      name: req.body.name,
+      email,
+      password: req.body.password,
+      gender: req.body.gender,
+      fatherName: req.body.fatherName,
+      motherName: req.body.motherName,
+      phone: req.body.phone,
+      address: req.body.address,
+      dateOfBirth: req.body.dateOfBirth,
+      class: req.body.classRoom,
+      school: req.body.school,
+      boardType: req.body.boardType,
+      role: STUDENT,
+      timings: {
+        start: req.body.timings.start,
+        startTimeHHMM: moment(req.body.timings.start).format("HH:mm"),
+        end: moment(req.body.timings.start).add(1, "hours"),
+        endTimeHHMM: moment(req.body.timings.start)
+          .add(1, "hours")
+          .format("HH:mm"),
+      },
+      days: req.body.days,
+      createdBy: req.user._id,
+      updatedBy: req.user._id,
+    };
+
+    // const newStart = moment.utc(details.timings.start);
+    // const newEnd = moment.utc(details.timings.end);
+
+    // const isTimingsAvailable = await userModel
+    //   .findOne({
+    //     "timings.start": { $lt: newEnd.toDate() },
+    //     "timings.end": { $gt: newStart.toDate() },
+    //   })
+    //   .lean();
+
+    // console.log("shahid", isTimingsAvailable);
+
+    // let isTimingsAvailable = await userModel
+    //   .findOne({ "timings.startTimeHHMM": details.timings.startTimeHHMM })
+    //   .lean();
+
+    // if (isTimingsAvailable) {
+    //   return next(httpErrors.BadRequest(USER_CONSTANTS.TIMINGS_ALREADY_BOOKED));
+    // }
+
+    let studentDetails = new userModel(details);
+    await studentDetails.save();
+
     logger.info("Controller-user.controller-RegisterController-End");
     res.status(201).send({
       success: true,
       statusCode: 201,
       message: USER_CONSTANTS.SUCCESSFULLY_USER_CREATED,
+      data: studentDetails,
     });
   } catch (error) {
     logger.error("Controller-user.controller-RegisterController-Error", error);
@@ -104,8 +152,73 @@ const MyProfileController = async (req, res, next) => {
   }
 };
 
+const GetStudentsController = async (req, res, next) => {
+  try {
+    logger.info("Controller - user.controller - GetStudentsController - Start");
+
+    let { limit = 15, page = 1, sort = "-createdAt" } = req.query;
+    const {
+      name = null,
+      classRoom = null,
+      boardType = null,
+      gender = null,
+    } = req.query;
+
+    limit = Number(limit);
+    page = Number(page);
+
+    const skip_docs = (page - 1) * limit;
+
+    const totalDocs = await userModel.countDocuments();
+    const totalPages = Math.ceil(totalDocs / limit);
+
+    const query = {
+      role: STUDENT,
+    };
+    if (name) query.name = name;
+    if (classRoom) query.class = classRoom;
+    if (boardType) query.boardType = boardType;
+    if (gender) query.gender = gender;
+
+    const docs = await userModel
+      .find(query)
+      .skip(skip_docs)
+      .limit(limit)
+      .select("-password -google")
+      .sort(sortConstants[sort] || sortConstants["-createdAt"]);
+
+    const hasNext = totalDocs > skip_docs + limit;
+    const hasPrev = page > 1;
+
+    const data = {
+      totalDocs,
+      totalPages,
+      docs,
+      currentPage: page,
+      hasNext,
+      hasPrev,
+      limit,
+    };
+
+    res.status(200).send({
+      success: true,
+      statusCode: 200,
+      message: USER_CONSTANTS.SUCCESSFULLY_FETCHED_STUDENTS,
+      data,
+    });
+
+    logger.info("Controller-user.controller-GetStudentsController-End");
+  } catch (error) {
+    logger.error(
+      "Controller-user.controller-GetStudentsController-Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 module.exports = {
   LoginUserController,
-  RegisterController,
+  RegisterStudentController,
   MyProfileController,
 };

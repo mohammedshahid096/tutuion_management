@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const { STUDENT, ADMIN } = require("../../Constants/roles.constants");
-const { user } = require("../../Constants/model.constants");
+const { user, boards } = require("../../Constants/model.constants");
 
 const ModelSchema = new mongoose.Schema(
   {
@@ -60,7 +60,7 @@ const ModelSchema = new mongoose.Schema(
     },
     boardType: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "board_category",
+      ref: boards,
       required: true,
     },
     role: {
@@ -69,8 +69,22 @@ const ModelSchema = new mongoose.Schema(
       enum: [ADMIN, STUDENT],
     },
     timings: {
-      type: String,
-      required: true,
+      start: {
+        type: Date,
+        required: true,
+      },
+      startTimeHHMM: {
+        type: String,
+        required: true,
+      },
+      end: {
+        type: Date,
+        required: true,
+      },
+      endTimeHHMM: {
+        type: String,
+        required: true,
+      },
     },
     days: {
       monday: {
@@ -129,7 +143,6 @@ const ModelSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: user,
-      required: true,
     },
     updatedBy: {
       type: mongoose.Schema.Types.ObjectId,

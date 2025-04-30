@@ -8,6 +8,7 @@ const IndexRoutes = require("./src/Routes/index.route");
 const { ratelimitConfig } = require("./src/Config/ratelimit.config");
 const { DEVELOPMENT_MODE } = require("./src/Config/index.config");
 const errorHandling = require("./src/Utils/errorHandling");
+var moment = require("moment-timezone");
 // const GoogleAuthRoutes = require("./src/Routes/auth/google.route");
 
 // const corsConfig = require("./src/Config/cors.config");
@@ -40,6 +41,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
+moment.tz.setDefault("Asia/Kolkata");
 
 //----------------------------------------
 //--------------- Routes -----------------

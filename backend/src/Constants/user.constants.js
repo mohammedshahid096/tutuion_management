@@ -9,4 +9,5 @@ module.exports = {
   USER_ALREADY_EXISTS: "User already exists",
   INVALID_EMAIL_PASSWORD: "Invalid email or password",
   USER_NOT_FOUND: "User not found",
+  TIMINGS_ALREADY_BOOKED: "The selected timings are already booked",
 };
