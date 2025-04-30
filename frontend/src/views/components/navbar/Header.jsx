@@ -33,6 +33,9 @@ const Header = () => {
             <Link to="/#contact" className="text-sm font-medium hover:text-primary">
               Contact
             </Link>
+            <Link to="/boards" className="text-sm font-medium hover:text-primary">
+              Syllabus
+            </Link>
             <Button asChild>
               <Link to="/login">Login</Link>
             </Button>

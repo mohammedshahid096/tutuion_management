@@ -1,6 +1,7 @@
 import AuthWrapper from './views/layouts/AuthWrapper';
 import Batches from './views/pages/Batches';
 import Boards from './views/pages/Boards';
+import PublicBoardsPage from './views/pages/Boards/PublicBoardsPage';
 import Dashboard from './views/pages/Dashboard';
 import Home from './views/pages/Home';
 import Login from './views/pages/Login';
@@ -15,6 +16,10 @@ const allRoutesMapper = [
   {
     path: '/login',
     component: <Login />,
+  },
+  {
+    path: '/boards',
+    component: <PublicBoardsPage />,
   },
   {
     path: '/dashboard',
@@ -33,7 +38,7 @@ const allRoutesMapper = [
     ),
   },
   {
-    path: '/boards',
+    path: '/admin/boards',
     component: (
       <AuthWrapper>
         <Boards />
@@ -41,7 +46,7 @@ const allRoutesMapper = [
     ),
   },
   {
-    path: '/subjects',
+    path: '/admin/subjects',
     component: (
       <AuthWrapper>
         <SubjectLists />
@@ -49,7 +54,7 @@ const allRoutesMapper = [
     ),
   },
   {
-    path: '/subject/create-subject',
+    path: '/admin/subject/create-subject',
     component: (
       <AuthWrapper>
         <CreateSubjectPage />

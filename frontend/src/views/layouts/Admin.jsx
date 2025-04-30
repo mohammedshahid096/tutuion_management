@@ -93,11 +93,11 @@ const data = {
       items: [
         {
           title: 'Subjects',
-          url: '/subjects',
+          url: '/admin/subjects',
         },
         {
           title: 'Create Subject',
-          url: '/subject/create-subject',
+          url: '/admin/subject/create-subject',
         },
       ],
     },
