@@ -1,10 +1,19 @@
 import React, { memo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import MobileNavbar from './MobileNavbar';
 
 const Header = () => {
+  const location = useLocation();
+  const navList = [
+    { name: 'About', homeRoute: '#about', route: '/#about' },
+    { name: 'Services', homeRoute: '#services', route: '/#services' },
+    { name: 'How It Works', homeRoute: '#pricing', route: '/#pricing' },
+    { name: 'Testimonials', homeRoute: '#testimonials', route: '/#testimonials' },
+    { name: 'Contact', homeRoute: '#contact', route: '/#contact' },
+    // { name: 'Syllabus', homeRoute: null, route: '/#boards' },
+  ];
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
@@ -15,10 +24,16 @@ const Header = () => {
         <div className="flex flex-1 items-center justify-end space-x-4">
           {/* Desktop Navigation - Hidden on mobile */}
           <nav className="hidden md:flex items-center space-x-6">
-            <Link to="/#about" className="text-sm font-medium hover:text-primary">
+            {/* <Link
+              to={location.pathname !== '/' ? '/#about' : '#about'}
+              className="text-sm font-medium hover:text-primary"
+            >
               About
             </Link>
-            <Link to="/#services" className="text-sm font-medium hover:text-primary">
+            <Link
+              to={location.pathname !== '/' ? '#services' : '/#services'}
+              className="text-sm font-medium hover:text-primary"
+            >
               Services
             </Link>
             <Link to="/#how-it-works" className="text-sm font-medium hover:text-primary">
@@ -32,7 +47,25 @@ const Header = () => {
             </Link>
             <Link to="/#contact" className="text-sm font-medium hover:text-primary">
               Contact
-            </Link>
+            </Link> */}
+            {navList?.map((singleNav) => {
+              if (location.pathname === '/') {
+                return (
+                  <a
+                    className='className="text-sm font-medium hover:text-primary'
+                    href={singleNav?.homeRoute}
+                  >
+                    {singleNav?.name}
+                  </a>
+                );
+              } else {
+                return (
+                  <Link to={singleNav?.route} className="text-sm font-medium hover:text-primary">
+                    {singleNav?.name}
+                  </Link>
+                );
+              }
+            })}
             <Link to="/boards" className="text-sm font-medium hover:text-primary">
               Syllabus
             </Link>
