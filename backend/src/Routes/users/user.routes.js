@@ -3,6 +3,7 @@ const {
   RegisterStudentController,
   LoginUserController,
   MyProfileController,
+  GetStudentsController,
 } = require("../../Controllers/users/user.controller");
 const {
   Authentication,
@@ -25,5 +26,12 @@ UserRoutes.route("/register").post(
 );
 
 UserRoutes.route("/profile").get(Authentication, MyProfileController);
+
+// students routes
+UserRoutes.route("/students").get(
+  Authentication,
+  Authorization(ADMIN),
+  GetStudentsController
+);
 
 module.exports = UserRoutes;

@@ -9,6 +9,7 @@ const errorHandling = require("../../Utils/errorHandling");
 const { decryptPasswordFunction } = require("../../Utils/encryption");
 const { StrongPasswordValidation } = require("../../validators/users/user.joi");
 const moment = require("moment");
+const sortConstants = require("../../Constants/sort.constants");
 
 const LoginUserController = async (req, res, next) => {
   try {
@@ -220,5 +221,6 @@ const GetStudentsController = async (req, res, next) => {
 module.exports = {
   LoginUserController,
   RegisterStudentController,
+  GetStudentsController,
   MyProfileController,
 };
