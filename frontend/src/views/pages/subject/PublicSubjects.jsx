@@ -24,7 +24,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { subjectActions, boardActions } from '@/redux/combineActions';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -66,6 +66,7 @@ const SubjectCardSkeleton = () => {
 
 const PublicSubjectsPage = () => {
   const { boardId } = useParams();
+  const navigate = useNavigate();
   const { getPublicSubjectsListAction } = subjectActions;
   const { getBoardsListAction } = boardActions;
   const dispatch = useDispatch();
@@ -175,6 +176,10 @@ const PublicSubjectsPage = () => {
     dispatch(getBoardsListAction());
   }, [boardsList]);
 
+  const redirectToChaptersFunction = useCallback((subjectId) => {
+    navigate(subjectId);
+  }, []);
+
   return (
     <div className="container mx-auto py-6 px-4">
       <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
@@ -268,9 +273,9 @@ const PublicSubjectsPage = () => {
           <SubjectCardSkeleton />
         ) : publicSubjectsList?.docs?.[info?.selectedClass] &&
           publicSubjectsList.docs[info.selectedClass].length > 0 ? (
-          publicSubjectsList.docs[info.selectedClass].map((subject) => (
+          publicSubjectsList.docs[info.selectedClass].map((subject, index) => (
             <Card
-              key={subject.id}
+              key={subject?.id || index}
               className="subject-card cursor-pointer transition-all duration-300 hover:shadow-md"
             >
               <CardHeader className="pb-2">
@@ -287,7 +292,9 @@ const PublicSubjectsPage = () => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">View Chapters</Button>
+                <Button className="w-full" onClick={() => redirectToChaptersFunction(subject?._id)}>
+                  View Chapters
+                </Button>
               </CardFooter>
             </Card>
           ))

@@ -108,7 +108,7 @@ const getSingleSubjectDetailController = async (req, res, next) => {
     const { subjectID } = req.params;
     const subjectData = await subjectModel
       .findById(subjectID)
-      .populate("createdBy updatedBy boardType", "name")
+      .populate("createdBy updatedBy boardType batch", "name")
       .populate("chapters")
       .lean();
 

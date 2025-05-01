@@ -7,6 +7,7 @@ import Home from './views/pages/Home';
 import Login from './views/pages/Login';
 import NotFound from './views/pages/NotFound';
 import CreateSubjectPage from './views/pages/subject/CreateSubject';
+import PublicChapterDetail from './views/pages/subject/PublicChapterDetail';
 import PublicSubjects from './views/pages/subject/PublicSubjects';
 import SubjectLists from './views/pages/subject/SubjectLists';
 
@@ -26,6 +27,10 @@ const allRoutesMapper = [
   {
     path: '/subjects/:boardId',
     component: <PublicSubjects />,
+  },
+  {
+    path: '/subjects/:boardId/:subjectId',
+    component: <PublicChapterDetail />,
   },
   {
     path: '/dashboard',
