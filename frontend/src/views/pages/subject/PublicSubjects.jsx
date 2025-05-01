@@ -242,7 +242,7 @@ const PublicSubjectsPage = () => {
           </div>
         ) : (
           <ScrollArea className="w-full whitespace-nowrap rounded-md border">
-            <div className="flex p-2">
+            <div className="flex justify-center p-2">
               {classTabs.map((classNum) => (
                 <Button
                   key={classNum}

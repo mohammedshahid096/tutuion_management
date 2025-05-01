@@ -1,18 +1,12 @@
-import React, { memo } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Mail, MessageSquare } from "lucide-react";
-import { Link } from "react-router-dom";
+import React, { memo } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Mail, MessageSquare } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const ContactSection = () => {
   return (
-    <section id="book" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
+    <section id="contact" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
@@ -29,8 +23,8 @@ const ContactSection = () => {
             <CardHeader>
               <CardTitle>Contact Information</CardTitle>
               <CardDescription>
-                Fill out the form below to schedule your first tutoring session
-                or ask any questions.
+                Fill out the form below to schedule your first tutoring session or ask any
+                questions.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -120,9 +114,7 @@ const ContactSection = () => {
                   <Mail className="h-6 w-6 text-primary" />
                   <div>
                     <h3 className="font-medium">Email</h3>
-                    <p className="text-sm text-muted-foreground">
-                      contact@eduexcellence.com
-                    </p>
+                    <p className="text-sm text-muted-foreground">contact@eduexcellence.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -130,24 +122,15 @@ const ContactSection = () => {
                   <div>
                     <h3 className="font-medium">Social Media</h3>
                     <div className="flex gap-2 mt-1">
-                      <Link
-                        to="#"
-                        className="text-muted-foreground hover:text-foreground"
-                      >
+                      <Link to="#" className="text-muted-foreground hover:text-foreground">
                         Facebook
                       </Link>
                       <span className="text-muted-foreground">•</span>
-                      <Link
-                        to="#"
-                        className="text-muted-foreground hover:text-foreground"
-                      >
+                      <Link to="#" className="text-muted-foreground hover:text-foreground">
                         Instagram
                       </Link>
                       <span className="text-muted-foreground">•</span>
-                      <Link
-                        to="#"
-                        className="text-muted-foreground hover:text-foreground"
-                      >
+                      <Link to="#" className="text-muted-foreground hover:text-foreground">
                         Twitter
                       </Link>
                     </div>

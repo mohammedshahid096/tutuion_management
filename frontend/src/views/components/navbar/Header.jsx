@@ -59,10 +59,7 @@ const Header = () => {
             {navList?.map((singleNav) => {
               if (location.pathname === '/') {
                 return (
-                  <a
-                    className='className="text-sm font-medium hover:text-primary'
-                    href={singleNav?.homeRoute}
-                  >
+                  <a className="text-sm font-medium hover:text-primary" href={singleNav?.homeRoute}>
                     {singleNav?.name}
                   </a>
                 );
