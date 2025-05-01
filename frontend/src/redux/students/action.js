@@ -20,10 +20,11 @@ const getStudentsListAction = () => async (dispatch) => {
   }
 };
 
-const registerNewStudentAction = async () => {
+const registerNewStudentAction = async (json) => {
   const token = getAccessToken();
-  const response = await Service.fetchGet(
+  const response = await Service.fetchPost(
     `${API.BASE_STUDENT}${API.STUDENT_ACTIONS_TYPES.REGISTER}`,
+    json,
     token
   );
   return response;

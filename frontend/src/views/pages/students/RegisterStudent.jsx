@@ -1,10 +1,12 @@
 import React, { useEffect, useCallback, memo, useState } from 'react';
 import MainWrapper from '../../layouts/Mainwrapper';
 import { useSelector, useDispatch } from 'react-redux';
-import { batchActions, boardActions } from '@/redux/combineActions';
+import { batchActions, boardActions, studentActions } from '@/redux/combineActions';
 import StudentRegistrationForm from '@/views/features/students/RegisterComponent';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import toast from 'react-hot-toast';
+import moment from 'moment';
 
 const breadCrumbs = [{ label: 'Batches', href: null }];
 const classRooms = Array.from({ length: 12 }, (_, i) => i + 1); // 1 to 12
@@ -12,6 +14,8 @@ const classRooms = Array.from({ length: 12 }, (_, i) => i + 1); // 1 to 12
 const RegisterStudent = () => {
   const { getBatchesListAction } = batchActions;
   const { getBoardsListAction } = boardActions;
+  const { registerNewStudentAction } = studentActions;
+
   const dispatch = useDispatch();
   const { batchesList } = useSelector((state) => state.batchState);
   const { boardsList } = useSelector((state) => state.boardState);
@@ -30,6 +34,11 @@ const RegisterStudent = () => {
     if (!boardsList) {
       fetchBoardsListHandler();
     }
+
+    // setInfo((prev) => ({
+    //   ...prev,
+    //   isSubmitting: false,
+    // }));
   }, []);
 
   useEffect(() => {
@@ -124,23 +133,34 @@ const RegisterStudent = () => {
   }, [boardsList]);
 
   const registerNewStudentDetailsHandler = async (details) => {
-    // setInfo((prev) => ({
-    //   ...prev,
-    //   isSubmitting: true,
-    // }));
+    setInfo((prev) => ({
+      ...prev,
+      isSubmitting: true,
+    }));
 
     // Format dates to ISO string
     const payload = {
       ...details,
-      dateOfBirth: details.dateOfBirth ? new Date(details.dateOfBirth).toISOString() : null,
-      dateOfJoining: details.dateOfJoining ? new Date(details.dateOfJoining).toISOString() : null,
+      dateOfBirth: moment(details.dateOfBirth).utc().format(),
+      dateOfJoining: moment(details.dateOfJoining).utc().format(),
       timings: {
-        start: details.timings.start ? new Date(details.timings.start).toISOString() : null,
-        end: details.timings.end ? new Date(details.timings.end).toISOString() : null,
+        start: moment(details.timings.start, 'HH:mm').format(),
+        end: moment(details.timings.end, 'HH:mm').format(),
       },
     };
 
-    // const response = await
+    const response = await registerNewStudentAction(payload);
+    if (response[2] === 201) {
+      toast.success(response[1]?.message || 'successfully student is registered');
+      resetForm();
+    } else {
+      toast.success(response[1]?.message || 'student is not registered try again later');
+    }
+
+    setInfo((prev) => ({
+      ...prev,
+      isSubmitting: false,
+    }));
   };
 
   return (
