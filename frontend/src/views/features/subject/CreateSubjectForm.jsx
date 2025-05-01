@@ -157,7 +157,7 @@ const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
 
   return (
     <div className="container mx-auto py-8">
-      <Card className=" mx-auto">
+      <Card className="mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Create New Subject</CardTitle>
         </CardHeader>

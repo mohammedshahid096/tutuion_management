@@ -6,6 +6,7 @@ import Dashboard from './views/pages/Dashboard';
 import Home from './views/pages/Home';
 import Login from './views/pages/Login';
 import NotFound from './views/pages/NotFound';
+import RegisterStudent from './views/pages/students/RegisterStudent';
 import CreateSubjectPage from './views/pages/subject/CreateSubject';
 import PublicChapterDetail from './views/pages/subject/PublicChapterDetail';
 import PublicSubjects from './views/pages/subject/PublicSubjects';
@@ -69,6 +70,14 @@ const allRoutesMapper = [
     component: (
       <AuthWrapper>
         <CreateSubjectPage />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/admin/students/register',
+    component: (
+      <AuthWrapper>
+        <RegisterStudent />
       </AuthWrapper>
     ),
   },

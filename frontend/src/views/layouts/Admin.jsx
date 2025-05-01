@@ -107,8 +107,12 @@ const data = {
       icon: Users,
       items: [
         {
-          title: 'Users',
-          url: '/admin/sub-users',
+          title: 'Students List',
+          url: '/admin/students',
+        },
+        {
+          title: 'Register',
+          url: '/admin/students/register',
         },
       ],
     },
