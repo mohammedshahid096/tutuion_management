@@ -3,6 +3,7 @@ import {
   CLEAR_SUBJECT_ERRORS,
   RESET_SUBJECT_STATE,
   PUBLIC_SUBJECTS_LIST,
+  PUBLIC_SUBJECT_DETAIL,
 } from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
@@ -56,6 +57,20 @@ const getPublicSubjectsListAction =
     }
   };
 
+const getPublicSubjectDetailAction = (subjectID) => async (dispatch) => {
+  dispatch({ type: PUBLIC_SUBJECT_DETAIL.request });
+  const token = getAccessToken();
+  const response = await Service.fetchGet(`${API.BASE_SUBJECT}/${subjectID}`, token);
+  if (response[0] === true) {
+    dispatch({ type: PUBLIC_SUBJECT_DETAIL.success, payload: response[1]?.data });
+  } else {
+    dispatch({
+      type: PUBLIC_SUBJECT_DETAIL.fail,
+      payload: response[1],
+    });
+  }
+};
+
 const createNewSubjectAction = async (json) => {
   const token = getAccessToken();
   const response = await Service.fetchPost(
@@ -80,6 +95,7 @@ export default {
   getSubjectsListAction,
   createNewSubjectAction,
   getPublicSubjectsListAction,
+  getPublicSubjectDetailAction,
   clearSubjectErrorsAction,
   resetSubjectAction,
 };

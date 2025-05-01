@@ -3,6 +3,7 @@ import {
   CLEAR_SUBJECT_ERRORS,
   RESET_SUBJECT_STATE,
   PUBLIC_SUBJECTS_LIST,
+  PUBLIC_SUBJECT_DETAIL,
 } from './constant';
 
 const initialState = {
@@ -11,6 +12,7 @@ const initialState = {
   statusCode: null,
   subjectsList: null,
   publicSubjectsList: null,
+  publicSubjectDetail: null,
 };
 
 export const SubjectReducer = (state = initialState, action) => {
@@ -21,6 +23,10 @@ export const SubjectReducer = (state = initialState, action) => {
       loading: true,
     }),
     [PUBLIC_SUBJECTS_LIST.request]: () => ({
+      ...state,
+      loading: true,
+    }),
+    [PUBLIC_SUBJECT_DETAIL.request]: () => ({
       ...state,
       loading: true,
     }),
@@ -35,6 +41,11 @@ export const SubjectReducer = (state = initialState, action) => {
       ...state,
       loading: false,
       publicSubjectsList: action.payload,
+    }),
+    [PUBLIC_SUBJECT_DETAIL.success]: () => ({
+      ...state,
+      loading: false,
+      publicSubjectDetail: action.payload,
     }),
 
     // Update states
@@ -51,6 +62,12 @@ export const SubjectReducer = (state = initialState, action) => {
       statusCode: action?.payload?.statusCode || 500,
     }),
     [PUBLIC_SUBJECTS_LIST.fail]: () => ({
+      ...state,
+      loading: false,
+      error: action?.payload?.message || 'Request failed', // Default error message
+      statusCode: action?.payload?.statusCode || 500,
+    }),
+    [PUBLIC_SUBJECT_DETAIL.fail]: () => ({
       ...state,
       loading: false,
       error: action?.payload?.message || 'Request failed', // Default error message
