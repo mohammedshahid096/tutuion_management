@@ -139,6 +139,8 @@ const RegisterStudent = () => {
         end: details.timings.end ? new Date(details.timings.end).toISOString() : null,
       },
     };
+
+    // const response = await
   };
 
   return (

@@ -1,0 +1,8 @@
+export const STUDENT_LIST = {
+  request: 'STUDENT_LIST_REQUEST',
+  success: 'STUDENT_LIST_SUCCESS',
+  fail: 'STUDENT_LIST_FAIL',
+};
+
+export const CLEAR_STUDENT_ERRORS = 'CLEAR_STUDENT_ERRORS';
+export const RESET_STUDENT_STATE = 'RESET_STUDENT_STATE';

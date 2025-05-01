@@ -4,6 +4,7 @@ import { UserProfileReducer } from './userProfile/reducer';
 import { BatchReducer } from './batch/reducer';
 import { BoardReducer } from './boards/reducer';
 import { SubjectReducer } from './subjects/reducer';
+import { StudentReducer } from './students/reducer';
 
 const initialState = {};
 
@@ -13,6 +14,7 @@ const reducer = {
   batchState: BatchReducer,
   boardState: BoardReducer,
   subjectState: SubjectReducer,
+  studentState: StudentReducer,
 };
 const store = configureStore({
   reducer,
