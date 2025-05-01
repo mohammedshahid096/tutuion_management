@@ -1,11 +1,13 @@
-import React, { memo } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { memo, useCallback } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import MobileNavbar from './MobileNavbar';
+import { getAccessToken } from '@/helpers/local-storage';
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const navList = [
     { name: 'About', homeRoute: '#about', route: '/#about' },
     { name: 'Services', homeRoute: '#services', route: '/#services' },
@@ -14,6 +16,12 @@ const Header = () => {
     { name: 'Contact', homeRoute: '#contact', route: '/#contact' },
     // { name: 'Syllabus', homeRoute: null, route: '/#boards' },
   ];
+
+  const loginNavigate = useCallback(() => {
+    let token = getAccessToken();
+    if (token) navigate('/dashboard');
+    else navigate('/login');
+  }, []);
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
@@ -69,9 +77,7 @@ const Header = () => {
             <Link to="/boards" className="text-sm font-medium hover:text-primary">
               Syllabus
             </Link>
-            <Button asChild>
-              <Link to="/login">Login</Link>
-            </Button>
+            <Button onClick={loginNavigate}>Login</Button>
           </nav>
 
           {/* Mobile Navigation - Hamburger Menu */}

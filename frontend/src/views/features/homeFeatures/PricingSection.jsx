@@ -1,5 +1,5 @@
-import React, { memo } from "react";
-import { Button } from "@/components/ui/button";
+import React, { memo } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -7,9 +7,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Clock, Star } from "lucide-react";
-import { Link } from "react-router-dom";
+} from '@/components/ui/card';
+import { Clock, Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const PricingSection = () => {
   return (
@@ -17,9 +17,7 @@ const PricingSection = () => {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-              Affordable Pricing
-            </h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Affordable Pricing</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               Quality education at reasonable rates with flexible packages
             </p>
@@ -54,8 +52,8 @@ const PricingSection = () => {
               </Button>
             </CardFooter>
           </Card>
-          <Card className="border-primary">
-            <CardHeader className="bg-primary text-primary-foreground">
+          <Card className="border-primary pt-0">
+            <CardHeader className="bg-primary text-primary-foreground py-3 rounded-t-lg">
               <CardTitle>Weekly Package</CardTitle>
               <div className="text-3xl font-bold">$90</div>
               <CardDescription className="text-primary-foreground/90">
@@ -92,9 +90,7 @@ const PricingSection = () => {
             <CardHeader>
               <CardTitle>Intensive Package</CardTitle>
               <div className="text-3xl font-bold">$160</div>
-              <CardDescription>
-                8 sessions per month ($20/session)
-              </CardDescription>
+              <CardDescription>8 sessions per month ($20/session)</CardDescription>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
