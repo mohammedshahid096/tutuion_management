@@ -7,9 +7,59 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 import moment from 'moment';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import _ from 'lodash';
 
 const breadCrumbs = [{ label: 'Batches', href: null }];
 const classRooms = Array.from({ length: 12 }, (_, i) => i + 1); // 1 to 12
+
+const SubjectDetailsCardSkeleton = memo(() => {
+  return (
+    <Card className=" shadow-md">
+      <CardHeader className="pb-2">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+          <div>
+            {/* Title */}
+            <Skeleton className="h-8 w-64 mb-2 rounded" />
+            {/* Description */}
+            <Skeleton className="h-4 w-96 rounded" />
+          </div>
+
+          {/* Badges Placeholder */}
+          <div className="flex flex-wrap gap-2">
+            <Skeleton className="h-8 w-24 rounded-md" />
+            <Skeleton className="h-8 w-28 rounded-md" />
+            <Skeleton className="h-8 w-28 rounded-md" />
+          </div>
+        </div>
+      </CardHeader>
+
+      {/* Code Info */}
+      <CardContent className="space-y-6">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6" key={index}>
+            {/* Email Field Skeleton */}
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-16 rounded" /> {/* Label */}
+              <Skeleton className="h-10 w-full rounded-md" /> {/* Input */}
+            </div>
+
+            {/* Password Field Skeleton */}
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-20 rounded" /> {/* Label */}
+              <div className="relative">
+                <Skeleton className="h-10 w-full rounded-md" /> {/* Input */}
+                <Skeleton className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 rounded" />{' '}
+                {/* Eye icon placeholder */}
+              </div>
+            </div>
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+  );
+});
 
 const RegisterStudent = () => {
   const { getBatchesListAction } = batchActions;
@@ -165,20 +215,24 @@ const RegisterStudent = () => {
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
-      <StudentRegistrationForm
-        errors={errors}
-        values={values}
-        touched={touched}
-        handleChange={handleChange}
-        setFieldValue={setFieldValue}
-        handleBlur={handleBlur}
-        handleSubmit={handleSubmit}
-        resetForm={resetForm}
-        info={info}
-        setInfo={setInfo}
-        classRooms={classRooms}
-        boardTypes={boardsList}
-      />
+      {info?.loading ? (
+        <SubjectDetailsCardSkeleton />
+      ) : (
+        <StudentRegistrationForm
+          errors={errors}
+          values={values}
+          touched={touched}
+          handleChange={handleChange}
+          setFieldValue={setFieldValue}
+          handleBlur={handleBlur}
+          handleSubmit={handleSubmit}
+          resetForm={resetForm}
+          info={info}
+          setInfo={setInfo}
+          classRooms={classRooms}
+          boardTypes={boardsList}
+        />
+      )}
     </MainWrapper>
   );
 };
