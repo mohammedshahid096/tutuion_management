@@ -2,12 +2,14 @@ import { STUDENT_LIST, CLEAR_STUDENT_ERRORS, RESET_STUDENT_STATE } from './const
 import Service from '@/services';
 import * as API from './actionTypes';
 import { getAccessToken } from '@/helpers/local-storage';
+import { objectToQueryString } from '@/helpers';
 
-const getStudentsListAction = () => async (dispatch) => {
+const getStudentsListAction = (queryObject) => async (dispatch) => {
   dispatch({ type: STUDENT_LIST.request });
   const token = getAccessToken();
+  let query = queryObject ? objectToQueryString(queryObject) : '';
   const response = await Service.fetchGet(
-    `${API.BASE_STUDENT}${API.STUDENT_ACTIONS_TYPES.STUDENTS}`,
+    `${API.BASE_STUDENT}${API.STUDENT_ACTIONS_TYPES.STUDENTS}${query}`,
     token
   );
   if (response[0] === true) {

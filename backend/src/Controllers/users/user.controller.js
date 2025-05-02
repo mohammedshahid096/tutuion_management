@@ -170,7 +170,7 @@ const GetStudentsController = async (req, res, next) => {
 
     const skip_docs = (page - 1) * limit;
 
-    const totalDocs = await userModel.countDocuments();
+    const totalDocs = await userModel.countDocuments({ role: STUDENT });
     const totalPages = Math.ceil(totalDocs / limit);
 
     const query = {

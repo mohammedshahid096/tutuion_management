@@ -35,33 +35,18 @@ import {
 import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination';
 
 // Usage example with your data
-const StudentsListComponent = ({ classRooms, boardTypes, data, info, setInfo }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [classFilter, setClassFilter] = useState('');
-  const [boardFilter, setBoardFilter] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 1;
-
-  // Filter students based on search and filters
-  const filteredStudents = data.docs.filter((student) => {
-    const matchesSearch =
-      student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesClass = classFilter ? student.class.toString() === classFilter : true;
-    const matchesBoard = boardFilter ? student.boardType === boardFilter : true;
-    return matchesSearch && matchesClass && matchesBoard;
-  });
-
-  // Pagination logic
-  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
-  const paginatedStudents = filteredStudents.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
+const StudentsListComponent = ({
+  classRooms,
+  boardTypes,
+  batchTypes,
+  data,
+  info,
+  setInfo,
+  filterChangeHandlerFunction,
+}) => {
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
+    if (page >= 1 && page <= data?.totalPages) {
+      filterChangeHandlerFunction('page', page);
     }
   };
 
@@ -76,23 +61,23 @@ const StudentsListComponent = ({ classRooms, boardTypes, data, info, setInfo }) 
             <Input
               placeholder="Search students..."
               className="pl-10"
-              value={searchTerm}
+              value={info?.name}
               onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setCurrentPage(1);
+                filterChangeHandlerFunction('name', e.target.value);
               }}
             />
           </div>
 
           <Select
-            value={''}
-            //   onValueChange={(value) => setFieldValue('classRoom', value)}
-            //   disabled={info?.isSubmitting}
+            value={info?.classRoom}
+            onValueChange={(value) => filterChangeHandlerFunction('classRoom', value)}
+            // disabled={info?.isSubmitting}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select class" />
             </SelectTrigger>
             <SelectContent>
+              {info?.classRoom && <SelectItem value={'all'}>All </SelectItem>}
               {classRooms?.map((grade) => (
                 <SelectItem key={grade} value={grade.toString()}>
                   Class {grade}
@@ -102,17 +87,36 @@ const StudentsListComponent = ({ classRooms, boardTypes, data, info, setInfo }) 
           </Select>
 
           <Select
-            value={''}
-            //   onValueChange={(value) => setFieldValue('boardType', value)}
+            value={info?.boardType}
+            onValueChange={(value) => filterChangeHandlerFunction('boardType', value)}
             //   disabled={info?.isSubmitting}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select board type" />
             </SelectTrigger>
             <SelectContent>
+              {info?.boardType && <SelectItem value={'all'}>All </SelectItem>}
               {boardTypes?.map((board) => (
                 <SelectItem key={board?._id} value={board?._id}>
                   {board?.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={info?.batchType}
+            onValueChange={(value) => filterChangeHandlerFunction('batchType', value)}
+            //   disabled={info?.isSubmitting}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select batch type" />
+            </SelectTrigger>
+            <SelectContent>
+              {info?.batchType && <SelectItem value={'all'}>All </SelectItem>}
+              {batchTypes?.map((singleBatch) => (
+                <SelectItem key={singleBatch?._id} value={singleBatch?._id}>
+                  {singleBatch?.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -135,22 +139,22 @@ const StudentsListComponent = ({ classRooms, boardTypes, data, info, setInfo }) 
               </TableRow>
             </TableHeader>
             <TableBody>
-              {paginatedStudents.length > 0 ? (
-                paginatedStudents.map((student) => (
-                  <TableRow key={student._id}>
-                    <TableCell className="font-medium">{student.name}</TableCell>
-                    <TableCell>{student.email}</TableCell>
-                    <TableCell>{student.class}</TableCell>
-                    <TableCell>{student.gender}</TableCell>
-                    <TableCell>{student.school}</TableCell>
+              {data?.docs?.length > 0 ? (
+                data?.docs?.map((student) => (
+                  <TableRow key={student?._id}>
+                    <TableCell className="font-medium">{student?.name}</TableCell>
+                    <TableCell>{student?.email}</TableCell>
+                    <TableCell>{student?.class}</TableCell>
+                    <TableCell>{student?.gender}</TableCell>
+                    <TableCell>{student?.school}</TableCell>
                     <TableCell>
-                      {Object.entries(student.days)
+                      {Object.entries(student?.days)
                         .filter(([_, value]) => value)
                         .map(([day]) => day.slice(0, 3))
                         .join(', ')}
                     </TableCell>
                     <TableCell>
-                      {student.timings.startTimeHHMM} - {student.timings.endTimeHHMM}
+                      {student?.timings?.startTimeHHMM} - {student?.timings?.endTimeHHMM}
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
@@ -189,24 +193,24 @@ const StudentsListComponent = ({ classRooms, boardTypes, data, info, setInfo }) 
         </div>
 
         {/* Pagination */}
-        {totalPages > 1 && (
+        {data?.totalPages > 1 && (
           <Pagination>
             <PaginationContent>
               <PaginationItem>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(info?.currentPage - 1)}
+                  disabled={info?.currentPage === 1}
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
               </PaginationItem>
 
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              {Array.from({ length: data?.totalPages || 1 }, (_, i) => i + 1).map((page) => (
                 <PaginationItem key={page}>
                   <Button
-                    variant={currentPage === page ? 'default' : 'outline'}
+                    variant={info?.currentPage === page ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => handlePageChange(page)}
                   >
@@ -219,8 +223,8 @@ const StudentsListComponent = ({ classRooms, boardTypes, data, info, setInfo }) 
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(info?.currentPage + 1)}
+                  disabled={info?.currentPage === data?.totalPages}
                 >
                   <ChevronRight className="h-4 w-4" />
                 </Button>

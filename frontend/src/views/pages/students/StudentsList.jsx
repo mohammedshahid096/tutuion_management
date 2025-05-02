@@ -19,11 +19,13 @@ const StudentsList = () => {
 
   const [info, setInfo] = useState({
     loading: true,
-    searchTerm: '',
-    classFilter: '',
-    boardFilter: '',
+    name: '',
+    classRoom: '',
+    boardType: '',
+    batchType: '',
     currentPage: 1,
-    itemsPerPage: 1,
+    limit: 1,
+    timeOut: null,
   });
 
   useEffect(() => {
@@ -55,18 +57,58 @@ const StudentsList = () => {
     dispatch(getBoardsListAction());
   }, [boardsList]);
 
-  const fetchStudentsListHandler = useCallback(async () => {
-    dispatch(getStudentsListAction());
-  }, [studentsList]);
+  const fetchStudentsListHandler = useCallback(
+    async (query) => {
+      let queryParams = {
+        limit: query?.limit || info?.limit,
+        name: query?.name || info?.name,
+        boardType: query?.boardType || info?.boardType,
+        batch: query?.batchType || info?.batchType,
+        classRoom: query?.classRoom || info?.classRoom,
+        page: query?.currentPage || info?.currentPage,
+      };
+
+      dispatch(getStudentsListAction(queryParams));
+    },
+    [studentsList, info?.name, info?.classRoom, info?.batchType, info?.boardType, info?.currentPage]
+  );
+
+  const filterChangeHandlerFunction = useCallback(
+    async (key, value) => {
+      let updateObject = {};
+
+      if (key === 'classRoom' || key === 'boardType' || key === 'batchType') {
+        updateObject[key] = value === 'all' ? '' : value;
+        updateObject.currentPage = 1;
+      }
+
+      if (key === 'page') {
+        updateObject.currentPage = value;
+      }
+
+      setInfo((prev) => ({
+        ...prev,
+        ...updateObject,
+      }));
+
+      if (key === 'name') {
+      } else {
+        fetchStudentsListHandler(updateObject);
+      }
+    },
+    [info?.name, info?.classRoom, info?.batchType, info?.boardType, info?.currentPage]
+  );
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <StudentsListComponent
         classRooms={classRooms}
         boardTypes={boardsList}
+        batchTypes={batchesList}
         data={studentsList}
         info={info}
         setInfo={setInfo}
+        filterChangeHandlerFunction={filterChangeHandlerFunction}
       />
     </MainWrapper>
   );
