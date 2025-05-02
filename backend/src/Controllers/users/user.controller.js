@@ -10,6 +10,7 @@ const { decryptPasswordFunction } = require("../../Utils/encryption");
 const { StrongPasswordValidation } = require("../../validators/users/user.joi");
 const moment = require("moment");
 const sortConstants = require("../../Constants/sort.constants");
+const NodeMailerServiceClass = require("../../aws_ses/mails/mail.index");
 
 const LoginUserController = async (req, res, next) => {
   try {
@@ -124,6 +125,20 @@ const RegisterStudentController = async (req, res, next) => {
 
     let studentDetails = new userModel(details);
     await studentDetails.save();
+
+    let mailDetails = {
+      student_name: details.name,
+      student_email: details.email,
+      student_password: details.password,
+    };
+
+    const nodeMailerService = new NodeMailerServiceClass();
+    await nodeMailerService.sendMail(
+      details.email,
+      "welcomeStudentRegistrationTemplate",
+      null,
+      mailDetails
+    );
 
     logger.info("Controller-user.controller-RegisterController-End");
     res.status(201).send({

@@ -28,7 +28,7 @@ const getTemplateFromFile = async (fileName, placeholderData) => {
 
 class NodeMailerServiceClass {
   constructor() {
-    transporter = nodemailer.createTransport({
+    this.transporter = nodemailer.createTransport({
       service: NODEMAILER_SERVICE,
       host: NODEMAILER_HOST,
       port: NODEMAILER_PORT,
@@ -66,10 +66,9 @@ class NodeMailerServiceClass {
         to,
         ...template?.message,
       };
-      console.log("shahid", sendMailOptions);
 
       logger.info("AWS SES - mail service - sendTemplatedEmail - End");
-      //   await transporter.sendMail(sendMailOptions);
+      await this.transporter.sendMail(sendMailOptions);
     } catch (error) {
       logger.error(
         "AWS SES - mail service - sendTemplatedEmail - Error",
