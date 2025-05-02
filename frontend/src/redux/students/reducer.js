@@ -22,6 +22,12 @@ export const StudentReducer = (state = initialState, action) => {
       studentsList: action.payload,
     }),
 
+    // updating state
+    [STUDENT_LIST.update]: () => ({
+      ...state,
+      studentsList: action.payload,
+    }),
+
     // Failure state
     [STUDENT_LIST.fail]: () => ({
       ...state,

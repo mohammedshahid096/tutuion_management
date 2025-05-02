@@ -55,7 +55,7 @@ const StudentsList = () => {
     boardType: '',
     batchType: '',
     currentPage: 1,
-    limit: 1,
+    limit: 20,
     timeOut: null,
   });
 
@@ -78,7 +78,7 @@ const StudentsList = () => {
         loading: false,
       }));
     }
-  }, [boardsList, batchesList]);
+  }, [boardsList, batchesList, studentsList, info?.loading]);
 
   const fetchBatchesListHandler = useCallback(async () => {
     dispatch(getBatchesListAction());
@@ -89,7 +89,7 @@ const StudentsList = () => {
   }, [boardsList]);
 
   const fetchStudentsListHandler = useCallback(
-    async (query) => {
+    async (query, reset = false) => {
       let queryParams = {
         limit: query?.limit ?? info?.limit,
         name: query?.name ?? info?.name,
@@ -99,14 +99,16 @@ const StudentsList = () => {
         page: query?.currentPage ?? info?.currentPage,
       };
 
-      dispatch(getStudentsListAction(queryParams));
+      dispatch(getStudentsListAction(queryParams, reset));
     },
     [studentsList, info?.name, info?.classRoom, info?.batchType, info?.boardType, info?.currentPage]
   );
 
   const filterChangeHandlerFunction = useCallback(
     async (key, value) => {
-      let updateObject = {};
+      let updateObject = {
+        loading: true,
+      };
 
       if (key === 'classRoom' || key === 'boardType' || key === 'batchType') {
         updateObject[key] = value === 'all' ? '' : value;
@@ -136,7 +138,7 @@ const StudentsList = () => {
       if (key === 'name') {
         clearTimeout(info?.timeOut);
         let timeOut = setTimeout(() => {
-          fetchStudentsListHandler({ [key]: value });
+          fetchStudentsListHandler({ [key]: value }, true);
           setInfo((prev) => ({
             ...prev,
             timeOut: null,
@@ -153,7 +155,7 @@ const StudentsList = () => {
           ...prev,
           ...updateObject,
         }));
-        fetchStudentsListHandler(updateObject);
+        fetchStudentsListHandler(updateObject, true);
       }
     },
     [info?.name, info?.classRoom, info?.batchType, info?.boardType, info?.currentPage]

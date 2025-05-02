@@ -4,6 +4,7 @@ const {
   LoginUserController,
   MyProfileController,
   GetStudentsController,
+  singleStudentDetailsController,
 } = require("../../Controllers/users/user.controller");
 const {
   Authentication,
@@ -12,6 +13,7 @@ const {
 const {
   RegisterStudentValidation,
   LoginUserValidation,
+  getStudentsValidation,
 } = require("../../validators/users/user.joi");
 const { ADMIN } = require("../../Constants/roles.constants");
 
@@ -31,7 +33,14 @@ UserRoutes.route("/profile").get(Authentication, MyProfileController);
 UserRoutes.route("/students").get(
   Authentication,
   Authorization(ADMIN),
+  getStudentsValidation,
   GetStudentsController
+);
+
+UserRoutes.route("/students/:studentId").get(
+  Authentication,
+  Authorization(ADMIN),
+  singleStudentDetailsController
 );
 
 module.exports = UserRoutes;

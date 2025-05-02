@@ -138,6 +138,30 @@ const RegisterStudentController = async (req, res, next) => {
   }
 };
 
+const singleStudentDetailsController = async (req, res, next) => {
+  try {
+    const { studentId } = req.params;
+    let data = await userModel
+      .findById(studentId)
+      .select("-google")
+      .populate("boardType createdBy updatedBy", "name")
+      .lean();
+
+    if (!data) {
+      return next(httpErrors.NotFound());
+    }
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      data: data,
+    });
+  } catch (error) {
+    logger.warn("Controller-user.controller-RegisterController-End", error);
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 const MyProfileController = async (req, res, next) => {
   try {
     let data = await userModel.findById(req.user._id).select("-google");
@@ -223,4 +247,5 @@ module.exports = {
   RegisterStudentController,
   GetStudentsController,
   MyProfileController,
+  singleStudentDetailsController,
 };

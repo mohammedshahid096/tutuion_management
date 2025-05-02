@@ -75,9 +75,24 @@ const StrongPasswordValidation = (body) => {
   return null;
 };
 
+const getStudentsValidation = celebrate({
+  query: Joi.object({
+    sort: Joi.string()
+      .valid("-createdAt", "+createdAt")
+      .optional()
+      .label("Sort Order"),
+    boardType: Joi.string().optional().label("Board Type"),
+    classRoom: Joi.number().min(1).max(12).optional().label("Class Room"),
+    name: Joi.string().optional().label("Name"),
+    limit: Joi.number().min(1).optional().label("Limit"),
+    page: Joi.number().min(1).optional().label("Page"),
+  }),
+});
+
 module.exports = {
   RegisterStudentValidation,
   LoginUserValidation,
   UpdatePasswordValidation,
   StrongPasswordValidation,
+  getStudentsValidation,
 };
