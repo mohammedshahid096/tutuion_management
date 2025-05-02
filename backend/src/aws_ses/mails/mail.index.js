@@ -1,13 +1,10 @@
+const nodemailer = require("nodemailer");
 const {
-  SESClient,
-  SendEmailCommand,
-  SendTemplatedEmailCommand,
-} = require("@aws-sdk/client-ses");
-const {
-  AWS_ACCESS_KEY_ID,
-  AWS_SECRET_ACCESS_KEY,
-  AWS_REGION,
-  AWS_SES_SENDER,
+  NODEMAILER_SERVICE,
+  NODEMAILER_HOST,
+  NODEMAILER_PORT,
+  NODEMAILER_PASS,
+  NODEMAILER_USER,
 } = require("../../Config/index.config");
 const fs = require("fs");
 const path = require("path");
@@ -29,15 +26,17 @@ const getTemplateFromFile = async (fileName, placeholderData) => {
   return fileContent;
 };
 
-class AwsMailServiceClass {
+class NodeMailerServiceClass {
   constructor() {
-    this.SESClientConfig = {
-      region: AWS_REGION,
-      credentials: {
-        accessKeyId: AWS_ACCESS_KEY_ID,
-        secretAccessKey: AWS_SECRET_ACCESS_KEY,
+    transporter = nodemailer.createTransport({
+      service: NODEMAILER_SERVICE,
+      host: NODEMAILER_HOST,
+      port: NODEMAILER_PORT,
+      auth: {
+        user: NODEMAILER_USER,
+        pass: NODEMAILER_PASS,
       },
-    };
+    });
   }
 
   async getTemplateData(templateName, subject, placeholderData) {
@@ -46,58 +45,31 @@ class AwsMailServiceClass {
       template.fileName,
       placeholderData
     );
-    template.Message.Body.Html.Data =
-      templateFileData || template.Message.Body.Text.Data;
+    template.message.html = templateFileData || template.message.text;
 
     if (subject) {
-      template.Message.Subject.Data = subject;
+      template.message.subject = subject;
     }
     return template;
   }
 
-  async sendEmail(to, templateName, subject, placeholderData) {
+  async sendMail(to, templateName, subject, placeholderData) {
     try {
-      logger.info("AWS SES - mail service - sendEmail - Start");
+      logger.info("AWS SES - mail service - sendTemplatedEmail - Start");
       const template = await this.getTemplateData(
         templateName,
         subject,
         placeholderData
       );
-      const params = {
-        Destination: {
-          ToAddresses: Array.isArray(to) ? to : [to],
-        },
-        Message: template.Message,
-        Source: AWS_SES_SENDER,
-        ReplyToAddresses: [],
+      const sendMailOptions = {
+        from: NODEMAILER_USER,
+        to,
+        ...template?.message,
       };
-      const sesClient = new SESClient(this.SESClientConfig);
-      const commandToSendEmail = new SendEmailCommand(params);
-      const response = await sesClient.send(commandToSendEmail);
-      logger.info("AWS SES - mail service - sendEmail - End");
-      return response;
-    } catch (error) {
-      logger.error("AWS SES - mail service - sendEmail - Error", error);
-      throw error;
-    }
-  }
-  // send templated email using AWS SES
-  async sendTemplatedEmail(to, templateName, placeholderData) {
-    try {
-      logger.info("AWS SES - mail service - sendTemplatedEmail - Start");
-      const params = {
-        Destination: {
-          ToAddresses: Array.isArray(to) ? to : [to],
-        },
-        Template: templateName,
-        TemplateData: JSON.stringify(placeholderData),
-        Source: AWS_SES_SENDER,
-      };
-      const sesClient = new SESClient(this.SESClientConfig);
-      const commandToSendEmail = new SendTemplatedEmailCommand(params);
-      const response = await sesClient.send(commandToSendEmail);
+      console.log("shahid", sendMailOptions);
+
       logger.info("AWS SES - mail service - sendTemplatedEmail - End");
-      return response;
+      //   await transporter.sendMail(sendMailOptions);
     } catch (error) {
       logger.error(
         "AWS SES - mail service - sendTemplatedEmail - Error",
@@ -108,4 +80,4 @@ class AwsMailServiceClass {
   }
 }
 
-module.exports = AwsMailServiceClass;
+module.exports = NodeMailerServiceClass;
