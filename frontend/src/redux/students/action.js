@@ -1,4 +1,9 @@
-import { STUDENT_LIST, CLEAR_STUDENT_ERRORS, RESET_STUDENT_STATE } from './constant';
+import {
+  STUDENT_LIST,
+  CLEAR_STUDENT_ERRORS,
+  RESET_STUDENT_STATE,
+  STUDENT_DETAILS,
+} from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
 import { getAccessToken } from '@/helpers/local-storage';
@@ -37,6 +42,29 @@ const registerNewStudentAction = async (json) => {
   return response;
 };
 
+const getSingleStudentDetailAction =
+  (studentId, studentDetails = null) =>
+  async (dispatch) => {
+    if (studentDetails) {
+      dispatch({ type: STUDENT_DETAILS.update, payload: studentDetails });
+      return;
+    }
+    dispatch({ type: STUDENT_DETAILS.request });
+    const token = getAccessToken();
+    const response = await Service.fetchGet(
+      `${API.BASE_STUDENT}${API.STUDENT_ACTIONS_TYPES.STUDENTS}/${studentId}`,
+      token
+    );
+    if (response[0] === true) {
+      dispatch({ type: STUDENT_DETAILS.success, payload: response[1]?.data });
+    } else {
+      dispatch({
+        type: STUDENT_DETAILS.fail,
+        payload: response[1],
+      });
+    }
+  };
+
 const clearStudentErrorsAction = () => (dispatch) => {
   dispatch({
     type: CLEAR_STUDENT_ERRORS,
@@ -50,6 +78,7 @@ const resetStudentAction = () => (dispatch) => {
 export default {
   getStudentsListAction,
   registerNewStudentAction,
+  getSingleStudentDetailAction,
   clearStudentErrorsAction,
   resetStudentAction,
 };

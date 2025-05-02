@@ -1,16 +1,26 @@
-import { STUDENT_LIST, CLEAR_STUDENT_ERRORS, RESET_STUDENT_STATE } from './constant';
+import {
+  STUDENT_LIST,
+  STUDENT_DETAILS,
+  CLEAR_STUDENT_ERRORS,
+  RESET_STUDENT_STATE,
+} from './constant';
 
 const initialState = {
   loading: false,
   error: null,
   statusCode: null,
   studentsList: null,
+  singleStudentDetail: null,
 };
 
 export const StudentReducer = (state = initialState, action) => {
   const actionHandlers = {
     // Loading state
     [STUDENT_LIST.request]: () => ({
+      ...state,
+      loading: true,
+    }),
+    [STUDENT_DETAILS.request]: () => ({
       ...state,
       loading: true,
     }),
@@ -21,15 +31,30 @@ export const StudentReducer = (state = initialState, action) => {
       loading: false,
       studentsList: action.payload,
     }),
+    [STUDENT_DETAILS.success]: () => ({
+      ...state,
+      loading: false,
+      singleStudentDetail: action.payload,
+    }),
 
     // updating state
     [STUDENT_LIST.update]: () => ({
       ...state,
       studentsList: action.payload,
     }),
+    [STUDENT_DETAILS.update]: () => ({
+      ...state,
+      singleStudentDetail: action.payload,
+    }),
 
     // Failure state
     [STUDENT_LIST.fail]: () => ({
+      ...state,
+      loading: false,
+      error: action?.payload?.message || 'Fetching students failed', // Default error message
+      statusCode: action?.payload?.statusCode || 500,
+    }),
+    [STUDENT_DETAILS.fail]: () => ({
       ...state,
       loading: false,
       error: action?.payload?.message || 'Fetching students failed', // Default error message
