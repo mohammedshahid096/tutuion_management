@@ -33,7 +33,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination';
-
+import _ from 'lodash';
 // Usage example with your data
 const StudentsListComponent = ({
   classRooms,
@@ -121,6 +121,8 @@ const StudentsListComponent = ({
               ))}
             </SelectContent>
           </Select>
+
+          <Button onClick={() => filterChangeHandlerFunction('reset', null)}>Reset </Button>
         </div>
 
         {/* Table */}
@@ -131,7 +133,7 @@ const StudentsListComponent = ({
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Class</TableHead>
-                <TableHead>Gender</TableHead>
+                <TableHead>Board</TableHead>
                 <TableHead>School</TableHead>
                 <TableHead>Days</TableHead>
                 <TableHead>Timings</TableHead>
@@ -145,7 +147,7 @@ const StudentsListComponent = ({
                     <TableCell className="font-medium">{student?.name}</TableCell>
                     <TableCell>{student?.email}</TableCell>
                     <TableCell>{student?.class}</TableCell>
-                    <TableCell>{student?.gender}</TableCell>
+                    <TableCell>{_.find(boardTypes, { _id: student?.boardType }).name}</TableCell>
                     <TableCell>{student?.school}</TableCell>
                     <TableCell>
                       {Object.entries(student?.days)
@@ -193,7 +195,7 @@ const StudentsListComponent = ({
         </div>
 
         {/* Pagination */}
-        {data?.totalPages > 1 && (
+        {data?.totalPages > 1 && _.size(data?.docs) > 0 && (
           <Pagination>
             <PaginationContent>
               <PaginationItem>

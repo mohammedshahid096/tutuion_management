@@ -3,6 +3,8 @@ import StudentsListComponent from '@/views/features/students/StudentsListCompone
 import MainWrapper from '@/views/layouts/Mainwrapper';
 import { useDispatch, useSelector } from 'react-redux';
 import { batchActions, boardActions, studentActions } from '@/redux/combineActions';
+import _ from 'lodash';
+
 const breadCrumbs = [{ label: 'students', href: null }];
 
 const classRooms = Array.from({ length: 12 }, (_, i) => i + 1); // 1 to 12
@@ -60,12 +62,12 @@ const StudentsList = () => {
   const fetchStudentsListHandler = useCallback(
     async (query) => {
       let queryParams = {
-        limit: query?.limit || info?.limit,
-        name: query?.name || info?.name,
-        boardType: query?.boardType || info?.boardType,
-        batch: query?.batchType || info?.batchType,
-        classRoom: query?.classRoom || info?.classRoom,
-        page: query?.currentPage || info?.currentPage,
+        limit: query?.limit ?? info?.limit,
+        name: query?.name ?? info?.name,
+        boardType: query?.boardType ?? info?.boardType,
+        batch: query?.batchType ?? info?.batchType,
+        classRoom: query?.classRoom ?? info?.classRoom,
+        page: query?.currentPage ?? info?.currentPage,
       };
 
       dispatch(getStudentsListAction(queryParams));
@@ -85,14 +87,43 @@ const StudentsList = () => {
       if (key === 'page') {
         updateObject.currentPage = value;
       }
+      if (key === 'reset') {
+        clearTimeout(info?.timeOut);
+        updateObject = {
+          loading: true,
+          name: '',
+          classRoom: '',
+          boardType: '',
+          batchType: '',
+          currentPage: 1,
+          limit: 1,
+          timeOut: null,
+        };
 
-      setInfo((prev) => ({
-        ...prev,
-        ...updateObject,
-      }));
+        let isEqual = _.isEqual(updateObject, info);
+        if (isEqual) return;
+      }
 
       if (key === 'name') {
+        clearTimeout(info?.timeOut);
+        let timeOut = setTimeout(() => {
+          fetchStudentsListHandler({ [key]: value });
+          setInfo((prev) => ({
+            ...prev,
+            timeOut: null,
+          }));
+        }, 1000);
+
+        setInfo((prev) => ({
+          ...prev,
+          [key]: value,
+          timeOut,
+        }));
       } else {
+        setInfo((prev) => ({
+          ...prev,
+          ...updateObject,
+        }));
         fetchStudentsListHandler(updateObject);
       }
     },
