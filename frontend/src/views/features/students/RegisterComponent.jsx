@@ -31,6 +31,7 @@ const StudentRegistrationForm = ({
   setInfo,
   classRooms,
   boardTypes,
+  studentId,
 }) => {
   const togglePasswordVisibility = () => {
     setInfo((prev) => ({
@@ -43,7 +44,10 @@ const StudentRegistrationForm = ({
     <div className="container mx-auto py-8">
       <Card className=" mx-auto">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold">Register New Student</CardTitle>
+          <CardTitle className="text-2xl font-bold">
+            {' '}
+            {studentId ? 'Student Details' : 'Register New Student'}
+          </CardTitle>
         </CardHeader>
 
         <form onSubmit={handleSubmit}>

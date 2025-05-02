@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { batchActions, boardActions, studentActions } from '@/redux/combineActions';
 import _ from 'lodash';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useNavigate } from 'react-router-dom';
 
 const breadCrumbs = [{ label: 'students', href: null }];
 
@@ -44,6 +45,7 @@ const StudentsList = () => {
   const { getStudentsListAction } = studentActions;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { batchesList } = useSelector((state) => state.batchState);
   const { boardsList } = useSelector((state) => state.boardState);
   const { studentsList } = useSelector((state) => state.studentState);
@@ -161,6 +163,10 @@ const StudentsList = () => {
     [info?.name, info?.classRoom, info?.batchType, info?.boardType, info?.currentPage]
   );
 
+  const navigateToStudentDetails = useCallback((studentDetails) => {
+    navigate(`${studentDetails?._id}?studentName=${studentDetails?.name}`);
+  }, []);
+
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       {info?.loading ? (
@@ -174,6 +180,7 @@ const StudentsList = () => {
           info={info}
           setInfo={setInfo}
           filterChangeHandlerFunction={filterChangeHandlerFunction}
+          navigateToStudentDetails={navigateToStudentDetails}
         />
       )}
     </MainWrapper>

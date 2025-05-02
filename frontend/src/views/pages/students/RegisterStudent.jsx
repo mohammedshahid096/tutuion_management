@@ -10,6 +10,7 @@ import moment from 'moment';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import _ from 'lodash';
+import { useParams } from 'react-router-dom';
 
 const breadCrumbs = [
   { label: 'students', href: '/admin/students' },
@@ -67,16 +68,46 @@ const SubjectDetailsCardSkeleton = memo(() => {
 const RegisterStudent = () => {
   const { getBatchesListAction } = batchActions;
   const { getBoardsListAction } = boardActions;
-  const { registerNewStudentAction } = studentActions;
+  const { registerNewStudentAction, getSingleStudentDetailAction } = studentActions;
 
   const dispatch = useDispatch();
+  const { studentId } = useParams();
   const { batchesList } = useSelector((state) => state.batchState);
   const { boardsList } = useSelector((state) => state.boardState);
+  const { singleStudentDetail } = useSelector((state) => state.studentState);
 
   const [info, setInfo] = useState({
     loading: true,
     showPassword: false,
     isSubmitting: false,
+    initialValues: {
+      name: '',
+      email: '',
+      password: 'Test@123',
+      gender: 'female',
+      fatherName: '',
+      motherName: '',
+      phone: '',
+      address: '',
+      dateOfBirth: null,
+      classRoom: '',
+      school: '',
+      boardType: '',
+      timings: {
+        start: '',
+        end: '',
+      },
+      days: {
+        monday: false,
+        tuesday: false,
+        wednesday: false,
+        thursday: false,
+        friday: false,
+        saturday: false,
+        sunday: false,
+      },
+      dateOfJoining: null,
+    },
   });
 
   useEffect(() => {
@@ -87,16 +118,50 @@ const RegisterStudent = () => {
     if (!boardsList) {
       fetchBoardsListHandler();
     }
+
+    if (studentId && (!singleStudentDetail || singleStudentDetail?._id !== studentId)) {
+      fetchStudentDetailHandler();
+    }
   }, []);
 
   useEffect(() => {
-    if (batchesList && boardsList) {
+    if (batchesList && boardsList && !studentId) {
       setInfo((prev) => ({
         ...prev,
         loading: false,
       }));
     }
-  }, [boardsList, batchesList]);
+    if (batchesList && boardsList && studentId && singleStudentDetail?._id === studentId) {
+      let updateDetails = {
+        name: singleStudentDetail?.name ?? info?.initialValues?.name,
+        email: singleStudentDetail?.email ?? info?.initialValues?.email,
+        gender: singleStudentDetail?.gender ?? info?.initialValues?.gender,
+        fatherName: singleStudentDetail?.fatherName ?? info?.initialValues?.fatherName,
+        motherName: singleStudentDetail?.motherName ?? info?.initialValues?.motherName,
+        phone: singleStudentDetail?.phone ?? info?.initialValues?.phone,
+        address: singleStudentDetail?.address ?? info?.initialValues?.address,
+        dateOfBirth: new Date(singleStudentDetail?.dateOfBirth) ?? info?.initialValues?.dateOfBirth,
+        classRoom: singleStudentDetail?.class ?? info?.initialValues?.class,
+        school: singleStudentDetail?.school ?? info?.initialValues?.school,
+        boardType: singleStudentDetail?.boardType?._id ?? info?.initialValues?.boardType,
+        days: singleStudentDetail?.days ?? info?.initialValues?.days,
+        timings: {
+          start: singleStudentDetail?.timings?.startTimeHHMM ?? info?.initialValues?.timings?.start,
+          end: singleStudentDetail?.timings?.endTimeHHMM ?? info?.initialValues?.timings?.end,
+        },
+        dateOfJoining:
+          new Date(singleStudentDetail?.dateOfJoining) ?? info?.initialValues?.dateOfJoining,
+      };
+      setInfo((prev) => ({
+        ...prev,
+        loading: false,
+        initialValues: {
+          ...prev?.initialValues,
+          ...updateDetails,
+        },
+      }));
+    }
+  }, [boardsList, batchesList, singleStudentDetail, studentId]);
 
   const validateSchema = Yup.object({
     name: Yup.string().required('Name is required'),
@@ -127,37 +192,14 @@ const RegisterStudent = () => {
   });
 
   const formik = useFormik({
-    initialValues: {
-      name: '',
-      email: '',
-      password: 'Test@123',
-      gender: 'female',
-      fatherName: '',
-      motherName: '',
-      phone: '',
-      address: '',
-      dateOfBirth: null,
-      classRoom: '',
-      school: '',
-      boardType: '',
-      timings: {
-        start: '',
-        end: '',
-      },
-      days: {
-        monday: false,
-        tuesday: false,
-        wednesday: false,
-        thursday: false,
-        friday: false,
-        saturday: false,
-        sunday: false,
-      },
-      dateOfJoining: null,
-    },
+    initialValues: _.cloneDeep(info?.initialValues),
     validationSchema: validateSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
-      await registerNewStudentDetailsHandler(values);
+      if (studentId) {
+      } else {
+        await registerNewStudentDetailsHandler(values);
+      }
     },
   });
 
@@ -179,6 +221,10 @@ const RegisterStudent = () => {
   const fetchBoardsListHandler = useCallback(async () => {
     dispatch(getBoardsListAction());
   }, [boardsList]);
+
+  const fetchStudentDetailHandler = useCallback(async () => {
+    dispatch(getSingleStudentDetailAction(studentId));
+  }, [singleStudentDetail, studentId]);
 
   const registerNewStudentDetailsHandler = async (details) => {
     setInfo((prev) => ({
@@ -211,6 +257,8 @@ const RegisterStudent = () => {
     }));
   };
 
+  console.log(values, 'shahid');
+
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       {info?.loading ? (
@@ -229,6 +277,7 @@ const RegisterStudent = () => {
           setInfo={setInfo}
           classRooms={classRooms}
           boardTypes={boardsList}
+          studentId={studentId || null}
         />
       )}
     </MainWrapper>

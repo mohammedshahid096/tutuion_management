@@ -43,6 +43,7 @@ const StudentsListComponent = ({
   info,
   setInfo,
   filterChangeHandlerFunction,
+  navigateToStudentDetails,
 }) => {
   const handlePageChange = (page) => {
     if (page >= 1 && page <= data?.totalPages) {
@@ -166,7 +167,10 @@ const StudentsListComponent = ({
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem className="flex items-center gap-2">
+                          <DropdownMenuItem
+                            className="flex items-center gap-2"
+                            onClick={() => navigateToStudentDetails(student)}
+                          >
                             <Eye className="h-4 w-4" />
                             View
                           </DropdownMenuItem>

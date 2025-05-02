@@ -83,6 +83,14 @@ const allRoutesMapper = [
     ),
   },
   {
+    path: '/admin/students/:studentId',
+    component: (
+      <AuthWrapper>
+        <RegisterStudent />
+      </AuthWrapper>
+    ),
+  },
+  {
     path: '/admin/students',
     component: (
       <AuthWrapper>
