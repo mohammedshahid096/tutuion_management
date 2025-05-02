@@ -1,5 +1,5 @@
 export const STUDENT_ACTIONS_TYPES = {
-  LIST: '/students/list',
+  STUDENTS: '/students',
   REGISTER: '/register',
 };
 

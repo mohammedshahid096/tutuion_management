@@ -7,7 +7,7 @@ const getStudentsListAction = () => async (dispatch) => {
   dispatch({ type: STUDENT_LIST.request });
   const token = getAccessToken();
   const response = await Service.fetchGet(
-    `${API.BASE_STUDENT}${API.BASE_ACTIONS_TYPES.LIST}`,
+    `${API.BASE_STUDENT}${API.STUDENT_ACTIONS_TYPES.STUDENTS}`,
     token
   );
   if (response[0] === true) {

@@ -11,7 +11,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import _ from 'lodash';
 
-const breadCrumbs = [{ label: 'Batches', href: null }];
+const breadCrumbs = [
+  { label: 'students', href: '/admin/students' },
+  { label: 'Register', href: null },
+];
 const classRooms = Array.from({ length: 12 }, (_, i) => i + 1); // 1 to 12
 
 const SubjectDetailsCardSkeleton = memo(() => {
@@ -84,11 +87,6 @@ const RegisterStudent = () => {
     if (!boardsList) {
       fetchBoardsListHandler();
     }
-
-    // setInfo((prev) => ({
-    //   ...prev,
-    //   isSubmitting: false,
-    // }));
   }, []);
 
   useEffect(() => {
