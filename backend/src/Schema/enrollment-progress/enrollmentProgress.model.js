@@ -5,6 +5,7 @@ const {
   batches,
   boards,
   enrollmentProgress,
+  chapters,
 } = require("../../Constants/model.constants");
 
 const ModelSchema = new mongoose.Schema(
@@ -36,7 +37,12 @@ const ModelSchema = new mongoose.Schema(
         },
         chapters: [
           {
-            subChapter: [],
+            _id: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: chapters,
+              required: true,
+            },
+            subChapters: [],
             progress: {
               type: Number,
               default: 0,

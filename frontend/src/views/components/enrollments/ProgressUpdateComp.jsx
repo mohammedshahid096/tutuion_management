@@ -80,7 +80,12 @@ export const ProgressSkeleton = memo(() => {
   );
 });
 
-const ProgressUpdateComp = ({ publicSubjectDetail }) => {
+const ProgressUpdateComp = ({
+  publicSubjectDetail,
+  changeSliderHandlerFunction,
+  info,
+  sliderProgress,
+}) => {
   return publicSubjectDetail ? (
     <div className="space-y-6">
       {/* Subject Header Card */}
@@ -141,7 +146,9 @@ const ProgressUpdateComp = ({ publicSubjectDetail }) => {
                   {chapter?.order + 1}
                 </div>
                 <div className="text-left">
-                  <h3 className="text-lg font-semibold capitalize">{chapter?.title}</h3>
+                  <h3 className="text-lg font-semibold capitalize">
+                    {chapter?.title} ({parseInt(sliderProgress?.[chapter?._id]?.progress)} %)
+                  </h3>
                   <p className="text-sm text-gray-500 max-w-md  break-words whitespace-normal line-clamp-2 ">
                     {chapter?.content}
                   </p>
@@ -164,7 +171,25 @@ const ProgressUpdateComp = ({ publicSubjectDetail }) => {
                           <div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center">
                             <Hourglass className="h-4 w-4 text-gray-600" />
                           </div>
-                          <Slider defaultValue={[33]} max={100} step={1} />
+                          <div className="flex flex-1 gap-4">
+                            <Slider
+                              max={100}
+                              min={0}
+                              step={1}
+                              defaultValue={[
+                                sliderProgress?.[chapter?._id]?.subChapters?.[subChapter?._id]
+                                  ?.topicProgress || 0,
+                              ]}
+                              onValueChange={(e) =>
+                                changeSliderHandlerFunction(e[0], subChapter?._id, chapter?._id)
+                              }
+                            />
+                            <p className="text-sm">
+                              {sliderProgress?.[chapter?._id]?.subChapters?.[subChapter?._id]
+                                ?.topicProgress || 0}
+                              %
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
