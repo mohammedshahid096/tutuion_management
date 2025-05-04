@@ -10,6 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const DataTableSkeleton = memo(({ numRows = 6, numCols = 5 }) => {
   return (
@@ -41,6 +42,8 @@ const DataTableSkeleton = memo(({ numRows = 6, numCols = 5 }) => {
 
 const Enrollments = () => {
   const { enrollmentsList, enrollmentLoading } = useSelector((state) => state.studentState);
+
+  const navigate = useNavigate();
   return !enrollmentLoading ? (
     <div className="container mx-auto py-8">
       <h1 className="text-2xl font-bold mb-6">Enrollments</h1>
@@ -79,7 +82,15 @@ const Enrollments = () => {
                               {singleSubject?.chapters?.length} chapters
                             </TableCell>
                             <TableCell className="px-4">
-                              <Button>View</Button>
+                              <Button
+                                onClick={() =>
+                                  navigate(
+                                    `${singleEnrollment?._id}/${singleSubject?.subjectId?._id}`
+                                  )
+                                }
+                              >
+                                View
+                              </Button>
                             </TableCell>
                           </TableRow>
                         ))}

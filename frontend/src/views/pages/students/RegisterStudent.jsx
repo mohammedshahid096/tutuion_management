@@ -330,7 +330,7 @@ const RegisterStudent = () => {
         />
       )}
 
-      {studentId && <Enrollments />}
+      {studentId && <Enrollments studentId={studentId} />}
     </MainWrapper>
   );
 };
