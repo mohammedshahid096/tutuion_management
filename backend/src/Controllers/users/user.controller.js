@@ -153,6 +153,52 @@ const RegisterStudentController = async (req, res, next) => {
   }
 };
 
+const updateStudentDetailController = async (req, res, next) => {
+  try {
+    logger.info(
+      "Controller-user.controller-updateStudentDetailController-Start"
+    );
+
+    const { studentId } = req.params;
+    let details = {
+      ...req.body,
+      updatedBy: req.user._id,
+    };
+
+    if (req.body.timings) {
+      details.timings = {
+        start: req.body.timings.start,
+        startTimeHHMM: moment(req.body.timings.start).format("HH:mm"),
+        end: moment(req.body.timings.start).add(1, "hours"),
+        endTimeHHMM: moment(req.body.timings.start)
+          .add(1, "hours")
+          .format("HH:mm"),
+      };
+    }
+
+    let studentDetails = await userModel.findByIdAndUpdate(
+      studentId,
+      { $set: details },
+      { new: true }
+    );
+
+    if (!studentDetails) {
+      return next(httpErrors.BadRequest(USER_CONSTANTS.USER_NOT_FOUND));
+    }
+
+    logger.info("Controller-user.controller-updateStudentDetailController-End");
+    res.status(201).send({
+      success: true,
+      statusCode: 201,
+      message: USER_CONSTANTS.SUCCESSFULLY_USER_CREATED,
+      data: studentDetails,
+    });
+  } catch (error) {
+    logger.error("Controller-user.controller-RegisterController-Error", error);
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 const singleStudentDetailsController = async (req, res, next) => {
   try {
     const { studentId } = req.params;
@@ -163,7 +209,7 @@ const singleStudentDetailsController = async (req, res, next) => {
       .lean();
 
     if (!data) {
-      return next(httpErrors.NotFound());
+      return next(httpErrors.BadRequest(USER_CONSTANTS.USER_NOT_FOUND));
     }
 
     res.status(200).json({
@@ -263,4 +309,5 @@ module.exports = {
   GetStudentsController,
   MyProfileController,
   singleStudentDetailsController,
+  updateStudentDetailController,
 };

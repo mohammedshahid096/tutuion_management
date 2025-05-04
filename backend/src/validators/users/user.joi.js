@@ -43,6 +43,44 @@ const RegisterStudentValidation = celebrate({
   }),
 });
 
+const updateStudentValidation = celebrate({
+  body: Joi.object({
+    name: Joi.string().optional().label("Name"),
+    email: Joi.string().email().optional().label("Email"),
+    password: passwordComplexity().optional().label("Password"),
+    gender: Joi.string()
+      .valid("male", "female", "other")
+      .optional()
+      .label("Gender"),
+    fatherName: Joi.string().optional().label("Father's Name"),
+    motherName: Joi.string().optional().label("Mother's Name"),
+    phone: Joi.string().optional().label("Phone"),
+    address: Joi.string().optional().label("Address"),
+    dateOfBirth: Joi.date().optional().label("Date of Birth"),
+    classRoom: Joi.number().min(1).max(12).optional().label("Class"),
+    school: Joi.string().optional().label("School"),
+    boardType: Joi.string().optional().label("Board Type"),
+    timings: Joi.object({
+      start: Joi.date().required().label("Start Time"),
+      end: Joi.date().required().label("End Time"),
+    })
+      .optional()
+      .label("Timings"),
+    days: Joi.object({
+      monday: Joi.boolean().required(),
+      tuesday: Joi.boolean().required(),
+      wednesday: Joi.boolean().required(),
+      thursday: Joi.boolean().required(),
+      friday: Joi.boolean().required(),
+      saturday: Joi.boolean().required(),
+      sunday: Joi.boolean().required(),
+    })
+      .optional()
+      .label("Days"),
+    dateOfJoining: Joi.date().optional().label("Date of Joining"),
+  }),
+});
+
 // Login schema
 const LoginUserValidation = celebrate({
   body: Joi.object({
@@ -91,6 +129,7 @@ const getStudentsValidation = celebrate({
 
 module.exports = {
   RegisterStudentValidation,
+  updateStudentValidation,
   LoginUserValidation,
   UpdatePasswordValidation,
   StrongPasswordValidation,
