@@ -33,7 +33,7 @@ const getStudentsListAction =
     }
   };
 const getStudentEnrollmentListAction =
-  (reset = false, studentId) =>
+  (studentId, reset = false) =>
   async (dispatch) => {
     dispatch({ type: ENROLLMENT_LIST.request });
     if (reset) {
@@ -45,7 +45,11 @@ const getStudentEnrollmentListAction =
       token
     );
     if (response[0] === true) {
-      dispatch({ type: ENROLLMENT_LIST.success, payload: response[1]?.data });
+      const payload = {
+        _id: studentId,
+        docs: response[1]?.data,
+      };
+      dispatch({ type: ENROLLMENT_LIST.success, payload });
     } else {
       dispatch({
         type: ENROLLMENT_LIST.fail,

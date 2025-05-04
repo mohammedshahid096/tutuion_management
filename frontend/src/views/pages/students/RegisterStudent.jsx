@@ -68,14 +68,18 @@ const SubjectDetailsCardSkeleton = memo(() => {
 const RegisterStudent = () => {
   const { getBatchesListAction } = batchActions;
   const { getBoardsListAction } = boardActions;
-  const { registerNewStudentAction, updateStudentDetailsAction, getSingleStudentDetailAction } =
-    studentActions;
+  const {
+    registerNewStudentAction,
+    updateStudentDetailsAction,
+    getSingleStudentDetailAction,
+    getStudentEnrollmentListAction,
+  } = studentActions;
 
   const dispatch = useDispatch();
   const { studentId } = useParams();
   const { batchesList } = useSelector((state) => state.batchState);
   const { boardsList } = useSelector((state) => state.boardState);
-  const { singleStudentDetail } = useSelector((state) => state.studentState);
+  const { singleStudentDetail, enrollmentsList } = useSelector((state) => state.studentState);
 
   const [info, setInfo] = useState({
     loading: true,
@@ -123,6 +127,9 @@ const RegisterStudent = () => {
 
     if (studentId && (!singleStudentDetail || singleStudentDetail?._id !== studentId)) {
       fetchStudentDetailHandler();
+    }
+    if (studentId && (!enrollmentsList || enrollmentsList?._id !== studentId)) {
+      fetchStudentEnrollmentListHandler();
     }
   }, []);
 
@@ -234,6 +241,10 @@ const RegisterStudent = () => {
     dispatch(getSingleStudentDetailAction(studentId));
   }, [singleStudentDetail, studentId]);
 
+  const fetchStudentEnrollmentListHandler = useCallback(async () => {
+    dispatch(getStudentEnrollmentListAction(studentId));
+  }, [enrollmentsList, studentId]);
+
   const registerNewStudentDetailsHandler = async (details) => {
     setInfo((prev) => ({
       ...prev,
@@ -294,7 +305,7 @@ const RegisterStudent = () => {
     }));
   };
 
-  console.log(info?.initialValues?.classRoom, values.classRoom, typeof values.classRoom, 'shahid');
+  // console.log(info?.initialValues?.classRoom, values.classRoom, typeof values.classRoom, 'shahid');
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
