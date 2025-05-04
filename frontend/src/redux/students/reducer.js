@@ -8,6 +8,7 @@ import {
 
 const initialState = {
   loading: false,
+  enrollmentLoading: false,
   error: null,
   statusCode: null,
   studentsList: null,
@@ -28,7 +29,7 @@ export const StudentReducer = (state = initialState, action) => {
     }),
     [ENROLLMENT_LIST.request]: () => ({
       ...state,
-      loading: true,
+      enrollmentLoading: true,
     }),
 
     // Success state
@@ -44,7 +45,7 @@ export const StudentReducer = (state = initialState, action) => {
     }),
     [ENROLLMENT_LIST.success]: () => ({
       ...state,
-      loading: false,
+      enrollmentLoading: false,
       enrollmentsList: action.payload,
     }),
 
@@ -77,7 +78,7 @@ export const StudentReducer = (state = initialState, action) => {
     }),
     [ENROLLMENT_LIST.fail]: () => ({
       ...state,
-      loading: false,
+      enrollmentLoading: false,
       error: action?.payload?.message || 'Fetching students failed', // Default error message
       statusCode: action?.payload?.statusCode || 500,
     }),
