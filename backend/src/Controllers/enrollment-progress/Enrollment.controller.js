@@ -69,7 +69,7 @@ const getAllSingleStudentEnrollmentController = async (req, res, next) => {
 
     let enrollments = await enrollmentProgressModel
       .find({ studentId })
-      .populate("batch board subjects.subjectId", "name");
+      .populate("batch board studentId subjects.subjectId", "name");
 
     logger.info(
       "Controllers - enrollmentProgress - enrollmentProgress.controller - getAllSingleStudentEnrollmentController  - End"
