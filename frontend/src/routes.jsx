@@ -6,6 +6,7 @@ import Dashboard from './views/pages/Dashboard';
 import Home from './views/pages/Home';
 import Login from './views/pages/Login';
 import NotFound from './views/pages/NotFound';
+import ProgressUpdate from './views/pages/students/ProgressUpdate';
 import RegisterStudent from './views/pages/students/RegisterStudent';
 import StudentsList from './views/pages/students/StudentsList';
 import CreateSubjectPage from './views/pages/subject/CreateSubject';
@@ -83,6 +84,14 @@ const allRoutesMapper = [
     ),
   },
   {
+    path: '/admin/students',
+    component: (
+      <AuthWrapper>
+        <StudentsList />
+      </AuthWrapper>
+    ),
+  },
+  {
     path: '/admin/students/:studentId',
     component: (
       <AuthWrapper>
@@ -91,10 +100,10 @@ const allRoutesMapper = [
     ),
   },
   {
-    path: '/admin/students',
+    path: '/admin/students/:studentId/:enrollmentId/:subjectId',
     component: (
       <AuthWrapper>
-        <StudentsList />
+        <ProgressUpdate />
       </AuthWrapper>
     ),
   },
