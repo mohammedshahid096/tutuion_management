@@ -3,6 +3,7 @@ import {
   CLEAR_STUDENT_ERRORS,
   RESET_STUDENT_STATE,
   STUDENT_DETAILS,
+  ENROLLMENT_LIST,
 } from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
@@ -27,6 +28,27 @@ const getStudentsListAction =
     } else {
       dispatch({
         type: STUDENT_LIST.fail,
+        payload: response[1],
+      });
+    }
+  };
+const getStudentEnrollmentListAction =
+  (reset = false, studentId) =>
+  async (dispatch) => {
+    dispatch({ type: ENROLLMENT_LIST.request });
+    if (reset) {
+      dispatch({ type: ENROLLMENT_LIST.update, payload: null });
+    }
+    const token = getAccessToken();
+    const response = await Service.fetchGet(
+      `${API.ENROLLMENT_BAE}/${studentId}${API.STUDENT_ACTIONS_TYPES.ENROLLMENTS}`,
+      token
+    );
+    if (response[0] === true) {
+      dispatch({ type: ENROLLMENT_LIST.success, payload: response[1]?.data });
+    } else {
+      dispatch({
+        type: ENROLLMENT_LIST.fail,
         payload: response[1],
       });
     }
@@ -84,6 +106,7 @@ export default {
   registerNewStudentAction,
   updateStudentDetailsAction,
   getSingleStudentDetailAction,
+  getStudentEnrollmentListAction,
   clearStudentErrorsAction,
   resetStudentAction,
 };

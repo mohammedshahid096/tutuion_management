@@ -3,6 +3,7 @@ import {
   STUDENT_DETAILS,
   CLEAR_STUDENT_ERRORS,
   RESET_STUDENT_STATE,
+  ENROLLMENT_LIST,
 } from './constant';
 
 const initialState = {
@@ -11,6 +12,7 @@ const initialState = {
   statusCode: null,
   studentsList: null,
   singleStudentDetail: null,
+  enrollmentsList: null,
 };
 
 export const StudentReducer = (state = initialState, action) => {
@@ -21,6 +23,10 @@ export const StudentReducer = (state = initialState, action) => {
       loading: true,
     }),
     [STUDENT_DETAILS.request]: () => ({
+      ...state,
+      loading: true,
+    }),
+    [ENROLLMENT_LIST.request]: () => ({
       ...state,
       loading: true,
     }),
@@ -36,6 +42,11 @@ export const StudentReducer = (state = initialState, action) => {
       loading: false,
       singleStudentDetail: action.payload,
     }),
+    [ENROLLMENT_LIST.success]: () => ({
+      ...state,
+      loading: false,
+      enrollmentsList: action.payload,
+    }),
 
     // updating state
     [STUDENT_LIST.update]: () => ({
@@ -46,6 +57,10 @@ export const StudentReducer = (state = initialState, action) => {
       ...state,
       singleStudentDetail: action.payload,
     }),
+    [ENROLLMENT_LIST.update]: () => ({
+      ...state,
+      enrollmentsList: action.payload,
+    }),
 
     // Failure state
     [STUDENT_LIST.fail]: () => ({
@@ -55,6 +70,12 @@ export const StudentReducer = (state = initialState, action) => {
       statusCode: action?.payload?.statusCode || 500,
     }),
     [STUDENT_DETAILS.fail]: () => ({
+      ...state,
+      loading: false,
+      error: action?.payload?.message || 'Fetching students failed', // Default error message
+      statusCode: action?.payload?.statusCode || 500,
+    }),
+    [ENROLLMENT_LIST.fail]: () => ({
       ...state,
       loading: false,
       error: action?.payload?.message || 'Fetching students failed', // Default error message
