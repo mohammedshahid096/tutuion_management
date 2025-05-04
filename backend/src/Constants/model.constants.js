@@ -5,4 +5,5 @@ module.exports = {
   batches: "batches",
   chapters: "chapters",
   settings: "settings",
+  enrollmentProgress: "enrollment_progresses",
 };

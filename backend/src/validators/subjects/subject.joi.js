@@ -4,7 +4,7 @@ const { celebrate, Joi } = require("celebrate");
 const createSubjectValidation = celebrate({
   body: Joi.object({
     name: Joi.string().required().min(2).max(50).label("Subject Name"),
-    code: Joi.string().required().min(2).max(10).label("Subject Code"),
+    code: Joi.string().required().min(2).max(20).label("Subject Code"),
     description: Joi.string().max(500).optional().label("Description"),
     classRoom: Joi.number().min(1).max(12).required().label("class"),
     boardType: Joi.string().required().label("Board Type"),
