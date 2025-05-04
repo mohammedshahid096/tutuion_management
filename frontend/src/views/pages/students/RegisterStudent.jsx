@@ -134,6 +134,10 @@ const RegisterStudent = () => {
       }));
     }
     if (batchesList && boardsList && studentId && singleStudentDetail?._id === studentId) {
+      console.log(
+        singleStudentDetail?.class.toString() ?? info?.initialValues?.classRoom,
+        'shahid'
+      );
       let updateDetails = {
         name: singleStudentDetail?.name ?? info?.initialValues?.name,
         email: singleStudentDetail?.email ?? info?.initialValues?.email,
@@ -143,7 +147,7 @@ const RegisterStudent = () => {
         phone: singleStudentDetail?.phone ?? info?.initialValues?.phone,
         address: singleStudentDetail?.address ?? info?.initialValues?.address,
         dateOfBirth: new Date(singleStudentDetail?.dateOfBirth) ?? info?.initialValues?.dateOfBirth,
-        classRoom: singleStudentDetail?.class ?? info?.initialValues?.class,
+        classRoom: singleStudentDetail?.class.toString() ?? info?.initialValues?.classRoom,
         school: singleStudentDetail?.school ?? info?.initialValues?.school,
         boardType: singleStudentDetail?.boardType?._id ?? info?.initialValues?.boardType,
         days: singleStudentDetail?.days ?? info?.initialValues?.days,
@@ -289,6 +293,8 @@ const RegisterStudent = () => {
       isSubmitting: false,
     }));
   };
+
+  console.log(info?.initialValues?.classRoom, values.classRoom, typeof values.classRoom, 'shahid');
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>

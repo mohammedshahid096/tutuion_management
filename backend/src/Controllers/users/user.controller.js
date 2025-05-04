@@ -176,11 +176,11 @@ const updateStudentDetailController = async (req, res, next) => {
       };
     }
 
-    let studentDetails = await userModel.findByIdAndUpdate(
-      studentId,
-      { $set: details },
-      { new: true }
-    );
+    let studentDetails = await userModel
+      .findByIdAndUpdate(studentId, { $set: details }, { new: true })
+      .select("-google")
+      .populate("boardType createdBy updatedBy", "name")
+      .lean();
 
     if (!studentDetails) {
       return next(httpErrors.BadRequest(USER_CONSTANTS.USER_NOT_FOUND));
