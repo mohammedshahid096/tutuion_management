@@ -42,6 +42,16 @@ const registerNewStudentAction = async (json) => {
   return response;
 };
 
+const updateStudentDetailsAction = async (json, studentId) => {
+  const token = getAccessToken();
+  const response = await Service.fetchPut(
+    `${API.BASE_STUDENT}${API.STUDENT_ACTIONS_TYPES.STUDENTS}/${studentId}`,
+    json,
+    token
+  );
+  return response;
+};
+
 const getSingleStudentDetailAction = (studentId) => async (dispatch) => {
   dispatch({ type: STUDENT_DETAILS.request });
   const token = getAccessToken();
@@ -72,6 +82,7 @@ const resetStudentAction = () => (dispatch) => {
 export default {
   getStudentsListAction,
   registerNewStudentAction,
+  updateStudentDetailsAction,
   getSingleStudentDetailAction,
   clearStudentErrorsAction,
   resetStudentAction,

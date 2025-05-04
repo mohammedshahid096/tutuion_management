@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -44,9 +44,17 @@ const StudentRegistrationForm = ({
     <div className="container mx-auto py-8">
       <Card className=" mx-auto">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold">
+          <CardTitle className="text-2xl font-bold flex justify-between">
             {' '}
             {studentId ? 'Student Details' : 'Register New Student'}
+            {studentId && (
+              <Button
+                variant={info?.isReadOnly ? 'outline' : 'destructive'}
+                onClick={() => setInfo((prev) => ({ ...prev, isReadOnly: !prev.isReadOnly }))}
+              >
+                {info?.isReadOnly ? 'Edit' : 'Cancel'}
+              </Button>
+            )}
           </CardTitle>
         </CardHeader>
 
@@ -63,6 +71,7 @@ const StudentRegistrationForm = ({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 disabled={info?.isSubmitting}
+                readOnly={info?.isReadOnly}
               />
               {touched?.name && errors?.name && (
                 <span className="text-red-500 text-sm">{errors?.name}</span>
@@ -81,6 +90,7 @@ const StudentRegistrationForm = ({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   disabled={info?.isSubmitting}
+                  readOnly={info?.isReadOnly}
                 />
                 {touched?.email && errors?.email && (
                   <span className="text-red-500 text-sm">{errors?.email}</span>
@@ -88,30 +98,33 @@ const StudentRegistrationForm = ({
               </div>
 
               {/* Password */}
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={info?.showPassword ? 'text' : 'password'}
-                    placeholder="Enter password"
-                    value={values?.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    disabled={info?.isSubmitting}
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
-                    onClick={togglePasswordVisibility}
-                  >
-                    {info?.showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
+              {!studentId && (
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={info?.showPassword ? 'text' : 'password'}
+                      placeholder="Enter password"
+                      value={values?.password}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      disabled={info?.isSubmitting}
+                      readOnly={info?.isReadOnly}
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {info?.showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                  {touched?.password && errors?.password && (
+                    <span className="text-red-500 text-sm">{errors?.password}</span>
+                  )}
                 </div>
-                {touched?.password && errors?.password && (
-                  <span className="text-red-500 text-sm">{errors?.password}</span>
-                )}
-              </div>
+              )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -126,6 +139,7 @@ const StudentRegistrationForm = ({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   disabled={info?.isSubmitting}
+                  readOnly={info?.isReadOnly}
                 />
                 {touched?.fatherName && errors?.fatherName && (
                   <span className="text-red-500 text-sm">{errors?.fatherName}</span>
@@ -143,6 +157,7 @@ const StudentRegistrationForm = ({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   disabled={info?.isSubmitting}
+                  readOnly={info?.isReadOnly}
                 />
                 {touched?.motherName && errors?.motherName && (
                   <span className="text-red-500 text-sm">{errors?.motherName}</span>
@@ -162,6 +177,7 @@ const StudentRegistrationForm = ({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   disabled={info?.isSubmitting}
+                  readOnly={info?.isReadOnly}
                 />
                 {touched?.phone && errors?.phone && (
                   <span className="text-red-500 text-sm">{errors?.phone}</span>
@@ -179,6 +195,7 @@ const StudentRegistrationForm = ({
                       variant="outline"
                       className="w-full justify-start text-left font-normal"
                       disabled={info?.isSubmitting}
+                      readOnly={info?.isReadOnly}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {values?.dateOfBirth ? (
@@ -211,6 +228,7 @@ const StudentRegistrationForm = ({
                   value={values?.gender}
                   onValueChange={(value) => setFieldValue('gender', value)}
                   className="flex gap-4"
+                  readOnly={info?.isReadOnly}
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="male" id="male" />
@@ -242,6 +260,7 @@ const StudentRegistrationForm = ({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 disabled={info?.isSubmitting}
+                readOnly={info?.isReadOnly}
               />
               {touched?.address && errors?.address && (
                 <span className="text-red-500 text-sm">{errors?.address}</span>
@@ -260,6 +279,7 @@ const StudentRegistrationForm = ({
                   onChange={handleChange}
                   onBlur={handleBlur}
                   disabled={info?.isSubmitting}
+                  readOnly={info?.isReadOnly}
                 />
                 {touched?.school && errors?.school && (
                   <span className="text-red-500 text-sm">{errors?.school}</span>
@@ -273,6 +293,7 @@ const StudentRegistrationForm = ({
                   value={values?.classRoom}
                   onValueChange={(value) => setFieldValue('classRoom', value)}
                   disabled={info?.isSubmitting}
+                  readOnly={info?.isReadOnly}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select class" />
@@ -328,6 +349,7 @@ const StudentRegistrationForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled={info?.isSubmitting}
+                    readOnly={info?.isReadOnly}
                   />
                   {touched?.timings?.start && errors?.timings?.start && (
                     <span className="text-red-500 text-sm">{errors?.timings?.start}</span>
@@ -342,6 +364,7 @@ const StudentRegistrationForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled={info?.isSubmitting}
+                    readOnly={info?.isReadOnly}
                   />
                   {touched?.timings?.end && errors?.timings?.end && (
                     <span className="text-red-500 text-sm">{errors?.timings.end}</span>
@@ -357,6 +380,7 @@ const StudentRegistrationForm = ({
                         variant="outline"
                         className="w-full justify-start text-left font-normal"
                         disabled={info?.isSubmitting}
+                        readOnly={info?.isReadOnly}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {values?.dateOfJoining ? (
@@ -393,6 +417,7 @@ const StudentRegistrationForm = ({
                       checked={values?.days[day]}
                       onCheckedChange={(checked) => setFieldValue(`days.${day}`, checked)}
                       disabled={info?.isSubmitting}
+                      readOnly={info?.isReadOnly}
                     />
                     <Label htmlFor={`days.${day}`} className="capitalize">
                       {day}
@@ -406,17 +431,43 @@ const StudentRegistrationForm = ({
           </CardContent>
 
           <CardFooter className="flex justify-end gap-3 mt-8">
-            <Button type="submit" disabled={info?.isSubmitting}>
-              {info?.isSubmitting ? 'Registering...' : 'Register Student'}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              disabled={info?.isSubmitting}
-              onClick={resetForm}
-            >
-              Reset Form
-            </Button>
+            {studentId ? (
+              <Button
+                type="submit"
+                disabled={info?.isSubmitting}
+                className={info?.isReadOnly ? 'hidden' : ''}
+              >
+                {info?.isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Updating ...
+                  </>
+                ) : (
+                  'Update Student'
+                )}
+              </Button>
+            ) : (
+              <>
+                <Button type="submit" disabled={info?.isSubmitting}>
+                  {info?.isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Registering ...
+                    </>
+                  ) : (
+                    'Register Student'
+                  )}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={info?.isSubmitting}
+                  onClick={resetForm}
+                >
+                  Reset Form
+                </Button>
+              </>
+            )}
           </CardFooter>
         </form>
       </Card>

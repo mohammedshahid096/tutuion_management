@@ -82,7 +82,7 @@ const data = {
       items: [
         {
           title: 'Boards',
-          url: '/boards',
+          url: '/admin/boards',
         },
       ],
     },
@@ -124,8 +124,8 @@ const data = {
       icon: Clock,
     },
     {
-      name: 'Facility Booking',
-      url: '#/facilities/booking',
+      name: 'Syllabus',
+      url: '/boards',
       icon: School,
     },
   ],

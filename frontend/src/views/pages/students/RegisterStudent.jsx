@@ -68,7 +68,8 @@ const SubjectDetailsCardSkeleton = memo(() => {
 const RegisterStudent = () => {
   const { getBatchesListAction } = batchActions;
   const { getBoardsListAction } = boardActions;
-  const { registerNewStudentAction, getSingleStudentDetailAction } = studentActions;
+  const { registerNewStudentAction, updateStudentDetailsAction, getSingleStudentDetailAction } =
+    studentActions;
 
   const dispatch = useDispatch();
   const { studentId } = useParams();
@@ -80,6 +81,7 @@ const RegisterStudent = () => {
     loading: true,
     showPassword: false,
     isSubmitting: false,
+    isReadOnly: false,
     initialValues: {
       name: '',
       email: '',
@@ -155,6 +157,7 @@ const RegisterStudent = () => {
       setInfo((prev) => ({
         ...prev,
         loading: false,
+        isReadOnly: true,
         initialValues: {
           ...prev?.initialValues,
           ...updateDetails,
@@ -197,6 +200,7 @@ const RegisterStudent = () => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       if (studentId) {
+        await updateStudentDetailsHandler(values);
       } else {
         await registerNewStudentDetailsHandler(values);
       }
@@ -257,7 +261,34 @@ const RegisterStudent = () => {
     }));
   };
 
-  console.log(values, 'shahid');
+  const updateStudentDetailsHandler = async (details) => {
+    setInfo((prev) => ({
+      ...prev,
+      isSubmitting: true,
+      isReadOnly: true,
+    }));
+    // Format dates to ISO string
+    const payload = {
+      ...details,
+      dateOfBirth: moment(details.dateOfBirth).utc().format(),
+      dateOfJoining: moment(details.dateOfJoining).utc().format(),
+      timings: {
+        start: moment(details.timings.start, 'HH:mm').format(),
+        end: moment(details.timings.end, 'HH:mm').format(),
+      },
+    };
+    const response = await updateStudentDetailsAction(payload, studentId);
+    if (response[2] === 201) {
+      toast.success(response[1]?.message || 'successfully student is updated');
+      resetForm();
+    } else {
+      toast.success(response[1]?.message || 'student is not updated try again later');
+    }
+    setInfo((prev) => ({
+      ...prev,
+      isSubmitting: false,
+    }));
+  };
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
