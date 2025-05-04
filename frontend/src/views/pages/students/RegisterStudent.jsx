@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import _ from 'lodash';
 import { useParams } from 'react-router-dom';
+import Enrollments from './Enrollments';
 
 const breadCrumbs = [
   { label: 'students', href: '/admin/students' },
@@ -328,6 +329,8 @@ const RegisterStudent = () => {
           studentId={studentId || null}
         />
       )}
+
+      {studentId && <Enrollments />}
     </MainWrapper>
   );
 };
