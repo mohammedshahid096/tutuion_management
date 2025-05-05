@@ -76,6 +76,7 @@ const RegisterStudent = () => {
     updateStudentDetailsAction,
     getSingleStudentDetailAction,
     getStudentEnrollmentListAction,
+    createNewEnrollmentAction,
   } = studentActions;
 
   const dispatch = useDispatch();
@@ -118,6 +119,7 @@ const RegisterStudent = () => {
       dateOfJoining: null,
     },
     registerEnrollmentModal: false,
+    createEnrollmentLoading: false,
   });
 
   useEffect(() => {
@@ -145,10 +147,6 @@ const RegisterStudent = () => {
       }));
     }
     if (batchesList && boardsList && studentId && singleStudentDetail?._id === studentId) {
-      console.log(
-        singleStudentDetail?.class.toString() ?? info?.initialValues?.classRoom,
-        'shahid'
-      );
       let updateDetails = {
         name: singleStudentDetail?.name ?? info?.initialValues?.name,
         email: singleStudentDetail?.email ?? info?.initialValues?.email,
@@ -309,6 +307,25 @@ const RegisterStudent = () => {
     }));
   };
 
+  const submitEnrollmentFunctionHandler = async (details) => {
+    setInfo((prev) => ({
+      ...prev,
+      createEnrollmentLoading: true,
+    }));
+
+    let response = await createNewEnrollmentAction(details);
+    if (response[2] === 201) {
+      toast.success('successfully added ');
+    } else {
+      toast.error(response[1]?.message || 'something went wrong');
+    }
+    setInfo((prev) => ({
+      ...prev,
+      createEnrollmentLoading: false,
+      registerEnrollmentModal: false,
+    }));
+  };
+
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData
@@ -337,10 +354,12 @@ const RegisterStudent = () => {
       {studentId && <Enrollments studentId={studentId} info={info} setInfo={setInfo} />}
       {studentId && (
         <AddNewEnrollment
+          studentId={studentId}
           batches={batchesList}
           studentDetails={singleStudentDetail}
           info={info}
           setInfo={setInfo}
+          submitEnrollmentFunctionHandler={submitEnrollmentFunctionHandler}
         />
       )}
     </MainWrapper>

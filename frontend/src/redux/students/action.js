@@ -41,7 +41,7 @@ const getStudentEnrollmentListAction =
     }
     const token = getAccessToken();
     const response = await Service.fetchGet(
-      `${API.ENROLLMENT_BAE}/${studentId}${API.STUDENT_ACTIONS_TYPES.ENROLLMENTS}`,
+      `${API.ENROLLMENT_BASE}/${studentId}${API.STUDENT_ACTIONS_TYPES.ENROLLMENTS}`,
       token
     );
     if (response[0] === true) {
@@ -81,7 +81,7 @@ const updateStudentDetailsAction = async (json, studentId) => {
 const updateStudentProgressAction = async (enrollmentId, subjectId, json) => {
   const token = getAccessToken();
   const response = await Service.fetchPut(
-    `${API.ENROLLMENT_BAE}/${enrollmentId}/${subjectId}`,
+    `${API.ENROLLMENT_BASE}/${enrollmentId}/${subjectId}`,
     json,
     token
   );
@@ -105,6 +105,16 @@ const getSingleStudentDetailAction = (studentId) => async (dispatch) => {
   }
 };
 
+const createNewEnrollmentAction = async (json) => {
+  const token = getAccessToken();
+  const response = await Service.fetchPost(
+    `${API.ENROLLMENT_BASE}${API.STUDENT_ACTIONS_TYPES.NEW_ENROLLMENT}`,
+    json,
+    token
+  );
+  return response;
+};
+
 const clearStudentErrorsAction = () => (dispatch) => {
   dispatch({
     type: CLEAR_STUDENT_ERRORS,
@@ -122,6 +132,7 @@ export default {
   getSingleStudentDetailAction,
   getStudentEnrollmentListAction,
   updateStudentProgressAction,
+  createNewEnrollmentAction,
   clearStudentErrorsAction,
   resetStudentAction,
 };
