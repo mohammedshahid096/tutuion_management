@@ -7,6 +7,7 @@ import ProgressUpdateComp, {
   ProgressSkeleton,
 } from '@/views/components/enrollments/ProgressUpdateComp';
 import { useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const breadCrumbs = [{ label: 'enrollments', href: null }];
 
@@ -14,9 +15,9 @@ const ProgressUpdate = () => {
   const dispatch = useDispatch();
   const { studentId, enrollmentId, subjectId } = useParams();
   const { getPublicSubjectDetailAction } = subjectActions;
-  const { getStudentEnrollmentListAction } = studentActions;
+  const { getStudentEnrollmentListAction, updateStudentProgressAction } = studentActions;
   const { publicSubjectDetail } = useSelector((state) => state.subjectState);
-  const { singleStudentDetail, enrollmentsList } = useSelector((state) => state.studentState);
+  const { enrollmentsList } = useSelector((state) => state.studentState);
 
   const [info, setInfo] = useState({
     loading: true,
@@ -115,11 +116,22 @@ const ProgressUpdate = () => {
     });
   };
 
-  const updateStudentProgressHandler = () => {
+  const updateStudentProgressHandler = async () => {
     const chaptersArray = _.values(info?.sliderProgress).map((ch) => ({
       ...ch,
       subChapters: _.values(ch.subChapters),
     }));
+
+    let json = {
+      chapters: chaptersArray,
+    };
+
+    let response = await updateStudentProgressAction(enrollmentId, subjectId, json);
+    if (response[0] === true) {
+      toast.success('successfully updated');
+    } else {
+      toast.error(response[1]?.message || 'failed to update the student  progress');
+    }
   };
 
   console.log(info?.enrollmentDetails, 'shahid');

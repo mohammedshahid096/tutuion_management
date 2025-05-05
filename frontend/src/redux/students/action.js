@@ -78,6 +78,16 @@ const updateStudentDetailsAction = async (json, studentId) => {
   return response;
 };
 
+const updateStudentProgressAction = async (enrollmentId, subjectId, json) => {
+  const token = getAccessToken();
+  const response = await Service.fetchPut(
+    `${API.ENROLLMENT_BAE}/${enrollmentId}/${subjectId}`,
+    json,
+    token
+  );
+  return response;
+};
+
 const getSingleStudentDetailAction = (studentId) => async (dispatch) => {
   dispatch({ type: STUDENT_DETAILS.request });
   const token = getAccessToken();
@@ -111,6 +121,7 @@ export default {
   updateStudentDetailsAction,
   getSingleStudentDetailAction,
   getStudentEnrollmentListAction,
+  updateStudentProgressAction,
   clearStudentErrorsAction,
   resetStudentAction,
 };
