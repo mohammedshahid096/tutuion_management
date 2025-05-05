@@ -315,6 +315,7 @@ const RegisterStudent = () => {
 
     let response = await createNewEnrollmentAction(details);
     if (response[2] === 201) {
+      fetchStudentEnrollmentListHandler();
       toast.success('successfully added ');
     } else {
       toast.error(response[1]?.message || 'something went wrong');

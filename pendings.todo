@@ -1,2 +1,7 @@
-1.In enrollment after creating the new enrollment the date should be get updated data in the enrollment list
+-----------------------------------PENDING -------------------------------------------- 
 2. validations and core key validation in the create-enrollment api
+3. updating the chapter details
+4. adding a excel upload
+
+-----------------------------------COMPLETED -------------------------------------------- 
+1.In enrollment after creating the new enrollment the date should be get updated data in the enrollment list
