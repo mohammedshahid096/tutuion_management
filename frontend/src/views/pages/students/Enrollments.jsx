@@ -1,5 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton';
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Table,
@@ -40,13 +40,20 @@ const DataTableSkeleton = memo(({ numRows = 6, numCols = 5 }) => {
   );
 });
 
-const Enrollments = () => {
+const Enrollments = ({ info, setInfo }) => {
   const { enrollmentsList, enrollmentLoading } = useSelector((state) => state.studentState);
+
+  const openCreateEnrollmentModalFunction = useCallback(() => {
+    setInfo((prev) => ({ ...prev, registerEnrollmentModal: true }));
+  }, [info?.registerEnrollmentModal]);
 
   const navigate = useNavigate();
   return !enrollmentLoading ? (
     <div className="container mx-auto py-8">
-      <h1 className="text-2xl font-bold mb-6">Enrollments</h1>
+      <div className="flex justify-between">
+        <h1 className="text-2xl font-bold mb-6">Enrollments</h1>
+        <Button onClick={openCreateEnrollmentModalFunction}>Add New Enrollment</Button>
+      </div>
       <div className="space-y-4">
         {/* Table */}
 

@@ -12,6 +12,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import _ from 'lodash';
 import { useParams } from 'react-router-dom';
 import Enrollments from './Enrollments';
+import AddNewEnrollment from './AddNewEnrollment';
 
 const breadCrumbs = [
   { label: 'students', href: '/admin/students' },
@@ -115,6 +116,7 @@ const RegisterStudent = () => {
       },
       dateOfJoining: null,
     },
+    registerEnrollmentModal: false,
   });
 
   useEffect(() => {
@@ -306,8 +308,6 @@ const RegisterStudent = () => {
     }));
   };
 
-  // console.log(info?.initialValues?.classRoom, values.classRoom, typeof values.classRoom, 'shahid');
-
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       {info?.loading ? (
@@ -330,7 +330,15 @@ const RegisterStudent = () => {
         />
       )}
 
-      {studentId && <Enrollments studentId={studentId} />}
+      {studentId && <Enrollments studentId={studentId} info={info} setInfo={setInfo} />}
+      {studentId && (
+        <AddNewEnrollment
+          batches={batchesList}
+          studentDetails={singleStudentDetail}
+          info={info}
+          setInfo={setInfo}
+        />
+      )}
     </MainWrapper>
   );
 };
