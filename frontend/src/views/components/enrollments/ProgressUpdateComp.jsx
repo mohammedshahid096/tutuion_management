@@ -147,7 +147,7 @@ const ProgressUpdateComp = ({
                 </div>
                 <div className="text-left">
                   <h3 className="text-lg font-semibold capitalize">
-                    {chapter?.title} ({parseInt(sliderProgress?.[chapter?._id]?.progress)} %)
+                    {chapter?.title} ({parseInt(sliderProgress?.[chapter?._id]?.progress || 0)} %)
                   </h3>
                   <p className="text-sm text-gray-500 max-w-md  break-words whitespace-normal line-clamp-2 ">
                     {chapter?.content}
