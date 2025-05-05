@@ -17,6 +17,7 @@ import {
 import { BookOpen, GraduationCap, Calendar, School, Hourglass } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Slider } from '@/components/ui/slider';
+import { Button } from '@/components/ui/button';
 
 export const ProgressSkeleton = memo(() => {
   return (
@@ -85,6 +86,7 @@ const ProgressUpdateComp = ({
   changeSliderHandlerFunction,
   info,
   sliderProgress,
+  updateStudentProgressHandler,
 }) => {
   return publicSubjectDetail ? (
     <div className="space-y-6">
@@ -132,6 +134,10 @@ const ProgressUpdateComp = ({
           </div>
         </CardContent>
       </Card>
+
+      <div className="text-center flex justify-end text-sm text-gray-500 py-4  border-gray-200 my-8">
+        <Button onClick={updateStudentProgressHandler}>Update Student Progress</Button>
+      </div>
 
       <Accordion type="single" collapsible className="w-full">
         {publicSubjectDetail?.chapters?.map((chapter) => (
@@ -200,11 +206,6 @@ const ProgressUpdateComp = ({
           </AccordionItem>
         ))}
       </Accordion>
-
-      {/* Footer Information */}
-      <div className="text-center text-sm text-gray-500 pt-4 border-t border-gray-200 mt-8">
-        <p>Last updated: {new Date(publicSubjectDetail?.updatedAt).toLocaleDateString()}</p>
-      </div>
     </div>
   ) : (
     <Card className="flex flex-col items-center justify-center p-8 text-center shadow-none border-0">

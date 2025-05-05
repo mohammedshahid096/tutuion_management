@@ -21,7 +21,9 @@ const ProgressUpdate = () => {
   const [info, setInfo] = useState({
     loading: true,
     enrollmentDetails: null,
+    enrollmentSubject: null,
     sliderProgress: {},
+    isChanged: false,
   });
 
   useEffect(() => {
@@ -41,9 +43,26 @@ const ProgressUpdate = () => {
       enrollmentsList &&
       enrollmentsList?._id === studentId
     ) {
+      const enrollmentDetails = _.find(enrollmentsList?.docs, { _id: enrollmentId });
+      const enrollmentSubject = _.find(
+        enrollmentDetails?.subjects,
+        (item) => item?.subjectId?._id === subjectId
+      );
+
+      const sliderProgress = _.keyBy(
+        enrollmentSubject?.chapters?.map((ch) => ({
+          ...ch,
+          subChapters: _.keyBy(ch.subChapters, '_id'),
+        })),
+        '_id'
+      );
+
       setInfo((prev) => ({
         ...prev,
         loading: false,
+        enrollmentDetails,
+        enrollmentSubject,
+        sliderProgress,
       }));
     }
   }, [publicSubjectDetail, enrollmentsList]);
@@ -55,46 +74,6 @@ const ProgressUpdate = () => {
   const fetchStudentEnrollmentListHandler = useCallback(async () => {
     dispatch(getStudentEnrollmentListAction(studentId));
   }, [enrollmentsList, studentId]);
-
-  const changeSliderHandlerFunction2 = (value, subChapterId, chapterId) => {
-    setInfo((prev) => {
-      let updateState = _.cloneDeep(prev?.sliderProgress);
-      let currentChapter = null;
-      let currentSubChapter = null;
-      let chapterPercentage = 0;
-      if (_.has(updateState, chapterId)) {
-        currentChapter = _.find(updateState, { _id: chapterId });
-        currentSubChapter = _.find(currentChapter?.subChapters);
-        currentSubChapter.topicProgress = value;
-
-        let chapterKeys = _.keys(updateState);
-
-        _.forEach(chapterKeys, (singleChapterID, index) => {
-          if (currentChapter?._id === singleChapterID) {
-            updateState[singleChapterID] = {
-              ...currentChapter,
-              subChapters: currentChapter?.subChapters?.map?.(
-                (singleSubChapter) => singleSubChapter
-              ),
-            };
-          }
-        });
-      } else {
-        updateState[chapterId] = {
-          _id: chapterId,
-          subChapters: [
-            {
-              _id: subChapterId,
-              topicProgress: value,
-            },
-          ],
-          progress: value,
-        };
-      }
-
-      return { ...prev, sliderProgress: updateState };
-    });
-  };
 
   const changeSliderHandlerFunction = (value, subChapterId, chapterId) => {
     setInfo((prev) => {
@@ -136,8 +115,14 @@ const ProgressUpdate = () => {
     });
   };
 
-  console.log(info?.sliderProgress, 'shahid');
+  const updateStudentProgressHandler = () => {
+    const chaptersArray = _.values(info?.sliderProgress).map((ch) => ({
+      ...ch,
+      subChapters: _.values(ch.subChapters),
+    }));
+  };
 
+  console.log(info?.enrollmentDetails, 'shahid');
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       {info?.loading ? (
@@ -148,6 +133,7 @@ const ProgressUpdate = () => {
           changeSliderHandlerFunction={changeSliderHandlerFunction}
           info={info}
           sliderProgress={info?.sliderProgress}
+          updateStudentProgressHandler={updateStudentProgressHandler}
         />
       )}
     </MainWrapper>
