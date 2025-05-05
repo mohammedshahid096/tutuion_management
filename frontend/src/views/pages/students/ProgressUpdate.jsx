@@ -25,6 +25,7 @@ const ProgressUpdate = () => {
     enrollmentSubject: null,
     sliderProgress: {},
     isChanged: false,
+    isSubmitting: false,
   });
 
   useEffect(() => {
@@ -117,6 +118,11 @@ const ProgressUpdate = () => {
   };
 
   const updateStudentProgressHandler = async () => {
+    if (info?.isSubmitting) return;
+    setInfo((prev) => ({
+      ...prev,
+      isSubmitting: true,
+    }));
     const chaptersArray = _.values(info?.sliderProgress).map((ch) => ({
       ...ch,
       subChapters: _.values(ch.subChapters),
@@ -132,9 +138,13 @@ const ProgressUpdate = () => {
     } else {
       toast.error(response[1]?.message || 'failed to update the student  progress');
     }
+
+    setInfo((prev) => ({
+      ...prev,
+      isSubmitting: false,
+    }));
   };
 
-  console.log(info?.enrollmentDetails, 'shahid');
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       {info?.loading ? (

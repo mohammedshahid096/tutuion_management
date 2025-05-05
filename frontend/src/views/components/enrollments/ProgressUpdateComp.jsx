@@ -14,7 +14,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { BookOpen, GraduationCap, Calendar, School, Hourglass } from 'lucide-react';
+import { BookOpen, GraduationCap, Calendar, School, Hourglass, Loader2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -136,7 +136,16 @@ const ProgressUpdateComp = ({
       </Card>
 
       <div className="text-center flex justify-end text-sm text-gray-500 py-4  border-gray-200 my-8">
-        <Button onClick={updateStudentProgressHandler}>Update Student Progress</Button>
+        <Button disabled={info?.isSubmitting} onClick={updateStudentProgressHandler}>
+          {info?.isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Updating...
+            </>
+          ) : (
+            'Update Student Progress'
+          )}
+        </Button>
       </div>
 
       <Accordion type="single" collapsible className="w-full">
