@@ -140,12 +140,13 @@ const getSubjectsListController = async (req, res, next) => {
       "Controllers - subject - subject.controller - getSubjectsListController - Start"
     );
 
-    const { sort, classRoom, boardType, name } = req.query;
+    const { sort, classRoom, boardType, name, batch } = req.query;
     const query = {};
 
     if (classRoom) query.class = Number(classRoom);
     if (boardType) query.boardType = boardType;
     if (name) query.name = { $regex: name, $options: "i" };
+    if (batch) query.batch = batch;
 
     let sortQuery = sortConstants["-createdAt"];
     if (sort) {
