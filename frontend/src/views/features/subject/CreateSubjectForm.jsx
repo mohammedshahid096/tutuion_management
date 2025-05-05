@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@/components/ui/button';
@@ -18,11 +18,23 @@ import { cleanObject } from '@/helpers';
 import { useDispatch } from 'react-redux';
 import { subjectActions } from '@/redux/combineActions';
 import toast from 'react-hot-toast';
+import _ from 'lodash';
+import * as XLSX from 'xlsx';
 
 const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
   // Validation Schema
 
   const { createNewSubjectAction } = subjectActions;
+  const [info, setInfo] = useState({
+    initialValues: {
+      name: '',
+      code: '',
+      description: '',
+      classRoom: '',
+      boardType: '',
+      chapters: [],
+    },
+  });
 
   const fileUploadRef = useRef();
   const validationSchema = Yup.object().shape({
@@ -68,14 +80,8 @@ const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
   });
 
   const formik = useFormik({
-    initialValues: {
-      name: '',
-      code: '',
-      description: '',
-      classRoom: '',
-      boardType: '',
-      chapters: [],
-    },
+    initialValues: info.initialValues,
+    enableReinitialize: true,
     validationSchema,
     onSubmit: async (values) => {
       await handleCreateNewSubjectFunction(values);
@@ -156,24 +162,61 @@ const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
     }
   };
 
-  const fileUploadHandler = useCallback(
-    (event) => {
-      let file = event?.target?.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const workbook = XLSX.read(e.target.result, { type: 'binary' });
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
-          let days = XLSX.utils.sheet_to_json(worksheet);
-          console.log(days, 'shahid');
-        };
-        reader.readAsBinaryString(file);
-      }
-    },
-    [info?.fileName]
-  );
+  const fileUploadHandler = (event) => {
+    let file = event?.target?.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const workbook = XLSX.read(e.target.result, { type: 'binary' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        let excelData = XLSX.utils.sheet_to_json(worksheet);
+        let mappingsData = {};
 
+        _.forEach(excelData, (row) => {
+          if (_.has(mappingsData, row.chapter)) {
+            let subchapter = {
+              title: row?.subChapter_title || '',
+              content: row?.subChapter_content || '',
+              imageURL: row?.subChapter_imageURL || '',
+            };
+            mappingsData[row.chapter].subchapters.push(subchapter);
+          } else {
+            let subchapters = [
+              {
+                title: row?.subChapter_title || '',
+                content: row?.subChapter_content || '',
+                imageURL: row?.subChapter_imageURL || '',
+              },
+            ];
+            mappingsData[row?.chapter] = {
+              title: row?.title || '',
+              content: row?.content || '',
+              imageURL: row?.imageURL || '',
+              subchapters,
+            };
+          }
+        });
+
+        let finalData = _.values(mappingsData);
+        let updatedValues = {
+          ...values,
+          chapters: [...values.chapters, ...finalData],
+        };
+
+        setInfo((prev) => ({
+          ...prev,
+          initialValues: updatedValues,
+        }));
+      };
+      reader.readAsBinaryString(file);
+    }
+
+    fileUploadRef.current.value = null;
+    toast.success('added successfully');
+  };
+
+  console.log(values.chapters, 'shahid');
   return (
     <div className="container mx-auto py-8">
       <Card className="mx-auto">
@@ -301,7 +344,7 @@ const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
                 <h3 className="text-lg font-semibold">Chapters *</h3>
 
                 <div className="flex gap-6">
-                  <input type="file" hidden ref={fileUploadRef} />
+                  <input type="file" hidden ref={fileUploadRef} onChange={fileUploadHandler} />
                   <Button
                     type="button"
                     variant="outline"
