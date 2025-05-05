@@ -7,10 +7,12 @@ const {
 const { ADMIN } = require("../../Constants/roles.constants");
 const {
   addNewEnrollmentValidations,
+  updateStudentProgressValidation,
 } = require("../../validators/enrollment-progress/enrollment_progress.validation");
 const {
   createNewEnrollmentController,
   getAllSingleStudentEnrollmentController,
+  updateStudentProgressController,
 } = require("../../Controllers/enrollment-progress/Enrollment.controller");
 
 const EnrollmentRoutes = express.Router();
@@ -26,6 +28,12 @@ EnrollmentRoutes.route("/:studentId/enrollments").get(
   Authentication,
   Authorization(ADMIN),
   getAllSingleStudentEnrollmentController
+);
+EnrollmentRoutes.route("/:subjectId/:enrollmentId").put(
+  Authentication,
+  Authorization(ADMIN),
+  updateStudentProgressValidation,
+  updateStudentProgressController
 );
 
 module.exports = EnrollmentRoutes;

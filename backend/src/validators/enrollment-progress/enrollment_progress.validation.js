@@ -13,6 +13,31 @@ const addNewEnrollmentValidations = celebrate({
   }),
 });
 
+const updateStudentProgressValidation = celebrate({
+  body: Joi.object({
+    chapters: Joi.array()
+      .items(
+        Joi.object({
+          _id: Joi.string().required().label("SubjectId"),
+          progress: Joi.number().min(0).max(100).default(0),
+          subchapters: Joi.array()
+            .items(
+              Joi.object({
+                topicProgress: Joi.number().min(0).max(100).required(),
+                _id: Joi.string().required().label("topic Id"),
+              })
+            )
+            .required()
+            .min(1)
+            .label("Subchapters"),
+        })
+      )
+      .min(1)
+      .required()
+      .label("Chapters"),
+  }),
+});
 module.exports = {
   addNewEnrollmentValidations,
+  updateStudentProgressValidation,
 };

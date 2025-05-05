@@ -6,6 +6,7 @@ const userModel = require("../../Schema/users/user.model");
 const enrollmentProgressModel = require("../../Schema/enrollment-progress/enrollmentProgress.model");
 const errorHandling = require("../../Utils/errorHandling");
 const sortConstants = require("../../Constants/sort.constants");
+const mongoose = require("mongoose");
 
 const createNewEnrollmentController = async (req, res, next) => {
   try {
@@ -69,7 +70,8 @@ const getAllSingleStudentEnrollmentController = async (req, res, next) => {
 
     let enrollments = await enrollmentProgressModel
       .find({ studentId })
-      .populate("batch board studentId subjects.subjectId", "name");
+      .populate("batch board studentId subjects.subjectId", "name")
+      .sort(sortConstants["-createdAt"]);
 
     logger.info(
       "Controllers - enrollmentProgress - enrollmentProgress.controller - getAllSingleStudentEnrollmentController  - End"
@@ -89,7 +91,45 @@ const getAllSingleStudentEnrollmentController = async (req, res, next) => {
   }
 };
 
+const updateStudentProgressController = async (req, res, next) => {
+  try {
+    logger.info(
+      "Controllers - enrollmentProgress - enrollmentProgress.controller - updateStudentProgressController - Start"
+    );
+    const { enrollmentId, subjectId } = req.params;
+
+    let updatedEnrollments = await enrollmentProgressModel
+      .findByIdAndUpdate(
+        enrollmentId,
+        { $set: { "subject.$[subject].chapters": req.body.chapters } },
+        {
+          arrayFilters: [
+            { "subject.subjectId": mongoose.Types.ObjectId(subjectId) },
+          ],
+        }
+      )
+      .populate("batch board studentId subjects.subjectId", "name");
+
+    logger.info(
+      "Controllers - enrollmentProgress - enrollmentProgress.controller - updateStudentProgressController  - End"
+    );
+    res.status(200).send({
+      success: true,
+      statusCode: 200,
+      message: "successfully student progress is updated",
+      data: updatedEnrollments,
+    });
+  } catch (error) {
+    logger.error(
+      "Controllers - enrollmentProgress - enrollmentProgress.controller - updateStudentProgressController  - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 module.exports = {
   createNewEnrollmentController,
   getAllSingleStudentEnrollmentController,
+  updateStudentProgressController,
 };
