@@ -133,6 +133,11 @@ const ProgressUpdateComp = ({
             <span>Subject Code: {publicSubjectDetail?.code}</span>
           </div>
         </CardContent>
+
+        <CardFooter>
+          Student Name :{' '}
+          <h1 className="font-bold capitalize pl-2"> {info?.enrollmentDetails?.studentId?.name}</h1>
+        </CardFooter>
       </Card>
 
       <div className="text-center flex justify-end text-sm text-gray-500 py-4  border-gray-200 my-8">
