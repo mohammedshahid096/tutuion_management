@@ -29,6 +29,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { subjectActions, boardActions } from '@/redux/combineActions';
 import { Skeleton } from '@/components/ui/skeleton';
 import _ from 'lodash';
+import MetaData from '@/utils/MetaData';
 
 // Generate class tabs (1-12)
 const classTabs = Array.from({ length: 12 }, (_, i) => i + 1);
@@ -182,6 +183,7 @@ const PublicSubjectsPage = () => {
 
   return (
     <div className="container mx-auto py-6 px-4">
+      <MetaData title="Subjects | EduExcellence" />
       <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
         <div className="flex items-center gap-2">
           <h1 className="text-2xl font-bold flex items-center gap-2">

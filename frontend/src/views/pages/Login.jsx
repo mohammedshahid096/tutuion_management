@@ -9,6 +9,7 @@ import { ADMIN, STUDENT } from '@/constants/roles.constants';
 import { encryptPassword } from '@/utils/encryption';
 import Header from '../components/navbar/Header';
 import { useNavigate } from 'react-router-dom';
+import MetaData from '@/utils/MetaData';
 
 const Login = () => {
   const { error, isLoginSuccess, role } = useSelector((state) => state.loginState);
@@ -86,6 +87,7 @@ const Login = () => {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <MetaData title="Log In | EduExcellence" />
       <Header />
       <div className="flex h-full w-full items-center justify-center p-6 md:p-10">
         <div className="w-full max-w-sm">

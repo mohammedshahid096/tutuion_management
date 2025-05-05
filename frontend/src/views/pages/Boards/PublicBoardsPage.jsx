@@ -18,6 +18,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useSelector, useDispatch } from 'react-redux';
 import { boardActions } from '@/redux/combineActions';
 import { useNavigate } from 'react-router-dom';
+import MetaData from '@/utils/MetaData';
 
 // Sample board data (you would replace this with your actual data)
 const boardsData = [
@@ -131,6 +132,7 @@ const PublicBoardsPage = () => {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Navbar */}
+      <MetaData title="Boards | EduExcellence" />
       <Header />
       <div className="container mx-auto py-8 max-w-screen-md px-4">
         <h1 className="text-3xl font-bold text-center mb-8">Educational Boards</h1>

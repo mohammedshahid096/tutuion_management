@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { subjectActions } from '@/redux/combineActions';
 import { useParams } from 'react-router-dom';
 import Header from '@/views/components/navbar/Header';
+import MetaData from '@/utils/MetaData';
 
 const ChapterCardSkeleton = () => {
   return (
@@ -99,6 +100,7 @@ const PublicChapterDetail = () => {
   }, [publicSubjectDetail, subjectId]);
   return (
     <div className="flex min-h-screen flex-col">
+      <MetaData title={`${publicSubjectDetail?.name || 'Chapter Details'} | EduExcellence`} />
       <Header />
       <main className="bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
