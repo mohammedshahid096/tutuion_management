@@ -24,12 +24,12 @@ import PropTypes from 'prop-types';
 const MetaData = ({ title, description, keywords }) => {
   return (
     <Helmet>
-      <title>{title || 'Mosque Management System'}</title>
+      <title>{title || 'EduExcellence - Tutoring Services'}</title>
       <meta
         name="description"
         content={
           description ||
-          'Mosque Management System helps in organizing prayer times, managing Islamic events, and providing community services efficiently for mosques and Islamic centers.'
+          'EduExcellence Academy offers personalized tutoring services, academic coaching, and study programs to help students excel in their education and achieve academic success.'
         }
       />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -39,10 +39,11 @@ const MetaData = ({ title, description, keywords }) => {
         name="keywords"
         content={
           keywords ||
-          'mosque management, prayer times, Islamic events, mosque administration, community services, Islamic center, mosque activities'
+          'tutoring services, academic coaching, study programs, personalized learning, homework help, exam preparation, math tutoring, science tutoring, language classes, student success'
         }
       />
-      <meta name="author" content="Mohammed Shahid" />
+      <meta name="author" content="Istiyana Lamba" />
+      <meta property="og:type" content="education" />
     </Helmet>
   );
 };
