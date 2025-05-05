@@ -11,6 +11,7 @@ const AddNewEnrollment = ({ studentId, info, setInfo, batches, studentDetails })
   const { getPublicSubjectsListAction } = subjectActions;
 
   const { publicSubjectsList } = useSelector((state) => state.subjectState);
+  const { enrollmentsList } = useSelector((state) => state.studentState);
 
   const [currentDetails, setCurrentDetails] = useState({
     activeBatch: '',
@@ -89,14 +90,22 @@ const AddNewEnrollment = ({ studentId, info, setInfo, batches, studentDetails })
             onChange={batchChangeHandler}
           >
             <option disabled>Select Batch</option>
-            {batches?.map((singleBatch) => (
-              <option
-                value={singleBatch?._id}
-                selected={currentDetails?.activeBatch?._id === singleBatch?._id}
-              >
-                {singleBatch?.name}
-              </option>
-            ))}
+            {batches &&
+              enrollmentsList &&
+              batches?.map((singleBatch) => (
+                <option
+                  value={singleBatch?._id}
+                  selected={currentDetails?.activeBatch?._id === singleBatch?._id}
+                  disabled={
+                    _.some(
+                      enrollmentsList?.docs,
+                      (item) => item?.batch?._id === singleBatch?._id
+                    ) || false
+                  }
+                >
+                  {singleBatch?.name}
+                </option>
+              ))}
           </select>
         </div>
         <div className="grid gap-2 md:col-span-2 mt-2">
