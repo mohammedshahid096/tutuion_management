@@ -4,6 +4,7 @@ import CreateSubjectSkeleton from '../../features/subject/CreateSubjectSkeleton'
 import CreateSubjectForm from '../../features/subject/CreateSubjectForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { boardActions } from '@/redux/combineActions';
+import MetaData from '@/utils/MetaData';
 
 const breadCrumbs = [
   { label: 'Subject', href: '/subject/all' },
@@ -39,6 +40,7 @@ const CreateSubjectPage = () => {
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
+      <MetaData title="Admin Create Subject | EduExcellence" />
       {info?.optionsLoading ? (
         <CreateSubjectSkeleton />
       ) : (
