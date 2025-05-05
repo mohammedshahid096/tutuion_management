@@ -3,6 +3,7 @@ import MainWrapper from '../layouts/Mainwrapper';
 import BatchesList from '../features/batch/BatchesList';
 import { useSelector, useDispatch } from 'react-redux';
 import { batchActions } from '@/redux/combineActions';
+import MetaData from '@/utils/MetaData';
 
 const breadCrumbs = [{ label: 'Batches', href: null }];
 const Batches = () => {
@@ -26,6 +27,7 @@ const Batches = () => {
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
+      <MetaData title="Batches | EduExcellence" />
       <BatchesList info={info} setInfo={setInfo} />
     </MainWrapper>
   );

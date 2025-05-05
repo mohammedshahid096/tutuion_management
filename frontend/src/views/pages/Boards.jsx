@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { boardActions } from '@/redux/combineActions';
 import BoardList from '../features/board/BoardList';
 import AddNewBoard from '../features/board/AddNewBoard';
+import MetaData from '@/utils/MetaData';
 
 const breadCrumbs = [{ label: 'Boards', href: null }];
 const BoardsPage = () => {
@@ -50,6 +51,7 @@ const BoardsPage = () => {
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
+      <MetaData title="Admin Boards | EduExcellence" />
       <BoardList info={info} setInfo={setInfo} openCloseCreateModal={openCloseCreateModal} />
       <AddNewBoard info={info} setInfo={setInfo} openCloseCreateModal={openCloseCreateModal} />
     </MainWrapper>
