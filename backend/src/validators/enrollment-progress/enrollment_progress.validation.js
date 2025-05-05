@@ -20,7 +20,7 @@ const updateStudentProgressValidation = celebrate({
         Joi.object({
           _id: Joi.string().required().label("SubjectId"),
           progress: Joi.number().min(0).max(100).default(0),
-          subchapters: Joi.array()
+          subChapters: Joi.array()
             .items(
               Joi.object({
                 topicProgress: Joi.number().min(0).max(100).required(),
@@ -29,7 +29,7 @@ const updateStudentProgressValidation = celebrate({
             )
             .required()
             .min(1)
-            .label("Subchapters"),
+            .label("subChapters"),
         })
       )
       .min(1)

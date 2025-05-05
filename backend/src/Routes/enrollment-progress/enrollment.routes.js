@@ -29,7 +29,7 @@ EnrollmentRoutes.route("/:studentId/enrollments").get(
   Authorization(ADMIN),
   getAllSingleStudentEnrollmentController
 );
-EnrollmentRoutes.route("/:subjectId/:enrollmentId").put(
+EnrollmentRoutes.route("/:enrollmentId/:subjectId").put(
   Authentication,
   Authorization(ADMIN),
   updateStudentProgressValidation,

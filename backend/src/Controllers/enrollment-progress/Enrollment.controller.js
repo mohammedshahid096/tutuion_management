@@ -101,10 +101,10 @@ const updateStudentProgressController = async (req, res, next) => {
     let updatedEnrollments = await enrollmentProgressModel
       .findByIdAndUpdate(
         enrollmentId,
-        { $set: { "subject.$[subject].chapters": req.body.chapters } },
+        { $set: { "subjects.$[subject].chapters": req.body.chapters } },
         {
           arrayFilters: [
-            { "subject.subjectId": mongoose.Types.ObjectId(subjectId) },
+            { "subject.subjectId": new mongoose.Types.ObjectId(subjectId) },
           ],
         }
       )
