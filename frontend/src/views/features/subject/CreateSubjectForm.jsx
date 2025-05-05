@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@/components/ui/button';
@@ -21,9 +21,10 @@ import toast from 'react-hot-toast';
 
 const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
   // Validation Schema
-  const dispatch = useDispatch();
+
   const { createNewSubjectAction } = subjectActions;
 
+  const fileUploadRef = useRef();
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .min(3, 'Name must be at least 3 characters')
@@ -155,6 +156,24 @@ const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
     }
   };
 
+  const fileUploadHandler = useCallback(
+    (event) => {
+      let file = event?.target?.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const workbook = XLSX.read(e.target.result, { type: 'binary' });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          let days = XLSX.utils.sheet_to_json(worksheet);
+          console.log(days, 'shahid');
+        };
+        reader.readAsBinaryString(file);
+      }
+    },
+    [info?.fileName]
+  );
+
   return (
     <div className="container mx-auto py-8">
       <Card className="mx-auto">
@@ -280,14 +299,26 @@ const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-semibold">Chapters *</h3>
-                <Button
-                  type="button"
-                  onClick={addChapter}
-                  variant="outline"
-                  disabled={isSubmitting}
-                >
-                  Add Chapter
-                </Button>
+
+                <div className="flex gap-6">
+                  <input type="file" hidden ref={fileUploadRef} />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => fileUploadRef.current.click()}
+                  >
+                    {' '}
+                    Add Through File
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={addChapter}
+                    variant="outline"
+                    disabled={isSubmitting}
+                  >
+                    Add Chapter
+                  </Button>
+                </div>
               </div>
 
               {touched.chapters && errors.chapters && typeof errors.chapters === 'string' && (
