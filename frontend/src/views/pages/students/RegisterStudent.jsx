@@ -13,6 +13,7 @@ import _ from 'lodash';
 import { useParams } from 'react-router-dom';
 import Enrollments from './Enrollments';
 import AddNewEnrollment from './AddNewEnrollment';
+import MetaData from '@/utils/MetaData';
 
 const breadCrumbs = [
   { label: 'students', href: '/admin/students' },
@@ -310,6 +311,9 @@ const RegisterStudent = () => {
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
+      <MetaData
+        title={`Admin ${studentId ? 'Student Details' : 'Register Student'} | EduExcellence `}
+      />
       {info?.loading ? (
         <SubjectDetailsCardSkeleton />
       ) : (

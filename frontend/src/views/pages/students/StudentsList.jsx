@@ -6,6 +6,7 @@ import { batchActions, boardActions, studentActions } from '@/redux/combineActio
 import _ from 'lodash';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useNavigate } from 'react-router-dom';
+import MetaData from '@/utils/MetaData';
 
 const breadCrumbs = [{ label: 'students', href: null }];
 
@@ -169,6 +170,7 @@ const StudentsList = () => {
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
+      <MetaData title="Admin Students | EduExcellence" />
       {info?.loading ? (
         <DataTableSkeleton />
       ) : (

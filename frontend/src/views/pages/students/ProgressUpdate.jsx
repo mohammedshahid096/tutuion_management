@@ -8,6 +8,7 @@ import ProgressUpdateComp, {
 } from '@/views/components/enrollments/ProgressUpdateComp';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import MetaData from '@/utils/MetaData';
 
 const breadCrumbs = [{ label: 'enrollments', href: null }];
 
@@ -147,6 +148,7 @@ const ProgressUpdate = () => {
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
+      <MetaData title="Admin Progress Update | EduExcellence" />
       {info?.loading ? (
         <ProgressSkeleton />
       ) : (

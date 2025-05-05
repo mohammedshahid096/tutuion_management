@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { Button } from '@/components/ui/button';
 import { MoveRight } from 'lucide-react';
+import MetaData from '@/utils/MetaData';
 
 const NotFound = () => {
   const container = useRef();
@@ -72,6 +73,7 @@ const NotFound = () => {
       ref={container}
       className="min-h-screen bg-gradient-to-br  flex flex-col items-center justify-center p-4 text-center text-black"
     >
+      <MetaData title="Page Not Found | EduExcellence" />
       <div className="max-w-2xl w-full space-y-8">
         {/* 404 Text with glow effect */}
         <h1
