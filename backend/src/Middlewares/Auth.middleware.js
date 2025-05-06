@@ -8,7 +8,10 @@ const {
 } = require("../Constants/auth.constants");
 const { ADMIN } = require("../Constants/roles.constants");
 const errorHandling = require("../Utils/errorHandling");
-const { DEVELOPMENT_MODE } = require("../Config/index.config");
+const {
+  DEVELOPMENT_MODE,
+  DEVELOPMENT_ACCESS_USER_TOKEN,
+} = require("../Config/index.config");
 const userModel = require("../Schema/users/user.model");
 // for authentication
 module.exports.Authentication = async (req, res, next) => {
@@ -59,9 +62,7 @@ module.exports.Authorization = (...roles) => {
 
 // setting headers for the development purpose
 module.exports.setHeaderDevelopment = (req, res, next) => {
-  let token =
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjQ5MzI3NmFhNDA5NTA1ZWNkOWI0MyIsIl9fdHlwZV9fIjoiYWRtaW4iLCJpYXQiOjE3NDYzMzg2MDYsImV4cCI6MTc0NjU5NzgwNn0.ai_fgQ_Vwnh1hRNzQrRu-87NhMomIfqS1_6EPZKQOlk";
-
+  let token = DEVELOPMENT_ACCESS_USER_TOKEN;
   req.authToken = token;
   next();
 };

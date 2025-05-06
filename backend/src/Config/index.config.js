@@ -5,6 +5,8 @@ dotenv.config();
 module.exports = {
   SERVER_PORT: process.env.PORT || 8001,
   DEVELOPMENT_MODE: process.env.DEVELOPMENT_MODE || "development",
+  DEVELOPMENT_ACCESS_USER_TOKEN:
+    process.env.DEVELOPMENT_ACCESS_USER_TOKEN || null,
   DEVELOPMENT_MONGODB_URL: process.env.DB_URL_DEV,
   PRODUCTION_MONGODB_URL: process.env.DB_URL,
 
