@@ -11,6 +11,7 @@ const errorHandling = require("./src/Utils/errorHandling");
 var moment = require("moment-timezone");
 const GoogleAuthRoutes = require("./src/Routes/auth/google.route");
 const { createLiveClassRemindersCronJob } = require("./src/Config/cron.config");
+const { createNewLiveClassUtility } = require("./src/Utils/classReminder.cron");
 // const corsConfig = require("./src/Config/cors.config");
 
 const app = express();
@@ -42,7 +43,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 moment.tz.setDefault("Asia/Kolkata");
-createLiveClassRemindersCronJob();
+// createLiveClassRemindersCronJob();
 
 //----------------------------------------
 //--------------- Routes -----------------
@@ -57,6 +58,10 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/v1", IndexRoutes);
 app.use("/auth/google", GoogleAuthRoutes);
+app.get("/test", async (req, res) => {
+  let data = await createNewLiveClassUtility();
+  res.send(data ?? { success: true });
+});
 
 //----------------------------------------
 //--------------- others -----------------

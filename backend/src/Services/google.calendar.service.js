@@ -90,6 +90,7 @@ class GoogleCalendarServiceClass extends GoogleAuthServiceClass {
           attendees: eventData?.attendees || [],
           location: eventData?.location || "",
         },
+        sendUpdates: "all",
       });
 
       return response.data;
