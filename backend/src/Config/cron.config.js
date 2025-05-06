@@ -1,10 +1,11 @@
 const cron = require("node-cron");
+const { createNewLiveClassUtility } = require("../Utils/classReminder.cron");
 
 const createLiveClassRemindersCronJob = () => {
   cron.schedule(
     "* * * * *",
     () => {
-      console.log("Running daily job at 6 AM");
+      createNewLiveClassUtility();
     },
     {
       timezone: "Asia/Kolkata",

@@ -17,10 +17,8 @@ class LiveClassServiceClass {
     this.studentId = studentId;
     this.studentDetails = studentDetails;
     this.currentDay = moment().format("dddd").toLowerCase();
-    this.currentDate = moment().format("LLL");
     this.summary = summary || null;
     this.description = description || null;
-    this.studentDetails = null;
     this.startDate = moment(startTime, "HH:mm");
     this.endDate = moment(endTime, "HH:mm");
     this.googleMeet = null;
@@ -36,18 +34,19 @@ class LiveClassServiceClass {
     return existingRecord;
   }
 
-  async createGoogleMeetMethod(studentDetails = {}) {
+  async createGoogleMeetMethod() {
     const googleCalendarService = await new GoogleCalendarServiceClass(
-      this.studentId
+      this.userId
     );
+
     let googleEventDetails = {
       summary: this.summary,
       description: this.description,
       startDate: this.startDate,
       endDate: this.endDate,
       timezone: "Asia/Kolkata",
-      location: "Google Meet" || "",
-      attendees: [{ email: studentDetails?.email }],
+      location: "Google Meet",
+      attendees: [{ email: this.studentDetails.email }],
     };
 
     await googleCalendarService.initialize();
@@ -76,15 +75,16 @@ class LiveClassServiceClass {
       endDate: this.endDate,
       day: this.currentDay,
       class: this.studentDetails?.class,
-      board: this.studentDetails?.boardType,
+      board: this.studentDetails?.boardType.toString(),
       batch: this.batchId,
-      createdBy: req.user._id,
-      updatedBy: req.user._id,
+      createdBy: this.userId,
+      updatedBy: this.userId,
       googleMeet: this.googleMeet,
     };
 
     const data = new attendanceModel(details);
     await data.save();
+    return data;
   }
 
   async sendMailMethod() {
@@ -102,7 +102,7 @@ class LiveClassServiceClass {
 
     const nodeMailerService = new NodeMailerServiceClass();
     await nodeMailerService.sendMail(
-      studentDetails.email,
+      this.studentDetails.email,
       "liveSessionReminderTemplate",
       null,
       mailDetails
