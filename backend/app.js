@@ -9,7 +9,7 @@ const { ratelimitConfig } = require("./src/Config/ratelimit.config");
 const { DEVELOPMENT_MODE } = require("./src/Config/index.config");
 const errorHandling = require("./src/Utils/errorHandling");
 var moment = require("moment-timezone");
-// const GoogleAuthRoutes = require("./src/Routes/auth/google.route");
+const GoogleAuthRoutes = require("./src/Routes/auth/google.route");
 
 // const corsConfig = require("./src/Config/cors.config");
 
@@ -55,7 +55,7 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/api/v1", IndexRoutes);
-// app.use("/auth/google", GoogleAuthRoutes);
+app.use("/auth/google", GoogleAuthRoutes);
 
 //----------------------------------------
 //--------------- others -----------------

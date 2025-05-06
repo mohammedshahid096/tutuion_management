@@ -60,7 +60,7 @@ module.exports.Authorization = (...roles) => {
 // setting headers for the development purpose
 module.exports.setHeaderDevelopment = (req, res, next) => {
   let token =
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3M2UxOTI0NGY2MzBjYTc0M2M3YWJkMCIsIl9fdHlwZV9fIjoiYWRtaW4iLCJpYXQiOjE3NDU1OTA2ODMsImV4cCI6MTc0NTg0OTg4M30.yOpwBdpgSJoQvGektVcb4FeUEVQ6xuQJj2pIRF2e5Ms";
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MjQ5MzI3NmFhNDA5NTA1ZWNkOWI0MyIsIl9fdHlwZV9fIjoiYWRtaW4iLCJpYXQiOjE3NDYzMzg2MDYsImV4cCI6MTc0NjU5NzgwNn0.ai_fgQ_Vwnh1hRNzQrRu-87NhMomIfqS1_6EPZKQOlk";
 
   req.authToken = token;
   next();

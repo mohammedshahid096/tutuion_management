@@ -10,15 +10,7 @@ const {
   Authorization,
   setHeaderDevelopment,
 } = require("../../Middlewares/Auth.middleware");
-const {
-  SUPPER_ADMIN,
-  ADMIN,
-  SUB_USER,
-  READ,
-  CREATE,
-  DELETE,
-  UPDATE,
-} = require("../../Constants/roles.constants");
+const { ADMIN } = require("../../Constants/roles.constants");
 
 const GoogleAuthRoutes = express.Router();
 
