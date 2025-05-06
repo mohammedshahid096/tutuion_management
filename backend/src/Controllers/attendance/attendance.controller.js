@@ -6,6 +6,8 @@ const errorHandling = require("../../Utils/errorHandling");
 const sortConstants = require("../../Constants/sort.constants");
 const userConstants = require("../../Constants/user.constants");
 const moment = require("moment");
+const NodeMailerServiceClass = require("../../aws_ses/mails/mail.index");
+const GoogleCalendarServiceClass = require("../../Services/google.calendar.service");
 
 const createNewLiveClassController = async (req, res, next) => {
   try {
@@ -35,12 +37,8 @@ const createNewLiveClassController = async (req, res, next) => {
     description =
       description ??
       "A live is schedule " + currentDay + " " + currentDate + "";
-    let startDate = moment(
-      studentDetails?.timings?.startTimeHHMM,
-      "HH:mm"
-    ).utc();
-
-    let endDate = moment(studentDetails?.timings?.endTimeHHMM, "HH:mm").utc();
+    let startDate = moment(studentDetails?.timings?.startTimeHHMM, "HH:mm");
+    let endDate = moment(studentDetails?.timings?.endTimeHHMM, "HH:mm");
 
     let details = {
       student: studentId,
@@ -69,13 +67,62 @@ const createNewLiveClassController = async (req, res, next) => {
       );
     }
 
+    const googleCalendarService = await new GoogleCalendarServiceClass(
+      req.user._id
+    );
+    await googleCalendarService.initialize();
+
+    let googleEventDetails = {
+      summary: details.summary,
+      description: details.description,
+      startDate,
+      endDate,
+      timezone: "Asia/Kolkata",
+      location: "Google Meet" || "",
+      attendees: [{ email: studentDetails?.email }],
+    };
+
+    let eventResponseDetails = await googleCalendarService.createEvent(
+      "primary",
+      googleEventDetails
+    );
+
+    if (eventResponseDetails) {
+      details.googleMeet = {
+        enabled: true,
+        meetLink: eventResponseDetails.hangoutLink,
+        conferenceId: eventResponseDetails.conferenceData.conferenceId,
+        details: eventResponseDetails,
+      };
+    }
+
     const data = new attendanceModel(details);
     await data.save();
+
+    let mailDetails = {
+      student_name: studentDetails?.name,
+      session_summary: details?.summary,
+      session_description: details.description,
+      session_date: moment(details.startDate).format("LLL"),
+      session_time:
+        moment(details.startDate).format("hh:mm A") +
+        " - " +
+        moment(details.endDate).format("hh:mm A"),
+      session_meet_link: details.googleMeet.meetLink,
+    };
+
+    const nodeMailerService = new NodeMailerServiceClass();
+    await nodeMailerService.sendMail(
+      studentDetails.email,
+      "liveSessionReminderTemplate",
+      null,
+      mailDetails
+    );
 
     logger.info(
       "Controllers - attendance - attendance.controller - createNewLiveClassController  - End"
     );
-    res.status(201).send({
+    res.status(201).json({
       success: true,
       statusCode: 201,
       message: "successfully new live class is created.",

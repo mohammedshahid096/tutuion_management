@@ -15,12 +15,12 @@ class GoogleAuthServiceClass {
       GOOGLE_CLIENT_SECRET,
       GOOGLE_REDIRECT_URI
     );
-    this.userID = userID.toString() || null;
+    this.userID = userID || null;
   }
 
   // user related methods
   setUserID(userID) {
-    this.userID = userID.toString();
+    this.userID = userID;
   }
   getUserID() {
     return this.userID;
