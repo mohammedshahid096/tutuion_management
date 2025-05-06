@@ -6,4 +6,5 @@ module.exports = {
   chapters: "chapters",
   settings: "settings",
   enrollmentProgress: "enrollment_progresses",
+  attendances: "attendances",
 };
