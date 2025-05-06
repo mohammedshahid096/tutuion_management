@@ -26,10 +26,6 @@ module.exports = {
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   GOOGLE_REDIRECT_URI: process.env.GOOGLE_CALL_BACK_URL,
 
-  // webhooks
-  BARKAT_BOT_WEBHOOK: process.env.BARKAT_BOT_WEBHOOK,
-  SERVER_STATUS_WEBHOOK: process.env.SERVER_STATUS_WEBHOOK,
-
   // Aws SES credentials
   AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
