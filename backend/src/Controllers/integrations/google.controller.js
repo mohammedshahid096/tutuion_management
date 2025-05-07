@@ -12,7 +12,9 @@ const connectToGoogleController = async (req, res, next) => {
       "Integration - google.controller - connectToGoogleController - start"
     );
 
-    const googleAuthService = new GoogleAuthServiceClass(req.user._id);
+    const googleAuthService = new GoogleAuthServiceClass(
+      req.user._id.toString()
+    );
     const authUrl = googleAuthService.generateAuthUrl();
     res.redirect(authUrl);
     logger.info(
