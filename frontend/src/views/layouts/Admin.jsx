@@ -51,7 +51,7 @@ const data = {
       title: 'Dashboard',
       url: '#',
       icon: School,
-      isActive: false,
+      isActive: true,
       items: [
         {
           title: 'Overview',
@@ -68,6 +68,7 @@ const data = {
       title: 'Batch',
       url: '#',
       icon: GraduationCap,
+      isActive: true,
       items: [
         {
           title: 'Year Batches',
@@ -79,6 +80,7 @@ const data = {
       title: 'Education Boards',
       url: '#',
       icon: University,
+      isActive: true,
       items: [
         {
           title: 'Boards',
@@ -90,6 +92,7 @@ const data = {
       title: 'Tuition Subject',
       url: '#',
       icon: Book,
+      isActive: true,
       items: [
         {
           title: 'Subjects',
@@ -105,6 +108,7 @@ const data = {
       title: 'Students',
       url: '#',
       icon: Users,
+      isActive: true,
       items: [
         {
           title: 'Students List',

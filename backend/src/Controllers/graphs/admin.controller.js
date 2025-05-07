@@ -10,10 +10,13 @@ const adminDashboardGraphController = async (req, res, next) => {
     logger.info(
       "Controller - graph.controller - AdminDashboardGraphController - Start"
     );
-
-    let genderGraphData = await userModel.aggregate([
+    const genderGraphAggregation = [
       { $match: { role: STUDENT } },
-    ]);
+      { $group: { _id: "$gender", count: { $sum: 1 } } },
+      { $project: { _id: 0, gender: "$_id", count: 1 } },
+    ];
+
+    let genderGraphData = await userModel.aggregate(genderGraphAggregation);
     logger.info(
       "Controller - graph.controller - AdminDashboardGraphController - Start"
     );
