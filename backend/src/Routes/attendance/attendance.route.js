@@ -6,6 +6,7 @@ const {
 const { ADMIN } = require("../../Constants/roles.constants");
 const {
   createNewLiveClassController,
+  getAttendanceListController,
 } = require("../../Controllers/attendance/attendance.controller");
 const {
   currentBatchDetailMiddleWare,
@@ -20,9 +21,11 @@ AttendanceRoutes.route("/:studentId/new-live-class").post(
   createNewLiveClassController
 );
 
-// AttendanceRoutes.route("/attendances").get(
-//   Authentication,
-//   Authorization(ADMIN)
-// );
+AttendanceRoutes.route("/:studentId/attendances").get(
+  Authentication,
+  Authorization(ADMIN),
+  currentBatchDetailMiddleWare,
+  getAttendanceListController
+);
 
 module.exports = AttendanceRoutes;
