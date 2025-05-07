@@ -106,19 +106,21 @@ const getSingleStudentDetailAction = (studentId) => async (dispatch) => {
   }
 };
 
-const getStudentAttendanceListAction = (studentId) => async (dispatch) => {
+const getStudentAttendanceListAction = (studentId, queryObject) => async (dispatch) => {
   dispatch({ type: ATTENDANCE_LIST.request });
 
   const token = getAccessToken();
+  const query = queryObject ? objectToQueryString(queryObject) : '';
   const response = await Service.fetchGet(
-    `${API.ATTENDANCE_BASE}/${studentId}${API.STUDENT_ACTIONS_TYPES.ATTENDANCE}`,
+    `${API.ATTENDANCE_BASE}/${studentId}${API.STUDENT_ACTIONS_TYPES.ATTENDANCE}${query}`,
     token
   );
   if (response[0] === true) {
     const payload = {
       _id: studentId,
-      docs: response[1]?.data,
+      ...response[1]?.data,
     };
+
     dispatch({ type: ATTENDANCE_LIST.success, payload });
   } else {
     dispatch({

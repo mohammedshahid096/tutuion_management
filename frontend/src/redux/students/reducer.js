@@ -54,6 +54,10 @@ export const StudentReducer = (state = initialState, action) => {
       enrollmentLoading: false,
       enrollmentsList: action.payload,
     }),
+    [ATTENDANCE_LIST.success]: () => ({
+      ...state,
+      attendanceList: action.payload,
+    }),
 
     // updating state
     [STUDENT_LIST.update]: () => ({
