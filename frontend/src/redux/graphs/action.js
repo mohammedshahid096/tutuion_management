@@ -7,7 +7,7 @@ const getAdminDashboardListAction = () => async (dispatch) => {
   dispatch({ type: DASHBOARD_GRAPH_DATA.request });
   const token = getAccessToken();
   const response = await Service.fetchGet(
-    `${API.BASE_GRAPH}${API.GRAPH_ACTION_TYPES.DASHBOARD}`,
+    `${API.BASE_GRAPH}${API.GRAPH_ACTION_TYPES.ADMIN}${API.GRAPH_ACTION_TYPES.DASHBOARD}`,
     token
   );
   if (response[0] === true) {
