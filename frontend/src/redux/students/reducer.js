@@ -4,6 +4,7 @@ import {
   CLEAR_STUDENT_ERRORS,
   RESET_STUDENT_STATE,
   ENROLLMENT_LIST,
+  ATTENDANCE_LIST,
 } from './constant';
 
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
   studentsList: null,
   singleStudentDetail: null,
   enrollmentsList: null,
+  attendanceList: null,
 };
 
 export const StudentReducer = (state = initialState, action) => {
@@ -30,6 +32,10 @@ export const StudentReducer = (state = initialState, action) => {
     [ENROLLMENT_LIST.request]: () => ({
       ...state,
       enrollmentLoading: true,
+    }),
+    [ATTENDANCE_LIST.request]: () => ({
+      ...state,
+      loading: true,
     }),
 
     // Success state
@@ -62,6 +68,10 @@ export const StudentReducer = (state = initialState, action) => {
       ...state,
       enrollmentsList: action.payload,
     }),
+    [ATTENDANCE_LIST.update]: () => ({
+      ...state,
+      attendanceList: action.payload,
+    }),
 
     // Failure state
     [STUDENT_LIST.fail]: () => ({
@@ -79,7 +89,13 @@ export const StudentReducer = (state = initialState, action) => {
     [ENROLLMENT_LIST.fail]: () => ({
       ...state,
       enrollmentLoading: false,
-      error: action?.payload?.message || 'Fetching students failed', // Default error message
+      error: action?.payload?.message || 'Fetching enrollments failed', // Default error message
+      statusCode: action?.payload?.statusCode || 500,
+    }),
+    [ATTENDANCE_LIST.fail]: () => ({
+      ...state,
+      loading: false,
+      error: action?.payload?.message || 'Fetching attendance failed', // Default error message
       statusCode: action?.payload?.statusCode || 500,
     }),
 

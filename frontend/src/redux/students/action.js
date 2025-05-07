@@ -4,6 +4,7 @@ import {
   RESET_STUDENT_STATE,
   STUDENT_DETAILS,
   ENROLLMENT_LIST,
+  ATTENDANCE_LIST,
 } from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
@@ -105,6 +106,28 @@ const getSingleStudentDetailAction = (studentId) => async (dispatch) => {
   }
 };
 
+const getStudentAttendanceListAction = (studentId) => async (dispatch) => {
+  dispatch({ type: ATTENDANCE_LIST.request });
+
+  const token = getAccessToken();
+  const response = await Service.fetchGet(
+    `${API.ATTENDANCE_BASE}/${studentId}${API.STUDENT_ACTIONS_TYPES.ATTENDANCE}`,
+    token
+  );
+  if (response[0] === true) {
+    const payload = {
+      _id: studentId,
+      docs: response[1]?.data,
+    };
+    dispatch({ type: ATTENDANCE_LIST.success, payload });
+  } else {
+    dispatch({
+      type: ATTENDANCE_LIST.fail,
+      payload: response[1],
+    });
+  }
+};
+
 const createNewEnrollmentAction = async (json) => {
   const token = getAccessToken();
   const response = await Service.fetchPost(
@@ -133,6 +156,7 @@ export default {
   getStudentEnrollmentListAction,
   updateStudentProgressAction,
   createNewEnrollmentAction,
+  getStudentAttendanceListAction,
   clearStudentErrorsAction,
   resetStudentAction,
 };

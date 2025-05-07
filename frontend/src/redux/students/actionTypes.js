@@ -3,7 +3,9 @@ export const STUDENT_ACTIONS_TYPES = {
   REGISTER: '/register',
   ENROLLMENTS: '/enrollments',
   NEW_ENROLLMENT: '/new-enrollment',
+  ATTENDANCE: '/attendances',
 };
 
 export const BASE_STUDENT = '/user';
 export const ENROLLMENT_BASE = '/enrollment';
+export const ATTENDANCE_BASE = '/attendance';
