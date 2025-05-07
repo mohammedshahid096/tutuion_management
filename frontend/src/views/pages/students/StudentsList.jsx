@@ -169,7 +169,7 @@ const StudentsList = () => {
   }, []);
 
   const navigateToStudentAttendanceList = useCallback((studentDetails) => {
-    navigate(`/attendance/${studentDetails?._id}?studentName=${studentDetails?.name}`);
+    navigate(`/admin/attendance/${studentDetails?._id}?studentName=${studentDetails?.name}`);
   }, []);
 
   return (
