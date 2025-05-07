@@ -8,6 +8,7 @@ import {
   Eye,
   Edit,
   Trash2,
+  List,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -44,6 +45,7 @@ const StudentsListComponent = ({
   setInfo,
   filterChangeHandlerFunction,
   navigateToStudentDetails,
+  navigateToStudentAttendanceList,
 }) => {
   const handlePageChange = (page) => {
     if (page >= 1 && page <= data?.totalPages) {
@@ -173,6 +175,13 @@ const StudentsListComponent = ({
                           >
                             <Eye className="h-4 w-4" />
                             View
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2"
+                            onClick={() => navigateToStudentAttendanceList(student)}
+                          >
+                            <List className="h-4 w-4" />
+                            Attendance
                           </DropdownMenuItem>
                           <DropdownMenuItem className="flex items-center gap-2">
                             <Edit className="h-4 w-4" />

@@ -168,6 +168,10 @@ const StudentsList = () => {
     navigate(`${studentDetails?._id}?studentName=${studentDetails?.name}`);
   }, []);
 
+  const navigateToStudentAttendanceList = useCallback((studentDetails) => {
+    navigate(`/attendance/${studentDetails?._id}?studentName=${studentDetails?.name}`);
+  }, []);
+
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="Admin Students | EduExcellence" />
@@ -183,6 +187,7 @@ const StudentsList = () => {
           setInfo={setInfo}
           filterChangeHandlerFunction={filterChangeHandlerFunction}
           navigateToStudentDetails={navigateToStudentDetails}
+          navigateToStudentAttendanceList={navigateToStudentAttendanceList}
         />
       )}
     </MainWrapper>
