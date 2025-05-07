@@ -72,6 +72,17 @@ const AttendanceList = () => {
     [attendanceList, studentId, info?.currentPage, info?.limit]
   );
 
+  const paginationHandlerFunction = useCallback(
+    (page) => {
+      setInfo((prev) => ({ ...prev, currentPage: page, loading: true }));
+      let query = {
+        currentPage: page,
+      };
+      fetchStudentAttendanceListHandler(query);
+    },
+    [info?.currentPage, info?.limit]
+  );
+
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="Attendance | EduExcellence" />
@@ -96,7 +107,7 @@ const AttendanceList = () => {
         loading={info?.loading}
         totalPages={attendanceList?.totalPages}
         currentPage={attendanceList?.currentPage}
-        onPageChange={(page) => setInfo((prev) => ({ ...prev, page }))}
+        onPageChange={(page) => paginationHandlerFunction(page)}
       />
     </MainWrapper>
   );
