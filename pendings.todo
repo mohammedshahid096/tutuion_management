@@ -5,3 +5,4 @@
 -----------------------------------COMPLETED -------------------------------------------- 
 1.In enrollment after creating the new enrollment the date should be get updated data in the enrollment list
 4. adding a excel upload
+5. if there is no subject in the enrollment then submit button should not be visible

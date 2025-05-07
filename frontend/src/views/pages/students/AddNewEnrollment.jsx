@@ -176,18 +176,20 @@ const AddNewEnrollment = ({
           </div>
         </div>
 
-        <div className="w-full mt-6 flex justify-center border-t pt-4">
-          <Button disabled={info?.createEnrollmentLoading} onClick={submitHandler}>
-            {info?.createEnrollmentLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Submitting...
-              </>
-            ) : (
-              'Submit'
-            )}
-          </Button>
-        </div>
+        {_.size(publicSubjectsList?.docs?.[studentDetails?.class]) > 0 && (
+          <div className="w-full mt-6 flex justify-center border-t pt-4">
+            <Button disabled={info?.createEnrollmentLoading} onClick={submitHandler}>
+              {info?.createEnrollmentLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                'Submit'
+              )}
+            </Button>
+          </div>
+        )}
       </div>
     </ModalV1>
   );
