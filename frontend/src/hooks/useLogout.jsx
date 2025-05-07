@@ -9,6 +9,7 @@ import {
   boardActions,
   subjectActions,
   studentActions,
+  graphActions,
 } from '@/redux/combineActions';
 
 const useLogout = () => {
@@ -24,6 +25,7 @@ const useLogout = () => {
     dispatch(boardActions.resetBoardAction());
     dispatch(subjectActions.resetSubjectAction());
     dispatch(studentActions.resetStudentAction());
+    dispatch(graphActions.resetGraphAction());
     navigate('/');
     clearAll();
   }, []);

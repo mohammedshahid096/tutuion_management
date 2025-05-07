@@ -5,6 +5,7 @@ import { BatchReducer } from './batch/reducer';
 import { BoardReducer } from './boards/reducer';
 import { SubjectReducer } from './subjects/reducer';
 import { StudentReducer } from './students/reducer';
+import { GraphReducer } from './graphs/reducer';
 
 const initialState = {};
 
@@ -15,6 +16,7 @@ const reducer = {
   boardState: BoardReducer,
   subjectState: SubjectReducer,
   studentState: StudentReducer,
+  graphState: GraphReducer,
 };
 const store = configureStore({
   reducer,
