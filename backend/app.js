@@ -37,6 +37,7 @@ if (DEVELOPMENT_MODE === "development") {
   app.use(morgan(morganFormat.COMBINE, { stream: morganFilePath }));
 }
 
+app.set("trust proxy", true);
 app.use(ratelimitConfig);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
