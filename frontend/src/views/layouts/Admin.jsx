@@ -55,7 +55,7 @@ const data = {
       items: [
         {
           title: 'Overview',
-          url: '/admin/dashboard/overview',
+          url: '/dashboard',
         },
         {
           title: 'Analytics',
