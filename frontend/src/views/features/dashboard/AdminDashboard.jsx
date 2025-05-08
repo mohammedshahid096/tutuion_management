@@ -6,6 +6,7 @@ import AdminGenderGraph from '@/views/components/graphs/AdminGenderGraph';
 import { useDispatch, useSelector } from 'react-redux';
 import { graphActions } from '@/redux/combineActions';
 import AdminClassWiseStudentGraph from '@/views/components/graphs/AdminClassWiseStudentGraph';
+import AdminBoardWiseStudentGraph from '@/views/components/graphs/AdminBoardWiseStudentGraph';
 
 const breadCrumbs = [{ label: 'Analytics', href: null }];
 
@@ -31,8 +32,7 @@ const AdminDashboard = () => {
       <div className=" space-y-8 p-2">
         {' '}
         <div className="grid grid-cols-2 gap-8 max-sm:grid-cols-1">
-          <Card className=" w-fit">
-            {' '}
+          <Card className="w-full">
             <AdminGenderGraph data={genderGraphData} />
           </Card>
 
@@ -40,14 +40,15 @@ const AdminDashboard = () => {
             <AdminClassWiseStudentGraph data={classWiseStudentsGraphData} />
           </Card>
         </div>
-        {/* <div className="grid grid-cols-2 gap-8 max-sm:grid-cols-1">
+        <div className="grid grid-cols-2 gap-8 max-sm:grid-cols-1">
           <Card>
-            <ExpenseStatusGraph data={expenseStatusGraph} />
+            <AdminBoardWiseStudentGraph data={boardWiseStudentsGraphData} />
           </Card>
-          <Card>
+          {/* <Card>
             <ExpensePaymentGraph data={expensePaymentGraph} />
-          </Card>
+          </Card> */}
         </div>
+        {/* 
         <div className="grid grid-cols-1">
           <Card>
             <ExpenseTypeBasedGraph data={expenseTypeGraph} />

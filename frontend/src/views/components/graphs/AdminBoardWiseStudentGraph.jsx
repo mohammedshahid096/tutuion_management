@@ -16,18 +16,10 @@ const colors = [
   '#33FF33',
 ];
 
-const classrooms = Array.from({ length: 12 }, (_, i) => i + 1);
 const AdminClassWiseStudentGraph = ({ data }) => {
   //   const categories = data && data?.map((item) => item?.classRoom) || [];
-  const categories = _.cloneDeep(classrooms);
-  const seriesData =
-    (data &&
-      classrooms?.map((item) => {
-        let current = _.find(data, { classRoom: item });
-        if (current) return current.count;
-        else return 0;
-      })) ||
-    [];
+  const categories = data && data?.map((item) => item.boardName);
+  const seriesData = (data && data?.map((item) => item?.count)) || [];
 
   // Chart options
   const chartOptions = {
@@ -38,22 +30,22 @@ const AdminClassWiseStudentGraph = ({ data }) => {
     xaxis: {
       categories,
       title: {
-        text: 'Class Rooms',
+        text: 'No. of. Students',
       },
     },
 
     yaxis: {
       title: {
-        text: 'No. of. Students',
+        text: 'Boards',
       },
     },
 
     title: {
-      text: 'Class Wise Students',
+      text: 'Board Wise Students',
       align: 'center',
     },
 
-    colors,
+    // colors,
 
     stroke: {
       show: true,
@@ -64,7 +56,7 @@ const AdminClassWiseStudentGraph = ({ data }) => {
     plotOptions: {
       bar: {
         borderRadius: 4,
-        horizontal: false,
+        horizontal: true,
         distributed: true,
       },
     },
