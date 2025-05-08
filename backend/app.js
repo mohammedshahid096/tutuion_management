@@ -12,7 +12,7 @@ var moment = require("moment-timezone");
 const GoogleAuthRoutes = require("./src/Routes/auth/google.route");
 const { createLiveClassRemindersCronJob } = require("./src/Config/cron.config");
 const { createNewLiveClassUtility } = require("./src/Utils/classReminder.cron");
-// const corsConfig = require("./src/Config/cors.config");
+const corsConfig = require("./src/Config/cors.config");
 
 const app = express();
 app.use(
@@ -26,7 +26,7 @@ app.use(
 //----------------------------------------
 // MongoDataBaseConn
 MongoDataBaseConn();
-CloudinaryConn();
+// CloudinaryConn();
 
 if (DEVELOPMENT_MODE === "development") {
   const morgan = require("morgan");
@@ -37,12 +37,11 @@ if (DEVELOPMENT_MODE === "development") {
   app.use(morgan(morganFormat.COMBINE, { stream: morganFilePath }));
 }
 
-app.set("trust proxy", true);
 app.use(ratelimitConfig);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors());
+app.use(cors(corsConfig));
 moment.tz.setDefault("Asia/Kolkata");
 // createLiveClassRemindersCronJob();
 
