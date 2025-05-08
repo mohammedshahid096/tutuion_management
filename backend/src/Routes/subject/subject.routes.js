@@ -31,8 +31,8 @@ SubjectRoutes.route("/new-subject").post(
 );
 
 SubjectRoutes.route("/list").get(
-  Authentication,
-  Authorization(ADMIN),
+  // Authentication,
+  // Authorization(ADMIN),
   listSubjectsValidation,
   getSubjectsListController
 );
