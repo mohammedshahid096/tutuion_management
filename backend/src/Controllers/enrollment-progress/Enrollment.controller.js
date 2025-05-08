@@ -41,6 +41,15 @@ const createNewEnrollmentController = async (req, res, next) => {
       order: 1,
     };
 
+    let isAlreadyEnrolled = await enrollmentProgressModel.findOne({
+      studentId: details.studentId,
+      batch: details.batch,
+    });
+
+    if (isAlreadyEnrolled) {
+      return next(httpErrors.Conflict("Already user is enrolled"));
+    }
+
     const newEnrollment = new enrollmentProgressModel(details);
     await newEnrollment.save();
 
