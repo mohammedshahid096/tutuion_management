@@ -21,6 +21,7 @@ const ModelSchema = new mongoose.Schema(
     code: {
       type: String,
       uppercase: true,
+      unique: true,
       required: true,
     },
     class: {

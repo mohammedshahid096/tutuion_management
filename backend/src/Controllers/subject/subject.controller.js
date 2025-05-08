@@ -25,8 +25,10 @@ const createNewSubjectController = async (req, res, next) => {
     };
     const existingSubject = await subjectModel.findOne({
       name: name.toLowerCase(),
+      code,
       class: classRoom,
       boardType,
+      batch: req.batch._id,
     });
     if (existingSubject) {
       return next(
