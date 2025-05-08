@@ -5,13 +5,16 @@ import { Card } from '@/components/ui/card';
 import AdminGenderGraph from '@/views/components/graphs/AdminGenderGraph';
 import { useDispatch, useSelector } from 'react-redux';
 import { graphActions } from '@/redux/combineActions';
+import AdminClassWiseStudentGraph from '@/views/components/graphs/AdminClassWiseStudentGraph';
 
 const breadCrumbs = [{ label: 'Analytics', href: null }];
 
 const AdminDashboard = () => {
   const { getAdminDashboardListAction } = graphActions;
   const dispatch = useDispatch();
-  const { genderGraphData } = useSelector((state) => state.graphState);
+  const { genderGraphData, classWiseStudentsGraphData, boardWiseStudentsGraphData } = useSelector(
+    (state) => state.graphState
+  );
 
   useEffect(() => {
     if (!genderGraphData) {
@@ -33,9 +36,9 @@ const AdminDashboard = () => {
             <AdminGenderGraph data={genderGraphData} />
           </Card>
 
-          {/* <Card>
-            <EventStatusBasedCount data={eventStatusBasedCount} />
-          </Card> */}
+          <Card>
+            <AdminClassWiseStudentGraph data={classWiseStudentsGraphData} />
+          </Card>
         </div>
         {/* <div className="grid grid-cols-2 gap-8 max-sm:grid-cols-1">
           <Card>

@@ -5,6 +5,8 @@ const initialState = {
   error: null,
   statusCode: null,
   genderGraphData: null,
+  classWiseStudentsGraphData: null,
+  boardWiseStudentsGraphData: null,
 };
 
 export const GraphReducer = (state = initialState, action) => {
@@ -20,6 +22,8 @@ export const GraphReducer = (state = initialState, action) => {
       ...state,
       loading: false,
       genderGraphData: action.payload.genderGraphData,
+      classWiseStudentsGraphData: action.payload.classWiseStudentsGraphData,
+      boardWiseStudentsGraphData: action.payload.boardWiseStudentsGraphData,
     }),
 
     // update state
