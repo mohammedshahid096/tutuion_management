@@ -20,8 +20,9 @@ const ProductionLogger = () => {
     level: "info",
     format: combine(timestamp(), json(), splat()),
     transports: [
+      new transports.Console({ level: "error" }),
       //   new transports.File({ filename: "app-combined.log" }),
-      new transports.File({ filename: "app-error.log", level: "error" }),
+      // new transports.File({ filename: "app-error.log", level: "error" }),
       //   new transports.File({ filename: "app-info.log", level: "info" }),
     ],
   });
