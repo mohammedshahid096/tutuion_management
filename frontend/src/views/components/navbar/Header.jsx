@@ -32,30 +32,6 @@ const Header = () => {
         <div className="flex flex-1 items-center justify-end space-x-4">
           {/* Desktop Navigation - Hidden on mobile */}
           <nav className="hidden md:flex items-center space-x-6">
-            {/* <Link
-              to={location.pathname !== '/' ? '/#about' : '#about'}
-              className="text-sm font-medium hover:text-primary"
-            >
-              About
-            </Link>
-            <Link
-              to={location.pathname !== '/' ? '#services' : '/#services'}
-              className="text-sm font-medium hover:text-primary"
-            >
-              Services
-            </Link>
-            <Link to="/#how-it-works" className="text-sm font-medium hover:text-primary">
-              How It Works
-            </Link>
-            <Link to="/#pricing" className="text-sm font-medium hover:text-primary">
-              Pricing
-            </Link>
-            <Link to="#testimonials" className="text-sm font-medium hover:text-primary">
-              Testimonials
-            </Link>
-            <Link to="/#contact" className="text-sm font-medium hover:text-primary">
-              Contact
-            </Link> */}
             {navList?.map((singleNav) => {
               if (location.pathname === '/') {
                 return (
@@ -78,7 +54,7 @@ const Header = () => {
           </nav>
 
           {/* Mobile Navigation - Hamburger Menu */}
-          <MobileNavbar />
+          <MobileNavbar navList={navList} loginNavigate={loginNavigate} location={location} />
         </div>
       </div>
     </header>
