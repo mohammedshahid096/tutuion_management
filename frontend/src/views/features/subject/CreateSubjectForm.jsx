@@ -20,7 +20,7 @@ import { subjectActions } from '@/redux/combineActions';
 import toast from 'react-hot-toast';
 import _ from 'lodash';
 import * as XLSX from 'xlsx';
-
+import DownloadFile from '../../../assets/excels/chapter_demo.xlsx';
 const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
   // Validation Schema
 
@@ -216,7 +216,6 @@ const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
     toast.success('added successfully');
   };
 
-  console.log(values.chapters, 'shahid');
   return (
     <div className="container mx-auto py-8">
       <Card className="mx-auto">
@@ -261,7 +260,6 @@ const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
                 )}
               </div>
             </div>
-
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
@@ -283,7 +281,6 @@ const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
                 <p className="text-sm text-red-500">{errors.description}</p>
               )}
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label htmlFor="classRoom">Class *</Label>
@@ -337,7 +334,6 @@ const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
                 )}
               </div>
             </div>
-
             {/* Chapters Section */}
             <div className="space-y-4">
               <div className="flex justify-between items-center">
@@ -348,9 +344,16 @@ const SubjectForm = ({ boards, classrooms, isSubmitting }) => {
                   <Button
                     type="button"
                     variant="outline"
+                    className=" bg-purple-200 hover:bg-purple-300"
+                    onClick={() => window.open(DownloadFile, '_blank')}
+                  >
+                    Download Demo File
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
                     onClick={() => fileUploadRef.current.click()}
                   >
-                    {' '}
                     Add Through File
                   </Button>
                   <Button
