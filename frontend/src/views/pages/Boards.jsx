@@ -56,8 +56,6 @@ const BoardsPage = () => {
     (boardId) => {
       const updateDetails = {};
       let boardDetails = _.find(boardsList, { _id: boardId });
-      console.log(boardDetails, 'shahid');
-
       updateDetails.openCreateModal = true;
       updateDetails.selectedBoardId = boardId;
       updateDetails.boardName = boardDetails?.name;
@@ -68,7 +66,13 @@ const BoardsPage = () => {
         ...updateDetails,
       }));
     },
-    [info?.openCreateModal, info?.boardName, info?.boardDescription]
+    [
+      info?.openCreateModal,
+      info?.boardName,
+      info?.boardDescription,
+      info?.selectedBoardId,
+      boardsList,
+    ]
   );
 
   return (

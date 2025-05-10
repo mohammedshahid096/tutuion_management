@@ -30,6 +30,12 @@ const createNewBoardAction = async (json) => {
   return response;
 };
 
+const updateBoardAction = async (boardId, json) => {
+  const token = getAccessToken();
+  const response = await Service.fetchPut(`${API.BASE_BOARD}/${boardId}`, json, token);
+  return response;
+};
+
 const clearBoardErrorsAction = () => (dispatch) => {
   dispatch({
     type: CLEAR_BOARD_ERRORS,
@@ -42,6 +48,7 @@ const resetBoardAction = () => (dispatch) => {
 export default {
   getBoardsListAction,
   createNewBoardAction,
+  updateBoardAction,
   clearBoardErrorsAction,
   resetBoardAction,
 };

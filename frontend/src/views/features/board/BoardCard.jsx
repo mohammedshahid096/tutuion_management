@@ -33,12 +33,12 @@ const BoardCard = ({ board, editBoardModal }) => {
             <p>{board?.updatedBy?.name}</p>
           </div>
           <div className="space-y-1">
-            <p className="text-muted-foreground">Created At</p>
-            <p>{moment(board?.createdAt).format('MMM d, yyyy h:mm a')}</p>
+            <p className="text-muted-foreground">Created At (IST)</p>
+            <p>{moment(board?.createdAt).format('MMM D, YYYY h:mm A')}</p>
           </div>
           <div className="space-y-1">
-            <p className="text-muted-foreground">Updated At</p>
-            <p>{moment(board?.updatedAt).format('MMM d, yyyy h:mm a')}</p>
+            <p className="text-muted-foreground">Updated At (IST)</p>
+            <p>{moment(board?.updatedAt).format('MMM D, YYYY h:mm A')}</p>
           </div>
         </div>
       </CardContent>

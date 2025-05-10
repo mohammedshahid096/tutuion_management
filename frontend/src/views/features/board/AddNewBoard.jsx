@@ -16,7 +16,7 @@ import _ from 'lodash';
 const AddNewBoard = ({ info, openCloseCreateModal }) => {
   const dispatch = useDispatch();
   const { boardsList } = useSelector((state) => state.boardState);
-  const { createNewBoardAction } = boardActions;
+  const { createNewBoardAction, updateBoardAction } = boardActions;
 
   const validateSchema = Yup.object().shape({
     name: Yup.string()
@@ -25,6 +25,7 @@ const AddNewBoard = ({ info, openCloseCreateModal }) => {
       .required('Board name is required'),
     description: Yup.string().max(200, 'Description cannot exceed 200 characters'),
   });
+
   const formik = useFormik({
     initialValues: {
       name: info?.boardName || '',
@@ -61,16 +62,29 @@ const AddNewBoard = ({ info, openCloseCreateModal }) => {
   };
 
   const updateSubmitHandlerFunction = async (json) => {
-    // let response = await createNewBoardAction(json);
-    // if (response[2] === 201) {
-    //   let updateData = _.cloneDeep(boardsList);
-    //   openCloseCreateModal(false);
-    //   resetForm();
-    //   updateData.unshift(response[1]?.data);
-    //   dispatch({ type: BOARD_LIST.update, payload: updateData });
-    // } else {
-    //   toast.error(response[1]?.message || 'unable to add to a board');
+    // const isNameExists = boardsList.some(
+    //   (board) => board.name.toLowerCase() === json.name.toLowerCase()
+    // );
+    // if (isNameExists) {
+    //   toast.error('Board name already exists');
+    //   return;
     // }
+
+    let response = await updateBoardAction(info?.selectedBoardId, json);
+    if (response[0]) {
+      let updateData = _.cloneDeep(boardsList)?.map((item) => {
+        if (item._id === info?.selectedBoardId) {
+          return response[1]?.data;
+        } else {
+          return item;
+        }
+      });
+      openCloseCreateModal(false);
+      resetForm();
+      dispatch({ type: BOARD_LIST.update, payload: updateData });
+    } else {
+      toast.error(response[1]?.message || 'unable to add to a board');
+    }
   };
 
   return (
