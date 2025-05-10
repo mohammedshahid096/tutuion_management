@@ -165,7 +165,7 @@ const updateStudentDetailController = async (req, res, next) => {
       updatedBy: req.user._id,
     };
 
-    if (req.body.timings) {
+    if (req?.body?.timings) {
       details.timings = {
         start: req.body.timings.start,
         startTimeHHMM: moment(req.body.timings.start).format("HH:mm"),
@@ -174,6 +174,10 @@ const updateStudentDetailController = async (req, res, next) => {
           .add(1, "hours")
           .format("HH:mm"),
       };
+    }
+    if (req?.body?.classRoom) {
+      details.class = Number(req.body.classRoom);
+      delete details.classRoom;
     }
 
     let studentDetails = await userModel
@@ -194,7 +198,10 @@ const updateStudentDetailController = async (req, res, next) => {
       data: studentDetails,
     });
   } catch (error) {
-    logger.error("Controller-user.controller-RegisterController-Error", error);
+    logger.error(
+      "Controller-user.controller-updateStudentDetailController-Error",
+      error
+    );
     errorHandling.handleCustomErrorService(error, next);
   }
 };
