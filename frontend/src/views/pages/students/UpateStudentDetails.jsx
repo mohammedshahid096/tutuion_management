@@ -64,7 +64,7 @@ const SubjectDetailsCardSkeleton = memo(() => {
 const UpdateStudentDetails = () => {
   const { getBatchesListAction } = batchActions;
   const { getBoardsListAction } = boardActions;
-  const { registerNewStudentAction, updateStudentDetailsAction, getSingleStudentDetailAction } =
+  const { updateStudentStateAction, updateStudentDetailsAction, getSingleStudentDetailAction } =
     studentActions;
 
   const dispatch = useDispatch();
@@ -123,13 +123,14 @@ const UpdateStudentDetails = () => {
   }, []);
 
   useEffect(() => {
-    if (batchesList && boardsList && !studentId) {
-      setInfo((prev) => ({
-        ...prev,
-        loading: false,
-      }));
-    }
     if (batchesList && boardsList && studentId && singleStudentDetail?._id === studentId) {
+      console.log(
+        singleStudentDetail?.class,
+        info?.initialValues?.classRoom,
+        values.classRoom,
+        'shahid'
+      );
+
       let updateDetails = {
         name: singleStudentDetail?.name ?? info?.initialValues?.name,
         email: singleStudentDetail?.email ?? info?.initialValues?.email,
@@ -139,7 +140,7 @@ const UpdateStudentDetails = () => {
         phone: singleStudentDetail?.phone ?? info?.initialValues?.phone,
         address: singleStudentDetail?.address ?? info?.initialValues?.address,
         dateOfBirth: new Date(singleStudentDetail?.dateOfBirth) ?? info?.initialValues?.dateOfBirth,
-        classRoom: singleStudentDetail?.class.toString() ?? info?.initialValues?.classRoom,
+        classRoom: String(singleStudentDetail?.class || info?.initialValues?.classRoom),
         school: singleStudentDetail?.school ?? info?.initialValues?.school,
         boardType: singleStudentDetail?.boardType?._id ?? info?.initialValues?.boardType,
         days: singleStudentDetail?.days ?? info?.initialValues?.days,
@@ -160,7 +161,7 @@ const UpdateStudentDetails = () => {
         },
       }));
     }
-  }, [boardsList, batchesList, singleStudentDetail, studentId]);
+  }, [boardsList, batchesList, singleStudentDetail?._id, studentId]);
 
   const validateSchema = Yup.object({
     name: Yup.string().required('Name is required'),
@@ -195,11 +196,7 @@ const UpdateStudentDetails = () => {
     validationSchema: validateSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
-      if (studentId) {
-        await updateStudentDetailsHandler(values);
-      } else {
-        await registerNewStudentDetailsHandler(values);
-      }
+      await updateStudentDetailsHandler(values);
     },
   });
 
@@ -226,37 +223,6 @@ const UpdateStudentDetails = () => {
     dispatch(getSingleStudentDetailAction(studentId));
   }, [singleStudentDetail, studentId]);
 
-  const registerNewStudentDetailsHandler = async (details) => {
-    setInfo((prev) => ({
-      ...prev,
-      isSubmitting: true,
-    }));
-
-    // Format dates to ISO string
-    const payload = {
-      ...details,
-      dateOfBirth: moment(details.dateOfBirth).utc().format(),
-      dateOfJoining: moment(details.dateOfJoining).utc().format(),
-      timings: {
-        start: moment(details.timings.start, 'HH:mm').format(),
-        end: moment(details.timings.end, 'HH:mm').format(),
-      },
-    };
-
-    const response = await registerNewStudentAction(payload);
-    if (response[2] === 201) {
-      toast.success(response[1]?.message || 'successfully student is registered');
-      resetForm();
-    } else {
-      toast.success(response[1]?.message || 'student is not registered try again later');
-    }
-
-    setInfo((prev) => ({
-      ...prev,
-      isSubmitting: false,
-    }));
-  };
-
   const updateStudentDetailsHandler = async (details) => {
     setInfo((prev) => ({
       ...prev,
@@ -276,6 +242,11 @@ const UpdateStudentDetails = () => {
     const response = await updateStudentDetailsAction(payload, studentId);
     if (response[2] === 201) {
       toast.success(response[1]?.message || 'successfully student is updated');
+      dispatch(
+        updateStudentStateAction({
+          singleStudentDetail: response[1]?.data,
+        })
+      );
       resetForm();
     } else {
       toast.success(response[1]?.message || 'student is not updated try again later');
@@ -285,6 +256,13 @@ const UpdateStudentDetails = () => {
       isSubmitting: false,
     }));
   };
+
+  console.log(
+    singleStudentDetail?.class,
+    info?.initialValues?.classRoom,
+    values.classRoom,
+    'shahid'
+  );
 
   return (
     <>
