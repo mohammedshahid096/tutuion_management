@@ -10,6 +10,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { useSelector } from 'react-redux';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 
 const SubjectsListComponent = ({
   classrooms,
@@ -17,6 +18,7 @@ const SubjectsListComponent = ({
   info,
   handleChangeFilterFunction,
   handleFilterSearchFunction,
+  buttonLoading,
 }) => {
   // State for filters
   const { subjectsList } = useSelector((state) => state.subjectState);
@@ -76,7 +78,16 @@ const SubjectsListComponent = ({
           </Select>
         </div>
 
-        <Button onClick={handleFilterSearchFunction}>Search</Button>
+        <Button onClick={handleFilterSearchFunction} disabled={buttonLoading}>
+          {buttonLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Updating...
+            </>
+          ) : (
+            'Search'
+          )}
+        </Button>
       </div>
 
       {/* Subjects Table */}

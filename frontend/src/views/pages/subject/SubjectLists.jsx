@@ -14,7 +14,7 @@ const SubjectsListPage = () => {
   const { getSubjectsListAction } = subjectActions;
   const dispatch = useDispatch();
   const { boardsList } = useSelector((state) => state.boardState);
-  const { subjectsList } = useSelector((state) => state.subjectState);
+  const { subjectsList, loading } = useSelector((state) => state.subjectState);
 
   const [info, setInfo] = useState({
     optionsLoading: true,
@@ -62,6 +62,7 @@ const SubjectsListPage = () => {
   );
 
   const handleFilterSearchFunction = useCallback(() => {
+    if (loading) return;
     let query = {
       classRoom: info?.classRoom,
       boardType: info?.boardType,
@@ -69,8 +70,9 @@ const SubjectsListPage = () => {
     if (info?.name) {
       query.name = info?.name;
     }
+
     fetchSubjectsListHandler(query);
-  }, [info?.classRoom, info?.boardType, info?.name]);
+  }, [info?.classRoom, info?.boardType, info?.name, loading]);
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
@@ -85,6 +87,7 @@ const SubjectsListPage = () => {
           info={info}
           handleChangeFilterFunction={handleChangeFilterFunction}
           handleFilterSearchFunction={handleFilterSearchFunction}
+          buttonLoading={loading}
         />
       )}
     </MainWrapper>
