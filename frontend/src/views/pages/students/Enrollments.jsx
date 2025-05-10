@@ -11,7 +11,9 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { useNavigate, useParams } from 'react-router-dom';
-import { studentActions } from '@/redux/combineActions';
+import { studentActions, batchActions } from '@/redux/combineActions';
+import AddNewEnrollment from './AddNewEnrollment';
+import toast from 'react-hot-toast';
 
 const DataTableSkeleton = memo(({ numRows = 6, numCols = 5 }) => {
   return (
@@ -42,11 +44,20 @@ const DataTableSkeleton = memo(({ numRows = 6, numCols = 5 }) => {
 });
 
 const Enrollments = () => {
-  const { enrollmentsList, enrollmentLoading } = useSelector((state) => state.studentState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { studentId } = useParams();
-  const { getStudentEnrollmentListAction } = studentActions;
+  const { getBatchesListAction } = batchActions;
+  const {
+    getSingleStudentDetailAction,
+    getStudentEnrollmentListAction,
+    createNewEnrollmentAction,
+  } = studentActions;
+
+  const { enrollmentsList, enrollmentLoading, singleStudentDetail } = useSelector(
+    (state) => state.studentState
+  );
+  const { batchesList } = useSelector((state) => state.batchState);
 
   const [info, setInfo] = useState({
     registerEnrollmentModal: false,
@@ -57,7 +68,15 @@ const Enrollments = () => {
     if (studentId && (!enrollmentsList || enrollmentsList?._id !== studentId)) {
       fetchStudentEnrollmentListHandler();
     }
-  }, []);
+
+    if (studentId && (!singleStudentDetail || singleStudentDetail?._id !== studentId)) {
+      fetchStudentDetailHandler();
+    }
+
+    if (!batchesList) {
+      fetchBatchesListHandler();
+    }
+  }, [studentId]);
 
   const openCreateEnrollmentModalFunction = useCallback(() => {
     setInfo((prev) => ({ ...prev, registerEnrollmentModal: true }));
@@ -66,6 +85,34 @@ const Enrollments = () => {
   const fetchStudentEnrollmentListHandler = useCallback(async () => {
     dispatch(getStudentEnrollmentListAction(studentId));
   }, [enrollmentsList, studentId]);
+
+  const fetchStudentDetailHandler = useCallback(async () => {
+    dispatch(getSingleStudentDetailAction(studentId));
+  }, [singleStudentDetail, studentId]);
+
+  const fetchBatchesListHandler = useCallback(async () => {
+    dispatch(getBatchesListAction());
+  }, [batchesList]);
+
+  const submitEnrollmentFunctionHandler = async (details) => {
+    setInfo((prev) => ({
+      ...prev,
+      createEnrollmentLoading: true,
+    }));
+
+    let response = await createNewEnrollmentAction(details);
+    if (response[2] === 201) {
+      fetchStudentEnrollmentListHandler();
+      toast.success('successfully added ');
+    } else {
+      toast.error(response[1]?.message || 'something went wrong');
+    }
+    setInfo((prev) => ({
+      ...prev,
+      createEnrollmentLoading: false,
+      registerEnrollmentModal: false,
+    }));
+  };
 
   return !enrollmentLoading ? (
     <div className="container mx-auto py-8">
@@ -135,6 +182,15 @@ const Enrollments = () => {
           </Table>
         </div>
       </div>
+
+      <AddNewEnrollment
+        studentId={studentId}
+        batches={batchesList}
+        studentDetails={singleStudentDetail}
+        info={info}
+        setInfo={setInfo}
+        submitEnrollmentFunctionHandler={submitEnrollmentFunctionHandler}
+      />
     </div>
   ) : (
     <DataTableSkeleton />

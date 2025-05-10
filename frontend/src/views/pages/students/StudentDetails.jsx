@@ -1,9 +1,9 @@
-import React, { memo, useState, useCallback, useEffect, useRef, useMemo } from 'react';
-import Mainwrapper from '@/views/layouts/Mainwrapper';
+import React, { memo, useCallback, useMemo } from 'react';
+import MainWrapper from '@/views/layouts/Mainwrapper';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useParams, useNavigate } from 'react-router-dom';
-import RegisterStudent from '@/views/pages/students/RegisterStudent';
+
 import UpdateStudentDetails from './UpateStudentDetails';
 import AttendanceList from './AttendanceList';
 import Enrollments from './Enrollments';
@@ -12,7 +12,7 @@ const menuItems = [
   {
     id: 'student-profile',
     label: 'Student Profile',
-    breadCumbs: [
+    breadCrumbs: [
       { label: 'Student Details', href: null },
       { label: 'Profile', href: null },
     ],
@@ -20,7 +20,7 @@ const menuItems = [
   {
     id: 'student-enrollments',
     label: 'Student Enrollments',
-    breadCumbs: [
+    breadCrumbs: [
       { label: 'Student Details', href: null },
       { label: 'Enrollments', href: null },
     ],
@@ -28,7 +28,7 @@ const menuItems = [
   {
     id: 'student-attendance',
     label: 'Student Attendance',
-    breadCumbs: [
+    breadCrumbs: [
       { label: 'Student Details', href: null },
       { label: 'Attendance', href: null },
     ],
@@ -48,9 +48,9 @@ const StudentDetails = () => {
     () => settingsMenuMapper[pageType] || settingsMenuMapper['student-profile'],
     [pageType]
   );
-  const breadCumbs = useMemo(() => {
+  const breadCrumbs = useMemo(() => {
     let current = menuItems.find((item) => item.id === pageType);
-    return current?.breadCumbs || menuItems[0].breadCumbs;
+    return current?.breadCrumbs || menuItems[0].breadCrumbs;
   }, [pageType]);
 
   const handleTabChange = useCallback(
@@ -61,7 +61,7 @@ const StudentDetails = () => {
   );
 
   return (
-    <Mainwrapper breadCrumbs={breadCumbs}>
+    <MainWrapper breadCrumbs={breadCrumbs}>
       <div className="flex gap-6">
         <div className="flex flex-col gap-6  w-4/5">
           <ComponentRender />
@@ -89,7 +89,7 @@ const StudentDetails = () => {
           </Card>
         </div>
       </div>
-    </Mainwrapper>
+    </MainWrapper>
   );
 };
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useCallback, memo, useState } from 'react';
-import MainWrapper from '../../layouts/Mainwrapper';
 import { useSelector, useDispatch } from 'react-redux';
 import { batchActions, boardActions, studentActions } from '@/redux/combineActions';
 import StudentRegistrationForm from '@/views/features/students/RegisterComponent';
@@ -11,14 +10,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import _ from 'lodash';
 import { useParams } from 'react-router-dom';
-import Enrollments from './Enrollments';
-import AddNewEnrollment from './AddNewEnrollment';
 import MetaData from '@/utils/MetaData';
 
-const breadCrumbs = [
-  { label: 'students', href: '/admin/students' },
-  { label: 'Register', href: null },
-];
 const classRooms = Array.from({ length: 12 }, (_, i) => i + 1); // 1 to 12
 
 const SubjectDetailsCardSkeleton = memo(() => {
@@ -71,19 +64,14 @@ const SubjectDetailsCardSkeleton = memo(() => {
 const UpdateStudentDetails = () => {
   const { getBatchesListAction } = batchActions;
   const { getBoardsListAction } = boardActions;
-  const {
-    registerNewStudentAction,
-    updateStudentDetailsAction,
-    getSingleStudentDetailAction,
-    getStudentEnrollmentListAction,
-    createNewEnrollmentAction,
-  } = studentActions;
+  const { registerNewStudentAction, updateStudentDetailsAction, getSingleStudentDetailAction } =
+    studentActions;
 
   const dispatch = useDispatch();
   const { studentId } = useParams();
   const { batchesList } = useSelector((state) => state.batchState);
   const { boardsList } = useSelector((state) => state.boardState);
-  const { singleStudentDetail, enrollmentsList } = useSelector((state) => state.studentState);
+  const { singleStudentDetail } = useSelector((state) => state.studentState);
 
   const [info, setInfo] = useState({
     loading: true,
@@ -118,8 +106,6 @@ const UpdateStudentDetails = () => {
       },
       dateOfJoining: null,
     },
-    registerEnrollmentModal: false,
-    createEnrollmentLoading: false,
   });
 
   useEffect(() => {
@@ -240,10 +226,6 @@ const UpdateStudentDetails = () => {
     dispatch(getSingleStudentDetailAction(studentId));
   }, [singleStudentDetail, studentId]);
 
-  const fetchStudentEnrollmentListHandler = useCallback(async () => {
-    dispatch(getStudentEnrollmentListAction(studentId));
-  }, [enrollmentsList, studentId]);
-
   const registerNewStudentDetailsHandler = async (details) => {
     setInfo((prev) => ({
       ...prev,
@@ -304,26 +286,6 @@ const UpdateStudentDetails = () => {
     }));
   };
 
-  const submitEnrollmentFunctionHandler = async (details) => {
-    setInfo((prev) => ({
-      ...prev,
-      createEnrollmentLoading: true,
-    }));
-
-    let response = await createNewEnrollmentAction(details);
-    if (response[2] === 201) {
-      fetchStudentEnrollmentListHandler();
-      toast.success('successfully added ');
-    } else {
-      toast.error(response[1]?.message || 'something went wrong');
-    }
-    setInfo((prev) => ({
-      ...prev,
-      createEnrollmentLoading: false,
-      registerEnrollmentModal: false,
-    }));
-  };
-
   return (
     <>
       <MetaData
@@ -346,18 +308,6 @@ const UpdateStudentDetails = () => {
           classRooms={classRooms}
           boardTypes={boardsList}
           studentId={studentId || null}
-        />
-      )}
-
-      {studentId && <Enrollments studentId={studentId} info={info} setInfo={setInfo} />}
-      {studentId && (
-        <AddNewEnrollment
-          studentId={studentId}
-          batches={batchesList}
-          studentDetails={singleStudentDetail}
-          info={info}
-          setInfo={setInfo}
-          submitEnrollmentFunctionHandler={submitEnrollmentFunctionHandler}
         />
       )}
     </>
