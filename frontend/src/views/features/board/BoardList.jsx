@@ -6,7 +6,7 @@ import BoardSkeleton from './BoardSkeleton';
 import { useSelector } from 'react-redux';
 import BoardCard from './BoardCard';
 
-const BoardList = ({ info, setInfo, openCloseCreateModal }) => {
+const BoardList = ({ info, setInfo, openCloseCreateModal, editBoardModal }) => {
   const { loading, boardsList } = useSelector((state) => state.boardState);
 
   const filteredBoards = useMemo(() => {
@@ -49,7 +49,7 @@ const BoardList = ({ info, setInfo, openCloseCreateModal }) => {
       ) : filteredBoards?.length > 0 ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filteredBoards?.map((singleBoard) => (
-            <BoardCard board={singleBoard} key={singleBoard?._id} />
+            <BoardCard board={singleBoard} key={singleBoard?._id} editBoardModal={editBoardModal} />
           ))}
         </div>
       ) : (

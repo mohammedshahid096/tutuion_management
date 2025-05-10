@@ -1,9 +1,17 @@
 import { memo } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import moment from 'moment';
+import { Button } from '@/components/ui/button';
 
-const BoardCard = ({ board }) => {
+const BoardCard = ({ board, editBoardModal }) => {
   return (
     <Card className="hover:shadow-lg transition-shadow">
       <CardHeader>
@@ -34,6 +42,10 @@ const BoardCard = ({ board }) => {
           </div>
         </div>
       </CardContent>
+
+      <CardFooter>
+        <Button onClick={() => editBoardModal(board?._id)}>Edit</Button>
+      </CardFooter>
     </Card>
   );
 };

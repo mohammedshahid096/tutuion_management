@@ -5,6 +5,7 @@ import { boardActions } from '@/redux/combineActions';
 import BoardList from '../features/board/BoardList';
 import AddNewBoard from '../features/board/AddNewBoard';
 import MetaData from '@/utils/MetaData';
+import _ from 'lodash';
 
 const breadCrumbs = [{ label: 'Boards', href: null }];
 const BoardsPage = () => {
@@ -18,6 +19,7 @@ const BoardsPage = () => {
     boardName: '',
     boardDescription: '',
     isSubmitting: false,
+    selectedBoardId: null,
   });
 
   useEffect(() => {
@@ -39,7 +41,27 @@ const BoardsPage = () => {
         updateDetails.openCreateModal = false;
         updateDetails.boardName = '';
         updateDetails.boardDescription = '';
+        updateDetails.selectedBoardId = null;
       }
+
+      setInfo((prev) => ({
+        ...prev,
+        ...updateDetails,
+      }));
+    },
+    [info?.openCreateModal, info?.boardName, info?.boardDescription]
+  );
+
+  const editBoardModal = useCallback(
+    (boardId) => {
+      const updateDetails = {};
+      let boardDetails = _.find(boardsList, { _id: boardId });
+      console.log(boardDetails, 'shahid');
+
+      updateDetails.openCreateModal = true;
+      updateDetails.selectedBoardId = boardId;
+      updateDetails.boardName = boardDetails?.name;
+      updateDetails.boardDescription = boardDetails?.description;
 
       setInfo((prev) => ({
         ...prev,
@@ -52,7 +74,12 @@ const BoardsPage = () => {
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="Admin Boards | EduExcellence" />
-      <BoardList info={info} setInfo={setInfo} openCloseCreateModal={openCloseCreateModal} />
+      <BoardList
+        info={info}
+        setInfo={setInfo}
+        openCloseCreateModal={openCloseCreateModal}
+        editBoardModal={editBoardModal}
+      />
       <AddNewBoard info={info} setInfo={setInfo} openCloseCreateModal={openCloseCreateModal} />
     </MainWrapper>
   );

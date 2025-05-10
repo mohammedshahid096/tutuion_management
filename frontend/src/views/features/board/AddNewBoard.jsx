@@ -30,6 +30,7 @@ const AddNewBoard = ({ info, openCloseCreateModal }) => {
       name: info?.boardName || '',
       description: info?.boardDescription || '',
     },
+    enableReinitialize: true,
     validationSchema: validateSchema,
     onSubmit: async (values) => {
       let json = {
@@ -37,7 +38,11 @@ const AddNewBoard = ({ info, openCloseCreateModal }) => {
         description: values?.description,
       };
 
-      await submitHandlerFunction(json);
+      if (info?.selectedBoardId) {
+        await updateSubmitHandlerFunction(json);
+      } else {
+        await submitHandlerFunction(json);
+      }
     },
   });
   const { errors, values, touched, handleChange, handleSubmit, handleBlur, resetForm } = formik;
@@ -55,6 +60,19 @@ const AddNewBoard = ({ info, openCloseCreateModal }) => {
     }
   };
 
+  const updateSubmitHandlerFunction = async (json) => {
+    // let response = await createNewBoardAction(json);
+    // if (response[2] === 201) {
+    //   let updateData = _.cloneDeep(boardsList);
+    //   openCloseCreateModal(false);
+    //   resetForm();
+    //   updateData.unshift(response[1]?.data);
+    //   dispatch({ type: BOARD_LIST.update, payload: updateData });
+    // } else {
+    //   toast.error(response[1]?.message || 'unable to add to a board');
+    // }
+  };
+
   return (
     <ModalV1
       isOpen={info?.openCreateModal}
@@ -62,7 +80,7 @@ const AddNewBoard = ({ info, openCloseCreateModal }) => {
         openCloseCreateModal(false);
         resetForm();
       }}
-      title="Create New Board"
+      title={info?.selectedBoardId ? 'Update Board Details' : 'Create New Board'}
       size="small"
       maxHeight="fit-content"
     >
@@ -103,24 +121,39 @@ const AddNewBoard = ({ info, openCloseCreateModal }) => {
         </div>
 
         <div className="flex justify-end gap-3 pt-4">
-          <Button
-            type="button"
-            variant="outline"
-            disabled={info?.isSubmitting || false}
-            onClick={resetForm}
-          >
-            Reset
-          </Button>
-          <Button type="submit" disabled={info?.isSubmitting || false}>
-            {info?.isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Creating...
-              </>
-            ) : (
-              'Create Board'
-            )}
-          </Button>
+          {!info?.selectedBoardId ? (
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={info?.isSubmitting || false}
+                onClick={resetForm}
+              >
+                Reset
+              </Button>
+              <Button type="submit" disabled={info?.isSubmitting || false}>
+                {info?.isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  'Create Board'
+                )}
+              </Button>
+            </>
+          ) : (
+            <Button type="submit" disabled={info?.isSubmitting || false}>
+              {info?.isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Updating...
+                </>
+              ) : (
+                'Update Board'
+              )}
+            </Button>
+          )}
         </div>
       </form>
     </ModalV1>
