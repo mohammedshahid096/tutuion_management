@@ -165,11 +165,11 @@ const StudentsList = () => {
   );
 
   const navigateToStudentDetails = useCallback((studentDetails) => {
-    navigate(`${studentDetails?._id}?studentName=${studentDetails?.name}`);
+    navigate(`/admin/student-details/${studentDetails?._id}/student-profile`);
   }, []);
 
   const navigateToStudentAttendanceList = useCallback((studentDetails) => {
-    navigate(`/admin/attendance/${studentDetails?._id}?studentName=${studentDetails?.name}`);
+    navigate(`/admin/student-details/${studentDetails?._id}/student-attendance`);
   }, []);
 
   return (
