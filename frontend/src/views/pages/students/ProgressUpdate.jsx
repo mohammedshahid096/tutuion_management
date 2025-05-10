@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import MetaData from '@/utils/MetaData';
 
-const breadCrumbs = [{ label: 'enrollments', href: null }];
+const breadCrumbs = [{ label: 'students', href: '/admin/students' }];
 
 const ProgressUpdate = () => {
   const dispatch = useDispatch();
@@ -147,7 +147,16 @@ const ProgressUpdate = () => {
   };
 
   return (
-    <MainWrapper breadCrumbs={breadCrumbs}>
+    <MainWrapper
+      breadCrumbs={[
+        { label: 'students', href: '/admin/students' },
+        { label: 'Student Details', href: `/admin/student-details/${studentId}/student-profile` },
+        {
+          label: 'Student Enrollments',
+          href: `/admin/student-details/${studentId}/student-enrollments`,
+        },
+      ]}
+    >
       <MetaData title="Admin Progress Update | EduExcellence" />
       {info?.loading ? (
         <ProgressSkeleton />

@@ -110,7 +110,7 @@ const allRoutesMapper = [
     ),
   },
   {
-    path: '/admin/students/:studentId/:enrollmentId/:subjectId',
+    path: '/admin/student-details/:studentId/student-enrollments/:enrollmentId/:subjectId',
     component: (
       <AuthWrapper>
         <ProgressUpdate />
