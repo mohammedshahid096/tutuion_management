@@ -5,6 +5,7 @@ import {
   RESET_STUDENT_STATE,
   ENROLLMENT_LIST,
   ATTENDANCE_LIST,
+  UPDATE_STUDENT_STATE,
 } from './constant';
 
 const initialState = {
@@ -101,6 +102,15 @@ export const StudentReducer = (state = initialState, action) => {
       loading: false,
       error: action?.payload?.message || 'Fetching attendance failed', // Default error message
       statusCode: action?.payload?.statusCode || 500,
+    }),
+
+    // global update State
+    [UPDATE_STUDENT_STATE]: () => ({
+      ...state,
+      studentsList: action.payload?.studentsList ?? state.studentsList,
+      singleStudentDetail: action.payload?.singleStudentDetail ?? state.singleStudentDetail,
+      enrollmentsList: action.payload?.enrollmentsList ?? state.enrollmentsList,
+      attendanceList: action.payload?.attendanceList ?? state.attendanceList,
     }),
 
     // Clear errors

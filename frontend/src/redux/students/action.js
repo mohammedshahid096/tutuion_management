@@ -5,6 +5,7 @@ import {
   STUDENT_DETAILS,
   ENROLLMENT_LIST,
   ATTENDANCE_LIST,
+  UPDATE_STUDENT_STATE,
 } from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
@@ -140,6 +141,13 @@ const createNewEnrollmentAction = async (json) => {
   return response;
 };
 
+const updateStudentStateAction = (payload) => (dispatch) => {
+  dispatch({
+    type: UPDATE_STUDENT_STATE,
+    payload,
+  });
+};
+
 const clearStudentErrorsAction = () => (dispatch) => {
   dispatch({
     type: CLEAR_STUDENT_ERRORS,
@@ -159,6 +167,7 @@ export default {
   updateStudentProgressAction,
   createNewEnrollmentAction,
   getStudentAttendanceListAction,
+  updateStudentStateAction,
   clearStudentErrorsAction,
   resetStudentAction,
 };
