@@ -6,6 +6,7 @@ const {
   boards,
   subjects,
   chapters,
+  enrollmentProgress,
 } = require("../../Constants/model.constants");
 
 const ModelSchema = new mongoose.Schema(
@@ -42,6 +43,11 @@ const ModelSchema = new mongoose.Schema(
     },
     class: {
       type: Number,
+      required: true,
+    },
+    enrollment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: enrollmentProgress,
       required: true,
     },
     subject: {

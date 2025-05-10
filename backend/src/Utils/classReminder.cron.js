@@ -151,10 +151,11 @@ const createNewLiveClassUtility = async () => {
         "672493276aa409505ecd9b43"
       );
 
+      let enrollmentDetailsAvailable = await createLiveClass.getEnrollmentId();
       let isClassAvailable = await createLiveClass.checkAvailabilityMethod();
       // console.log("isAvailable", isClassAvailable);
 
-      if (isClassAvailable === null) {
+      if (isClassAvailable === null && enrollmentDetailsAvailable) {
         let meetDetails = await createLiveClass.createGoogleMeetMethod();
         // console.log("meetDetails", meetDetails);
         if (meetDetails) {

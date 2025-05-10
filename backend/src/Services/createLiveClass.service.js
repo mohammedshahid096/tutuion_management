@@ -2,6 +2,7 @@ const moment = require("moment");
 const attendanceModel = require("../Schema/attendance/attendance.model");
 const GoogleCalendarServiceClass = require("./google.calendar.service");
 const NodeMailerServiceClass = require("../aws_ses/mails/mail.index");
+const enrollmentProgressModel = require("../Schema/enrollment-progress/enrollmentProgress.model");
 
 class LiveClassServiceClass {
   constructor(
@@ -24,6 +25,7 @@ class LiveClassServiceClass {
     this.googleMeet = null;
     this.batchId = batchId;
     this.userId = userId;
+    this.enrollment = null;
   }
 
   async checkAvailabilityMethod() {
@@ -66,6 +68,21 @@ class LiveClassServiceClass {
     return this.googleMeet;
   }
 
+  async getEnrollmentId() {
+    let data = await enrollmentProgressModel
+      .findOne({
+        studentId: this.studentId,
+        batch: this.batchId,
+      })
+      .lean();
+
+    if (data) {
+      this.enrollment = data._id;
+      return data;
+    }
+    return null;
+  }
+
   async createMeetDocument() {
     let details = {
       student: this.studentId,
@@ -75,6 +92,7 @@ class LiveClassServiceClass {
       endDate: this.endDate,
       day: this.currentDay,
       class: this.studentDetails?.class,
+      enrollment: this.enrollment,
       board: this.studentDetails?.boardType.toString(),
       batch: this.batchId,
       createdBy: this.userId,
