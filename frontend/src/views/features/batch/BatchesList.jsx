@@ -37,10 +37,10 @@ const BatchesList = ({ info, setInfo }) => {
             value={info?.searchTerm}
             onChange={filterBatchListHandleChange}
           />
-          <Button className="whitespace-nowrap">
+          {/* <Button className="whitespace-nowrap">
             <Plus className="mr-2 h-4 w-4" />
             Add New Batch
-          </Button>
+          </Button> */}
         </div>
       </div>
 
@@ -67,9 +67,3 @@ const BatchesList = ({ info, setInfo }) => {
   );
 };
 export default memo(BatchesList);
-
-{
-  /* <div className="flex justify-center items-center h-64">
-<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-</div> */
-}
