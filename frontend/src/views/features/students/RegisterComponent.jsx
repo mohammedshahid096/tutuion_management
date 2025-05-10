@@ -290,8 +290,8 @@ const StudentRegistrationForm = ({
               <div className="space-y-2">
                 <Label htmlFor="classRoom">Class</Label>
                 <Select
-                  value={values?.classRoom}
-                  onValueChange={(value) => setFieldValue('classRoom', value)}
+                  value={values?.classRoom || ''}
+                  onValueChange={(value) => value && setFieldValue('classRoom', value)}
                   disabled={info?.isSubmitting}
                   readOnly={info?.isReadOnly}
                 >
@@ -316,7 +316,7 @@ const StudentRegistrationForm = ({
                 <Label htmlFor="boardType">Board Type</Label>
                 <Select
                   value={values?.boardType}
-                  onValueChange={(value) => setFieldValue('boardType', value)}
+                  onValueChange={(value) => value && setFieldValue('boardType', value)}
                   disabled={info?.isSubmitting}
                 >
                   <SelectTrigger>

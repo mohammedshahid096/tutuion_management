@@ -124,13 +124,6 @@ const UpdateStudentDetails = () => {
 
   useEffect(() => {
     if (batchesList && boardsList && studentId && singleStudentDetail?._id === studentId) {
-      console.log(
-        singleStudentDetail?.class,
-        info?.initialValues?.classRoom,
-        values.classRoom,
-        'shahid'
-      );
-
       let updateDetails = {
         name: singleStudentDetail?.name ?? info?.initialValues?.name,
         email: singleStudentDetail?.email ?? info?.initialValues?.email,
@@ -140,7 +133,7 @@ const UpdateStudentDetails = () => {
         phone: singleStudentDetail?.phone ?? info?.initialValues?.phone,
         address: singleStudentDetail?.address ?? info?.initialValues?.address,
         dateOfBirth: new Date(singleStudentDetail?.dateOfBirth) ?? info?.initialValues?.dateOfBirth,
-        classRoom: String(singleStudentDetail?.class || info?.initialValues?.classRoom),
+        classRoom: String(singleStudentDetail.class || info?.initialValues?.classRoom),
         school: singleStudentDetail?.school ?? info?.initialValues?.school,
         boardType: singleStudentDetail?.boardType?._id ?? info?.initialValues?.boardType,
         days: singleStudentDetail?.days ?? info?.initialValues?.days,
@@ -256,13 +249,6 @@ const UpdateStudentDetails = () => {
       isSubmitting: false,
     }));
   };
-
-  console.log(
-    singleStudentDetail?.class,
-    info?.initialValues?.classRoom,
-    values.classRoom,
-    'shahid'
-  );
 
   return (
     <>

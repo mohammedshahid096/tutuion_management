@@ -2,7 +2,6 @@
 2. validations and core key validation in the create-enrollment api
 3. updating the chapter details
 4. if there is the studentsList and student is created then need to update the studentList data.
-7. on initial state class and boardType is not getting
 8.
 9.
 10.
@@ -12,6 +11,7 @@
 4. adding a excel upload
 5. if there is no subject in the enrollment then submit button should not be visible
 6. class is not updating in the student details.
+7. on initial state class and boardType is not getting
 
 
 
