@@ -15,6 +15,7 @@ import CreateSubjectPage from './views/pages/subject/CreateSubject';
 import PublicChapterDetail from './views/pages/subject/PublicChapterDetail';
 import PublicSubjects from './views/pages/subject/PublicSubjects';
 import SubjectLists from './views/pages/subject/SubjectLists';
+import AdminAttendanceMark from './views/pages/attendance/AdminAttendanceMark';
 
 const allRoutesMapper = [
   {
@@ -114,6 +115,14 @@ const allRoutesMapper = [
     component: (
       <AuthWrapper>
         <ProgressUpdate />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/admin/mark-attendance',
+    component: (
+      <AuthWrapper>
+        <AdminAttendanceMark />
       </AuthWrapper>
     ),
   },

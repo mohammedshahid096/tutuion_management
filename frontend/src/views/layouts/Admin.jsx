@@ -52,7 +52,7 @@ const data = {
       title: 'Dashboard',
       url: '#',
       icon: School,
-      isActive: true,
+      isActive: false,
       items: [
         {
           title: 'Overview',
@@ -69,7 +69,7 @@ const data = {
       title: 'Batch',
       url: '#',
       icon: GraduationCap,
-      isActive: true,
+      isActive: false,
       items: [
         {
           title: 'Year Batches',
@@ -81,7 +81,7 @@ const data = {
       title: 'Education Boards',
       url: '#',
       icon: University,
-      isActive: true,
+      isActive: false,
       items: [
         {
           title: 'Boards',
@@ -125,7 +125,7 @@ const data = {
   quickAccess: [
     {
       name: 'Attendance',
-      url: '/admin/timings',
+      url: '/admin/mark-attendance',
       icon: Clock,
     },
     {
