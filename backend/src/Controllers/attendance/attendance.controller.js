@@ -202,7 +202,55 @@ const getAttendanceListController = async (req, res, next) => {
   }
 };
 
+const getAttendanceByDateController = async (req, res, next) => {
+  try {
+    logger.info(
+      "Controllers - attendance - attendance.controller - getAttendanceByDateController - Start"
+    );
+
+    const { date } = req.query;
+
+    let query = {};
+    const currentDate = date ? moment(date, "YYYY-MM-DD") : moment();
+
+    // Get start and end of the day in UTC to match stored ISO dates
+    const startOfDay = currentDate.startOf("day").toDate(); // 00:00 UTC
+    const endOfDay = currentDate.endOf("day").toDate(); // 23:59:59.999 UTC
+
+    query.startDate = {
+      $gte: startOfDay,
+      $lte: endOfDay,
+    };
+    const data = await attendanceModel
+      .find(query)
+      .select(
+        "summary student startDate endDate isPresent class board googleMeet.meetLink"
+      )
+      .populate("student board", "name")
+      .sort(sortConstants["startDate"])
+      .lean();
+
+    logger.info(
+      "Controllers - attendance - attendance.controller - getAttendanceByDateController - End"
+    );
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "Attendance list fetched successfully.",
+      data,
+    });
+  } catch (error) {
+    logger.error(
+      "Controllers - attendance - attendance.controller - getAttendanceByDateController - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 module.exports = {
   createNewLiveClassController,
   getAttendanceListController,
+  getAttendanceByDateController,
 };
