@@ -1,3 +1,4 @@
+import StudentDetails from './views/pages/students/StudentDetails';
 import AuthWrapper from './views/layouts/AuthWrapper';
 import Batches from './views/pages/Batches';
 import Boards from './views/pages/Boards';
@@ -101,10 +102,10 @@ const allRoutesMapper = [
     ),
   },
   {
-    path: '/admin/attendance/:studentId',
+    path: '/admin/student-details/:studentId/:pageType',
     component: (
       <AuthWrapper>
-        <AttendanceList />
+        <StudentDetails />
       </AuthWrapper>
     ),
   },

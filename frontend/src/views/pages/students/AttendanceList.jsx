@@ -1,20 +1,12 @@
 import React, { useState, useEffect, useCallback, memo } from 'react';
-import StudentsListComponent from '@/views/features/students/StudentsListComponent';
-import MainWrapper from '@/views/layouts/Mainwrapper';
 import { useDispatch, useSelector } from 'react-redux';
-import { batchActions, boardActions, studentActions } from '@/redux/combineActions';
+import { studentActions } from '@/redux/combineActions';
 import _ from 'lodash';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import MetaData from '@/utils/MetaData';
 import CustomTable1 from '@/views/components/tables/TableV1';
 import moment from 'moment';
 import { Badge } from '@/components/ui/badge';
-
-const breadCrumbs = [
-  { label: 'students', href: '/admin/students' },
-  { label: 'attendance', href: null },
-];
 
 const headers = [
   { title: 'Summary', key: 'summary' },
@@ -30,7 +22,6 @@ const AttendanceList = () => {
   const { getStudentEnrollmentListAction, getStudentAttendanceListAction } = studentActions;
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { enrollmentsList, attendanceList } = useSelector((state) => state.studentState);
 
   const [info, setInfo] = useState({
@@ -84,7 +75,7 @@ const AttendanceList = () => {
   );
 
   return (
-    <MainWrapper breadCrumbs={breadCrumbs}>
+    <>
       <MetaData title="Attendance | EduExcellence" />
       <CustomTable1
         headers={headers}
@@ -109,7 +100,7 @@ const AttendanceList = () => {
         currentPage={attendanceList?.currentPage}
         onPageChange={(page) => paginationHandlerFunction(page)}
       />
-    </MainWrapper>
+    </>
   );
 };
 
