@@ -1,6 +1,6 @@
-import React, { memo } from "react";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import React, { memo } from 'react';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   return (
@@ -12,16 +12,15 @@ const HeroSection = () => {
               Personalized Online Tutoring for Your Academic Success
             </h1>
             <p className="max-w-[600px] text-muted-foreground md:text-xl">
-              Expert one-on-one tutoring in English and Mathematics from the
-              comfort of your home. Boost your grades with personalized
-              attention.
+              Expert one-on-one tutoring in English and Mathematics from the comfort of your home.
+              Boost your grades with personalized attention.
             </p>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               <Button size="lg" asChild>
-                <Link to="#book">Book Your First Class</Link>
+                <a href="#contact">Book Your First Class</a>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link to="#services">Explore Services</Link>
+                <a href="#services">Explore Services</a>
               </Button>
             </div>
           </div>

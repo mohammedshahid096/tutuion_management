@@ -27,7 +27,7 @@ const PricingSection = () => {
           <Card>
             <CardHeader>
               <CardTitle>Single Session</CardTitle>
-              <div className="text-3xl font-bold">$25</div>
+              <div className="text-3xl font-bold">₹25</div>
               <CardDescription>Per 1-hour session</CardDescription>
             </CardHeader>
             <CardContent>
@@ -55,9 +55,9 @@ const PricingSection = () => {
           <Card className="border-primary pt-0">
             <CardHeader className="bg-primary text-primary-foreground py-3 rounded-t-lg">
               <CardTitle>Weekly Package</CardTitle>
-              <div className="text-3xl font-bold">$90</div>
+              <div className="text-3xl font-bold">₹90</div>
               <CardDescription className="text-primary-foreground/90">
-                4 sessions per month ($22.50/session)
+                4 sessions per month (₹22.50/session)
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
@@ -89,8 +89,8 @@ const PricingSection = () => {
           <Card>
             <CardHeader>
               <CardTitle>Intensive Package</CardTitle>
-              <div className="text-3xl font-bold">$160</div>
-              <CardDescription>8 sessions per month ($20/session)</CardDescription>
+              <div className="text-3xl font-bold">₹160</div>
+              <CardDescription>8 sessions per month (₹20/session)</CardDescription>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
