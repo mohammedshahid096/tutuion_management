@@ -4,8 +4,9 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useParams, useNavigate } from 'react-router-dom';
 import RegisterStudent from '@/views/pages/students/RegisterStudent';
-import UpateStudentDetails from './UpateStudentDetails';
+import UpdateStudentDetails from './UpateStudentDetails';
 import AttendanceList from './AttendanceList';
+import Enrollments from './Enrollments';
 
 const menuItems = [
   {
@@ -35,8 +36,8 @@ const menuItems = [
 ];
 
 const settingsMenuMapper = {
-  'student-profile': UpateStudentDetails,
-  'student-enrollments': null,
+  'student-profile': UpdateStudentDetails,
+  'student-enrollments': Enrollments,
   'student-attendance': AttendanceList,
 };
 

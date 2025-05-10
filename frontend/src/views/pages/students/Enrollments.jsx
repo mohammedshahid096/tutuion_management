@@ -1,6 +1,6 @@
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import React, { memo, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Table,
   TableBody,
@@ -10,7 +10,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { studentActions } from '@/redux/combineActions';
 
 const DataTableSkeleton = memo(({ numRows = 6, numCols = 5 }) => {
   return (
@@ -40,14 +41,32 @@ const DataTableSkeleton = memo(({ numRows = 6, numCols = 5 }) => {
   );
 });
 
-const Enrollments = ({ info, setInfo }) => {
+const Enrollments = () => {
   const { enrollmentsList, enrollmentLoading } = useSelector((state) => state.studentState);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { studentId } = useParams();
+  const { getStudentEnrollmentListAction } = studentActions;
+
+  const [info, setInfo] = useState({
+    registerEnrollmentModal: false,
+    createEnrollmentLoading: false,
+  });
+
+  useEffect(() => {
+    if (studentId && (!enrollmentsList || enrollmentsList?._id !== studentId)) {
+      fetchStudentEnrollmentListHandler();
+    }
+  }, []);
 
   const openCreateEnrollmentModalFunction = useCallback(() => {
     setInfo((prev) => ({ ...prev, registerEnrollmentModal: true }));
   }, [info?.registerEnrollmentModal]);
 
-  const navigate = useNavigate();
+  const fetchStudentEnrollmentListHandler = useCallback(async () => {
+    dispatch(getStudentEnrollmentListAction(studentId));
+  }, [enrollmentsList, studentId]);
+
   return !enrollmentLoading ? (
     <div className="container mx-auto py-8">
       <div className="flex justify-between">
