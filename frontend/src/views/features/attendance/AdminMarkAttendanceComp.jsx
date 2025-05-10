@@ -1,8 +1,7 @@
 import React, { memo, useState } from 'react';
-import { Search } from 'lucide-react';
+import { Search, CalendarIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
 import {
   Table,
   TableBody,
@@ -18,7 +17,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
 import _ from 'lodash';
+import moment from 'moment';
+import { format } from 'date-fns';
 
 const AdminMarkAttendanceComponent = ({
   classRooms,
@@ -63,6 +66,31 @@ const AdminMarkAttendanceComponent = ({
             </SelectContent>
           </Select>
 
+          <div>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start text-left font-normal"
+                  disabled={info?.isSubmitting}
+                  readOnly={info?.isReadOnly}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {info?.date ? format(info?.date, 'PPP') : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={info?.date}
+                  onSelect={(date) => filterChangeHandlerFunction('date', date)}
+                  // initialFocus
+                  disabled={(date) => date > new Date()}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+
           <Button onClick={() => filterChangeHandlerFunction('reset', null)}>Reset </Button>
         </div>
 
@@ -71,54 +99,34 @@ const AdminMarkAttendanceComponent = ({
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>S.no</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Class</TableHead>
                 <TableHead>Board</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>Attendance</TableHead>
-                {/* <TableHead>Actions</TableHead> */}
+                {/* <TableHead>Actions</TableHead>  */}
               </TableRow>
             </TableHeader>
             <TableBody>
               {data?.docs?.length > 0 ? (
-                data?.docs?.map((singleAttendance) => (
+                data?.docs?.map((singleAttendance, index) => (
                   <TableRow key={singleAttendance?._id}>
-                    <TableCell className="font-medium">{singleAttendance?.name}</TableCell>
+                    <TableCell>{index + 1}.</TableCell>
+                    <TableCell className="font-medium">{singleAttendance?.student?.name}</TableCell>
                     <TableCell>{singleAttendance?.class}</TableCell>
-
-                    {/* <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem
-                            className="flex items-center gap-2"
-                            onClick={() => navigateToStudentDetails(student)}
-                          >
-                            <Eye className="h-4 w-4" />
-                            View
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2"
-                            onClick={() => navigateToStudentAttendanceList(student)}
-                          >
-                            <List className="h-4 w-4" />
-                            Attendance
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="flex items-center gap-2">
-                            <Edit className="h-4 w-4" />
-                            Edit
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="flex items-center gap-2 text-red-600">
-                            <Trash2 className="h-4 w-4" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell> */}
+                    <TableCell>{singleAttendance?.board?.name}</TableCell>
+                    <TableCell>{moment(singleAttendance?.startDate).format('LLL')}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant={singleAttendance?.isPresent ? 'destructive' : 'secondary'}
+                        onClick={() =>
+                          filterChangeHandlerFunction('toggleAttendance', singleAttendance?._id)
+                        }
+                      >
+                        {singleAttendance?.isPresent ? 'Mark Absent' : 'Mark Present'}
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (

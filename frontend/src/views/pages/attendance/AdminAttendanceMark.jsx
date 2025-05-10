@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useNavigate } from 'react-router-dom';
 import MetaData from '@/utils/MetaData';
 import AdminMarkAttendanceComp from '@/views/features/attendance/AdminMarkAttendanceComp';
+import moment from 'moment';
 
 const breadCrumbs = [
   { label: 'students', href: '/admin/students' },
@@ -53,7 +54,7 @@ const AdminAttendanceMark = () => {
   const [info, setInfo] = useState({
     name: '',
     classRoom: '',
-    dateQuery: '',
+    date: new Date(),
   });
 
   useEffect(() => {
@@ -62,16 +63,32 @@ const AdminAttendanceMark = () => {
     }
   }, []);
 
-  const fetchDateWiseAttendanceListHandler = useCallback(async () => {
-    dispatch(getDateWiseAttendanceAction());
-  }, [dateWiseAttendance]);
+  const fetchDateWiseAttendanceListHandler = useCallback(
+    async (query = {}) => {
+      dispatch(getDateWiseAttendanceAction(query));
+    },
+    [dateWiseAttendance]
+  );
 
   const filterChangeHandlerFunction = useCallback(
     async (key, value) => {
+      let updateState = {};
       if (key === 'classRoom') {
+      } else if (key === 'date') {
+        updateState.date = value;
+        let query = {
+          date: moment(value).format('YYYY-MM-DD'),
+        };
+        // console.log(query, value, 'shahid');
+        fetchDateWiseAttendanceListHandler(query);
       }
+
+      setInfo((prev) => ({
+        ...prev,
+        ...updateState,
+      }));
     },
-    [info?.name, info?.classRoom]
+    [info?.name, info?.classRoom, info?.date]
   );
 
   const navigateToStudentDetails = useCallback((studentDetails) => {
