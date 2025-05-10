@@ -6,6 +6,7 @@ import {
   ENROLLMENT_LIST,
   ATTENDANCE_LIST,
   UPDATE_STUDENT_STATE,
+  DATE_WISE_ATTENDANCE,
 } from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
@@ -149,7 +150,7 @@ const updateStudentStateAction = (payload) => (dispatch) => {
 };
 
 const getDateWiseAttendanceAction = (queryObject) => async (dispatch) => {
-  dispatch({ type: ATTENDANCE_LIST.request });
+  dispatch({ type: DATE_WISE_ATTENDANCE.request });
 
   const token = getAccessToken();
   const query = queryObject ? objectToQueryString(queryObject) : '';
@@ -158,10 +159,10 @@ const getDateWiseAttendanceAction = (queryObject) => async (dispatch) => {
     token
   );
   if (response[0] === true) {
-    dispatch({ type: ATTENDANCE_LIST.success, payload: response[1]?.data });
+    dispatch({ type: DATE_WISE_ATTENDANCE.success, payload: response[1]?.data });
   } else {
     dispatch({
-      type: ATTENDANCE_LIST.fail,
+      type: DATE_WISE_ATTENDANCE.fail,
       payload: response[1],
     });
   }
@@ -187,6 +188,7 @@ export default {
   createNewEnrollmentAction,
   getStudentAttendanceListAction,
   updateStudentStateAction,
+  getDateWiseAttendanceAction,
   clearStudentErrorsAction,
   resetStudentAction,
 };

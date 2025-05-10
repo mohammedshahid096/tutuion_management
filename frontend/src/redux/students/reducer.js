@@ -63,10 +63,12 @@ export const StudentReducer = (state = initialState, action) => {
     }),
     [ATTENDANCE_LIST.success]: () => ({
       ...state,
+      loading: false,
       attendanceList: action.payload,
     }),
     [DATE_WISE_ATTENDANCE.success]: () => ({
       ...state,
+      loading: false,
       dateWiseAttendance: action.payload,
     }),
 

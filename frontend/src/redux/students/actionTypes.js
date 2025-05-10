@@ -5,7 +5,7 @@ export const STUDENT_ACTIONS_TYPES = {
   NEW_ENROLLMENT: '/new-enrollment',
   ATTENDANCE: '/attendances',
   ADMIN: '/admin',
-  DATE_WISE: 'date-wise',
+  DATE_WISE: '/date-wise',
 };
 
 export const BASE_STUDENT = '/user';

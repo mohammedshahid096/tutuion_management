@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, memo } from 'react';
 import MainWrapper from '@/views/layouts/Mainwrapper';
 import { useDispatch, useSelector } from 'react-redux';
-import { batchActions, boardActions, studentActions } from '@/redux/combineActions';
+import { studentActions } from '@/redux/combineActions';
 import _ from 'lodash';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useNavigate } from 'react-router-dom';
@@ -44,20 +44,27 @@ const DataTableSkeleton = memo(({ numRows = 6, numCols = 5 }) => {
 });
 
 const AdminAttendanceMark = () => {
-  const { getBatchesListAction } = batchActions;
+  const { getDateWiseAttendanceAction } = studentActions;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { batchesList } = useSelector((state) => state.batchState);
+  const { dateWiseAttendance, loading } = useSelector((state) => state.studentState);
 
   const [info, setInfo] = useState({
-    loading: false,
     name: '',
     classRoom: '',
     dateQuery: '',
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (!dateWiseAttendance) {
+      fetchDateWiseAttendanceListHandler();
+    }
+  }, []);
+
+  const fetchDateWiseAttendanceListHandler = useCallback(async () => {
+    dispatch(getDateWiseAttendanceAction());
+  }, [dateWiseAttendance]);
 
   const filterChangeHandlerFunction = useCallback(
     async (key, value) => {
@@ -74,12 +81,12 @@ const AdminAttendanceMark = () => {
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="Admin Students | EduExcellence" />
-      {info?.loading ? (
+      {loading ? (
         <DataTableSkeleton />
       ) : (
         <AdminMarkAttendanceComp
           classRooms={classRooms}
-          data={{}}
+          data={dateWiseAttendance}
           info={info}
           setInfo={setInfo}
           filterChangeHandlerFunction={filterChangeHandlerFunction}

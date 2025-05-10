@@ -221,7 +221,7 @@ const getAttendanceByDateController = async (req, res, next) => {
       $gte: startOfDay,
       $lte: endOfDay,
     };
-    const data = await attendanceModel
+    const docs = await attendanceModel
       .find(query)
       .select(
         "summary student startDate endDate isPresent class board googleMeet.meetLink"
@@ -233,6 +233,11 @@ const getAttendanceByDateController = async (req, res, next) => {
     logger.info(
       "Controllers - attendance - attendance.controller - getAttendanceByDateController - End"
     );
+
+    let data = {
+      date: currentDate.format("YYYY-MM-DD"),
+      docs,
+    };
 
     res.status(200).json({
       success: true,
