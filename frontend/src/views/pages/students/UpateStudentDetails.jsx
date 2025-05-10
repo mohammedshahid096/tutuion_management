@@ -240,7 +240,7 @@ const UpdateStudentDetails = () => {
           singleStudentDetail: response[1]?.data,
         })
       );
-      resetForm();
+      // resetForm();
     } else {
       toast.success(response[1]?.message || 'student is not updated try again later');
     }

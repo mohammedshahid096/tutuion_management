@@ -292,8 +292,8 @@ const StudentRegistrationForm = ({
                 <Select
                   value={values?.classRoom || ''}
                   onValueChange={(value) => value && setFieldValue('classRoom', value)}
-                  disabled={info?.isSubmitting}
-                  readOnly={info?.isReadOnly}
+                  disabled={info?.isSubmitting || info?.isReadOnly}
+                  // readOnly={info?.isReadOnly}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select class" />
@@ -317,7 +317,7 @@ const StudentRegistrationForm = ({
                 <Select
                   value={values?.boardType}
                   onValueChange={(value) => value && setFieldValue('boardType', value)}
-                  disabled={info?.isSubmitting}
+                  disabled={info?.isSubmitting || info?.isReadOnly}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select board type" />
