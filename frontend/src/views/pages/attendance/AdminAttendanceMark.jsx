@@ -55,6 +55,7 @@ const AdminAttendanceMark = () => {
     name: '',
     classRoom: '',
     date: new Date(),
+    filterDocs: null,
   });
 
   useEffect(() => {
@@ -73,14 +74,33 @@ const AdminAttendanceMark = () => {
   const filterChangeHandlerFunction = useCallback(
     async (key, value) => {
       let updateState = {};
-      if (key === 'classRoom') {
+      if (key === 'name') {
+        updateState.name = value;
+        updateState.filterDocs =
+          value === ''
+            ? null
+            : _.filter(dateWiseAttendance?.docs, (doc) =>
+                doc?.student?.name?.toLowerCase().includes(value.toLowerCase())
+              );
+      } else if (key === 'classRoom') {
+        updateState.classRoom = value === 'all' ? '' : value;
+        updateState.filterDocs =
+          value === 'all'
+            ? null
+            : _.filter(dateWiseAttendance?.docs, (doc) => doc?.class === Number(value));
       } else if (key === 'date') {
         updateState.date = value;
         let query = {
           date: moment(value).format('YYYY-MM-DD'),
         };
-        // console.log(query, value, 'shahid');
         fetchDateWiseAttendanceListHandler(query);
+      } else if (key === 'reset') {
+        updateState.name = '';
+        updateState.classRoom = '';
+        updateState.date = new Date();
+        updateState.filterDocs = null;
+
+        fetchDateWiseAttendanceListHandler();
       }
 
       setInfo((prev) => ({
@@ -88,7 +108,7 @@ const AdminAttendanceMark = () => {
         ...updateState,
       }));
     },
-    [info?.name, info?.classRoom, info?.date]
+    [info?.name, info?.classRoom, info?.date, dateWiseAttendance]
   );
 
   const navigateToStudentDetails = useCallback((studentDetails) => {
@@ -103,7 +123,7 @@ const AdminAttendanceMark = () => {
       ) : (
         <AdminMarkAttendanceComp
           classRooms={classRooms}
-          data={dateWiseAttendance}
+          data={info?.filterDocs ?? dateWiseAttendance?.docs}
           info={info}
           setInfo={setInfo}
           filterChangeHandlerFunction={filterChangeHandlerFunction}

@@ -109,8 +109,8 @@ const AdminMarkAttendanceComponent = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data?.docs?.length > 0 ? (
-                data?.docs?.map((singleAttendance, index) => (
+              {data?.length > 0 ? (
+                data?.map((singleAttendance, index) => (
                   <TableRow key={singleAttendance?._id}>
                     <TableCell>{index + 1}.</TableCell>
                     <TableCell className="font-medium">{singleAttendance?.student?.name}</TableCell>
