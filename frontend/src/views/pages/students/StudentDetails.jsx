@@ -13,6 +13,7 @@ const menuItems = [
     id: 'student-profile',
     label: 'Student Profile',
     breadCrumbs: [
+      { label: 'Students', href: '/admin/students' },
       { label: 'Student Details', href: null },
       { label: 'Profile', href: null },
     ],
@@ -21,6 +22,7 @@ const menuItems = [
     id: 'student-enrollments',
     label: 'Student Enrollments',
     breadCrumbs: [
+      { label: 'Students', href: '/admin/students' },
       { label: 'Student Details', href: null },
       { label: 'Enrollments', href: null },
     ],
@@ -29,6 +31,7 @@ const menuItems = [
     id: 'student-attendance',
     label: 'Student Attendance',
     breadCrumbs: [
+      { label: 'Students', href: '/admin/students' },
       { label: 'Student Details', href: null },
       { label: 'Attendance', href: null },
     ],
