@@ -3,7 +3,6 @@ import MainWrapper from '@/views/layouts/Mainwrapper';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useParams, useNavigate } from 'react-router-dom';
-
 import UpdateStudentDetails from './UpateStudentDetails';
 import AttendanceList from './AttendanceList';
 import Enrollments from './Enrollments';
@@ -47,6 +46,7 @@ const settingsMenuMapper = {
 const StudentDetails = () => {
   const { studentId, pageType } = useParams();
   const navigate = useNavigate();
+
   const ComponentRender = useMemo(
     () => settingsMenuMapper[pageType] || settingsMenuMapper['student-profile'],
     [pageType]
@@ -80,7 +80,7 @@ const StudentDetails = () => {
                     key={item.id}
                     variant={studentId === item.id ? 'secondary' : 'ghost'}
                     className={`justify-start text-left ${
-                      'profile' === item.id ? 'font-medium bg-gray-100 dark:bg-gray-700' : ''
+                      pageType === item.id ? 'font-medium bg-gray-100 dark:bg-gray-700' : ''
                     }`}
                     onClick={() => handleTabChange(item.id)}
                   >
