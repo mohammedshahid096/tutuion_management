@@ -148,6 +148,25 @@ const updateStudentStateAction = (payload) => (dispatch) => {
   });
 };
 
+const getDateWiseAttendanceAction = (queryObject) => async (dispatch) => {
+  dispatch({ type: ATTENDANCE_LIST.request });
+
+  const token = getAccessToken();
+  const query = queryObject ? objectToQueryString(queryObject) : '';
+  const response = await Service.fetchGet(
+    `${API.ATTENDANCE_BASE}${API.STUDENT_ACTIONS_TYPES.ADMIN}${API.STUDENT_ACTIONS_TYPES.DATE_WISE}${query}`,
+    token
+  );
+  if (response[0] === true) {
+    dispatch({ type: ATTENDANCE_LIST.success, payload: response[1]?.data });
+  } else {
+    dispatch({
+      type: ATTENDANCE_LIST.fail,
+      payload: response[1],
+    });
+  }
+};
+
 const clearStudentErrorsAction = () => (dispatch) => {
   dispatch({
     type: CLEAR_STUDENT_ERRORS,
