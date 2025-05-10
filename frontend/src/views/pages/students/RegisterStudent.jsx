@@ -10,9 +10,6 @@ import moment from 'moment';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import _ from 'lodash';
-import { useParams } from 'react-router-dom';
-import Enrollments from './Enrollments';
-import AddNewEnrollment from './AddNewEnrollment';
 import MetaData from '@/utils/MetaData';
 
 const breadCrumbs = [
@@ -80,10 +77,8 @@ const RegisterStudent = () => {
   } = studentActions;
 
   const dispatch = useDispatch();
-  const { studentId } = useParams();
   const { batchesList } = useSelector((state) => state.batchState);
   const { boardsList } = useSelector((state) => state.boardState);
-  const { singleStudentDetail, enrollmentsList } = useSelector((state) => state.studentState);
 
   const [info, setInfo] = useState({
     loading: true,
@@ -130,54 +125,16 @@ const RegisterStudent = () => {
     if (!boardsList) {
       fetchBoardsListHandler();
     }
-
-    if (studentId && (!singleStudentDetail || singleStudentDetail?._id !== studentId)) {
-      fetchStudentDetailHandler();
-    }
-    if (studentId && (!enrollmentsList || enrollmentsList?._id !== studentId)) {
-      fetchStudentEnrollmentListHandler();
-    }
   }, []);
 
   useEffect(() => {
-    if (batchesList && boardsList && !studentId) {
+    if (batchesList && boardsList) {
       setInfo((prev) => ({
         ...prev,
         loading: false,
       }));
     }
-    if (batchesList && boardsList && studentId && singleStudentDetail?._id === studentId) {
-      let updateDetails = {
-        name: singleStudentDetail?.name ?? info?.initialValues?.name,
-        email: singleStudentDetail?.email ?? info?.initialValues?.email,
-        gender: singleStudentDetail?.gender ?? info?.initialValues?.gender,
-        fatherName: singleStudentDetail?.fatherName ?? info?.initialValues?.fatherName,
-        motherName: singleStudentDetail?.motherName ?? info?.initialValues?.motherName,
-        phone: singleStudentDetail?.phone ?? info?.initialValues?.phone,
-        address: singleStudentDetail?.address ?? info?.initialValues?.address,
-        dateOfBirth: new Date(singleStudentDetail?.dateOfBirth) ?? info?.initialValues?.dateOfBirth,
-        classRoom: singleStudentDetail?.class.toString() ?? info?.initialValues?.classRoom,
-        school: singleStudentDetail?.school ?? info?.initialValues?.school,
-        boardType: singleStudentDetail?.boardType?._id ?? info?.initialValues?.boardType,
-        days: singleStudentDetail?.days ?? info?.initialValues?.days,
-        timings: {
-          start: singleStudentDetail?.timings?.startTimeHHMM ?? info?.initialValues?.timings?.start,
-          end: singleStudentDetail?.timings?.endTimeHHMM ?? info?.initialValues?.timings?.end,
-        },
-        dateOfJoining:
-          new Date(singleStudentDetail?.dateOfJoining) ?? info?.initialValues?.dateOfJoining,
-      };
-      setInfo((prev) => ({
-        ...prev,
-        loading: false,
-        isReadOnly: true,
-        initialValues: {
-          ...prev?.initialValues,
-          ...updateDetails,
-        },
-      }));
-    }
-  }, [boardsList, batchesList, singleStudentDetail, studentId]);
+  }, [boardsList, batchesList]);
 
   const validateSchema = Yup.object({
     name: Yup.string().required('Name is required'),
@@ -212,11 +169,7 @@ const RegisterStudent = () => {
     validationSchema: validateSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
-      if (studentId) {
-        await updateStudentDetailsHandler(values);
-      } else {
-        await registerNewStudentDetailsHandler(values);
-      }
+      await registerNewStudentDetailsHandler(values);
     },
   });
 
@@ -238,14 +191,6 @@ const RegisterStudent = () => {
   const fetchBoardsListHandler = useCallback(async () => {
     dispatch(getBoardsListAction());
   }, [boardsList]);
-
-  const fetchStudentDetailHandler = useCallback(async () => {
-    dispatch(getSingleStudentDetailAction(studentId));
-  }, [singleStudentDetail, studentId]);
-
-  const fetchStudentEnrollmentListHandler = useCallback(async () => {
-    dispatch(getStudentEnrollmentListAction(studentId));
-  }, [enrollmentsList, studentId]);
 
   const registerNewStudentDetailsHandler = async (details) => {
     setInfo((prev) => ({
@@ -278,60 +223,9 @@ const RegisterStudent = () => {
     }));
   };
 
-  const updateStudentDetailsHandler = async (details) => {
-    setInfo((prev) => ({
-      ...prev,
-      isSubmitting: true,
-      isReadOnly: true,
-    }));
-    // Format dates to ISO string
-    const payload = {
-      ...details,
-      dateOfBirth: moment(details.dateOfBirth).utc().format(),
-      dateOfJoining: moment(details.dateOfJoining).utc().format(),
-      timings: {
-        start: moment(details.timings.start, 'HH:mm').format(),
-        end: moment(details.timings.end, 'HH:mm').format(),
-      },
-    };
-    const response = await updateStudentDetailsAction(payload, studentId);
-    if (response[2] === 201) {
-      toast.success(response[1]?.message || 'successfully student is updated');
-      resetForm();
-    } else {
-      toast.success(response[1]?.message || 'student is not updated try again later');
-    }
-    setInfo((prev) => ({
-      ...prev,
-      isSubmitting: false,
-    }));
-  };
-
-  const submitEnrollmentFunctionHandler = async (details) => {
-    setInfo((prev) => ({
-      ...prev,
-      createEnrollmentLoading: true,
-    }));
-
-    let response = await createNewEnrollmentAction(details);
-    if (response[2] === 201) {
-      fetchStudentEnrollmentListHandler();
-      toast.success('successfully added ');
-    } else {
-      toast.error(response[1]?.message || 'something went wrong');
-    }
-    setInfo((prev) => ({
-      ...prev,
-      createEnrollmentLoading: false,
-      registerEnrollmentModal: false,
-    }));
-  };
-
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
-      <MetaData
-        title={`Admin ${studentId ? 'Student Details' : 'Register Student'} | EduExcellence `}
-      />
+      <MetaData title={`Admin  'Register Student' | EduExcellence `} />
       {info?.loading ? (
         <SubjectDetailsCardSkeleton />
       ) : (
@@ -348,19 +242,7 @@ const RegisterStudent = () => {
           setInfo={setInfo}
           classRooms={classRooms}
           boardTypes={boardsList}
-          studentId={studentId || null}
-        />
-      )}
-
-      {studentId && <Enrollments studentId={studentId} info={info} setInfo={setInfo} />}
-      {studentId && (
-        <AddNewEnrollment
-          studentId={studentId}
-          batches={batchesList}
-          studentDetails={singleStudentDetail}
-          info={info}
-          setInfo={setInfo}
-          submitEnrollmentFunctionHandler={submitEnrollmentFunctionHandler}
+          studentId={null}
         />
       )}
     </MainWrapper>
