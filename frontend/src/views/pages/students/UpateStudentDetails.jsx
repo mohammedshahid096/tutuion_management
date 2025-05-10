@@ -238,6 +238,7 @@ const UpdateStudentDetails = () => {
       dispatch(
         updateStudentStateAction({
           singleStudentDetail: response[1]?.data,
+          studentsList: null,
         })
       );
       // resetForm();
