@@ -12,6 +12,7 @@ import {
   GraduationCap,
   University,
   Book,
+  House,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -131,6 +132,11 @@ const data = {
       name: 'Syllabus',
       url: '/boards',
       icon: School,
+    },
+    {
+      name: 'Home Page',
+      url: '/',
+      icon: House,
     },
   ],
 };
