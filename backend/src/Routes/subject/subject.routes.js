@@ -19,6 +19,12 @@ const { ADMIN } = require("../../Constants/roles.constants");
 const {
   currentBatchDetailMiddleWare,
 } = require("../../Middlewares/batch.middleware");
+const {
+  updateChapterDetailsController,
+} = require("../../Controllers/chapters/chapter.controller");
+const {
+  updateChapterValidation,
+} = require("../../validators/chapters/chapters.joi");
 
 const SubjectRoutes = express.Router();
 
@@ -47,6 +53,11 @@ SubjectRoutes.route("/:subjectID")
   )
   .delete(Authentication, Authorization(ADMIN), deleteSubjectController);
 
-SubjectRoutes.route("/");
+SubjectRoutes.route("/chapters/:chapterId").put(
+  Authentication,
+  Authorization(ADMIN),
+  updateChapterValidation,
+  updateChapterDetailsController
+);
 
 module.exports = SubjectRoutes;

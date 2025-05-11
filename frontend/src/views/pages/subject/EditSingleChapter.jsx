@@ -111,6 +111,7 @@ const EditSingleChapter = () => {
         content: chapterDetails?.content || '',
         imageURL: chapterDetails?.imageURL || '',
         subchapters: _.map(chapterDetails?.subChapters, (item) => ({
+          _id: item?._id,
           title: item?.title || '',
           content: item?.content || '',
           imageURL: item?.imageURL || '',
@@ -154,7 +155,7 @@ const EditSingleChapter = () => {
     enableReinitialize: true,
     validationSchema,
     onSubmit: async (values) => {
-      // await handleCreateNewSubjectFunction(values);
+      await handleUpdateChapterDetailsFunction(values);
     },
   });
 
@@ -197,6 +198,10 @@ const EditSingleChapter = () => {
     dispatch(getPublicSubjectDetailAction(subjectId));
   }, [publicSubjectDetail, subjectId]);
 
+  const handleUpdateChapterDetailsFunction = async (values) => {
+    console.log(values, 'shahid');
+  };
+
   return (
     <MainWrapper
       breadCrumbs={[
@@ -210,7 +215,7 @@ const EditSingleChapter = () => {
         {loading ? (
           <ChapterCardSkeleton />
         ) : publicSubjectDetail ? (
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Subject Header Card */}
             <Card className="border-t-4 border-t-emerald-500 shadow-md">
               <CardHeader className="pb-2">
