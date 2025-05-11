@@ -88,7 +88,8 @@ const ChapterCardSkeleton = () => {
 const EditSingleChapter = () => {
   const dispatch = useDispatch();
   const { subjectId, chapterId } = useParams();
-  const { getPublicSubjectDetailAction, updateSubjectChapterAction } = subjectActions;
+  const { getPublicSubjectDetailAction, updateSubjectChapterAction, updateSubjectStateAction } =
+    subjectActions;
   const { publicSubjectDetail, loading } = useSelector((state) => state.subjectState);
 
   const [info, setInfo] = useState({
@@ -215,6 +216,15 @@ const EditSingleChapter = () => {
     let response = await updateSubjectChapterAction(chapterId, json);
     if (response[0] === true) {
       toast.success(response[1]?.message);
+      let updatePublicSubjectDetailState = _.cloneDeep(publicSubjectDetail);
+      updatePublicSubjectDetailState.chapters = updatePublicSubjectDetailState.chapters.map(
+        (item) => {
+          // console.log(item._id, 'shahid', item._id === chapterId);
+          if (item._id === chapterId) return response[1].data;
+          else return item;
+        }
+      );
+      dispatch(updateSubjectStateAction({ publicSubjectDetail: updatePublicSubjectDetailState }));
     } else {
       toast.error(response[1].message || 'something went wrong in updating the chapter details');
     }

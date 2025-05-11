@@ -39,9 +39,9 @@ const updateChapterDetailsController = async (req, res, next) => {
     logger.info(
       "Controllers - chapters - chapter.controller - updateChapterDetailsController - End"
     );
-    res.status(201).send({
+    res.status(200).send({
       success: true,
-      statusCode: 201,
+      statusCode: 200,
       message: "successfully subject chapter is updated",
       data,
     });

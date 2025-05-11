@@ -92,9 +92,10 @@ const updateSubjectChapterAction = async (chapterId, json) => {
   return response;
 };
 
-const updateSubjectStateAction = () => (dispatch) => {
+const updateSubjectStateAction = (payload) => (dispatch) => {
   dispatch({
     type: UPDATE_SUBJECT_STATE,
+    payload,
   });
 };
 
