@@ -123,7 +123,7 @@ const EditSingleChapter = () => {
         initialValues: _.cloneDeep(initialStateData),
       }));
     }
-  }, [subjectId]);
+  }, [publicSubjectDetail, subjectId]);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
