@@ -126,6 +126,26 @@ const AdminAttendanceMark = () => {
     navigate(`/admin/student-details/${studentDetails?._id}/student-profile`);
   }, []);
 
+  const updateTheAttendanceHandler = useCallback(() => {
+    let json = {
+      isPresent: !info?.selectedAttendance?.isPresent,
+      subject: info?.selectedSubject,
+      progress: {
+        chapter: info?.selectedChapter,
+        subChapterId: info?.selectedTopic,
+        value: info?.progressValue,
+      },
+    };
+
+    console.log(json, 'shahid');
+  }, [
+    info?.selectedAttendance,
+    info?.selectedSubject,
+    info?.selectedChapter,
+    info?.selectedTopic,
+    info?.progressValue,
+  ]);
+
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="Admin Students | EduExcellence" />
@@ -142,7 +162,11 @@ const AdminAttendanceMark = () => {
         />
       )}
 
-      <MarkAttendanceModal info={info} setInfo={setInfo} />
+      <MarkAttendanceModal
+        info={info}
+        setInfo={setInfo}
+        updateTheAttendanceHandler={updateTheAttendanceHandler}
+      />
     </MainWrapper>
   );
 };

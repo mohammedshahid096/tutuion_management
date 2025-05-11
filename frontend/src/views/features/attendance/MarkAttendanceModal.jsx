@@ -8,7 +8,7 @@ import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 
-const MarkAttendanceModal = ({ info, setInfo }) => {
+const MarkAttendanceModal = ({ info, setInfo, updateTheAttendanceHandler }) => {
   const dispatch = useDispatch();
   const { getPublicSubjectDetailAction } = subjectActions;
   const { publicSubjectDetail, loading } = useSelector((state) => state.subjectState);
@@ -185,7 +185,7 @@ const MarkAttendanceModal = ({ info, setInfo }) => {
 
       {info?.selectedTopic && info?.progressValue > 0 && (
         <div className="mt-4 flex justify-center">
-          <Button>
+          <Button onClick={updateTheAttendanceHandler}>
             {info?.isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
