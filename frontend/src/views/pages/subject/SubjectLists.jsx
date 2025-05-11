@@ -5,6 +5,7 @@ import SubjectListSkeleton from '@/views/features/subject/SubjectListSkeleton';
 import { useSelector, useDispatch } from 'react-redux';
 import { boardActions, subjectActions } from '@/redux/combineActions';
 import MetaData from '@/utils/MetaData';
+import { useNavigate } from 'react-router-dom';
 
 const breadCrumbs = [{ label: 'Subject Lists', href: null }];
 const classrooms = Array.from({ length: 12 }, (_, i) => i + 1);
@@ -13,6 +14,7 @@ const SubjectsListPage = () => {
   const { getBoardsListAction } = boardActions;
   const { getSubjectsListAction } = subjectActions;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { boardsList } = useSelector((state) => state.boardState);
   const { subjectsList, loading } = useSelector((state) => state.subjectState);
 
@@ -74,6 +76,10 @@ const SubjectsListPage = () => {
     fetchSubjectsListHandler(query);
   }, [info?.classRoom, info?.boardType, info?.name, loading]);
 
+  const navigateToEditPage = useCallback((subjectDetails) => {
+    navigate(`/admin/subject/${subjectDetails._id}`);
+  }, []);
+
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="Admin Subjects | EduExcellence" />
@@ -88,6 +94,7 @@ const SubjectsListPage = () => {
           handleChangeFilterFunction={handleChangeFilterFunction}
           handleFilterSearchFunction={handleFilterSearchFunction}
           buttonLoading={loading}
+          navigateToEditPage={navigateToEditPage}
         />
       )}
     </MainWrapper>

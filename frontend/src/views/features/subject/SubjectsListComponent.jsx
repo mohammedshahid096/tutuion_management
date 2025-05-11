@@ -10,7 +10,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { useSelector } from 'react-redux';
 import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Eye } from 'lucide-react';
 
 const SubjectsListComponent = ({
   classrooms,
@@ -19,6 +19,7 @@ const SubjectsListComponent = ({
   handleChangeFilterFunction,
   handleFilterSearchFunction,
   buttonLoading,
+  navigateToEditPage,
 }) => {
   // State for filters
   const { subjectsList } = useSelector((state) => state.subjectState);
@@ -116,6 +117,9 @@ const SubjectsListComponent = ({
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Created At
               </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -141,6 +145,9 @@ const SubjectsListComponent = ({
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {new Date(subject?.createdAt).toLocaleDateString()}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <Eye className="cursor-pointer" onClick={() => navigateToEditPage(subject)} />
                 </td>
               </tr>
             ))}
