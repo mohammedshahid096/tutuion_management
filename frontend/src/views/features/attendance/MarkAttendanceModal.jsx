@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { subjectActions } from '@/redux/combineActions';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
 
 const MarkAttendanceModal = ({ info, setInfo }) => {
   const dispatch = useDispatch();
@@ -160,6 +161,29 @@ const MarkAttendanceModal = ({ info, setInfo }) => {
       )}
 
       {info?.selectedTopic && (
+        <div className="mt-4">
+          <label
+            htmlFor="progressValue"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Progress Value
+          </label>
+
+          <div className="flex flex-1 gap-4">
+            <Slider
+              max={100}
+              min={0}
+              step={1}
+              defaultValue={[info?.progressValue || 0]}
+              name="progressValue"
+              onValueChange={(e) => setInfo((prev) => ({ ...prev, progressValue: e[0] }))}
+            />
+            <p className="text-sm">{info?.progressValue || 0}%</p>
+          </div>
+        </div>
+      )}
+
+      {info?.selectedTopic && info?.progressValue > 0 && (
         <div className="mt-4 flex justify-center">
           <Button>
             {info?.isSubmitting ? (

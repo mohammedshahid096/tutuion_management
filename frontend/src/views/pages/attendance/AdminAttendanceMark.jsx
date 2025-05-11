@@ -62,6 +62,7 @@ const AdminAttendanceMark = () => {
     selectedSubject: null,
     selectedChapter: null,
     selectedTopic: null,
+    progressValue: 0,
     isSubmitting: false,
   });
 
