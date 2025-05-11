@@ -2,8 +2,50 @@ import React, { memo, useCallback } from 'react';
 import ModalV1 from '@/views/components/modal/ModalV1';
 import { Label } from '@radix-ui/react-dropdown-menu';
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { subjectActions } from '@/redux/combineActions';
+import { Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const MarkAttendanceModal = ({ info, setInfo }) => {
+  const dispatch = useDispatch();
+  const { getPublicSubjectDetailAction } = subjectActions;
+  const { publicSubjectDetail, loading } = useSelector((state) => state.subjectState);
+
+  const selectSubjectHandler = useCallback(
+    (e) => {
+      let value = e?.target?.value || '';
+      setInfo((prev) => ({
+        ...prev,
+        selectedSubject: value,
+        selectedChapter: null,
+        selectedTopic: null,
+      }));
+      if (!publicSubjectDetail || publicSubjectDetail?._id !== value) {
+        fetchSubjectDetailsHandler(value);
+      }
+    },
+    [info?.selectedSubject, publicSubjectDetail]
+  );
+
+  const selectChapterHandler = useCallback(
+    (e) => {
+      const { name, value } = e?.target;
+      setInfo((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    },
+    [info?.selectedSubject, info?.selectedTopic]
+  );
+
+  const fetchSubjectDetailsHandler = useCallback(
+    (subjectId) => {
+      dispatch(getPublicSubjectDetailAction(subjectId));
+    },
+    [publicSubjectDetail]
+  );
+
   const closeModalFunction = useCallback(() => {
     setInfo((prev) => ({ ...prev, isOpen: false, selectedAttendance: null }));
   }, [info?.isOpen]);
@@ -39,6 +81,7 @@ const MarkAttendanceModal = ({ info, setInfo }) => {
           </div>
         </div>
       </div>
+
       <div>
         <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
           Select Subject
@@ -46,13 +89,90 @@ const MarkAttendanceModal = ({ info, setInfo }) => {
         <select
           id="countries"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          onChange={selectSubjectHandler}
+          value={info?.selectedSubject || ''}
         >
-          <option selected>Choose a subject</option>
+          <option selected value={''}>
+            Choose a subject
+          </option>
           {info?.selectedAttendance?.enrollment?.subjects?.map((singleSubject) => (
             <option value={singleSubject?.subjectId?._id}>{singleSubject?.subjectId?.name}</option>
           ))}
         </select>
       </div>
+
+      {info?.selectedSubject &&
+        (loading ? (
+          <div className="flex justify-center items-center mt-4">
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            fetching chapters...
+          </div>
+        ) : (
+          <div className="mt-4">
+            <label
+              for="selectedChapter"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Select Chapter
+            </label>
+            <select
+              id="selectedChapter"
+              name="selectedChapter"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange={selectChapterHandler}
+              value={info?.selectedChapter || ''}
+            >
+              <option selected value={''}>
+                Choose a chapter
+              </option>
+              {publicSubjectDetail?.chapters?.map((singleChapter) => (
+                <option value={singleChapter?._id}>{singleChapter?.title}</option>
+              ))}
+            </select>
+          </div>
+        ))}
+
+      {info?.selectedChapter && (
+        <div className="mt-4">
+          <label
+            for="selectedTopic"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Select Topic
+          </label>
+          <select
+            id="selectedTopic"
+            name="selectedTopic"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange={selectChapterHandler}
+            value={info?.selectedTopic || ''}
+          >
+            <option selected value={''}>
+              Choose a topic
+            </option>
+            {publicSubjectDetail?.chapters
+              ?.find((item) => item._id === info?.selectedChapter)
+              ?.subChapters.map((singleTopic) => (
+                <option value={singleTopic?._id}>{singleTopic?.title}</option>
+              ))}
+          </select>
+        </div>
+      )}
+
+      {info?.selectedTopic && (
+        <div className="mt-4 flex justify-center">
+          <Button>
+            {info?.isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                submitting...
+              </>
+            ) : (
+              'Mark As Present'
+            )}
+          </Button>
+        </div>
+      )}
     </ModalV1>
   );
 };

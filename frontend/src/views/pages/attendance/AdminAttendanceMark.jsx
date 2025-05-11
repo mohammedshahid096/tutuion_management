@@ -59,6 +59,10 @@ const AdminAttendanceMark = () => {
     filterDocs: null,
     isOpen: false,
     selectedAttendance: null,
+    selectedSubject: null,
+    selectedChapter: null,
+    selectedTopic: null,
+    isSubmitting: false,
   });
 
   useEffect(() => {
