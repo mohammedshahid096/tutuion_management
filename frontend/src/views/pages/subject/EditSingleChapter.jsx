@@ -21,6 +21,7 @@ import MainWrapper from '@/views/layouts/Mainwrapper';
 import { Button } from '@/components/ui/button';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import _ from 'lodash';
 
 const ChapterCardSkeleton = () => {
   return (
@@ -85,15 +86,9 @@ const ChapterCardSkeleton = () => {
 };
 const EditSingleChapter = () => {
   const dispatch = useDispatch();
-  const { subjectId } = useParams();
+  const { subjectId, chapterId } = useParams();
   const { getPublicSubjectDetailAction } = subjectActions;
   const { publicSubjectDetail, loading } = useSelector((state) => state.subjectState);
-
-  useEffect(() => {
-    if (!publicSubjectDetail || publicSubjectDetail?._id !== subjectId) {
-      fetchSubjectDetailsHandler();
-    }
-  }, [subjectId]);
 
   const [info, setInfo] = useState({
     isSubmitting: false,
@@ -104,6 +99,30 @@ const EditSingleChapter = () => {
       subchapters: [],
     },
   });
+
+  useEffect(() => {
+    if (!publicSubjectDetail || publicSubjectDetail?._id !== subjectId) {
+      fetchSubjectDetailsHandler();
+    }
+    if (publicSubjectDetail?._id === subjectId) {
+      let chapterDetails = _.find(publicSubjectDetail?.chapters, { _id: chapterId });
+      let initialStateData = {
+        title: chapterDetails?.title || '',
+        content: chapterDetails?.content || '',
+        imageURL: chapterDetails?.imageURL || '',
+        subchapters: _.map(chapterDetails?.subChapters, (item) => ({
+          title: item?.title || '',
+          content: item?.content || '',
+          imageURL: item?.imageURL || '',
+        })),
+      };
+
+      setInfo((prev) => ({
+        ...prev,
+        initialValues: _.cloneDeep(initialStateData),
+      }));
+    }
+  }, [subjectId]);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
@@ -135,7 +154,7 @@ const EditSingleChapter = () => {
     enableReinitialize: true,
     validationSchema,
     onSubmit: async (values) => {
-      await handleCreateNewSubjectFunction(values);
+      // await handleCreateNewSubjectFunction(values);
     },
   });
 
@@ -191,7 +210,7 @@ const EditSingleChapter = () => {
         {loading ? (
           <ChapterCardSkeleton />
         ) : publicSubjectDetail ? (
-          <div className="space-y-6">
+          <form className="space-y-6">
             {/* Subject Header Card */}
             <Card className="border-t-4 border-t-emerald-500 shadow-md">
               <CardHeader className="pb-2">
@@ -318,7 +337,9 @@ const EditSingleChapter = () => {
                       className="pl-4 border-l-2 border-gray-200 space-y-3"
                     >
                       <div className="flex justify-between items-center">
-                        <h5 className="text-sm font-medium">Subchapter {subchapterIndex + 1}</h5>
+                        <h5 className="text-sm font-medium underline">
+                          Subchapter : {subchapterIndex + 1}
+                        </h5>
                         <Button
                           type="button"
                           onClick={() => removeSubchapter(subchapterIndex)}
@@ -421,8 +442,12 @@ const EditSingleChapter = () => {
                   ))}
                 </div>
               </CardContent>
+
+              <CardFooter className="flex gap-6 justify-end">
+                <Button type="submit">Update Chapter</Button>
+              </CardFooter>
             </Card>
-          </div>
+          </form>
         ) : (
           <Card className="flex flex-col items-center justify-center p-8 text-center shadow-none border-0">
             <div className="rounded-full p-3 bg-muted mb-4">
