@@ -4,6 +4,7 @@ import {
   RESET_SUBJECT_STATE,
   PUBLIC_SUBJECTS_LIST,
   PUBLIC_SUBJECT_DETAIL,
+  UPDATE_SUBJECT_STATE,
 } from './constant';
 
 const initialState = {
@@ -72,6 +73,12 @@ export const SubjectReducer = (state = initialState, action) => {
       loading: false,
       error: action?.payload?.message || 'Request failed', // Default error message
       statusCode: action?.payload?.statusCode || 500,
+    }),
+
+    // global state purpose,
+    [UPDATE_SUBJECT_STATE]: () => ({
+      ...state,
+      ...action.payload,
     }),
 
     // Clear errors

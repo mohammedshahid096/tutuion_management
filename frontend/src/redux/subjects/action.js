@@ -4,6 +4,7 @@ import {
   RESET_SUBJECT_STATE,
   PUBLIC_SUBJECTS_LIST,
   PUBLIC_SUBJECT_DETAIL,
+  UPDATE_SUBJECT_STATE,
 } from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
@@ -91,6 +92,12 @@ const updateSubjectChapterAction = async (chapterId, json) => {
   return response;
 };
 
+const updateSubjectStateAction = () => (dispatch) => {
+  dispatch({
+    type: UPDATE_SUBJECT_STATE,
+  });
+};
+
 const clearSubjectErrorsAction = () => (dispatch) => {
   dispatch({
     type: CLEAR_SUBJECT_ERRORS,
@@ -107,6 +114,7 @@ export default {
   getPublicSubjectsListAction,
   getPublicSubjectDetailAction,
   updateSubjectChapterAction,
+  updateSubjectStateAction,
   clearSubjectErrorsAction,
   resetSubjectAction,
 };
