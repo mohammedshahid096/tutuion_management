@@ -219,7 +219,6 @@ const EditSingleChapter = () => {
       let updatePublicSubjectDetailState = _.cloneDeep(publicSubjectDetail);
       updatePublicSubjectDetailState.chapters = updatePublicSubjectDetailState.chapters.map(
         (item) => {
-          // console.log(item._id, 'shahid', item._id === chapterId);
           if (item._id === chapterId) return response[1].data;
           else return item;
         }

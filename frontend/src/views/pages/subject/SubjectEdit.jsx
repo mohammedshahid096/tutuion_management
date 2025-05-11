@@ -23,6 +23,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import MetaData from '@/utils/MetaData';
 import MainWrapper from '@/views/layouts/Mainwrapper';
 import { Button } from '@/components/ui/button';
+import toast from 'react-hot-toast';
 
 const breadCrumbs = [
   { label: 'Subjects', href: '/admin/subjects' },
@@ -93,14 +94,22 @@ const SubjectEdit = () => {
   const dispatch = useDispatch();
   const { subjectId } = useParams();
   const navigate = useNavigate();
-  const { getPublicSubjectDetailAction } = subjectActions;
-  const { publicSubjectDetail, loading } = useSelector((state) => state.subjectState);
+  const { getPublicSubjectDetailAction, clearSubjectErrorsAction } = subjectActions;
+  const { publicSubjectDetail, loading, error } = useSelector((state) => state.subjectState);
 
   useEffect(() => {
     if (!publicSubjectDetail || publicSubjectDetail?._id !== subjectId) {
       fetchSubjectDetailsHandler();
     }
   }, [subjectId]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      resetErrorStateFunction();
+    }
+  }, [error]);
+
   const fetchSubjectDetailsHandler = useCallback(() => {
     dispatch(getPublicSubjectDetailAction(subjectId));
   }, [publicSubjectDetail, subjectId]);
@@ -108,6 +117,10 @@ const SubjectEdit = () => {
   const navigateToChapter = useCallback((chapter) => {
     navigate(chapter._id);
   }, []);
+
+  const resetErrorStateFunction = useCallback(() => {
+    dispatch(clearSubjectErrorsAction());
+  }, [error]);
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title={`${publicSubjectDetail?.name || 'Chapter Details'} | EduExcellence`} />
