@@ -227,7 +227,7 @@ const SubjectEdit = () => {
                             </div>
                           ))}
                           <div className="flex gap-6 justify-end">
-                            <Button variant="destructive">Delete Chapter</Button>
+                            {/* <Button variant="destructive">Delete Chapter</Button> */}
                             <Button onClick={() => navigateToChapter(chapter)}>Edit Chapter</Button>
                           </div>
                         </div>
@@ -277,7 +277,7 @@ const SubjectEdit = () => {
                         </Badge>
 
                         <div className="flex gap-6 justify-end">
-                          <Button variant="destructive">Delete Chapter</Button>
+                          {/* <Button variant="destructive">Delete Chapter</Button> */}
                           <Button onClick={() => navigateToChapter(chapter)}>Edit Chapter</Button>
                         </div>
                       </CardFooter>
