@@ -17,6 +17,7 @@ import PublicSubjects from './views/pages/subject/PublicSubjects';
 import SubjectLists from './views/pages/subject/SubjectLists';
 import AdminAttendanceMark from './views/pages/attendance/AdminAttendanceMark';
 import SubjectEdit from './views/pages/subject/SubjectEdit';
+import EditSingleChapter from './views/pages/subject/EditSingleChapter';
 
 const allRoutesMapper = [
   {
@@ -84,6 +85,14 @@ const allRoutesMapper = [
     component: (
       <AuthWrapper>
         <SubjectEdit />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/admin/subject/:subjectId/:chapterId',
+    component: (
+      <AuthWrapper>
+        <EditSingleChapter />
       </AuthWrapper>
     ),
   },
