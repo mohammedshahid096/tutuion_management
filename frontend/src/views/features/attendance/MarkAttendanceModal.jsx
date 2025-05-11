@@ -21,12 +21,13 @@ const MarkAttendanceModal = ({ info, setInfo, updateTheAttendanceHandler }) => {
         selectedSubject: value,
         selectedChapter: null,
         selectedTopic: null,
+        progressValue: 0,
       }));
       if (!publicSubjectDetail || publicSubjectDetail?._id !== value) {
         fetchSubjectDetailsHandler(value);
       }
     },
-    [info?.selectedSubject, publicSubjectDetail]
+    [info]
   );
 
   const selectChapterHandler = useCallback(
@@ -37,7 +38,7 @@ const MarkAttendanceModal = ({ info, setInfo, updateTheAttendanceHandler }) => {
         [name]: value,
       }));
     },
-    [info?.selectedSubject, info?.selectedTopic]
+    [info]
   );
 
   const fetchSubjectDetailsHandler = useCallback(
@@ -48,8 +49,24 @@ const MarkAttendanceModal = ({ info, setInfo, updateTheAttendanceHandler }) => {
   );
 
   const closeModalFunction = useCallback(() => {
-    setInfo((prev) => ({ ...prev, isOpen: false, selectedAttendance: null }));
-  }, [info?.isOpen]);
+    setInfo((prev) => ({
+      ...prev,
+      isOpen: false,
+      selectedAttendance: null,
+      selectedAttendance: null,
+      selectedSubject: null,
+      selectedChapter: null,
+      selectedTopic: null,
+      progressValue: 0,
+    }));
+  }, [
+    info?.isOpen,
+    info?.selectedAttendance,
+    info?.selectedSubject,
+    info?.selectedChapter,
+    info?.selectedTopic,
+    info?.progressValue,
+  ]);
 
   return (
     <ModalV1
