@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import MetaData from '@/utils/MetaData';
 import AdminMarkAttendanceComp from '@/views/features/attendance/AdminMarkAttendanceComp';
 import moment from 'moment';
+import MarkAttendanceModal from '@/views/features/attendance/MarkAttendanceModal';
 
 const breadCrumbs = [
   { label: 'students', href: '/admin/students' },
@@ -56,6 +57,8 @@ const AdminAttendanceMark = () => {
     classRoom: '',
     date: new Date(),
     filterDocs: null,
+    isOpen: false,
+    selectedAttendance: null,
   });
 
   useEffect(() => {
@@ -101,6 +104,9 @@ const AdminAttendanceMark = () => {
         updateState.filterDocs = null;
 
         fetchDateWiseAttendanceListHandler();
+      } else if (key === 'toggleAttendance') {
+        updateState.isOpen = true;
+        updateState.selectedAttendance = value;
       }
 
       setInfo((prev) => ({
@@ -130,6 +136,8 @@ const AdminAttendanceMark = () => {
           navigateToStudentDetails={navigateToStudentDetails}
         />
       )}
+
+      <MarkAttendanceModal info={info} setInfo={setInfo} />
     </MainWrapper>
   );
 };

@@ -121,7 +121,7 @@ const AdminMarkAttendanceComponent = ({
                       <Button
                         variant={singleAttendance?.isPresent ? 'destructive' : 'secondary'}
                         onClick={() =>
-                          filterChangeHandlerFunction('toggleAttendance', singleAttendance?._id)
+                          filterChangeHandlerFunction('toggleAttendance', singleAttendance)
                         }
                       >
                         {singleAttendance?.isPresent ? 'Mark Absent' : 'Mark Present'}

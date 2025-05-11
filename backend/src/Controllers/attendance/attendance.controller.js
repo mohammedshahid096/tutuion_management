@@ -8,6 +8,7 @@ const userConstants = require("../../Constants/user.constants");
 const moment = require("moment");
 const NodeMailerServiceClass = require("../../aws_ses/mails/mail.index");
 const GoogleCalendarServiceClass = require("../../Services/google.calendar.service");
+const { subjects } = require("../../Constants/model.constants");
 
 const createNewLiveClassController = async (req, res, next) => {
   try {
@@ -224,9 +225,18 @@ const getAttendanceByDateController = async (req, res, next) => {
     const docs = await attendanceModel
       .find(query)
       .select(
-        "summary student startDate endDate isPresent class board googleMeet.meetLink"
+        "student startDate  isPresent class board googleMeet.meetLink enrollment"
       )
       .populate("student board", "name")
+      .populate({
+        path: "enrollment",
+        select: "subjects.subjectId",
+        populate: {
+          path: "subjects.subjectId",
+          model: subjects,
+          select: "name",
+        },
+      })
       .sort(sortConstants["startDate"])
       .lean();
 
