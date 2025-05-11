@@ -38,7 +38,7 @@ SubjectRoutes.route("/list").get(
 );
 
 SubjectRoutes.route("/:subjectID")
-  .get(Authentication, Authorization(ADMIN), getSingleSubjectDetailController)
+  .get(getSingleSubjectDetailController)
   .put(
     Authentication,
     Authorization(ADMIN),
@@ -46,5 +46,7 @@ SubjectRoutes.route("/:subjectID")
     updateSubjectController
   )
   .delete(Authentication, Authorization(ADMIN), deleteSubjectController);
+
+SubjectRoutes.route("/");
 
 module.exports = SubjectRoutes;
