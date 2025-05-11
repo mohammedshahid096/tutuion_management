@@ -15,7 +15,7 @@ import { BookOpen, GraduationCap, Calendar, School, Loader2 } from 'lucide-react
 import { Skeleton } from '@/components/ui/skeleton';
 import { useDispatch, useSelector } from 'react-redux';
 import { subjectActions } from '@/redux/combineActions';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import MetaData from '@/utils/MetaData';
 import MainWrapper from '@/views/layouts/Mainwrapper';
 import { Button } from '@/components/ui/button';
@@ -88,9 +88,13 @@ const ChapterCardSkeleton = () => {
 const EditSingleChapter = () => {
   const dispatch = useDispatch();
   const { subjectId, chapterId } = useParams();
-  const { getPublicSubjectDetailAction, updateSubjectChapterAction, updateSubjectStateAction } =
-    subjectActions;
-  const { publicSubjectDetail, loading } = useSelector((state) => state.subjectState);
+  const {
+    getPublicSubjectDetailAction,
+    updateSubjectChapterAction,
+    updateSubjectStateAction,
+    clearSubjectErrorsAction,
+  } = subjectActions;
+  const { publicSubjectDetail, loading, error } = useSelector((state) => state.subjectState);
 
   const [info, setInfo] = useState({
     isSubmitting: false,
@@ -100,6 +104,7 @@ const EditSingleChapter = () => {
       imageURL: '',
       subchapters: [],
     },
+    chapterDetails: null,
   });
 
   useEffect(() => {
@@ -123,9 +128,17 @@ const EditSingleChapter = () => {
       setInfo((prev) => ({
         ...prev,
         initialValues: _.cloneDeep(initialStateData),
+        chapterDetails: _.cloneDeep(chapterDetails) || null,
       }));
     }
   }, [publicSubjectDetail, subjectId]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      resetErrorStateFunction();
+    }
+  }, [error]);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
@@ -234,6 +247,10 @@ const EditSingleChapter = () => {
     }));
   };
 
+  const resetErrorStateFunction = useCallback(() => {
+    dispatch(clearSubjectErrorsAction());
+  }, [error]);
+
   return (
     <MainWrapper
       breadCrumbs={[
@@ -246,7 +263,7 @@ const EditSingleChapter = () => {
       <div className="px-4 mx-auto">
         {loading ? (
           <ChapterCardSkeleton />
-        ) : publicSubjectDetail ? (
+        ) : publicSubjectDetail && info?.chapterDetails ? (
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Subject Header Card */}
             <Card className="border-t-4 border-t-emerald-500 shadow-md">
