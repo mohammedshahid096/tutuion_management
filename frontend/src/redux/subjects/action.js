@@ -81,6 +81,16 @@ const createNewSubjectAction = async (json) => {
   return response;
 };
 
+const updateSubjectChapterAction = async (chapterId, json) => {
+  const token = getAccessToken();
+  const response = await Service.fetchPut(
+    `${API.BASE_SUBJECT}${API.SUBJECT_ACTIONS_TYPES.CHAPTERS}/${chapterId}`,
+    json,
+    token
+  );
+  return response;
+};
+
 const clearSubjectErrorsAction = () => (dispatch) => {
   dispatch({
     type: CLEAR_SUBJECT_ERRORS,
@@ -96,6 +106,7 @@ export default {
   createNewSubjectAction,
   getPublicSubjectsListAction,
   getPublicSubjectDetailAction,
+  updateSubjectChapterAction,
   clearSubjectErrorsAction,
   resetSubjectAction,
 };

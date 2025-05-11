@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { BookOpen, GraduationCap, Calendar, School } from 'lucide-react';
+import { BookOpen, GraduationCap, Calendar, School, Loader2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useDispatch, useSelector } from 'react-redux';
 import { subjectActions } from '@/redux/combineActions';
@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
+import toast from 'react-hot-toast';
 
 const ChapterCardSkeleton = () => {
   return (
@@ -87,7 +88,7 @@ const ChapterCardSkeleton = () => {
 const EditSingleChapter = () => {
   const dispatch = useDispatch();
   const { subjectId, chapterId } = useParams();
-  const { getPublicSubjectDetailAction } = subjectActions;
+  const { getPublicSubjectDetailAction, updateSubjectChapterAction } = subjectActions;
   const { publicSubjectDetail, loading } = useSelector((state) => state.subjectState);
 
   const [info, setInfo] = useState({
@@ -199,7 +200,29 @@ const EditSingleChapter = () => {
   }, [publicSubjectDetail, subjectId]);
 
   const handleUpdateChapterDetailsFunction = async (values) => {
-    console.log(values, 'shahid');
+    if (info?.isSubmitting) return;
+    setInfo((prev) => ({
+      ...prev,
+      isSubmitting: true,
+    }));
+    let json = {
+      title: values.title,
+      content: values.content,
+      imageURL: values.imageURL,
+      subchapters: values.subchapters,
+    };
+
+    let response = await updateSubjectChapterAction(chapterId, json);
+    if (response[0] === true) {
+      toast.success(response[1]?.message);
+    } else {
+      toast.error(response[1].message || 'something went wrong in updating the chapter details');
+    }
+
+    setInfo((prev) => ({
+      ...prev,
+      isSubmitting: false,
+    }));
   };
 
   return (
@@ -449,7 +472,16 @@ const EditSingleChapter = () => {
               </CardContent>
 
               <CardFooter className="flex gap-6 justify-end">
-                <Button type="submit">Update Chapter</Button>
+                <Button type="submit">
+                  {info?.isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Updating...
+                    </>
+                  ) : (
+                    'Update Chapter'
+                  )}
+                </Button>
               </CardFooter>
             </Card>
           </form>
