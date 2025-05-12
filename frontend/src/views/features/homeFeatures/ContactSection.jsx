@@ -3,8 +3,45 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, MessageSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+const classrooms = Array.from({ length: 12 }, (_, i) => i + 1);
+const preferredTime = ['any', 'morning', 'afternoon', 'evening'];
+const heardAboutUs = ['website', 'friend', 'social media', 'newspaper', 'other'];
 
 const ContactSection = () => {
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required('Full name is required').min(2, 'Too short!'),
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    phone: Yup.string()
+      .required('Phone number is required')
+      .matches(/^[0-9]+$/, 'Must be only digits')
+      .min(10, 'Too short!')
+      .max(15, 'Too long!'),
+    class: Yup.string().required('Class is required'),
+    preferredTime: Yup.string().required('Preferred time is required'),
+    heardAboutUs: Yup.string().required('This field is required'),
+    message: Yup.string().min(3, 'Message should be at least 3 characters'),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      phone: '',
+      class: '',
+      preferredTime: 'any',
+      heardAboutUs: 'website',
+      message: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {},
+  });
+  const { errors, values, touched, handleChange, handleSubmit, handleBlur, resetForm } = formik;
+
+  // console.log(values, 'shahid');
+
   return (
     <section id="contact" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
       <div className="container px-4 md:px-6">
@@ -29,6 +66,7 @@ const ContactSection = () => {
             </CardHeader>
             <CardContent>
               <form className="grid gap-4 md:grid-cols-2">
+                {/* name */}
                 <div className="grid gap-2">
                   <label
                     htmlFor="name"
@@ -38,10 +76,21 @@ const ContactSection = () => {
                   </label>
                   <input
                     id="name"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="Enter your name"
+                    name="name"
+                    className={`flex h-10 w-full rounded-md border ${
+                      touched.name && errors.name ? 'border-red-500' : 'border-input'
+                    } bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
+                    placeholder="Enter student name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values?.name}
                   />
+                  {touched?.name && errors?.name && (
+                    <div className="text-sm text-red-500">{errors?.name}</div>
+                  )}
                 </div>
+
+                {/* email */}
                 <div className="grid gap-2">
                   <label
                     htmlFor="email"
@@ -51,11 +100,22 @@ const ContactSection = () => {
                   </label>
                   <input
                     id="email"
+                    name="email"
                     type="email"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className={`flex h-10 w-full rounded-md border ${
+                      touched?.email && errors?.email ? 'border-red-500' : 'border-input'
+                    } bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
                     placeholder="Enter your email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.email}
                   />
+                  {touched?.email && errors?.email && (
+                    <div className="text-sm text-red-500">{errors?.email}</div>
+                  )}
                 </div>
+
+                {/* phone number */}
                 <div className="grid gap-2">
                   <label
                     htmlFor="phone"
@@ -65,28 +125,114 @@ const ContactSection = () => {
                   </label>
                   <input
                     id="phone"
+                    name="phone"
                     type="tel"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className={`flex h-10 w-full rounded-md border ${
+                      touched?.phone && errors?.phone ? 'border-red-500' : 'border-input'
+                    } bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
                     placeholder="Enter your phone number"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values?.phone}
                   />
+                  {touched?.phone && errors?.phone && (
+                    <div className="text-sm text-red-500">{errors?.phone}</div>
+                  )}
                 </div>
+
+                {/* class */}
                 <div className="grid gap-2">
                   <label
                     htmlFor="subject"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
-                    Subject
+                    Class
                   </label>
                   <select
-                    id="subject"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    id="class"
+                    name="class"
+                    className={`flex h-10 w-full rounded-md border ${
+                      touched?.class && errors?.class ? 'border-red-500' : 'border-input'
+                    } bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values?.class?.toString()}
                   >
-                    <option value="">Select a subject</option>
-                    <option value="english">English</option>
-                    <option value="math">Mathematics</option>
-                    <option value="both">Both Subjects</option>
+                    <option value="">Select a Class</option>
+                    {classrooms.map((classroom) => (
+                      <option key={classroom} value={classroom}>
+                        Class {classroom}
+                      </option>
+                    ))}
                   </select>
+                  {touched?.class && errors?.class && (
+                    <div className="text-sm text-red-500">{errors?.class}</div>
+                  )}
                 </div>
+
+                {/* preferred time */}
+                <div className="grid gap-2">
+                  <label
+                    htmlFor="preferredTime"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Time to Contact At ?
+                  </label>
+                  <select
+                    id="preferredTime"
+                    name="preferredTime"
+                    className={`flex h-10 w-full rounded-md border ${
+                      touched?.preferredTime && errors?.preferredTime
+                        ? 'border-red-500'
+                        : 'border-input'
+                    } bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={values?.preferredTime}
+                  >
+                    {preferredTime.map((singleTime) => (
+                      <option key={singleTime} value={singleTime}>
+                        {singleTime}
+                      </option>
+                    ))}
+                  </select>
+                  {touched?.preferredTime && errors?.preferredTime && (
+                    <div className="text-sm text-red-500">{errors?.preferredTime}</div>
+                  )}
+                </div>
+
+                {/* heard about us */}
+                <div className="grid gap-2">
+                  <label
+                    htmlFor="heardAboutUs"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Heard About us From ?
+                  </label>
+                  <select
+                    id="heardAboutUs"
+                    name="heardAboutUs"
+                    className={`flex h-10 w-full rounded-md border ${
+                      touched?.heardAboutUs && errors?.heardAboutUs
+                        ? 'border-red-500'
+                        : 'border-input'
+                    } bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values?.heardAboutUs}
+                  >
+                    {heardAboutUs.map((singleHeardAboutUs) => (
+                      <option key={singleHeardAboutUs} value={singleHeardAboutUs}>
+                        {singleHeardAboutUs}
+                      </option>
+                    ))}
+                  </select>
+                  {touched?.heardAboutUs && errors?.heardAboutUs && (
+                    <div className="text-sm text-red-500">{errors?.heardAboutUs}</div>
+                  )}
+                </div>
+
+                {/* message */}
                 <div className="grid gap-2 md:col-span-2">
                   <label
                     htmlFor="message"
@@ -96,14 +242,25 @@ const ContactSection = () => {
                   </label>
                   <textarea
                     id="message"
-                    className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    name="message"
+                    className={`flex min-h-[120px] w-full rounded-md border ${
+                      touched?.message && errors?.message ? 'border-red-500' : 'border-input'
+                    } bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
                     placeholder="Tell me about your learning goals or any questions you have"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values?.message}
                   ></textarea>
+                  {touched?.message && errors?.message && (
+                    <div className="text-sm text-red-500">{errors?.message}</div>
+                  )}
                 </div>
+
                 <Button className="md:col-span-2">Submit</Button>
               </form>
             </CardContent>
           </Card>
+
           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle>Other Ways to Connect</CardTitle>
