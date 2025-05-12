@@ -134,7 +134,7 @@ const AdminAttendanceMark = () => {
 
     setInfo((prev) => ({
       ...prev,
-      isSubmitting: false,
+      isSubmitting: true,
     }));
 
     let json = {

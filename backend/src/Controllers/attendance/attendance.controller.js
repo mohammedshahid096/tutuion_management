@@ -272,8 +272,14 @@ const updateAttendanceDetailsController = async (req, res, next) => {
     );
 
     const { attendanceId } = req.params;
-    const { isPresent, subject, subjectName, progress, progressDetails } =
-      req.body;
+    const {
+      isPresent,
+      subject,
+      subjectName,
+      progress,
+      progressDetails,
+      studentName,
+    } = req.body;
 
     let details = {
       isPresent,
@@ -282,11 +288,9 @@ const updateAttendanceDetailsController = async (req, res, next) => {
       updatedBy: req.user._id,
     };
 
-    const attendanceRecord = await attendanceModel.findByIdAndUpdate(
-      attendanceId,
-      { $set: details },
-      { new: true }
-    );
+    const attendanceRecord = await attendanceModel
+      .findByIdAndUpdate(attendanceId, { $set: details }, { new: true })
+      .populate("student", "name email");
 
     if (!attendanceRecord) {
       return next(httpErrors.NotFound("Attendance record not found."));
@@ -351,6 +355,27 @@ const updateAttendanceDetailsController = async (req, res, next) => {
           subjects: enrollmentDetails?.subjects,
         },
       }
+    );
+
+    let mailDetails = {
+      student_name: attendanceRecord?.student?.name,
+      subject_name: subjectName,
+      subject_chapter_name: progressDetails?.chapterName,
+      subject_topic_name: progressDetails?.subChapterName,
+      subject_topic_progress: progressDetails?.value,
+      student_status: isPresent ? "PRESENT" : "ABSENT",
+      class_date: moment(attendanceRecord.startDate).format("LLL"),
+      href_link: "www.shahidnagodriya.online",
+    };
+
+    let subjectTitle = `Attendance of (${attendanceRecord.summary})`;
+
+    const nodeMailerService = new NodeMailerServiceClass();
+    await nodeMailerService.sendMail(
+      attendanceRecord?.student?.email,
+      "attendanceReportTemplate",
+      subjectTitle,
+      mailDetails
     );
 
     logger.info(

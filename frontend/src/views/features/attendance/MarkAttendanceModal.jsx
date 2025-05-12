@@ -228,7 +228,7 @@ const MarkAttendanceModal = ({ info, setInfo, updateTheAttendanceHandler }) => {
 
       {info?.selectedTopic && info?.progressValue > 0 && (
         <div className="mt-4 flex justify-center">
-          <Button onClick={updateTheAttendanceHandler}>
+          <Button onClick={updateTheAttendanceHandler} disabled={info?.isSubmitting}>
             {info?.isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
