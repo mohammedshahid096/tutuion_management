@@ -272,9 +272,13 @@ const updateAttendanceDetailsController = async (req, res, next) => {
     );
 
     const { attendanceId } = req.params;
+    const { isPresent, subject, subjectName, progress, progressDetails } =
+      req.body;
 
     let details = {
-      ...req.body,
+      isPresent,
+      subject,
+      progress,
       updatedBy: req.user._id,
     };
 

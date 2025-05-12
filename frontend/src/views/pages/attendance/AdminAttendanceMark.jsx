@@ -150,16 +150,16 @@ const AdminAttendanceMark = () => {
         value: info?.progressValue,
       },
       progressDetails: {
-        chapter: _.find(publicSubjectDetail?.chapters, { _id: info?.selectedChapter })?.title,
-        subChapterId: publicSubjectDetail?.chapters
+        chapterName: _.find(publicSubjectDetail?.chapters, { _id: info?.selectedChapter })?.title,
+        subChapterName: publicSubjectDetail?.chapters
           ?.find((item) => item._id === info?.selectedChapter)
           ?.subChapters?.find((item) => item._id === info?.selectedTopic)?.title,
         value: info?.progressValue,
       },
     };
 
-    console.log(json, 'shahid');
-    return;
+    // console.log(json, 'shahid');
+    // return;
 
     let response = await updateAttendanceAction(info?.selectedAttendance?._id, json);
     if (response[0] === true) {
