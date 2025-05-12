@@ -16,6 +16,7 @@ const {
 const {
   getAttendanceDateWiseValidation,
   getAttendanceListValidation,
+  updateAttendanceDetailsValidation,
 } = require("../../validators/attendance/attendance.joi");
 
 const AttendanceRoutes = express.Router();
@@ -45,6 +46,7 @@ AttendanceRoutes.route("/admin/date-wise").get(
 AttendanceRoutes.route("/admin/:attendanceId").put(
   Authentication,
   Authorization(ADMIN),
+  updateAttendanceDetailsValidation,
   updateAttendanceDetailsController
 );
 

@@ -17,7 +17,22 @@ const getAttendanceDateWiseValidation = celebrate({
   }),
 });
 
+const updateAttendanceDetailsValidation = celebrate({
+  body: Joi.object({
+    isPresent: Joi.boolean().required().label("Is Present"),
+    subject: Joi.string().required().label("Subject ID"),
+    progress: Joi.object({
+      chapter: Joi.string().required().label("Chapter ID"),
+      subChapterId: Joi.string().required().label("Sub-Chapter ID"),
+      value: Joi.number().min(0).max(100).required().label("Progress Value"),
+    })
+      .required()
+      .label("Progress"),
+  }),
+});
+
 module.exports = {
   getAttendanceListValidation,
   getAttendanceDateWiseValidation,
+  updateAttendanceDetailsValidation,
 };
