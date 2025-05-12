@@ -9,6 +9,7 @@ import MetaData from '@/utils/MetaData';
 import AdminMarkAttendanceComp from '@/views/features/attendance/AdminMarkAttendanceComp';
 import moment from 'moment';
 import MarkAttendanceModal from '@/views/features/attendance/MarkAttendanceModal';
+import toast from 'react-hot-toast';
 
 const breadCrumbs = [
   { label: 'students', href: '/admin/students' },
@@ -46,7 +47,7 @@ const DataTableSkeleton = memo(({ numRows = 6, numCols = 5 }) => {
 });
 
 const AdminAttendanceMark = () => {
-  const { getDateWiseAttendanceAction } = studentActions;
+  const { getDateWiseAttendanceAction, updateAttendanceAction } = studentActions;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -126,7 +127,19 @@ const AdminAttendanceMark = () => {
     navigate(`/admin/student-details/${studentDetails?._id}/student-profile`);
   }, []);
 
-  const updateTheAttendanceHandler = useCallback(() => {
+  const updateTheAttendanceHandler = useCallback(async () => {
+    if (info?.isSubmitting) return;
+
+    setInfo((prev) => ({
+      ...prev,
+      isSubmitting: false,
+      isOpen: false,
+      selectedAttendance: null,
+      selectedSubject: null,
+      selectedChapter: null,
+      selectedTopic: null,
+      progressValue: 0,
+    }));
     let json = {
       isPresent: !info?.selectedAttendance?.isPresent,
       subject: info?.selectedSubject,
@@ -137,7 +150,14 @@ const AdminAttendanceMark = () => {
       },
     };
 
-    console.log(json, 'shahid');
+    let response = await updateAttendanceAction(info?.selectedAttendance?._id, json);
+    if (response[0] === true) {
+      toast.success(response[1]?.message);
+      setInfo((prev) => ({ ...prev }));
+    } else {
+      toast.error(response[1]?.message || 'something  went wrong while updating');
+      setInfo((prev) => ({ ...prev, isSubmitting: false }));
+    }
   }, [
     info?.selectedAttendance,
     info?.selectedSubject,

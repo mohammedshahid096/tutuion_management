@@ -168,6 +168,16 @@ const getDateWiseAttendanceAction = (queryObject) => async (dispatch) => {
   }
 };
 
+const updateAttendanceAction = async (attendanceId, json) => {
+  const token = getAccessToken();
+  const response = await Service.fetchPut(
+    `${API.ATTENDANCE_BASE}${API.STUDENT_ACTIONS_TYPES.ADMIN}/${attendanceId}`,
+    json,
+    token
+  );
+  return response;
+};
+
 const clearStudentErrorsAction = () => (dispatch) => {
   dispatch({
     type: CLEAR_STUDENT_ERRORS,
@@ -189,6 +199,7 @@ export default {
   getStudentAttendanceListAction,
   updateStudentStateAction,
   getDateWiseAttendanceAction,
+  updateAttendanceAction,
   clearStudentErrorsAction,
   resetStudentAction,
 };
