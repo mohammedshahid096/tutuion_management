@@ -273,21 +273,24 @@ const updateAttendanceDetailsController = async (req, res, next) => {
 
     const { attendanceId } = req.params;
 
-    const attendanceRecord = await attendanceModel.findById(attendanceId);
-
-    if (!attendanceRecord) {
-      return next(httpErrors.NotFound("Attendance record not found."));
-    }
-
     let details = {
       ...req.body,
       updatedBy: req.user._id,
     };
 
-    await attendanceRecord.save();
+    const attendanceRecord = await attendanceModel.findByIdAndUpdate(
+      attendanceId,
+      { $set: details },
+      { new: true }
+    );
+
+    if (!attendanceRecord) {
+      return next(httpErrors.NotFound("Attendance record not found."));
+    }
 
     let enrollmentDetails = await enrollmentProgressModel
       .findById(attendanceRecord.enrollment._id.toString())
+      .select("-googleMeet")
       .lean();
 
     enrollmentDetails?.subjects?.forEach((singleSubject) => {
@@ -343,9 +346,6 @@ const updateAttendanceDetailsController = async (req, res, next) => {
         $set: {
           subjects: enrollmentDetails?.subjects,
         },
-      },
-      {
-        new: true,
       }
     );
 
@@ -357,7 +357,7 @@ const updateAttendanceDetailsController = async (req, res, next) => {
       success: true,
       statusCode: 200,
       message: "Attendance details updated successfully.",
-      data: enrollmentDetails,
+      data: { attendance: attendanceRecord, enrollment: enrollmentDetails },
     });
   } catch (error) {
     logger.error(

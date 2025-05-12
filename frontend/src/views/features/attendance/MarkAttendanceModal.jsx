@@ -53,7 +53,6 @@ const MarkAttendanceModal = ({ info, setInfo, updateTheAttendanceHandler }) => {
       ...prev,
       isOpen: false,
       selectedAttendance: null,
-      selectedAttendance: null,
       selectedSubject: null,
       selectedChapter: null,
       selectedTopic: null,
