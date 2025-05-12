@@ -286,9 +286,9 @@ const updateAttendanceDetailsController = async (req, res, next) => {
 
     await attendanceRecord.save();
 
-    let enrollmentDetails = await enrollmentProgressModel.findById(
-      attendanceRecord.enrollment._id.toString()
-    );
+    let enrollmentDetails = await enrollmentProgressModel
+      .findById(attendanceRecord.enrollment._id.toString())
+      .lean();
 
     enrollmentDetails?.subjects?.forEach((singleSubject) => {
       let singleSubjectId = singleSubject?.subjectId?.toString();
@@ -296,6 +296,7 @@ const updateAttendanceDetailsController = async (req, res, next) => {
         let isChapterExist = singleSubject?.chapters?.find(
           (item) => item?._id?.toString() === details?.progress?.chapter
         );
+
         if (isChapterExist) {
           let isSubChapterExist = isChapterExist?.subChapters?.find(
             (item) => item?._id === details?.progress?.subChapterId
@@ -308,6 +309,17 @@ const updateAttendanceDetailsController = async (req, res, next) => {
               _id: details?.progress?.subChapterId,
               topicProgress: details?.progress?.value,
             });
+          }
+
+          // Calculate chapter progress (average of all sub-chapter progresses)
+          if (isChapterExist.subChapters?.length > 0) {
+            const totalProgress = isChapterExist.subChapters.reduce(
+              (sum, subChapter) => sum + (subChapter.topicProgress || 0),
+              0
+            );
+            isChapterExist.progress = Math.round(
+              totalProgress / isChapterExist.subChapters.length
+            );
           }
         } else {
           let newData = {
@@ -325,7 +337,17 @@ const updateAttendanceDetailsController = async (req, res, next) => {
       }
     });
 
-    await enrollmentDetails.save();
+    await enrollmentProgressModel.findByIdAndUpdate(
+      enrollmentDetails?._id?.toString(),
+      {
+        $set: {
+          subjects: enrollmentDetails?.subjects,
+        },
+      },
+      {
+        new: true,
+      }
+    );
 
     logger.info(
       "Controllers - attendance - attendance.controller - updateAttendanceDetailsController - End"
