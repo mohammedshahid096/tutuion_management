@@ -47,7 +47,8 @@ const DataTableSkeleton = memo(({ numRows = 6, numCols = 5 }) => {
 });
 
 const AdminAttendanceMark = () => {
-  const { getDateWiseAttendanceAction, updateAttendanceAction } = studentActions;
+  const { getDateWiseAttendanceAction, updateAttendanceAction, updateStudentStateAction } =
+    studentActions;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -133,12 +134,6 @@ const AdminAttendanceMark = () => {
     setInfo((prev) => ({
       ...prev,
       isSubmitting: false,
-      isOpen: false,
-      selectedAttendance: null,
-      selectedSubject: null,
-      selectedChapter: null,
-      selectedTopic: null,
-      progressValue: 0,
     }));
     let json = {
       isPresent: !info?.selectedAttendance?.isPresent,
@@ -153,7 +148,33 @@ const AdminAttendanceMark = () => {
     let response = await updateAttendanceAction(info?.selectedAttendance?._id, json);
     if (response[0] === true) {
       toast.success(response[1]?.message);
-      setInfo((prev) => ({ ...prev }));
+
+      let updateDetails = {
+        isPresent: response[1]?.data?.attendance?.isPresent,
+        subject: response[1]?.data?.attendance?.subject,
+        progress: response[1]?.data?.attendance?.progress,
+      };
+
+      let updatedState = _.cloneDeep(dateWiseAttendance);
+      updatedState.docs = _.map(updatedState?.docs, (att) => {
+        if (att._id === info?.selectedAttendance?._id) {
+          att = { ...att, ...updateDetails };
+          return att;
+        } else return att;
+      });
+
+      dispatch(updateStudentStateAction({ dateWiseAttendance: updatedState }));
+
+      setInfo((prev) => ({
+        ...prev,
+        isSubmitting: false,
+        isOpen: false,
+        selectedAttendance: null,
+        selectedSubject: null,
+        selectedChapter: null,
+        selectedTopic: null,
+        progressValue: 0,
+      }));
     } else {
       toast.error(response[1]?.message || 'something  went wrong while updating');
       setInfo((prev) => ({ ...prev, isSubmitting: false }));

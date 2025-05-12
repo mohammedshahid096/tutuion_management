@@ -142,13 +142,6 @@ const createNewEnrollmentAction = async (json) => {
   return response;
 };
 
-const updateStudentStateAction = (payload) => (dispatch) => {
-  dispatch({
-    type: UPDATE_STUDENT_STATE,
-    payload,
-  });
-};
-
 const getDateWiseAttendanceAction = (queryObject) => async (dispatch) => {
   dispatch({ type: DATE_WISE_ATTENDANCE.request });
 
@@ -176,6 +169,13 @@ const updateAttendanceAction = async (attendanceId, json) => {
     token
   );
   return response;
+};
+
+const updateStudentStateAction = (payload) => (dispatch) => {
+  dispatch({
+    type: UPDATE_STUDENT_STATE,
+    payload,
+  });
 };
 
 const clearStudentErrorsAction = () => (dispatch) => {

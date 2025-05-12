@@ -234,6 +234,8 @@ const MarkAttendanceModal = ({ info, setInfo, updateTheAttendanceHandler }) => {
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 submitting...
               </>
+            ) : info?.selectedAttendance?.isPresent ? (
+              'Mark As Absent'
             ) : (
               'Mark As Present'
             )}
