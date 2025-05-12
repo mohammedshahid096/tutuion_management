@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import ModalV1 from '@/views/components/modal/ModalV1';
 import { Label } from '@radix-ui/react-dropdown-menu';
 import moment from 'moment';
@@ -12,6 +12,33 @@ const MarkAttendanceModal = ({ info, setInfo, updateTheAttendanceHandler }) => {
   const dispatch = useDispatch();
   const { getPublicSubjectDetailAction } = subjectActions;
   const { publicSubjectDetail, loading } = useSelector((state) => state.subjectState);
+
+  useEffect(() => {
+    if (
+      info?.selectedAttendance?.subject &&
+      info?.selectedAttendance?.subject !== publicSubjectDetail?._id
+    ) {
+      fetchSubjectDetailsHandler(info?.selectedAttendance?.subject);
+      setInfo((prev) => ({
+        ...prev,
+        selectedSubject: info?.selectedAttendance?.subject || null,
+        selectedChapter: info?.selectedAttendance?.progress?.chapter || null,
+        selectedTopic: info?.selectedAttendance?.progress?.subChapterId || null,
+        progressValue: info?.selectedAttendance?.progress?.value || 0,
+      }));
+    } else if (
+      info?.selectedAttendance?.subject &&
+      info?.selectedAttendance?.subject === publicSubjectDetail?._id
+    ) {
+      setInfo((prev) => ({
+        ...prev,
+        selectedSubject: info?.selectedAttendance?.subject || null,
+        selectedChapter: info?.selectedAttendance?.progress?.chapter || null,
+        selectedTopic: info?.selectedAttendance?.progress?.subChapterId || null,
+        progressValue: info?.selectedAttendance?.progress?.value || 0,
+      }));
+    }
+  }, [info?.selectedAttendance?.subject, publicSubjectDetail]);
 
   const selectSubjectHandler = useCallback(
     (e) => {

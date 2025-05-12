@@ -226,7 +226,7 @@ const getAttendanceByDateController = async (req, res, next) => {
     const docs = await attendanceModel
       .find(query)
       .select(
-        "student startDate  isPresent class board googleMeet.meetLink enrollment"
+        "student startDate  isPresent class board googleMeet.meetLink enrollment progress subject"
       )
       .populate("student board", "name")
       .populate({
