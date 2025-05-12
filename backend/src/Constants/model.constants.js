@@ -7,4 +7,5 @@ module.exports = {
   settings: "settings",
   enrollmentProgress: "enrollment_progresses",
   attendances: "attendances",
+  contactForms: "contact_forms",
 };

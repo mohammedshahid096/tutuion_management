@@ -6,6 +6,7 @@ const BatchRoutes = require("./batch/batch.routes");
 const EnrollmentRoutes = require("./enrollment-progress/enrollment.routes");
 const AttendanceRoutes = require("./attendance/attendance.route");
 const GraphRoutes = require("./graphs/grahph.route");
+const ContactFormRoutes = require("./contact/contact.route");
 
 // Route config
 const IndexRoutes = express.Router();
@@ -44,6 +45,11 @@ IndexRoutes.use("/attendance", AttendanceRoutes);
 //  Graph routes
 // ----------------------------------------
 IndexRoutes.use("/graph", GraphRoutes);
+
+// ----------------------------------------
+//  Contact-Forms routes
+// ----------------------------------------
+IndexRoutes.use("/contact", ContactFormRoutes);
 
 // export the routes
 module.exports = IndexRoutes;
