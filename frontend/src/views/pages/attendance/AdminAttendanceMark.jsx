@@ -53,6 +53,7 @@ const AdminAttendanceMark = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { dateWiseAttendance, loading } = useSelector((state) => state.studentState);
+  const { publicSubjectDetail } = useSelector((state) => state.subjectState);
 
   const [info, setInfo] = useState({
     name: '',
@@ -135,15 +136,30 @@ const AdminAttendanceMark = () => {
       ...prev,
       isSubmitting: false,
     }));
+
     let json = {
       isPresent: !info?.selectedAttendance?.isPresent,
       subject: info?.selectedSubject,
+      subjectName: _.find(
+        info?.selectedAttendance?.enrollment?.subjects,
+        (subject) => subject?.subjectId?._id === info?.selectedSubject
+      )?.subjectId?.name,
       progress: {
         chapter: info?.selectedChapter,
         subChapterId: info?.selectedTopic,
         value: info?.progressValue,
       },
+      progressDetails: {
+        chapter: _.find(publicSubjectDetail?.chapters, { _id: info?.selectedChapter })?.title,
+        subChapterId: publicSubjectDetail?.chapters
+          ?.find((item) => item._id === info?.selectedChapter)
+          ?.subChapters?.find((item) => item._id === info?.selectedTopic)?.title,
+        value: info?.progressValue,
+      },
     };
+
+    console.log(json, 'shahid');
+    return;
 
     let response = await updateAttendanceAction(info?.selectedAttendance?._id, json);
     if (response[0] === true) {
@@ -185,6 +201,7 @@ const AdminAttendanceMark = () => {
     info?.selectedChapter,
     info?.selectedTopic,
     info?.progressValue,
+    publicSubjectDetail,
   ]);
 
   return (
