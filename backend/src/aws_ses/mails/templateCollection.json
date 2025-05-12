@@ -24,5 +24,24 @@
       "session_time",
       "session_meet_link"
     ]
+  },
+
+  "attendanceReportTemplate": {
+    "message": {
+      "subject": "Attendance Report",
+      "text": "Here is your attendance report for the recent sessions.",
+      "html": null
+    },
+    "fileName": "attendanceReport.template.html",
+    "dynamicDataKeys": [
+      "student_name",
+      "subject_name",
+      "subject_chapter_name",
+      "subject_topic_name",
+      "subject_topic_progress",
+      "student_status",
+      "class_date",
+      "href_link"
+    ]
   }
 }
