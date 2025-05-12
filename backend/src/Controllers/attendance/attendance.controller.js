@@ -1,6 +1,7 @@
 const httpErrors = require("http-errors");
 const logger = require("../../Config/logger.config");
 const attendanceModel = require("../../Schema/attendance/attendance.model");
+const enrollmentProgressModel = require("../../Schema/enrollment-progress/enrollmentProgress.model");
 const userModel = require("../../Schema/users/user.model");
 const errorHandling = require("../../Utils/errorHandling");
 const sortConstants = require("../../Constants/sort.constants");
@@ -264,8 +265,90 @@ const getAttendanceByDateController = async (req, res, next) => {
   }
 };
 
+const updateAttendanceDetailsController = async (req, res, next) => {
+  try {
+    logger.info(
+      "Controllers - attendance - attendance.controller - updateAttendanceDetailsController - Start"
+    );
+
+    const { attendanceId } = req.params;
+
+    const attendanceRecord = await attendanceModel.findById(attendanceId);
+
+    if (!attendanceRecord) {
+      return next(httpErrors.NotFound("Attendance record not found."));
+    }
+
+    let details = {
+      ...req.body,
+      updatedBy: req.user._id,
+    };
+
+    await attendanceRecord.save();
+
+    let enrollmentDetails = await enrollmentProgressModel.findById(
+      attendanceRecord.enrollment._id.toString()
+    );
+
+    enrollmentDetails?.subjects?.forEach((singleSubject) => {
+      let singleSubjectId = singleSubject?.subjectId?.toString();
+      if (singleSubjectId === details?.subject) {
+        let isChapterExist = singleSubject?.chapters?.find(
+          (item) => item?._id?.toString() === details?.progress?.chapter
+        );
+        if (isChapterExist) {
+          let isSubChapterExist = isChapterExist?.subChapters?.find(
+            (item) => item?._id === details?.progress?.subChapterId
+          );
+
+          if (isSubChapterExist) {
+            isSubChapterExist.topicProgress = details?.progress?.value;
+          } else {
+            isChapterExist?.subChapters?.push({
+              _id: details?.progress?.subChapterId,
+              topicProgress: details?.progress?.value,
+            });
+          }
+        } else {
+          let newData = {
+            _id: details?.progress?.chapter,
+            progress: details?.progress?.value,
+            subChapters: [
+              {
+                _id: details?.progress?.subChapterId,
+                topicProgress: details?.progress?.value,
+              },
+            ],
+          };
+          singleSubject?.chapters.push(newData);
+        }
+      }
+    });
+
+    await enrollmentDetails.save();
+
+    logger.info(
+      "Controllers - attendance - attendance.controller - updateAttendanceDetailsController - End"
+    );
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "Attendance details updated successfully.",
+      data: enrollmentDetails,
+    });
+  } catch (error) {
+    logger.error(
+      "Controllers - attendance - attendance.controller - updateAttendanceDetailsController - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 module.exports = {
   createNewLiveClassController,
   getAttendanceListController,
   getAttendanceByDateController,
+  updateAttendanceDetailsController,
 };

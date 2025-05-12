@@ -8,6 +8,7 @@ const {
   createNewLiveClassController,
   getAttendanceListController,
   getAttendanceByDateController,
+  updateAttendanceDetailsController,
 } = require("../../Controllers/attendance/attendance.controller");
 const {
   currentBatchDetailMiddleWare,
@@ -39,6 +40,12 @@ AttendanceRoutes.route("/admin/date-wise").get(
   Authorization(ADMIN),
   getAttendanceDateWiseValidation,
   getAttendanceByDateController
+);
+
+AttendanceRoutes.route("/admin/:attendanceId").put(
+  Authentication,
+  Authorization(ADMIN),
+  updateAttendanceDetailsController
 );
 
 module.exports = AttendanceRoutes;
