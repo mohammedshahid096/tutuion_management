@@ -13,6 +13,7 @@ import {
   University,
   Book,
   House,
+  FileText,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -118,6 +119,18 @@ const data = {
         {
           title: 'Register',
           url: '/admin/students/register',
+        },
+      ],
+    },
+    {
+      title: 'Contact',
+      url: '#',
+      icon: FileText,
+      isActive: false,
+      items: [
+        {
+          title: 'Form Responses',
+          url: '/admin/contact-forms',
         },
       ],
     },

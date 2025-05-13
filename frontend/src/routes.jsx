@@ -18,6 +18,7 @@ import SubjectLists from './views/pages/subject/SubjectLists';
 import AdminAttendanceMark from './views/pages/attendance/AdminAttendanceMark';
 import SubjectEdit from './views/pages/subject/SubjectEdit';
 import EditSingleChapter from './views/pages/subject/EditSingleChapter';
+import ContactList from './views/pages/contact/ContactList';
 
 const allRoutesMapper = [
   {
@@ -141,6 +142,14 @@ const allRoutesMapper = [
     component: (
       <AuthWrapper>
         <AdminAttendanceMark />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/admin/contact-forms',
+    component: (
+      <AuthWrapper>
+        <ContactList />
       </AuthWrapper>
     ),
   },
