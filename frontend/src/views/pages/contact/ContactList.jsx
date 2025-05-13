@@ -17,7 +17,6 @@ const headers = [
   { title: 'Message', key: 'message' },
   { title: 'Preferred Time', key: 'preferredTime' },
   { title: 'Heard From', key: 'heardAboutUs' },
-  { title: 'Heard From', key: 'heardAboutUs' },
   { title: 'Date', key: 'date' },
 ];
 
