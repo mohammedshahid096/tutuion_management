@@ -93,10 +93,10 @@ const LoginUserValidation = celebrate({
 });
 
 // Update password schema
-const UpdatePasswordValidation = celebrate({
+const updatePasswordValidation = celebrate({
   body: Joi.object({
-    old_password: passwordComplexity().required().label("Old Password"),
-    new_password: passwordComplexity().required().label("New Password"),
+    password: passwordComplexity().required().label("Old Password"),
+    newPassword: passwordComplexity().required().label("New Password"),
   }),
 });
 
@@ -131,7 +131,7 @@ module.exports = {
   RegisterStudentValidation,
   updateStudentValidation,
   LoginUserValidation,
-  UpdatePasswordValidation,
+  updatePasswordValidation,
   StrongPasswordValidation,
   getStudentsValidation,
 };

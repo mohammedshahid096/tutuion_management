@@ -6,6 +6,7 @@ const {
   GetStudentsController,
   singleStudentDetailsController,
   updateStudentDetailController,
+  updatePasswordController,
 } = require("../../Controllers/users/user.controller");
 const {
   Authentication,
@@ -16,6 +17,7 @@ const {
   LoginUserValidation,
   getStudentsValidation,
   updateStudentValidation,
+  updatePasswordValidation,
 } = require("../../validators/users/user.joi");
 const { ADMIN } = require("../../Constants/roles.constants");
 
@@ -30,6 +32,12 @@ UserRoutes.route("/register").post(
 );
 
 UserRoutes.route("/profile").get(Authentication, MyProfileController);
+
+UserRoutes.route("/profile/update-password").put(
+  Authentication,
+  updatePasswordValidation,
+  updatePasswordController
+);
 
 // students routes
 UserRoutes.route("/students").get(

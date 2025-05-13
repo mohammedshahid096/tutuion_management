@@ -245,6 +245,58 @@ const MyProfileController = async (req, res, next) => {
   }
 };
 
+const updatePasswordController = async (req, res, next) => {
+  try {
+    logger.info(
+      "Controller - user.controller - updatePasswordController - Start"
+    );
+    const { password, newPassword } = req.body;
+
+    if (password === newPassword) {
+      return next(
+        httpErrors.BadRequest("password and new password should not be same")
+      );
+    }
+
+    let userData = await userModel
+      .findById(req.user._id)
+      .select("+password -google");
+
+    // Check if the password is strong
+    const isPasswordMatch = await VerifyPasswordMethod(
+      password,
+      userData.password
+    );
+
+    if (!isPasswordMatch) {
+      return next(
+        httpErrors.BadRequest("passwords not match, enter the correct password")
+      );
+    }
+
+    userData.password = newPassword;
+    if (userData.role === ADMIN) {
+      await userData.save({ validateModifiedOnly: true });
+    } else {
+      await userData.save();
+    }
+    logger.info(
+      "Controller - user.controller - updatePasswordController - End"
+    );
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "Successfully  password is updated",
+    });
+  } catch (error) {
+    logger.error(
+      "Controller - user.controller - updatePasswordController - Start",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 const GetStudentsController = async (req, res, next) => {
   try {
     logger.info("Controller - user.controller - GetStudentsController - Start");
@@ -315,6 +367,7 @@ module.exports = {
   RegisterStudentController,
   GetStudentsController,
   MyProfileController,
+  updatePasswordController,
   singleStudentDetailsController,
   updateStudentDetailController,
 };
