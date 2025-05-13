@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileDetails from './ProfileDetails';
+import ChangePassword from './ChangePassword';
 
 const menuItems = [
   {
@@ -26,6 +27,7 @@ const menuItems = [
 
 const settingsMenuMapper = {
   'my-profile': ProfileDetails,
+  'change-password': ChangePassword,
 };
 
 const Setting = () => {
