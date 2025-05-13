@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import useAuth from '@/hooks/useAuth';
 import { useLocation } from 'react-router-dom';
 import { userActions } from '@/redux/combineActions';
@@ -7,7 +7,7 @@ import InitialLoader from '../components/loaders/loader';
 import DashboardSkeleton from '../skeletons/DashboardSkeleton';
 import Service from '@/services';
 
-const SidebarSkeleton = () => {
+const SidebarSkeleton = memo(() => {
   return (
     <div className="flex h-screen w-64 flex-col bg-white shadow-lg">
       {/* Header Skeleton */}
@@ -76,7 +76,7 @@ const SidebarSkeleton = () => {
       </div>
     </div>
   );
-};
+});
 
 const AuthWrapper = ({ children }) => {
   const { getUserProfileAction } = userActions;
@@ -120,4 +120,4 @@ const AuthWrapper = ({ children }) => {
   );
 };
 
-export default AuthWrapper;
+export default memo(AuthWrapper);
