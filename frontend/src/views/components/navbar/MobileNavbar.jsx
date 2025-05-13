@@ -1,10 +1,34 @@
 import React, { memo } from 'react';
-import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const MobileNavbar = ({ navList, loginNavigate, location }) => {
+const MobileNavbar = ({ navList, loginNavigate, pathname, handleClick2 }) => {
+  const navigate = useNavigate();
+
+  const handleClick = (to) => {
+    console.log(to, 'shahid');
+    navigate(to);
+
+    // Extract hash
+    const hash = to.split('#')[1];
+    if (hash) {
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'instant' });
+        }
+      }, 100); // Small delay for navigation/render
+    }
+  };
+
   return (
     <Drawer direction="bottom" className="md:hidden">
       <DrawerTrigger asChild>
@@ -14,48 +38,17 @@ const MobileNavbar = ({ navList, loginNavigate, location }) => {
         </Button>
       </DrawerTrigger>
       <DrawerContent className="h-[60vh]">
+        <DrawerTitle className="hidden">Menu</DrawerTitle>
         <div className="mt-4 flex flex-col items-center justify-center space-y-4">
-          {/* <DrawerClose asChild>
-            <Link to="#about" className="text-lg font-medium hover:text-primary">
-              About
-            </Link>
-          </DrawerClose>
-          <DrawerClose asChild>
-            <Link to="#services" className="text-lg font-medium hover:text-primary">
-              Services
-            </Link>
-          </DrawerClose>
-          <DrawerClose asChild>
-            <Link to="#how-it-works" className="text-lg font-medium hover:text-primary">
-              How It Works
-            </Link>
-          </DrawerClose>
-          <DrawerClose asChild>
-            <Link to="#pricing" className="text-lg font-medium hover:text-primary">
-              Pricing
-            </Link>
-          </DrawerClose>
-          <DrawerClose asChild>
-            <Link to="#testimonials" className="text-lg font-medium hover:text-primary">
-              Testimonials
-            </Link>
-          </DrawerClose>
-          <DrawerClose asChild>
-            <Link to="#contact" className="text-lg font-medium hover:text-primary">
-              Contact
-            </Link>
-          </DrawerClose>
-          <DrawerClose asChild>
-            <Button className="mt-2" asChild>
-              <Link to="#book">Book a Class</Link>
-            </Button>
-          </DrawerClose> */}
-
           {navList?.map((singleNav) => {
-            if (location.pathname === '/') {
+            if (pathname === '/') {
               return (
                 <DrawerClose asChild>
-                  <a className="text-lg font-medium hover:text-primary" href={singleNav?.homeRoute}>
+                  <a
+                    className="text-lg font-medium hover:text-primary"
+                    // href={singleNav?.homeRoute}
+                    onClick={() => handleClick(singleNav?.homeRoute)}
+                  >
                     {singleNav?.name}
                   </a>
                 </DrawerClose>
@@ -63,9 +56,13 @@ const MobileNavbar = ({ navList, loginNavigate, location }) => {
             } else {
               return (
                 <DrawerClose asChild>
-                  <Link to={singleNav?.route} className="text-lg font-medium hover:text-primary">
+                  <a
+                    //  to={singleNav?.route}
+                    className="text-lg font-medium hover:text-primary"
+                    onClick={() => handleClick2(singleNav?.route)}
+                  >
                     {singleNav?.name}
-                  </Link>
+                  </a>
                 </DrawerClose>
               );
             }

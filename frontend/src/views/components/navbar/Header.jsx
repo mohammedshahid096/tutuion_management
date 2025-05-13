@@ -11,7 +11,7 @@ const Header = () => {
   const navList = [
     { name: 'About', homeRoute: '#about', route: '/#about' },
     { name: 'Services', homeRoute: '#services', route: '/#services' },
-    { name: 'How It Works', homeRoute: '#pricing', route: '/#pricing' },
+    { name: 'How It Works', homeRoute: '#how-it-works', route: '/#how-it-works' },
     { name: 'Testimonials', homeRoute: '#testimonials', route: '/#testimonials' },
     { name: 'Contact', homeRoute: '#contact', route: '/#contact' },
     // { name: 'Syllabus', homeRoute: null, route: '/#boards' },
@@ -22,6 +22,21 @@ const Header = () => {
     if (token) navigate('/dashboard');
     else navigate('/login');
   }, []);
+
+  const handleClick = (to) => {
+    navigate(to);
+
+    // Extract hash
+    const hash = to.split('#')[1];
+    if (hash) {
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'instant' });
+        }
+      }, 500);
+    }
+  };
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
@@ -41,9 +56,13 @@ const Header = () => {
                 );
               } else {
                 return (
-                  <Link to={singleNav?.route} className="text-sm font-medium hover:text-primary">
+                  <a
+                    // to={singleNav?.route}
+                    className="text-sm font-medium hover:text-primary cursor-pointer"
+                    onClick={() => handleClick(singleNav?.route)}
+                  >
                     {singleNav?.name}
-                  </Link>
+                  </a>
                 );
               }
             })}
@@ -54,7 +73,12 @@ const Header = () => {
           </nav>
 
           {/* Mobile Navigation - Hamburger Menu */}
-          <MobileNavbar navList={navList} loginNavigate={loginNavigate} location={location} />
+          <MobileNavbar
+            navList={navList}
+            loginNavigate={loginNavigate}
+            pathname={location.pathname}
+            handleClick2={handleClick}
+          />
         </div>
       </div>
     </header>
