@@ -6,10 +6,7 @@ import { getAccessToken } from '@/helpers/local-storage';
 const getUserProfileAction = () => async (dispatch) => {
   dispatch({ type: USER_PROFILE.request });
   const token = getAccessToken();
-  const response = await Service.fetchGet(
-    `${API.USERS_PROFILE.USER}${API.USERS_PROFILE.Profile}`,
-    token
-  );
+  const response = await Service.fetchGet(`${API.BASE_USER}${API.USERS_PROFILE.Profile}`, token);
   if (response[0] === true) {
     dispatch({ type: USER_PROFILE.success, payload: response[1].data });
   } else {
@@ -18,6 +15,16 @@ const getUserProfileAction = () => async (dispatch) => {
       payload: response[1],
     });
   }
+};
+
+const updateUserPasswordAction = async (json) => {
+  const token = getAccessToken();
+  const response = await Service.fetchPut(
+    `${API.BASE_USER}${API.USERS_PROFILE.Profile}${API.USERS_PROFILE.UPDATE_PASSWORD}`,
+    json,
+    token
+  );
+  return response;
 };
 
 const clearUserProfileErrorsAction = () => (dispatch) => {
@@ -31,6 +38,7 @@ const resetUserProfileAction = () => (dispatch) => {
 };
 export default {
   getUserProfileAction,
+  updateUserPasswordAction,
   clearUserProfileErrorsAction,
   resetUserProfileAction,
 };
