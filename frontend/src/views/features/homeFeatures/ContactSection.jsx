@@ -1,16 +1,22 @@
-import React, { memo } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Mail, MessageSquare } from 'lucide-react';
+import { Mail, MessageSquare, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { submitContactFormApi } from '@/apis/contact.api';
+import toast from 'react-hot-toast';
 
 const classrooms = Array.from({ length: 12 }, (_, i) => i + 1);
 const preferredTime = ['any', 'morning', 'afternoon', 'evening'];
 const heardAboutUs = ['website', 'friend', 'social media', 'newspaper', 'other'];
 
 const ContactSection = () => {
+  const [info, setInfo] = useState({
+    isSubmitting: false,
+  });
+
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Full name is required').min(2, 'Too short!'),
     email: Yup.string().email('Invalid email').required('Email is required'),
@@ -36,11 +42,45 @@ const ContactSection = () => {
       message: '',
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {},
+    onSubmit: async (values) => {
+      submitContactFormHandler(values);
+    },
   });
   const { errors, values, touched, handleChange, handleSubmit, handleBlur, resetForm } = formik;
 
-  // console.log(values, 'shahid');
+  const submitContactFormHandler = useCallback(
+    async (values) => {
+      if (info?.isSubmitting) return;
+
+      setInfo((prev) => ({
+        ...prev,
+        isSubmitting: true,
+      }));
+
+      let json = {
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        studentClass: values.class,
+        preferredTime: values.preferredTime,
+        heardAboutUs: values.heardAboutUs,
+      };
+
+      const response = await submitContactFormApi(json);
+      if (response[2] === 201) {
+        toast.success('Thank you! Your message has been received. We will contact you soon.');
+        resetForm();
+      } else {
+        toast.error(response[1]?.message || 'something went wrong please try again later');
+      }
+
+      setInfo((prev) => ({
+        ...prev,
+        isSubmitting: false,
+      }));
+    },
+    [info?.isSubmitting]
+  );
 
   return (
     <section id="contact" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
@@ -65,7 +105,7 @@ const ContactSection = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="grid gap-4 md:grid-cols-2">
+              <form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-2">
                 {/* name */}
                 <div className="grid gap-2">
                   <label
@@ -84,6 +124,8 @@ const ContactSection = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values?.name}
+                    readOnly={info?.isSubmitting}
+                    disabled={info?.isSubmitting}
                   />
                   {touched?.name && errors?.name && (
                     <div className="text-sm text-red-500">{errors?.name}</div>
@@ -109,6 +151,8 @@ const ContactSection = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.email}
+                    readOnly={info?.isSubmitting}
+                    disabled={info?.isSubmitting}
                   />
                   {touched?.email && errors?.email && (
                     <div className="text-sm text-red-500">{errors?.email}</div>
@@ -134,6 +178,8 @@ const ContactSection = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values?.phone}
+                    readOnly={info?.isSubmitting}
+                    disabled={info?.isSubmitting}
                   />
                   {touched?.phone && errors?.phone && (
                     <div className="text-sm text-red-500">{errors?.phone}</div>
@@ -157,6 +203,8 @@ const ContactSection = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values?.class?.toString()}
+                    readOnly={info?.isSubmitting}
+                    disabled={info?.isSubmitting}
                   >
                     <option value="">Select a Class</option>
                     {classrooms.map((classroom) => (
@@ -189,6 +237,8 @@ const ContactSection = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={values?.preferredTime}
+                    readOnly={info?.isSubmitting}
+                    disabled={info?.isSubmitting}
                   >
                     {preferredTime.map((singleTime) => (
                       <option key={singleTime} value={singleTime}>
@@ -220,6 +270,8 @@ const ContactSection = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values?.heardAboutUs}
+                    readOnly={info?.isSubmitting}
+                    disabled={info?.isSubmitting}
                   >
                     {heardAboutUs.map((singleHeardAboutUs) => (
                       <option key={singleHeardAboutUs} value={singleHeardAboutUs}>
@@ -250,13 +302,24 @@ const ContactSection = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values?.message}
+                    readOnly={info?.isSubmitting}
+                    disabled={info?.isSubmitting}
                   ></textarea>
                   {touched?.message && errors?.message && (
                     <div className="text-sm text-red-500">{errors?.message}</div>
                   )}
                 </div>
 
-                <Button className="md:col-span-2">Submit</Button>
+                <Button type="submit" disabled={info?.isSubmitting} className="md:col-span-2">
+                  {info?.isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      submitting...
+                    </>
+                  ) : (
+                    'Submit'
+                  )}
+                </Button>
               </form>
             </CardContent>
           </Card>
