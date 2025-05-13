@@ -6,6 +6,7 @@ import { BoardReducer } from './boards/reducer';
 import { SubjectReducer } from './subjects/reducer';
 import { StudentReducer } from './students/reducer';
 import { GraphReducer } from './graphs/reducer';
+import { ContactFormReducer } from './contact/reducer';
 
 const initialState = {};
 
@@ -17,6 +18,7 @@ const reducer = {
   subjectState: SubjectReducer,
   studentState: StudentReducer,
   graphState: GraphReducer,
+  contactFormState: ContactFormReducer,
 };
 const store = configureStore({
   reducer,
