@@ -18,6 +18,7 @@ import AdminAttendanceMark from './views/pages/attendance/AdminAttendanceMark';
 import SubjectEdit from './views/pages/subject/SubjectEdit';
 import EditSingleChapter from './views/pages/subject/EditSingleChapter';
 import ContactList from './views/pages/contact/ContactList';
+import Setting from './views/pages/Profile/UserSettings';
 
 const allRoutesMapper = [
   {
@@ -149,6 +150,14 @@ const allRoutesMapper = [
     component: (
       <AuthWrapper>
         <ContactList />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/settings/:settingId',
+    component: (
+      <AuthWrapper>
+        <Setting />
       </AuthWrapper>
     ),
   },
