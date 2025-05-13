@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, memo, useState } from 'react';
-import MainWrapper from '../layouts/Mainwrapper';
-import BatchesList from '../features/batch/BatchesList';
+import MainWrapper from '../../layouts/Mainwrapper';
+import BatchesList from '../../features/batch/BatchesList';
 import { useSelector, useDispatch } from 'react-redux';
 import { batchActions } from '@/redux/combineActions';
 import MetaData from '@/utils/MetaData';

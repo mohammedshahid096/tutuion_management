@@ -1,9 +1,9 @@
 import React, { useEffect, useCallback, memo, useState } from 'react';
-import MainWrapper from '../layouts/Mainwrapper';
+import MainWrapper from '../../layouts/Mainwrapper';
 import { useSelector, useDispatch } from 'react-redux';
 import { boardActions } from '@/redux/combineActions';
-import BoardList from '../features/board/BoardList';
-import AddNewBoard from '../features/board/AddNewBoard';
+import BoardList from '../../features/board/BoardList';
+import AddNewBoard from '../../features/board/AddNewBoard';
 import MetaData from '@/utils/MetaData';
 import _ from 'lodash';
 
