@@ -2,7 +2,7 @@ import StudentDetails from './views/pages/students/StudentDetails';
 import AuthWrapper from './views/layouts/AuthWrapper';
 import Batches from './views/pages/batches/Batches';
 import Boards from './views/pages/boards/Boards';
-import PublicBoardsPage from './views/pages/Boards/PublicBoardsPage';
+import PublicBoardsPage from './views/pages/boards/PublicBoardsPage';
 import Dashboard from './views/pages/Dashboard';
 import Home from './views/pages/Home';
 import Login from './views/pages/Login';

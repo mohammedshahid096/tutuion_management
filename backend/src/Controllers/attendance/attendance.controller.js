@@ -169,6 +169,7 @@ const getAttendanceListController = async (req, res, next) => {
       .skip(skip_docs)
       .limit(limit)
       .select("-googleMeet.details")
+      .populate("subject", "name")
       .sort(sortConstants[sort] || sortConstants["-createdAt"])
       .lean();
 

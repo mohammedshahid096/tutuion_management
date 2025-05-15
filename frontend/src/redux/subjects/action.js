@@ -60,8 +60,7 @@ const getPublicSubjectsListAction =
 
 const getPublicSubjectDetailAction = (subjectID) => async (dispatch) => {
   dispatch({ type: PUBLIC_SUBJECT_DETAIL.request });
-  const token = getAccessToken();
-  const response = await Service.fetchGet(`${API.BASE_SUBJECT}/${subjectID}`, token);
+  const response = await Service.fetchGet(`${API.BASE_SUBJECT}/${subjectID}`);
   if (response[0] === true) {
     dispatch({ type: PUBLIC_SUBJECT_DETAIL.success, payload: response[1]?.data });
   } else {
