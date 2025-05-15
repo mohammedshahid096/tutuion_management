@@ -3,6 +3,7 @@ const logger = require("../../Config/logger.config");
 const errorHandling = require("../../Utils/errorHandling");
 const contactFormModel = require("../../Schema/contact/contact.model");
 const sortConstants = require("../../Constants/sort.constants");
+const NodeMailerServiceClass = require("../../aws_ses/mails/mail.index");
 
 const createContactFormController = async (req, res, next) => {
   try {
@@ -20,7 +21,22 @@ const createContactFormController = async (req, res, next) => {
 
     await newContactDetails.save();
 
-    // Optionally: Send email notification or other processing here
+    let mailDetails = {
+      student_name: newContactDetails.name,
+      student_email: newContactDetails.email,
+      student_phone: newContactDetails?.phone,
+      student_class: newContactDetails?.class,
+      student_preferred_timing: newContactDetails?.preferredTime,
+    };
+
+    const nodeMailerService = new NodeMailerServiceClass();
+    await nodeMailerService.sendMail(
+      newContactDetails?.email,
+      "contactFormResponseTemplate",
+      null,
+      mailDetails
+    );
+
     logger.info(
       "Controller - contact.controller - CreateContactFormController - End"
     );

@@ -62,10 +62,13 @@ const ContactSection = () => {
         email: values.email,
         phone: values.phone,
         studentClass: values.class,
-        message: values.message,
         preferredTime: values.preferredTime,
         heardAboutUs: values.heardAboutUs,
       };
+
+      if (values?.message) {
+        json.message = values.message;
+      }
 
       const response = await submitContactFormApi(json);
       if (response[2] === 201) {
