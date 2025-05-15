@@ -9,10 +9,11 @@ import ProgressUpdateComp, {
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import MetaData from '@/utils/MetaData';
+import ProgressViewComp from '@/views/components/enrollments/ProgressViewComp';
 
 const breadCrumbs = [{ label: 'students', href: '/admin/students' }];
 
-const ProgressUpdate = () => {
+const ProgressUpdate = ({ isEdit = true }) => {
   const dispatch = useDispatch();
   const { studentId, enrollmentId, subjectId } = useParams();
   const { getPublicSubjectDetailAction } = subjectActions;
@@ -160,13 +161,19 @@ const ProgressUpdate = () => {
       <MetaData title="Admin Progress Update | EduExcellence" />
       {info?.loading ? (
         <ProgressSkeleton />
-      ) : (
+      ) : isEdit ? (
         <ProgressUpdateComp
           publicSubjectDetail={publicSubjectDetail}
           changeSliderHandlerFunction={changeSliderHandlerFunction}
           info={info}
           sliderProgress={info?.sliderProgress}
           updateStudentProgressHandler={updateStudentProgressHandler}
+        />
+      ) : (
+        <ProgressViewComp
+          publicSubjectDetail={publicSubjectDetail}
+          info={info}
+          sliderProgress={info?.sliderProgress}
         />
       )}
     </MainWrapper>

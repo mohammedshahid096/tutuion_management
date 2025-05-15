@@ -130,10 +130,18 @@ const allRoutesMapper = [
     ),
   },
   {
-    path: '/admin/student-details/:studentId/student-enrollments/:enrollmentId/:subjectId',
+    path: '/admin/student-details/:studentId/student-enrollments/:enrollmentId/edit/:subjectId',
     component: (
       <AuthWrapper>
-        <ProgressUpdate />
+        <ProgressUpdate isEdit={true} />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/admin/student-details/:studentId/student-enrollments/:enrollmentId/view/:subjectId',
+    component: (
+      <AuthWrapper>
+        <ProgressUpdate isEdit={false} />
       </AuthWrapper>
     ),
   },

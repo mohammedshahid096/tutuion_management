@@ -154,11 +154,20 @@ const Enrollments = () => {
                             <TableCell className="px-4">
                               {singleSubject?.chapters?.length} chapters
                             </TableCell>
-                            <TableCell className="px-4">
+                            <TableCell className="px-4 space-x-4">
                               <Button
                                 onClick={() =>
                                   navigate(
-                                    `${singleEnrollment?._id}/${singleSubject?.subjectId?._id}`
+                                    `${singleEnrollment?._id}/edit/${singleSubject?.subjectId?._id}`
+                                  )
+                                }
+                              >
+                                Edit
+                              </Button>
+                              <Button
+                                onClick={() =>
+                                  navigate(
+                                    `${singleEnrollment?._id}/view/${singleSubject?.subjectId?._id}`
                                   )
                                 }
                               >
