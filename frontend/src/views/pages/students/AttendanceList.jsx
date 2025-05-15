@@ -10,8 +10,9 @@ import { Badge } from '@/components/ui/badge';
 
 const headers = [
   { title: 'Summary', key: 'summary' },
-  { title: 'description', key: 'description' },
-  { title: 'Date', key: 'startDate' },
+  { title: 'Subject', key: 'subjectName' },
+  { title: 'Chapter', key: 'chapterName' },
+  { title: 'Progress', key: 'value' },
   { title: 'Time', key: 'time' },
   { title: 'Meet', key: 'meet' },
   { title: 'Attended', key: 'isPresent' },
@@ -81,13 +82,15 @@ const AttendanceList = () => {
         headers={headers}
         docs={attendanceList?.docs?.map((singleData) => ({
           ...singleData,
-          startDate: moment(singleData?.startDate).format('L'),
+          subjectName: singleData?.subject?.name,
+          chapterName: singleData?.progress?.chapter?.title,
+          value: singleData?.progress?.value + '%',
           isPresent: singleData?.isPresent ? (
             <Badge className="">Present</Badge>
           ) : (
             <Badge className="bg-red-500 text-white">Absent</Badge>
           ),
-          time: moment(singleData?.startDate).format('hh:mm A'),
+          time: moment(singleData?.startDate).format('LLL'),
           meet: (
             <a href={singleData?.googleMeet?.meetLink} target="_blank">
               link
