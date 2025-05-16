@@ -7,15 +7,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { graphActions } from '@/redux/combineActions';
 import AdminClassWiseStudentGraph from '@/views/components/graphs/AdminClassWiseStudentGraph';
 import AdminBoardWiseStudentGraph from '@/views/components/graphs/AdminBoardWiseStudentGraph';
+import DashboardSkeleton from '@/views/skeletons/DashboardSkeleton';
 
 const breadCrumbs = [{ label: 'Analytics', href: null }];
 
 const AdminDashboard = () => {
   const { getAdminDashboardListAction } = graphActions;
   const dispatch = useDispatch();
-  const { genderGraphData, classWiseStudentsGraphData, boardWiseStudentsGraphData } = useSelector(
-    (state) => state.graphState
-  );
+  const { genderGraphData, classWiseStudentsGraphData, boardWiseStudentsGraphData, loading } =
+    useSelector((state) => state.graphState);
 
   useEffect(() => {
     if (!genderGraphData) {
@@ -29,32 +29,37 @@ const AdminDashboard = () => {
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="Admin Dashboard | EduExcellence" />
-      <div className=" space-y-8 p-2">
-        {' '}
-        <div className="grid grid-cols-2 gap-8 max-sm:grid-cols-1">
-          <Card className="w-full">
-            <AdminGenderGraph data={genderGraphData} />
-          </Card>
 
-          <Card>
-            <AdminClassWiseStudentGraph data={classWiseStudentsGraphData} />
-          </Card>
-        </div>
-        <div className="grid grid-cols-2 gap-8 max-sm:grid-cols-1">
-          <Card>
-            <AdminBoardWiseStudentGraph data={boardWiseStudentsGraphData} />
-          </Card>
-          {/* <Card>
+      {loading ? (
+        <DashboardSkeleton />
+      ) : (
+        <div className=" space-y-8 p-2">
+          {' '}
+          <div className="grid grid-cols-2 gap-8 max-sm:grid-cols-1">
+            <Card className="w-full">
+              <AdminGenderGraph data={genderGraphData} />
+            </Card>
+
+            <Card>
+              <AdminClassWiseStudentGraph data={classWiseStudentsGraphData} />
+            </Card>
+          </div>
+          <div className="grid grid-cols-2 gap-8 max-sm:grid-cols-1">
+            <Card>
+              <AdminBoardWiseStudentGraph data={boardWiseStudentsGraphData} />
+            </Card>
+            {/* <Card>
             <ExpensePaymentGraph data={expensePaymentGraph} />
           </Card> */}
-        </div>
-        {/* 
+          </div>
+          {/* 
         <div className="grid grid-cols-1">
           <Card>
             <ExpenseTypeBasedGraph data={expenseTypeGraph} />
           </Card>
         </div> */}
-      </div>
+        </div>
+      )}
     </MainWrapper>
   );
 };
