@@ -155,9 +155,10 @@ const PublicChapterDetail = () => {
 
               {/* Tabs for different views */}
               <Tabs defaultValue="chapters" className="w-full">
-                <TabsList className="grid grid-cols-2 mb-6">
+                <TabsList className="grid grid-cols-3 mb-6">
                   <TabsTrigger value="chapters">Chapters</TabsTrigger>
                   <TabsTrigger value="grid">Grid View</TabsTrigger>
+                  <TabsTrigger value="table">Table View</TabsTrigger>
                 </TabsList>
 
                 {/* Chapters View - Accordion Style */}
@@ -255,6 +256,62 @@ const PublicChapterDetail = () => {
                         </CardFooter>
                       </Card>
                     ))}
+                  </div>
+                </TabsContent>
+
+                {/* Table View */}
+                <TabsContent value="table">
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Chapter
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Subchapter
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {publicSubjectDetail?.chapters?.map((chapter) => (
+                          <>
+                            {chapter?.subChapters?.map((subChapter, index) => (
+                              <tr key={subChapter?._id}>
+                                {index === 0 ? (
+                                  <td
+                                    rowSpan={chapter?.subChapters?.length}
+                                    className="px-6 py-4 whitespace-nowrap align-top border-r border-gray-200"
+                                  >
+                                    <div className="flex items-center gap-3">
+                                      <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-semibold">
+                                        {chapter?.order + 1}
+                                      </div>
+                                      <div>
+                                        <h3 className="font-medium capitalize">{chapter?.title}</h3>
+                                      </div>
+                                    </div>
+                                  </td>
+                                ) : null}
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-xs font-medium">
+                                      {subChapter?.order + 1}
+                                    </div>
+                                    <div>
+                                      <h4 className="font-medium">{subChapter?.title}</h4>
+                                      <p className="text-sm text-gray-500 line-clamp-1">
+                                        {subChapter?.content}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </TabsContent>
               </Tabs>
