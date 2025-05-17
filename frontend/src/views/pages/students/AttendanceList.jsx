@@ -35,7 +35,11 @@ const AttendanceList = () => {
     if (studentId && (!enrollmentsList || enrollmentsList?._id !== studentId)) {
       fetchStudentEnrollmentListHandler();
     }
-    if (studentId && (!attendanceList || attendanceList?._id !== studentId)) {
+
+    if (
+      studentId &&
+      (!attendanceList || attendanceList?._id !== studentId || attendanceList?.limit === 40)
+    ) {
       fetchStudentAttendanceListHandler();
     }
   }, [studentId]);
