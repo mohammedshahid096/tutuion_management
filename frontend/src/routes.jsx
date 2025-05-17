@@ -20,6 +20,7 @@ import EditSingleChapter from './views/pages/subject/EditSingleChapter';
 import ContactList from './views/pages/contact/ContactList';
 import Setting from './views/pages/Profile/UserSettings';
 import { ADMIN, STUDENT } from './constants/roles.constants';
+import MyAttendance from './views/pages/attendance/MyAttendance';
 
 const allRoutesMapper = [
   {
@@ -167,6 +168,14 @@ const allRoutesMapper = [
     component: (
       <AuthWrapper roles={[ADMIN, STUDENT]}>
         <Setting />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/my-attendance/attendance-list',
+    component: (
+      <AuthWrapper roles={[STUDENT]}>
+        <MyAttendance />
       </AuthWrapper>
     ),
   },

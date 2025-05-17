@@ -15,6 +15,7 @@ import {
   Wallet,
   Bell,
   CreditCard,
+  Clock,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -62,7 +63,23 @@ const data = {
         },
         {
           title: 'Analytics',
-          url: '#/dashboard/analytics',
+          url: '/dashboard',
+        },
+      ],
+    },
+    {
+      title: 'Attendance',
+      url: '#',
+      icon: Clock,
+      isActive: true,
+      items: [
+        {
+          title: 'Attendance List',
+          url: '/my-attendance/attendance-list',
+        },
+        {
+          title: 'Attendance Calendar',
+          url: '/my-attendance/attendance-calendar',
         },
       ],
     },
