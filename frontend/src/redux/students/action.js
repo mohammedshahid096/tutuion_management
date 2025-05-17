@@ -7,7 +7,6 @@ import {
   ATTENDANCE_LIST,
   UPDATE_STUDENT_STATE,
   DATE_WISE_ATTENDANCE,
-  MY_ATTENDANCE_LIST,
 } from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
@@ -280,33 +279,6 @@ const updateAttendanceAction = async (attendanceId, json) => {
 };
 
 /**
- * This function retrieves a user's attendance list based on a query object and dispatches actions
- * based on the success or failure of the API call.
- * @param {Object} queryObject - The `queryObject` parameter in the `getMyAttendanceListAction` function is an
- * object that contains query parameters to be included in the API request URL. These query parameters
- * are used to filter or customize the data that will be returned by the API endpoint. The
- * `objectToQueryString` function is
- */
-const getMyAttendanceListAction = (queryObject) => async (dispatch) => {
-  dispatch({ type: MY_ATTENDANCE_LIST.request });
-
-  const token = getAccessToken();
-  const query = queryObject ? objectToQueryString(queryObject) : '';
-  const response = await Service.fetchGet(
-    `${API.STUDENT_ATTENDANCE}${API.STUDENT_ACTIONS_TYPES.ATTENDANCE}${query}`,
-    token
-  );
-  if (response[0] === true) {
-    dispatch({ type: MY_ATTENDANCE_LIST.success, payload: response[1].data });
-  } else {
-    dispatch({
-      type: MY_ATTENDANCE_LIST.fail,
-      payload: response[1],
-    });
-  }
-};
-
-/**
  * The function `updateStudentStateAction` is a Redux action creator that dispatches an action of type
  * `UPDATE_STUDENT_STATE` with a given payload.
  * @param {Object} payload - The `payload` parameter in the `updateStudentStateAction` function typically
@@ -351,7 +323,6 @@ export default {
   updateStudentStateAction,
   getDateWiseAttendanceAction,
   updateAttendanceAction,
-  getMyAttendanceListAction,
   clearStudentErrorsAction,
   resetStudentAction,
 };
