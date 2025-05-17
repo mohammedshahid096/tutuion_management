@@ -90,7 +90,7 @@ const AttendanceList = () => {
           chapterName: singleData?.progress?.chapter?.title,
           value: singleData?.progress?.value + '%',
           isPresent: singleData?.isPresent ? (
-            <Badge className="">Present</Badge>
+            <Badge className="bg-green-900">Present</Badge>
           ) : (
             <Badge className="bg-red-500 text-white">Absent</Badge>
           ),
