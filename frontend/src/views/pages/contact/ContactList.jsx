@@ -6,6 +6,7 @@ import MetaData from '@/utils/MetaData';
 import CustomTable1 from '@/views/components/tables/TableV1';
 import { Badge } from '@/components/ui/badge';
 import moment from 'moment';
+import { format } from 'timeago.js';
 
 const breadCrumbs = [{ label: 'Contact Responses', href: null }];
 
@@ -18,6 +19,7 @@ const headers = [
   { title: 'Preferred Time', key: 'preferredTime' },
   { title: 'Heard From', key: 'heardAboutUs' },
   { title: 'Date', key: 'date' },
+  { title: 'Time Ago', key: 'timeAgo' },
 ];
 
 const badgeStyles = {
@@ -85,6 +87,7 @@ const ContactList = () => {
             </Badge>
           ),
           date: moment(singleData?.createdAt).format('LL'),
+          timeAgo: format(singleData?.createdAt),
         }))}
         cardTitle="Form Response Data"
         loading={loading}
