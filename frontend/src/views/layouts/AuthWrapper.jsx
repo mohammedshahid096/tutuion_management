@@ -1,11 +1,12 @@
 import React, { useEffect, useState, memo } from 'react';
 import useAuth from '@/hooks/useAuth';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { userActions } from '@/redux/combineActions';
 import { useDispatch, useSelector } from 'react-redux';
 import InitialLoader from '../components/loaders/loader';
 import DashboardSkeleton from '../skeletons/DashboardSkeleton';
 import Service from '@/services';
+import useLogout from '@/hooks/useLogout';
 
 const SidebarSkeleton = memo(() => {
   return (
@@ -78,14 +79,16 @@ const SidebarSkeleton = memo(() => {
   );
 });
 
-const AuthWrapper = ({ children }) => {
+const AuthWrapper = ({ roles = [], children }) => {
   const { getUserProfileAction } = userActions;
   const { profileDetails } = useSelector((state) => state.userProfileState);
   const dispatch = useDispatch();
   const checkAuth = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+  const logoutFunction = useLogout();
 
-  const [isLoading, setisLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const token = checkAuth();
@@ -96,9 +99,13 @@ const AuthWrapper = ({ children }) => {
 
   useEffect(() => {
     if (profileDetails) {
-      setisLoading(false);
+      setIsLoading(false);
+      if (!roles.includes(profileDetails?.role)) {
+        logoutFunction();
+        navigate('/');
+      }
     }
-  }, [profileDetails]);
+  }, [profileDetails, roles]);
 
   useEffect(() => {
     // Return cleanup function that will execute when route changes

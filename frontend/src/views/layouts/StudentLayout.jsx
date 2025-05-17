@@ -66,120 +66,8 @@ const data = {
         },
       ],
     },
-    {
-      title: 'Mosques',
-      url: '/superadmin/mosques',
-      icon: School,
-      isActive: false,
-      items: [
-        {
-          title: 'All Mosque',
-          url: '/superadmin/mosques',
-        },
-        {
-          title: 'Analytics',
-          url: '#/dashboard/analytics',
-        },
-      ],
-    },
-    {
-      title: 'Programs & Events',
-      url: '#',
-      icon: Calendar,
-      items: [
-        {
-          title: 'Upcoming Events',
-          url: '#/events/upcoming',
-        },
-        {
-          title: 'Class Schedules',
-          url: '#/events/classes',
-        },
-        {
-          title: 'Ramadan Programs',
-          url: '#/events/ramadan',
-        },
-      ],
-    },
-    {
-      title: 'Congregants',
-      url: '#',
-      icon: Users,
-      items: [
-        {
-          title: 'Member Management',
-          url: '#/congregants/management',
-        },
-        {
-          title: 'Family Records',
-          url: '#/congregants/families',
-        },
-        {
-          title: 'Attendance',
-          url: '#/congregants/attendance',
-        },
-      ],
-    },
-    // {
-    //   title: 'Financial Management',
-    //   url: '#',
-    //   icon: DollarSign,
-    //   items: [
-    //     {
-    //       title: 'Donations',
-    //       url: '#/finance/donations',
-    //     },
-    //     {
-    //       title: 'Zakat',
-    //       url: '#/finance/zakat',
-    //     },
-    //     {
-    //       title: 'Expense Tracking',
-    //       url: '#/finance/expenses',
-    //     },
-    //     {
-    //       title: 'Annual Budget',
-    //       url: '#/finance/budget',
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: 'Religious Resources',
-    //   url: '#',
-    //   icon: BookOpen,
-    //   items: [
-    //     {
-    //       title: 'Quran Classes',
-    //       url: '#/resources/quran',
-    //     },
-    //     {
-    //       title: 'Islamic Library',
-    //       url: '#/resources/library',
-    //     },
-    //     {
-    //       title: 'Fatwa & Guidance',
-    //       url: '#/resources/fatwa',
-    //     },
-    //   ],
-    // },
   ],
-  quickAccess: [
-    // {
-    //   name: 'Imam Management',
-    //   url: '#/staff/imams',
-    //   icon: UserCheck,
-    // },
-    // {
-    //   name: 'Facility Booking',
-    //   url: '#/facilities/booking',
-    //   icon: School,
-    // },
-    // {
-    //   name: 'Communication',
-    //   url: '#/communications',
-    //   icon: Bell,
-    // },
-  ],
+  quickAccess: [],
 };
 
 const SuperAdminSidebar = ({ user, children }) => {
@@ -196,8 +84,8 @@ const SuperAdminSidebar = ({ user, children }) => {
                     <School className="size-4" />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">Mosque Management</span>
-                    <span className="truncate text-xs">Superadmin Portal</span>
+                    <span className="truncate font-semibold">Edu Excellence Tutorial</span>
+                    <span className="truncate text-xs">Student Portal</span>
                   </div>
                 </div>
               </SidebarMenuButton>

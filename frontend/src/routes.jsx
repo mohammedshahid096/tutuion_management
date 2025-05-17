@@ -19,6 +19,7 @@ import SubjectEdit from './views/pages/subject/SubjectEdit';
 import EditSingleChapter from './views/pages/subject/EditSingleChapter';
 import ContactList from './views/pages/contact/ContactList';
 import Setting from './views/pages/Profile/UserSettings';
+import { ADMIN, STUDENT } from './constants/roles.constants';
 
 const allRoutesMapper = [
   {
@@ -44,7 +45,7 @@ const allRoutesMapper = [
   {
     path: '/dashboard',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN, STUDENT]}>
         <Dashboard />
       </AuthWrapper>
     ),
@@ -52,7 +53,7 @@ const allRoutesMapper = [
   {
     path: '/batches',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <Batches />
       </AuthWrapper>
     ),
@@ -60,7 +61,7 @@ const allRoutesMapper = [
   {
     path: '/admin/boards',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <Boards />
       </AuthWrapper>
     ),
@@ -68,7 +69,7 @@ const allRoutesMapper = [
   {
     path: '/admin/subjects',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <SubjectLists />
       </AuthWrapper>
     ),
@@ -76,7 +77,7 @@ const allRoutesMapper = [
   {
     path: '/admin/subject/create-subject',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <CreateSubjectPage />
       </AuthWrapper>
     ),
@@ -84,7 +85,7 @@ const allRoutesMapper = [
   {
     path: '/admin/subject/:subjectId',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <SubjectEdit />
       </AuthWrapper>
     ),
@@ -92,7 +93,7 @@ const allRoutesMapper = [
   {
     path: '/admin/subject/:subjectId/:chapterId',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <EditSingleChapter />
       </AuthWrapper>
     ),
@@ -100,7 +101,7 @@ const allRoutesMapper = [
   {
     path: '/admin/students/register',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <RegisterStudent />
       </AuthWrapper>
     ),
@@ -108,7 +109,7 @@ const allRoutesMapper = [
   {
     path: '/admin/students',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <StudentsList />
       </AuthWrapper>
     ),
@@ -116,7 +117,7 @@ const allRoutesMapper = [
   {
     path: '/admin/students/:studentId',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <RegisterStudent />
       </AuthWrapper>
     ),
@@ -124,7 +125,7 @@ const allRoutesMapper = [
   {
     path: '/admin/student-details/:studentId/:pageType',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <StudentDetails />
       </AuthWrapper>
     ),
@@ -132,7 +133,7 @@ const allRoutesMapper = [
   {
     path: '/admin/student-details/:studentId/student-enrollments/:enrollmentId/edit/:subjectId',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <ProgressUpdate isEdit={true} />
       </AuthWrapper>
     ),
@@ -140,7 +141,7 @@ const allRoutesMapper = [
   {
     path: '/admin/student-details/:studentId/student-enrollments/:enrollmentId/view/:subjectId',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <ProgressUpdate isEdit={false} />
       </AuthWrapper>
     ),
@@ -148,7 +149,7 @@ const allRoutesMapper = [
   {
     path: '/admin/mark-attendance',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <AdminAttendanceMark />
       </AuthWrapper>
     ),
@@ -156,7 +157,7 @@ const allRoutesMapper = [
   {
     path: '/admin/contact-forms',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <ContactList />
       </AuthWrapper>
     ),
@@ -164,7 +165,7 @@ const allRoutesMapper = [
   {
     path: '/settings/:settingId',
     component: (
-      <AuthWrapper>
+      <AuthWrapper roles={[ADMIN]}>
         <Setting />
       </AuthWrapper>
     ),
