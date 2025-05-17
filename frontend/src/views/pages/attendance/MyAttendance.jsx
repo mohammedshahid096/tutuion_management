@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { studentActions } from '@/redux/combineActions';
+import { studentActions, myDetailsActions } from '@/redux/combineActions';
 import _ from 'lodash';
 import { useParams } from 'react-router-dom';
 import MetaData from '@/utils/MetaData';
@@ -20,7 +20,75 @@ const headers = [
 ];
 
 const MyAttendance = () => {
-  return <MainWrapper>MyAttendance</MainWrapper>;
+  const { getMyAttendanceListAction } = myDetailsActions;
+
+  const dispatch = useDispatch();
+  const { myAttendanceList, loading } = useSelector((state) => state.myDetailsState);
+
+  const [info, setInfo] = useState({
+    loading: true,
+    limit: 20,
+    currentPage: 1,
+  });
+
+  useEffect(() => {
+    if (!myAttendanceList || myAttendanceList?.limit === 40) {
+      fetchStudentAttendanceListHandler();
+    }
+  }, []);
+
+  const fetchStudentAttendanceListHandler = useCallback(
+    async (queryObject) => {
+      let query = {
+        page: queryObject?.currentPage ?? info?.currentPage,
+        limit: queryObject?.limit ?? info?.limit,
+      };
+      dispatch(getMyAttendanceListAction(query));
+    },
+    [myAttendanceList, info?.currentPage, info?.limit]
+  );
+
+  const paginationHandlerFunction = useCallback(
+    (page) => {
+      setInfo((prev) => ({ ...prev, currentPage: page, loading: true }));
+      let query = {
+        currentPage: page,
+      };
+      fetchStudentAttendanceListHandler(query);
+    },
+    [info?.currentPage, info?.limit]
+  );
+
+  return (
+    <MainWrapper>
+      <MetaData title="My Attendance | EduExcellence" />
+      <CustomTable1
+        headers={headers}
+        docs={myAttendanceList?.docs?.map((singleData) => ({
+          ...singleData,
+          subjectName: singleData?.subject?.name,
+          chapterName: singleData?.progress?.chapter?.title,
+          value: singleData?.progress?.value + '%',
+          isPresent: singleData?.isPresent ? (
+            <Badge className="bg-green-900">Present</Badge>
+          ) : (
+            <Badge className="bg-red-500 text-white">Absent</Badge>
+          ),
+          time: moment(singleData?.startDate).format('LLL'),
+          meet: (
+            <a href={singleData?.googleMeet?.meetLink} target="_blank">
+              link
+            </a>
+          ),
+        }))}
+        cardTitle="Attendance Data"
+        loading={loading}
+        totalPages={myAttendanceList?.totalPages}
+        currentPage={myAttendanceList?.currentPage}
+        onPageChange={(page) => paginationHandlerFunction(page)}
+      />
+    </MainWrapper>
+  );
 };
 
 export default memo(MyAttendance);

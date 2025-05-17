@@ -3,6 +3,7 @@ import Service from '@/services';
 import * as API from './actionTypes';
 import { getAccessToken } from '@/helpers/local-storage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { objectToQueryString } from '@/helpers';
 
 /**
  * This function retrieves a user's attendance list based on a query object and dispatches actions
@@ -12,6 +13,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
  * are used to filter or customize the data that will be returned by the API endpoint. The
  * `objectToQueryString` function is
  */
+
 export const getMyAttendanceListAction = createAsyncThunk(
   GET_MY_ATTENDANCE_LIST,
   async (queryObject, { rejectWithValue }) => {
