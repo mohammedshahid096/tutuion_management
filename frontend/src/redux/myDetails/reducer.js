@@ -1,0 +1,41 @@
+import { createSlice } from '@reduxjs/toolkit';
+import { getMyAttendanceListAction } from './action';
+
+const initialState = {
+  loading: false,
+  error: null,
+  statusCode: null,
+  myAttendanceList: null,
+};
+
+const dataSlice = createSlice({
+  name: 'myDetailsSlice',
+  initialState,
+  reducers: {
+    clearMyDetailsErrorsAction: (state, action) => {
+      state.statusCode = null;
+      state.error = null;
+    },
+    resetMyDetailsAction: (state, action) => {
+      state = initialState;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getMyAttendanceListAction.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMyAttendanceListAction.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myAttendanceList = action.payload;
+      })
+      .addCase(getMyAttendanceListAction.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action?.payload?.message || 'Fetching attendance failed'; // Default error message
+        state.statusCode = action?.payload?.statusCode || 500;
+      });
+  },
+});
+
+export const MyStudentDetailsReducer = dataSlice.reducer;
+export const { clearMyDetailsErrorsAction, resetMyDetailsAction } = dataSlice.actions;
