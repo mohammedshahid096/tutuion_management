@@ -28,17 +28,17 @@ const EventCalendar = () => {
   useEffect(() => {
     const startDate = moment(info?.startDate).format('YYYY-MM-DD');
     const endDate = moment(info?.endDate).format('YYYY-MM-DD');
-    const query = {};
-    fetchStudentAttendanceListHandler();
+    const query = {
+      startDate,
+      endDate,
+    };
+    fetchStudentAttendanceListHandler(query);
   }, [info?.startDate, info?.endDate]);
 
   useEffect(() => {
     if (studentId && (!enrollmentsList || enrollmentsList?._id !== studentId)) {
       fetchStudentEnrollmentListHandler();
     }
-    // if (studentId && (!attendanceList || attendanceList?._id !== studentId)) {
-    //   fetchStudentAttendanceListHandler();
-    // }
   }, [studentId]);
 
   useEffect(() => {
@@ -59,6 +59,8 @@ const EventCalendar = () => {
       let query = {
         page: queryObject?.currentPage ?? info?.currentPage,
         limit: queryObject?.limit ?? info?.limit,
+        startDate: queryObject?.startDate ?? info?.startDate,
+        endDate: queryObject?.endDate ?? info?.endDate,
       };
       dispatch(getStudentAttendanceListAction(studentId, query));
     },

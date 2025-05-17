@@ -9,6 +9,8 @@ const getAttendanceListValidation = celebrate({
     batch: Joi.string().optional().label("batchId"),
     limit: Joi.number().min(1).optional().label("Limit"),
     page: Joi.number().min(1).optional().label("Page"),
+    startDate: Joi.date().iso().optional().label("Date should be YYYY-MM-DD"),
+    endDate: Joi.date().iso().optional().label("Date should be YYYY-MM-DD"),
   }),
 });
 const getAttendanceDateWiseValidation = celebrate({

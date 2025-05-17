@@ -147,7 +147,13 @@ const getAttendanceListController = async (req, res, next) => {
 
     const { studentId } = req.params;
 
-    let { limit = 15, page = 1, sort = "-createdAt" } = req.query;
+    let {
+      limit = 15,
+      page = 1,
+      sort = "-createdAt",
+      startDate,
+      endDate,
+    } = req.query;
 
     const { batch = null } = req.query;
 
@@ -155,13 +161,25 @@ const getAttendanceListController = async (req, res, next) => {
       student: studentId,
       batch: batch ?? req.batch._id,
     };
+    let queryCount = { ...query };
+
+    if (startDate && endDate) {
+      query.startDate = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    } else if (startDate) {
+      query.startDate = { $gte: new Date(startDate) };
+    } else if (endDate) {
+      query.startDate = { $lte: new Date(endDate) };
+    }
 
     limit = Number(limit);
     page = Number(page);
 
     const skip_docs = (page - 1) * limit;
 
-    const totalDocs = await attendanceModel.countDocuments(query);
+    const totalDocs = await attendanceModel.countDocuments(queryCount);
     const totalPages = Math.ceil(totalDocs / limit);
 
     const docs = await attendanceModel
@@ -357,27 +375,6 @@ const updateAttendanceDetailsController = async (req, res, next) => {
           subjects: enrollmentDetails?.subjects,
         },
       }
-    );
-
-    let mailDetails = {
-      student_name: attendanceRecord?.student?.name,
-      subject_name: subjectName,
-      subject_chapter_name: progressDetails?.chapterName,
-      subject_topic_name: progressDetails?.subChapterName,
-      subject_topic_progress: progressDetails?.value,
-      student_status: isPresent ? "PRESENT" : "ABSENT",
-      class_date: moment(attendanceRecord.startDate).format("LLL"),
-      href_link: "www.shahidnagodriya.online",
-    };
-
-    let subjectTitle = `Attendance of (${attendanceRecord.summary})`;
-
-    const nodeMailerService = new NodeMailerServiceClass();
-    await nodeMailerService.sendMail(
-      attendanceRecord?.student?.email,
-      "attendanceReportTemplate",
-      subjectTitle,
-      mailDetails
     );
 
     logger.info(
