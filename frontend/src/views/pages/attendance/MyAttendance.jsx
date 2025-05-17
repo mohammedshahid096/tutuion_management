@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { studentActions, myDetailsActions } from '@/redux/combineActions';
+import { myDetailsActions } from '@/redux/combineActions';
 import _ from 'lodash';
-import { useParams } from 'react-router-dom';
 import MetaData from '@/utils/MetaData';
 import CustomTable1 from '@/views/components/tables/TableV1';
 import moment from 'moment';

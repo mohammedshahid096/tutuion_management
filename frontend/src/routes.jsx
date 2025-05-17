@@ -21,6 +21,7 @@ import ContactList from './views/pages/contact/ContactList';
 import Setting from './views/pages/Profile/UserSettings';
 import { ADMIN, STUDENT } from './constants/roles.constants';
 import MyAttendance from './views/pages/attendance/MyAttendance';
+import MyAttendanceCalendar from './views/pages/attendance/MyAttendanceCalendar';
 
 const allRoutesMapper = [
   {
@@ -176,6 +177,14 @@ const allRoutesMapper = [
     component: (
       <AuthWrapper roles={[STUDENT]}>
         <MyAttendance />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/my-attendance/attendance-calendar',
+    component: (
+      <AuthWrapper roles={[STUDENT]}>
+        <MyAttendanceCalendar />
       </AuthWrapper>
     ),
   },
