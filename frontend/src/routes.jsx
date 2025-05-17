@@ -165,11 +165,12 @@ const allRoutesMapper = [
   {
     path: '/settings/:settingId',
     component: (
-      <AuthWrapper roles={[ADMIN]}>
+      <AuthWrapper roles={[ADMIN, STUDENT]}>
         <Setting />
       </AuthWrapper>
     ),
   },
+
   {
     path: '*',
     component: <NotFound />,

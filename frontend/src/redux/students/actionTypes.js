@@ -11,3 +11,4 @@ export const STUDENT_ACTIONS_TYPES = {
 export const BASE_STUDENT = '/user';
 export const ENROLLMENT_BASE = '/enrollment';
 export const ATTENDANCE_BASE = '/attendance';
+export const STUDENT_ATTENDANCE = '/student-attendance';

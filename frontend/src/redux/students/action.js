@@ -7,12 +7,24 @@ import {
   ATTENDANCE_LIST,
   UPDATE_STUDENT_STATE,
   DATE_WISE_ATTENDANCE,
+  MY_ATTENDANCE_LIST,
 } from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
 import { getAccessToken } from '@/helpers/local-storage';
 import { objectToQueryString } from '@/helpers';
 
+/**
+ * The function `getStudentsListAction` is an asynchronous action creator in JavaScript that fetches a
+ * list of students based on a query object and dispatches corresponding actions based on the response.
+ * @param {Object} queryObject - The `queryObject` parameter is an object that contains key-value pairs
+ * representing the query parameters to be included in the API request URL. These query parameters are
+ * used to filter or customize the data that will be retrieved from the API endpoint.
+ * @param {Boolean} [reset=false] - The `reset` parameter in the `getStudentsListAction` function is a boolean
+ * flag that determines whether to reset the student list before fetching new data. If `reset` is set
+ * to `true`, the function dispatches an action to update the student list with `null` before making
+ * the API
+ */
 const getStudentsListAction =
   (queryObject, reset = false) =>
   async (dispatch) => {
@@ -35,6 +47,18 @@ const getStudentsListAction =
       });
     }
   };
+
+/**
+ * The function `getStudentEnrollmentListAction` fetches a list of enrollments for a specific student
+ * and dispatches actions based on the response.
+ * @param {String} studentId - The `studentId` parameter in the `getStudentEnrollmentListAction` function is
+ * used to specify the ID of the student for whom you want to retrieve the enrollment list. This ID is
+ * typically a unique identifier assigned to each student in the system.
+ * @param {Boolean} [reset=false] - The `reset` parameter in the `getStudentEnrollmentListAction` function is a
+ * boolean parameter that determines whether to reset the enrollment list before fetching new data. If
+ * `reset` is set to `true`, the function dispatches an action to update the enrollment list with
+ * `null` before making
+ */
 const getStudentEnrollmentListAction =
   (studentId, reset = false) =>
   async (dispatch) => {
@@ -61,6 +85,16 @@ const getStudentEnrollmentListAction =
     }
   };
 
+/**
+ * The function `registerNewStudentAction` sends a POST request to register a new student using the
+ * provided JSON data and access token.
+ * @param {Object} json - The `json` parameter in the `registerNewStudentAction` function likely contains the
+ * data needed to register a new student. This data could include information such as the student's
+ * name, age, grade level, contact details, etc. The function uses this JSON data to send a POST
+ * request to the
+ * @returns {Object} The `registerNewStudentAction` function is returning the response from the API call made to
+ * register a new student.
+ */
 const registerNewStudentAction = async (json) => {
   const token = getAccessToken();
   const response = await Service.fetchPost(
@@ -71,6 +105,19 @@ const registerNewStudentAction = async (json) => {
   return response;
 };
 
+/**
+ * The function `updateStudentDetailsAction` sends a PUT request to update a student's details using
+ * the provided JSON data and student ID.
+ * @param {Object} json - The `json` parameter in the `updateStudentDetailsAction` function is typically an
+ * object containing the updated details of a student. This object would include properties such as the
+ * student's name, age, grade, or any other information that needs to be updated for the student with
+ * the specified `studentId
+ * @param {String} studentId - The `studentId` parameter is the unique identifier of the student whose details
+ * you want to update. It is used to specify which student's information should be updated in the
+ * system.
+ * @returns {Object} The `updateStudentDetailsAction` function is returning the response from the PUT request
+ * made to update the student details.
+ */
 const updateStudentDetailsAction = async (json, studentId) => {
   const token = getAccessToken();
   const response = await Service.fetchPut(
@@ -81,6 +128,20 @@ const updateStudentDetailsAction = async (json, studentId) => {
   return response;
 };
 
+/**
+ * The function `updateStudentProgressAction` sends a PUT request to update a student's progress for a
+ * specific subject in an enrollment.
+ * @param {String} enrollmentId - The `enrollmentId` parameter is the unique identifier for a student's
+ * enrollment in a course or program.
+ * @param {String} subjectId - Subject ID is a unique identifier for a specific subject or course that a student
+ * is enrolled in.
+ * @param {Object} json - The `json` parameter in the `updateStudentProgressAction` function is typically an
+ * object containing the data that you want to update for a specific student's progress in a subject.
+ * This data could include information such as grades, attendance, assignments completed, etc. The
+ * structure of the `json` object
+ * @returns {Object} The `updateStudentProgressAction` function returns the response from the PUT request made
+ * to the specified API endpoint with the provided enrollmentId, subjectId, and JSON data.
+ */
 const updateStudentProgressAction = async (enrollmentId, subjectId, json) => {
   const token = getAccessToken();
   const response = await Service.fetchPut(
@@ -91,6 +152,13 @@ const updateStudentProgressAction = async (enrollmentId, subjectId, json) => {
   return response;
 };
 
+/**
+ * The function `getSingleStudentDetailAction` dispatches actions to request, successfully fetch, or
+ * fail to fetch details of a single student based on the provided studentId.
+ * @param {String} studentId - The `studentId` parameter in the `getSingleStudentDetailAction` function is the
+ * unique identifier of the student for whom you want to fetch details. It is used to specify which
+ * student's details to retrieve from the API.
+ */
 const getSingleStudentDetailAction = (studentId) => async (dispatch) => {
   dispatch({ type: STUDENT_DETAILS.request });
   const token = getAccessToken();
@@ -108,6 +176,16 @@ const getSingleStudentDetailAction = (studentId) => async (dispatch) => {
   }
 };
 
+/**
+ * The function `getStudentAttendanceListAction` fetches a student's attendance list based on the
+ * provided student ID and query parameters.
+ * @param {String} studentId - The `studentId` parameter is the unique identifier of the student for whom you
+ * want to retrieve the attendance list.
+ * @param {Object} queryObject - The `queryObject` parameter in the `getStudentAttendanceListAction` function is
+ * an object that contains key-value pairs representing the query parameters to be included in the API
+ * request URL. These query parameters are used to filter or customize the data that will be returned
+ * by the API endpoint.
+ */
 const getStudentAttendanceListAction = (studentId, queryObject) => async (dispatch) => {
   dispatch({ type: ATTENDANCE_LIST.request });
 
@@ -132,6 +210,16 @@ const getStudentAttendanceListAction = (studentId, queryObject) => async (dispat
   }
 };
 
+/**
+ * The function `createNewEnrollmentAction` sends a POST request to a specific API endpoint with the
+ * provided JSON data and access token.
+ * @param {Object} json - The `json` parameter in the `createNewEnrollmentAction` function is a JSON object that
+ * contains the data needed to create a new enrollment. This data typically includes information such
+ * as the student's details, course information, and any other relevant data required for the
+ * enrollment process.
+ * @returns {Object} The `createNewEnrollmentAction` function is returning the response from the POST request
+ * made to the specified API endpoint with the provided JSON data and access token.
+ */
 const createNewEnrollmentAction = async (json) => {
   const token = getAccessToken();
   const response = await Service.fetchPost(
@@ -142,6 +230,14 @@ const createNewEnrollmentAction = async (json) => {
   return response;
 };
 
+/**
+ * The function `getDateWiseAttendanceAction` dispatches an action to request date-wise attendance data
+ * and handles success or failure responses accordingly.
+ * @param {Object} queryObject - The `queryObject` parameter is an object that contains key-value pairs
+ * representing the query parameters to be included in the API request URL. These query parameters are
+ * used to filter or customize the data that will be returned by the API endpoint. The
+ * `objectToQueryString` function is likely used to convert this
+ */
 const getDateWiseAttendanceAction = (queryObject) => async (dispatch) => {
   dispatch({ type: DATE_WISE_ATTENDANCE.request });
 
@@ -161,6 +257,18 @@ const getDateWiseAttendanceAction = (queryObject) => async (dispatch) => {
   }
 };
 
+/**
+ * The function `updateAttendanceAction` updates attendance information for a specific attendance ID
+ * using a PUT request with the provided JSON data and access token.
+ * @param {String} attendanceId - The `attendanceId` parameter is the unique identifier of the attendance record
+ * that you want to update.
+ * @param {Object} json - The `json` parameter in the `updateAttendanceAction` function is a JavaScript object
+ * that contains the data you want to update for the attendance record identified by `attendanceId`.
+ * This object should include the fields and values that you want to change or modify in the attendance
+ * record.
+ * @returns {Object} The `updateAttendanceAction` function returns the response from the PUT request made to the
+ * specified API endpoint with the provided JSON data and access token.
+ */
 const updateAttendanceAction = async (attendanceId, json) => {
   const token = getAccessToken();
   const response = await Service.fetchPut(
@@ -171,6 +279,41 @@ const updateAttendanceAction = async (attendanceId, json) => {
   return response;
 };
 
+/**
+ * This function retrieves a user's attendance list based on a query object and dispatches actions
+ * based on the success or failure of the API call.
+ * @param {Object} queryObject - The `queryObject` parameter in the `getMyAttendanceListAction` function is an
+ * object that contains query parameters to be included in the API request URL. These query parameters
+ * are used to filter or customize the data that will be returned by the API endpoint. The
+ * `objectToQueryString` function is
+ */
+const getMyAttendanceListAction = (queryObject) => async (dispatch) => {
+  dispatch({ type: MY_ATTENDANCE_LIST.request });
+
+  const token = getAccessToken();
+  const query = queryObject ? objectToQueryString(queryObject) : '';
+  const response = await Service.fetchGet(
+    `${API.STUDENT_ATTENDANCE}${API.STUDENT_ACTIONS_TYPES.ATTENDANCE}${query}`,
+    token
+  );
+  if (response[0] === true) {
+    dispatch({ type: MY_ATTENDANCE_LIST.success, payload: response[1].data });
+  } else {
+    dispatch({
+      type: MY_ATTENDANCE_LIST.fail,
+      payload: response[1],
+    });
+  }
+};
+
+/**
+ * The function `updateStudentStateAction` is a Redux action creator that dispatches an action of type
+ * `UPDATE_STUDENT_STATE` with a given payload.
+ * @param {Object} payload - The `payload` parameter in the `updateStudentStateAction` function typically
+ * contains the data that needs to be updated for a student state. This data could include information
+ * such as the student's name, ID, grades, or any other relevant details that need to be modified in
+ * the application state.
+ */
 const updateStudentStateAction = (payload) => (dispatch) => {
   dispatch({
     type: UPDATE_STUDENT_STATE,
@@ -178,12 +321,20 @@ const updateStudentStateAction = (payload) => (dispatch) => {
   });
 };
 
+/**
+ * The clearStudentErrorsAction function is a Redux action creator that dispatches an action of type
+ * CLEAR_STUDENT_ERRORS.
+ */
 const clearStudentErrorsAction = () => (dispatch) => {
   dispatch({
     type: CLEAR_STUDENT_ERRORS,
   });
 };
 
+/**
+ * The function `resetStudentAction` is a Redux action creator that dispatches an action of type
+ * `RESET_STUDENT_STATE`.
+ */
 const resetStudentAction = () => (dispatch) => {
   dispatch({ type: RESET_STUDENT_STATE });
 };
@@ -200,6 +351,7 @@ export default {
   updateStudentStateAction,
   getDateWiseAttendanceAction,
   updateAttendanceAction,
+  getMyAttendanceListAction,
   clearStudentErrorsAction,
   resetStudentAction,
 };
