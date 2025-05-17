@@ -6,6 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import UpdateStudentDetails from './UpateStudentDetails';
 import AttendanceList from './AttendanceList';
 import Enrollments from './Enrollments';
+import AttendanceCalendar from './AttendanceCalendar';
 
 const menuItems = [
   {
@@ -35,12 +36,22 @@ const menuItems = [
       { label: 'Attendance', href: null },
     ],
   },
+  {
+    id: 'student-attendance-calendar',
+    label: 'Attendance Calendar',
+    breadCrumbs: [
+      { label: 'Students', href: '/admin/students' },
+      { label: 'Student Details', href: null },
+      { label: 'Attendance Calendar', href: null },
+    ],
+  },
 ];
 
 const settingsMenuMapper = {
   'student-profile': UpdateStudentDetails,
   'student-enrollments': Enrollments,
   'student-attendance': AttendanceList,
+  'student-attendance-calendar': AttendanceCalendar,
 };
 
 const StudentDetails = () => {
