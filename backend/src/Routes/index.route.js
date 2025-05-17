@@ -7,6 +7,7 @@ const EnrollmentRoutes = require("./enrollment-progress/enrollment.routes");
 const AttendanceRoutes = require("./attendance/attendance.route");
 const GraphRoutes = require("./graphs/grahph.route");
 const ContactFormRoutes = require("./contact/contact.route");
+const StudentAttendanceRoutes = require("./attendance/studentAttendance.route");
 
 // Route config
 const IndexRoutes = express.Router();
@@ -40,6 +41,7 @@ IndexRoutes.use("/enrollment", EnrollmentRoutes);
 //  Attendance  routes
 // ----------------------------------------
 IndexRoutes.use("/attendance", AttendanceRoutes);
+IndexRoutes.use("/student-attendance", StudentAttendanceRoutes);
 
 // ----------------------------------------
 //  Graph routes
