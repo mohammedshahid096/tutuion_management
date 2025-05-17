@@ -17,6 +17,10 @@ const headers = [
   { title: 'Meet', key: 'meet' },
   { title: 'Attended', key: 'isPresent' },
 ];
+const breadCrumbs = [
+  { label: 'Attendances', href: null },
+  { label: 'Attendance Calendar', href: null },
+];
 
 const MyAttendance = () => {
   const { getMyAttendanceListAction } = myDetailsActions;
@@ -59,7 +63,7 @@ const MyAttendance = () => {
   );
 
   return (
-    <MainWrapper>
+    <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="My Attendance | EduExcellence" />
       <CustomTable1
         headers={headers}

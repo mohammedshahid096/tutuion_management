@@ -9,9 +9,14 @@ import MainWrapper from '@/views/layouts/Mainwrapper';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '@/assets/css/attendance/calenderevent.css';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 // Setup the localizer for react-big-calendar
 const localizer = momentLocalizer(moment);
+const breadCrumbs = [
+  { label: 'Attendances', href: null },
+  { label: 'Attendance Calendar', href: null },
+];
 
 const MyAttendanceCalendar = () => {
   const { getMyAttendanceListAction } = myDetailsActions;
@@ -76,20 +81,25 @@ const MyAttendanceCalendar = () => {
     [myAttendanceList]
   );
   return (
-    <MainWrapper>
+    <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="Attendance Calendar | EduExcellence" />
-      <div className="h-screen">
-        <Calendar
-          localizer={localizer}
-          events={attendanceEvents}
-          startAccessor="start"
-          endAccessor="end"
-          views={['month', 'week', 'day', 'agenda']}
-          defaultView="month"
-          defaultDate={new Date()}
-          onRangeChange={onRangeChangeHandler}
-        />
-      </div>
+      <Card className="p-4">
+        <CardHeader>
+          <CardTitle>Attendance Calendar</CardTitle>
+        </CardHeader>
+        <CardContent className="h-screen ">
+          <Calendar
+            localizer={localizer}
+            events={attendanceEvents}
+            startAccessor="start"
+            endAccessor="end"
+            views={['month', 'week', 'day', 'agenda']}
+            defaultView="month"
+            defaultDate={new Date()}
+            onRangeChange={onRangeChangeHandler}
+          />
+        </CardContent>
+      </Card>
     </MainWrapper>
   );
 };
