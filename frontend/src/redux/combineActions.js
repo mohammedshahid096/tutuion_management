@@ -6,6 +6,8 @@ import SubjectActions from './subjects/action';
 import StudentActions from './students/action';
 import GraphsActions from './graphs/action';
 import ContactFormActions from './contact/action';
+import MyDetailsActions from './myDetails/action';
+import { clearMyDetailsErrorsAction, resetMyDetailsAction } from './myDetails/reducer';
 
 export const loginActions = { ...LoginActions };
 export const userActions = { ...UserActions };
@@ -15,5 +17,10 @@ export const subjectActions = { ...SubjectActions };
 export const studentActions = { ...StudentActions };
 export const graphActions = { ...GraphsActions };
 export const contactActions = { ...ContactFormActions };
+export const myDetailsActions = {
+  ...MyDetailsActions,
+  clearMyDetailsErrorsAction,
+  resetMyDetailsAction,
+};
 
 // after adding reset the action in to the logout hook
