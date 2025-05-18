@@ -1,19 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { memo } from 'react';
 import {
-  UserCheck,
   School,
   ChartPie,
-  Calendar,
   BookOpen,
-  DollarSign,
-  Users,
   Settings2,
   ChevronRight,
   ChevronsUpDown,
-  Command,
   LogOut,
   Wallet,
-  Bell,
   CreditCard,
   Clock,
 } from 'lucide-react';
@@ -48,9 +42,6 @@ import {
 import getInitials from '@/helpers/get-initials';
 import { Link } from 'react-router-dom';
 import useLogout from '@/hooks/useLogout';
-import { useDispatch, useSelector } from 'react-redux';
-import { myDetailsActions } from '@/redux/combineActions';
-import { useEffect } from 'react';
 
 const data = {
   navMain: [
@@ -82,24 +73,29 @@ const data = {
         },
       ],
     },
+    {
+      title: 'Attendance',
+      url: '#',
+      icon: Clock,
+      isActive: true,
+      items: [
+        {
+          title: 'Attendance List',
+          url: '/my-attendance/attendance-list',
+        },
+        {
+          title: 'Attendance Calendar',
+          url: '/my-attendance/attendance-calendar',
+        },
+      ],
+    },
   ],
   quickAccess: [],
 };
 
-const SuperAdminSidebar = ({ user, children }) => {
+const StudentSidebar = ({ user, children }) => {
   const logoutFunction = useLogout();
-  const { getMyEnrollmentsListAction } = myDetailsActions;
-  const dispatch = useDispatch();
-  const { myEnrollmentList } = useSelector((state) => state.myDetailsState);
 
-  useEffect(() => {
-    if (!myEnrollmentList) {
-      fetchEnrollmentsList();
-    }
-  }, []);
-  const fetchEnrollmentsList = useCallback(() => {
-    dispatch(getMyEnrollmentsListAction());
-  }, [myEnrollmentList]);
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
@@ -255,4 +251,4 @@ const SuperAdminSidebar = ({ user, children }) => {
   );
 };
 
-export default SuperAdminSidebar;
+export default memo(StudentSidebar);
