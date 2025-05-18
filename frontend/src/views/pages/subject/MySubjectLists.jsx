@@ -66,6 +66,13 @@ const MySubjectLists = () => {
     };
     dispatch(getMySubjectsListAction(query));
   }, []);
+
+  const redirectToChaptersFunction = useCallback(
+    (subjectId) => {
+      window.open(`/subjects/${profileDetails?.boardType}/${subjectId}`, '_blank');
+    },
+    [profileDetails?.boardType]
+  );
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -90,9 +97,15 @@ const MySubjectLists = () => {
                   <span>Multiple chapters available</span>
                 </div>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="flex gap-4">
                 <Button className="w-full" onClick={() => redirectToChaptersFunction(subject?._id)}>
                   View Chapters
+                </Button>
+                <Button
+                  className="w-full bg-green-600"
+                  //   onClick={() => redirectToChaptersFunction(subject?._id)}
+                >
+                  View Progress
                 </Button>
               </CardFooter>
             </Card>
