@@ -232,7 +232,10 @@ const singleStudentDetailsController = async (req, res, next) => {
 
 const MyProfileController = async (req, res, next) => {
   try {
-    let data = await userModel.findById(req.user._id).select("-google");
+    let data = await userModel
+      .findById(req.user._id)
+      .populate("boardType", "name")
+      .select("-google");
 
     res.status(200).json({
       success: true,
