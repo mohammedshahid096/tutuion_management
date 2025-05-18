@@ -1,7 +1,6 @@
-import { memo, useEffect, useState, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { memo, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { subjectActions, boardActions, myDetailsActions } from '@/redux/combineActions';
+import { myDetailsActions } from '@/redux/combineActions';
 import MainWrapper from '@/views/layouts/Mainwrapper';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
@@ -49,7 +48,6 @@ const SubjectCardSkeleton = () => {
 };
 const MySubjectLists = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { getMySubjectsListAction, loading } = myDetailsActions;
   const { profileDetails } = useSelector((state) => state.userProfileState);
   const { mySubjectList } = useSelector((state) => state.myDetailsState);
@@ -73,10 +71,6 @@ const MySubjectLists = () => {
     },
     [profileDetails?.boardType]
   );
-
-  const redirectToProgressFunction = useCallback((subjectId) => {
-    navigate(subjectId);
-  }, []);
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -104,12 +98,6 @@ const MySubjectLists = () => {
               <CardFooter className="flex gap-4">
                 <Button className="w-full" onClick={() => redirectToChaptersFunction(subject?._id)}>
                   View Chapters
-                </Button>
-                <Button
-                  className="w-full bg-green-600"
-                  onClick={() => redirectToProgressFunction(subject?._id)}
-                >
-                  View Progress
                 </Button>
               </CardFooter>
             </Card>

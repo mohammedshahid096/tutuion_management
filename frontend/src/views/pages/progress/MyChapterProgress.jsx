@@ -13,13 +13,14 @@ import ProgressViewComp from '@/views/components/enrollments/ProgressViewComp';
 
 const breadCrumbs = [{ label: 'students', href: '/admin/students' }];
 
-const ProgressUpdate = ({ isEdit = true }) => {
+const ProgressUpdate = () => {
   const dispatch = useDispatch();
   const { studentId, enrollmentId, subjectId } = useParams();
   const { getPublicSubjectDetailAction } = subjectActions;
   const { getStudentEnrollmentListAction, updateStudentProgressAction } = studentActions;
   const { publicSubjectDetail } = useSelector((state) => state.subjectState);
   const { enrollmentsList } = useSelector((state) => state.studentState);
+  const { profileDetails } = useSelector((state) => state.userProfileState);
 
   const [info, setInfo] = useState({
     loading: true,
@@ -33,10 +34,6 @@ const ProgressUpdate = ({ isEdit = true }) => {
   useEffect(() => {
     if (!publicSubjectDetail || publicSubjectDetail?._id !== subjectId) {
       fetchSubjectDetailsHandler();
-    }
-
-    if (!enrollmentsList || enrollmentsList?._id !== studentId) {
-      fetchStudentEnrollmentListHandler();
     }
   }, []);
 
@@ -75,100 +72,11 @@ const ProgressUpdate = ({ isEdit = true }) => {
     dispatch(getPublicSubjectDetailAction(subjectId));
   }, [publicSubjectDetail, subjectId]);
 
-  const fetchStudentEnrollmentListHandler = useCallback(async () => {
-    dispatch(getStudentEnrollmentListAction(studentId));
-  }, [enrollmentsList, studentId]);
-
-  const changeSliderHandlerFunction = (value, subChapterId, chapterId) => {
-    setInfo((prev) => {
-      let updateState = _.cloneDeep(prev?.sliderProgress);
-      let isHavingCurrentChapter = _.has(updateState || {}, chapterId);
-      let isHavingCurrentSubChapter = _.has(
-        updateState?.[chapterId]?.subChapters || {},
-        subChapterId
-      );
-
-      let chapterPercentage = 0;
-      if (isHavingCurrentChapter && isHavingCurrentSubChapter) {
-        updateState[chapterId]['subChapters'][subChapterId]['topicProgress'] = value;
-      } else if (isHavingCurrentChapter) {
-        updateState[chapterId]['subChapters'][subChapterId] = {
-          _id: subChapterId,
-          topicProgress: value,
-        };
-      } else {
-        let subChapters = {};
-        subChapters[subChapterId] = {
-          _id: subChapterId,
-          topicProgress: value,
-        };
-
-        updateState[chapterId] = {
-          _id: chapterId,
-          subChapters,
-          progress: value,
-        };
-      }
-
-      let subChapterValues = _.values(updateState[chapterId]?.subChapters || {});
-      const percentages = _.map(subChapterValues, 'topicProgress');
-      const overallPercentage = percentages.length ? _.sum(percentages) / percentages.length : 0;
-      updateState[chapterId].progress = overallPercentage;
-
-      return { ...prev, sliderProgress: updateState };
-    });
-  };
-
-  const updateStudentProgressHandler = async () => {
-    if (info?.isSubmitting) return;
-    setInfo((prev) => ({
-      ...prev,
-      isSubmitting: true,
-    }));
-    const chaptersArray = _.values(info?.sliderProgress).map((ch) => ({
-      ...ch,
-      subChapters: _.values(ch.subChapters),
-    }));
-
-    let json = {
-      chapters: chaptersArray,
-    };
-
-    let response = await updateStudentProgressAction(enrollmentId, subjectId, json);
-    if (response[0] === true) {
-      toast.success('successfully updated');
-    } else {
-      toast.error(response[1]?.message || 'failed to update the student  progress');
-    }
-
-    setInfo((prev) => ({
-      ...prev,
-      isSubmitting: false,
-    }));
-  };
-
   return (
-    <MainWrapper
-      breadCrumbs={[
-        { label: 'students', href: '/admin/students' },
-        { label: 'Student Details', href: `/admin/student-details/${studentId}/student-profile` },
-        {
-          label: 'Student Enrollments',
-          href: `/admin/student-details/${studentId}/student-enrollments`,
-        },
-      ]}
-    >
+    <MainWrapper breadCrumbs={[{ label: 'students', href: '/admin/students' }]}>
       <MetaData title="Admin Progress Update | EduExcellence" />
       {info?.loading ? (
         <ProgressSkeleton />
-      ) : isEdit ? (
-        <ProgressUpdateComp
-          publicSubjectDetail={publicSubjectDetail}
-          changeSliderHandlerFunction={changeSliderHandlerFunction}
-          info={info}
-          sliderProgress={info?.sliderProgress}
-          updateStudentProgressHandler={updateStudentProgressHandler}
-        />
       ) : (
         <ProgressViewComp
           publicSubjectDetail={publicSubjectDetail}
