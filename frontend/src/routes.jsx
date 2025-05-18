@@ -24,6 +24,7 @@ import MyAttendance from './views/pages/attendance/MyAttendance';
 import MyAttendanceCalendar from './views/pages/attendance/MyAttendanceCalendar';
 import MySubjectLists from './views/pages/subject/MySubjectLists';
 import MyEnrollments from './views/pages/enrollments/MyEnrollments';
+import MyChapterProgress from './views/pages/progress/MyChapterProgress';
 
 const allRoutesMapper = [
   {
@@ -203,6 +204,14 @@ const allRoutesMapper = [
     component: (
       <AuthWrapper roles={[STUDENT]}>
         <MyEnrollments />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/my-subjects/enrollments/:enrollmentId/:subjectId',
+    component: (
+      <AuthWrapper roles={[STUDENT]}>
+        <MyChapterProgress />
       </AuthWrapper>
     ),
   },

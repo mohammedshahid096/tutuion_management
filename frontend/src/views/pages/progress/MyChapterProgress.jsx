@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, memo } from 'react';
 import MainWrapper from '@/views/layouts/Mainwrapper';
 import { useDispatch, useSelector } from 'react-redux';
-import { subjectActions, studentActions } from '@/redux/combineActions';
+import { subjectActions, studentActions, myDetailsActions } from '@/redux/combineActions';
 import _ from 'lodash';
 import ProgressUpdateComp, {
   ProgressSkeleton,
@@ -15,12 +15,11 @@ const breadCrumbs = [{ label: 'students', href: '/admin/students' }];
 
 const ProgressUpdate = () => {
   const dispatch = useDispatch();
-  const { studentId, enrollmentId, subjectId } = useParams();
+  const { enrollmentId, subjectId } = useParams();
   const { getPublicSubjectDetailAction } = subjectActions;
-  const { getStudentEnrollmentListAction, updateStudentProgressAction } = studentActions;
+  const { getMyEnrollmentsListAction } = myDetailsActions;
   const { publicSubjectDetail } = useSelector((state) => state.subjectState);
-  const { enrollmentsList } = useSelector((state) => state.studentState);
-  const { profileDetails } = useSelector((state) => state.userProfileState);
+  const { myEnrollmentList } = useSelector((state) => state.myDetailsState);
 
   const [info, setInfo] = useState({
     loading: true,
@@ -35,16 +34,14 @@ const ProgressUpdate = () => {
     if (!publicSubjectDetail || publicSubjectDetail?._id !== subjectId) {
       fetchSubjectDetailsHandler();
     }
+    if (!myEnrollmentList) {
+      fetchEnrollmentsList();
+    }
   }, []);
 
   useEffect(() => {
-    if (
-      publicSubjectDetail &&
-      publicSubjectDetail?._id === subjectId &&
-      enrollmentsList &&
-      enrollmentsList?._id === studentId
-    ) {
-      const enrollmentDetails = _.find(enrollmentsList?.docs, { _id: enrollmentId });
+    if (publicSubjectDetail && publicSubjectDetail?._id === subjectId && myEnrollmentList) {
+      const enrollmentDetails = _.find(myEnrollmentList, { _id: enrollmentId });
       const enrollmentSubject = _.find(
         enrollmentDetails?.subjects,
         (item) => item?.subjectId?._id === subjectId
@@ -66,15 +63,19 @@ const ProgressUpdate = () => {
         sliderProgress,
       }));
     }
-  }, [publicSubjectDetail, enrollmentsList]);
+  }, [publicSubjectDetail, myEnrollmentList]);
 
   const fetchSubjectDetailsHandler = useCallback(() => {
     dispatch(getPublicSubjectDetailAction(subjectId));
   }, [publicSubjectDetail, subjectId]);
 
+  const fetchEnrollmentsList = useCallback(() => {
+    dispatch(getMyEnrollmentsListAction());
+  }, [myEnrollmentList]);
+
   return (
     <MainWrapper breadCrumbs={[{ label: 'students', href: '/admin/students' }]}>
-      <MetaData title="Admin Progress Update | EduExcellence" />
+      <MetaData title="Chapter Progress  | EduExcellence" />
       {info?.loading ? (
         <ProgressSkeleton />
       ) : (

@@ -101,7 +101,7 @@ const MyEnrollments = () => {
                                 <Button
                                   onClick={() =>
                                     navigate(
-                                      `${singleEnrollment?._id}/view/${singleSubject?.subjectId?._id}`
+                                      `${singleEnrollment?._id}/${singleSubject?.subjectId?._id}`
                                     )
                                   }
                                 >
