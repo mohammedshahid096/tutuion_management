@@ -23,6 +23,7 @@ import { ADMIN, STUDENT } from './constants/roles.constants';
 import MyAttendance from './views/pages/attendance/MyAttendance';
 import MyAttendanceCalendar from './views/pages/attendance/MyAttendanceCalendar';
 import MySubjectLists from './views/pages/subject/MySubjectLists';
+import MyEnrollments from './views/pages/enrollments/MyEnrollments';
 
 const allRoutesMapper = [
   {
@@ -194,6 +195,14 @@ const allRoutesMapper = [
     component: (
       <AuthWrapper roles={[STUDENT]}>
         <MySubjectLists />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/my-subjects/enrollments',
+    component: (
+      <AuthWrapper roles={[STUDENT]}>
+        <MyEnrollments />
       </AuthWrapper>
     ),
   },

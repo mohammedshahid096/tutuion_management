@@ -71,6 +71,10 @@ const data = {
           title: 'Subjects List',
           url: '/my-subjects',
         },
+        {
+          title: 'Enrollments',
+          url: '/my-subjects/enrollments',
+        },
       ],
     },
     {
