@@ -1,4 +1,4 @@
-import { GET_MY_ATTENDANCE_LIST, GET_MY_SUBJECTS_LIST } from './constant';
+import { GET_MY_ATTENDANCE_LIST, GET_MY_ENROLLMENTS_LIST, GET_MY_SUBJECTS_LIST } from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
 import { getAccessToken } from '@/helpers/local-storage';
@@ -48,7 +48,24 @@ export const getMySubjectsListAction = createAsyncThunk(
   }
 );
 
+export const getMyEnrollmentsListAction = createAsyncThunk(
+  GET_MY_ENROLLMENTS_LIST,
+  async (queryObject, { rejectWithValue }) => {
+    const token = getAccessToken();
+    const response = await Service.fetchGet(
+      `${API.BASE_STUDENT_ENROLLMENT}${API.BASE_ACTIONS_TYPES.MY_ENROLLMENTS}`,
+      token
+    );
+    if (response[0] === true) {
+      return response[1].data;
+    } else {
+      return rejectWithValue(response[1]);
+    }
+  }
+);
+
 export default {
   getMyAttendanceListAction,
   getMySubjectsListAction,
+  getMyEnrollmentsListAction,
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   UserCheck,
   School,
@@ -48,6 +48,9 @@ import {
 import getInitials from '@/helpers/get-initials';
 import { Link } from 'react-router-dom';
 import useLogout from '@/hooks/useLogout';
+import { useDispatch, useSelector } from 'react-redux';
+import { myDetailsActions } from '@/redux/combineActions';
+import { useEffect } from 'react';
 
 const data = {
   navMain: [
@@ -85,6 +88,18 @@ const data = {
 
 const SuperAdminSidebar = ({ user, children }) => {
   const logoutFunction = useLogout();
+  const { getMyEnrollmentsListAction } = myDetailsActions;
+  const dispatch = useDispatch();
+  const { myEnrollmentList } = useSelector((state) => state.myDetailsState);
+
+  useEffect(() => {
+    if (!myEnrollmentList) {
+      fetchEnrollmentsList();
+    }
+  }, []);
+  const fetchEnrollmentsList = useCallback(() => {
+    dispatch(getMyEnrollmentsListAction());
+  }, [myEnrollmentList]);
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
