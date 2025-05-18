@@ -42,6 +42,11 @@ const DataTableSkeleton = memo(({ numRows = 6, numCols = 5 }) => {
   );
 });
 
+const breadCrumbs = [
+  { label: 'My-Subjects', href: '/my-subjects' },
+  { label: 'Enrollments', href: null },
+];
+
 const MyEnrollments = () => {
   const { getMyEnrollmentsListAction } = myDetailsActions;
   const dispatch = useDispatch();
@@ -57,7 +62,7 @@ const MyEnrollments = () => {
     dispatch(getMyEnrollmentsListAction());
   }, [myEnrollmentList]);
   return (
-    <MainWrapper>
+    <MainWrapper breadCrumbs={breadCrumbs}>
       {loading ? (
         <DataTableSkeleton />
       ) : (

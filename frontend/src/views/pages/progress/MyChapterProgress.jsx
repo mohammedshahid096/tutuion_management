@@ -11,7 +11,11 @@ import toast from 'react-hot-toast';
 import MetaData from '@/utils/MetaData';
 import ProgressViewComp from '@/views/components/enrollments/ProgressViewComp';
 
-const breadCrumbs = [{ label: 'students', href: '/admin/students' }];
+const breadCrumbs = [
+  { label: 'My-Subjects', href: '/my-subjects' },
+  { label: 'Enrollments', href: '/my-subjects/enrollments' },
+  { label: 'Chapter Progress', href: null },
+];
 
 const ProgressUpdate = () => {
   const dispatch = useDispatch();
@@ -74,7 +78,7 @@ const ProgressUpdate = () => {
   }, [myEnrollmentList]);
 
   return (
-    <MainWrapper breadCrumbs={[{ label: 'students', href: '/admin/students' }]}>
+    <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="Chapter Progress  | EduExcellence" />
       {info?.loading ? (
         <ProgressSkeleton />
