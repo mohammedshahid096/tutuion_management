@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getMyAttendanceListAction } from './action';
+import { getMyAttendanceListAction, getMySubjectsListAction } from './action';
 
 const initialState = {
   loading: false,
   error: null,
   statusCode: null,
   myAttendanceList: null,
+  mySubjectList: null,
 };
 
 const dataSlice = createSlice({
@@ -32,6 +33,18 @@ const dataSlice = createSlice({
       .addCase(getMyAttendanceListAction.rejected, (state, action) => {
         state.loading = false;
         state.error = action?.payload?.message || 'Fetching attendance failed'; // Default error message
+        state.statusCode = action?.payload?.statusCode || 500;
+      })
+      .addCase(getMySubjectsListAction.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMySubjectsListAction.fulfilled, (state, action) => {
+        state.loading = false;
+        state.mySubjectList = action.payload;
+      })
+      .addCase(getMySubjectsListAction.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action?.payload?.message || 'Fetching Subject List failed'; // Default error message
         state.statusCode = action?.payload?.statusCode || 500;
       });
   },

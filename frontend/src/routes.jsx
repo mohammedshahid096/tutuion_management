@@ -22,6 +22,7 @@ import Setting from './views/pages/Profile/UserSettings';
 import { ADMIN, STUDENT } from './constants/roles.constants';
 import MyAttendance from './views/pages/attendance/MyAttendance';
 import MyAttendanceCalendar from './views/pages/attendance/MyAttendanceCalendar';
+import MySubjectLists from './views/pages/subject/MySubjectLists';
 
 const allRoutesMapper = [
   {
@@ -185,6 +186,14 @@ const allRoutesMapper = [
     component: (
       <AuthWrapper roles={[STUDENT]}>
         <MyAttendanceCalendar />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/my-subjects',
+    component: (
+      <AuthWrapper roles={[STUDENT]}>
+        <MySubjectLists />
       </AuthWrapper>
     ),
   },

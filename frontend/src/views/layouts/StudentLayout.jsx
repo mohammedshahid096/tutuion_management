@@ -68,18 +68,14 @@ const data = {
       ],
     },
     {
-      title: 'Attendance',
+      title: 'Subjects',
       url: '#',
-      icon: Clock,
+      icon: BookOpen,
       isActive: true,
       items: [
         {
-          title: 'Attendance List',
-          url: '/my-attendance/attendance-list',
-        },
-        {
-          title: 'Attendance Calendar',
-          url: '/my-attendance/attendance-calendar',
+          title: 'Subjects List',
+          url: '/my-subjects',
         },
       ],
     },
