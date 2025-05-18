@@ -10,6 +10,8 @@ import {
   Wallet,
   CreditCard,
   Clock,
+  House,
+  CalendarDays,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -40,7 +42,7 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 import getInitials from '@/helpers/get-initials';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useLogout from '@/hooks/useLogout';
 
 const data = {
@@ -94,11 +96,28 @@ const data = {
       ],
     },
   ],
-  quickAccess: [],
+  quickAccess: [
+    {
+      name: 'Attendance Calendar',
+      url: '/my-attendance/attendance-calendar',
+      icon: CalendarDays,
+    },
+    {
+      name: 'Syllabus',
+      url: '/boards',
+      icon: School,
+    },
+    {
+      name: 'Home Page',
+      url: '/',
+      icon: House,
+    },
+  ],
 };
 
 const StudentSidebar = ({ user, children }) => {
   const logoutFunction = useLogout();
+  const navigate = useNavigate();
 
   return (
     <SidebarProvider>
@@ -143,10 +162,10 @@ const StudentSidebar = ({ user, children }) => {
                     <CollapsibleContent>
                       <SidebarMenuSub>
                         {item.items?.map((subItem) => (
-                          <SidebarMenuSubItem key={subItem.title}>
+                          <SidebarMenuSubItem key={subItem?.title}>
                             <SidebarMenuSubButton asChild>
-                              <Link to={subItem.url}>
-                                <span>{subItem.title}</span>
+                              <Link to={subItem?.url}>
+                                <span>{subItem?.title}</span>
                               </Link>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
@@ -165,10 +184,10 @@ const StudentSidebar = ({ user, children }) => {
               {data.quickAccess.map((item) => (
                 <SidebarMenuItem key={item.name}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link to={item.url}>
                       <item.icon />
                       <span>{item.name}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -220,7 +239,7 @@ const StudentSidebar = ({ user, children }) => {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/settings/my-profile')}>
                       <Settings2 />
                       Profile Settings
                     </DropdownMenuItem>
