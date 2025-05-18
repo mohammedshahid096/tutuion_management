@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo } from 'react';
 import {
   Card,
   CardContent,
@@ -8,16 +8,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import { BookOpen, GraduationCap, Calendar, School, Hourglass, Loader2 } from 'lucide-react';
+import { BookOpen, GraduationCap, Calendar, School } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Slider } from '@/components/ui/slider';
-import { Button } from '@/components/ui/button';
 
 export const ProgressSkeleton = memo(() => {
   return (

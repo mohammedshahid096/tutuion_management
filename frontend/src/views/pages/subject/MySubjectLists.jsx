@@ -73,13 +73,17 @@ const MySubjectLists = () => {
     },
     [profileDetails?.boardType]
   );
+
+  const redirectToProgressFunction = useCallback((subjectId) => {
+    navigate(subjectId);
+  }, []);
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading ? (
           <SubjectCardSkeleton />
-        ) : mySubjectList.length > 0 ? (
-          mySubjectList.map((subject, index) => (
+        ) : mySubjectList?.length > 0 ? (
+          mySubjectList?.map((subject, index) => (
             <Card
               key={subject?.id || index}
               className="subject-card cursor-pointer transition-all duration-300 hover:shadow-md"
@@ -103,7 +107,7 @@ const MySubjectLists = () => {
                 </Button>
                 <Button
                   className="w-full bg-green-600"
-                  //   onClick={() => redirectToChaptersFunction(subject?._id)}
+                  onClick={() => redirectToProgressFunction(subject?._id)}
                 >
                   View Progress
                 </Button>
