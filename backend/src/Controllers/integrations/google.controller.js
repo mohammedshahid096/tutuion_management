@@ -4,6 +4,7 @@ const errorHandling = require("../../Utils/errorHandling");
 const userModel = require("../../Schema/users/user.model");
 const axios = require("axios");
 const logger = require("../../Config/logger.config");
+const { DEVELOPMENT_MODE } = require("../../Config/index.config");
 
 // connectToGoogleController
 const connectToGoogleController = async (req, res, next) => {
@@ -49,12 +50,21 @@ const googleAuthCallbackController = async (req, res, next) => {
       "Integration - google.controller - googleAuthCallbackController - end"
     );
 
-    res.status(200).json({
-      success: true,
-      message: "Google authentication successful",
-      tokens,
-      userDetails,
-    });
+    let baseURL =
+      DEVELOPMENT_MODE === "development"
+        ? "http://localhost:5173"
+        : "https://www.eduexcellencetutorial.com";
+
+    baseURL += "/settings/admin-integrations";
+
+    res.redirect(baseURL);
+
+    // res.status(200).json({
+    //   success: true,
+    //   message: "Google authentication successful",
+    //   tokens,
+    //   userDetails,
+    // });
   } catch (error) {
     logger.error(
       "Integration - google.controller - googleAuthCallbackController - error",
