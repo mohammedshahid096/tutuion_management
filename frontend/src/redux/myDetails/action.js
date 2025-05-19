@@ -84,7 +84,7 @@ export const isGoogleConnectedAction = createAsyncThunk(
         },
       });
       if (response.status === 200) {
-        return response.data;
+        return response.data?.data;
       } else {
         return rejectWithValue(response.data);
       }

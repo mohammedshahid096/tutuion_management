@@ -14,7 +14,10 @@ const initialState = {
   mySubjectList: null,
   myEnrollmentList: null,
   integrations: {
-    isGoogleConnected: false,
+    google: {
+      isApiCalled: false,
+      isGoogleConnected: false,
+    },
   },
 };
 
@@ -71,11 +74,17 @@ const dataSlice = createSlice({
       .addCase(isGoogleConnectedAction.pending, (state) => {
         state.loading = true;
       })
-      .addCase(isGoogleConnectedAction.fulfilled, (state) => {
-        state.integrations.isGoogleConnected = true;
+      .addCase(isGoogleConnectedAction.fulfilled, (state, action) => {
+        state.integrations.google = {
+          isApiCalled: true,
+          isGoogleConnected: action?.payload?.isGoogleConnected || false,
+        };
       })
       .addCase(isGoogleConnectedAction.rejected, (state) => {
-        state.integrations.isGoogleConnected = false;
+        state.integrations.google = {
+          isApiCalled: true,
+          isGoogleConnected: false,
+        };
       });
   },
 });

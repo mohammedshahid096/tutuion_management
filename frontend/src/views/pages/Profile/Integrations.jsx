@@ -24,7 +24,7 @@ const integrationsConstants = [
     consoleUrl: `${BASE_URL}/auth/google`,
     category: 'prayer',
     popular: true,
-    stateName: 'isGoogleConnected',
+    stateName: 'google',
   },
 
   //   {
@@ -57,12 +57,14 @@ const Integrations = () => {
   };
 
   useEffect(() => {
-    fetchGoogleIntegrationHandler();
+    if (!integrations?.google?.isApiCalled) {
+      fetchGoogleIntegrationHandler();
+    }
   }, []);
 
   const fetchGoogleIntegrationHandler = useCallback(() => {
     dispatch(isGoogleConnectedAction());
-  }, [integrations?.isGoogleConnected]);
+  }, [integrations?.google]);
 
   return (
     <>
@@ -87,7 +89,7 @@ const Integrations = () => {
                   <CardDescription>{integration.description}</CardDescription>
                 </CardHeader>
                 <CardFooter className="pt-2">
-                  {integrations[integration?.stateName] ? (
+                  {integrations[integration?.stateName]?.isGoogleConnected ? (
                     <Button className="w-full bg-green-800 hover:bg-green-900">
                       Connected
                       <BadgeCheck className="ml-2 h-4 w-4" />
