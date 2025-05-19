@@ -23,8 +23,11 @@ class GoogleCalendarServiceClass extends GoogleAuthServiceClass {
       return true;
     } catch (error) {
       if (error.message === "REFRESH_TOKEN_EXPIRED") {
-        // Token cannot be refreshed, user needs to re-authenticate
-        throw new Error("User needs to re-authenticate with Google");
+        let googleRefreshTokenExpiredError = new Error(
+          "User needs to re-authenticate with Google"
+        );
+        googleRefreshTokenExpiredError.name = "GoogleRefreshTokenExpiredError";
+        throw googleRefreshTokenExpiredError;
       }
       console.error("Failed to initialize calendar service:", error);
       throw error;

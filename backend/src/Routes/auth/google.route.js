@@ -29,7 +29,11 @@ GoogleAuthRoutes.route("/disconnect").get(
   disConnectToGoogleController
 );
 
-// GoogleAuthRoutes.route("/my-profile").get(getGoogleProfileDetailsController);
+GoogleAuthRoutes.route("/my-profile").get(
+  Authentication,
+  Authorization(ADMIN),
+  getGoogleProfileDetailsController
+);
 // GoogleAuthRoutes.route("/google-events-list").get(async (req, res) => {
 //   try {
 //     const userID = "673e19244f630ca743c7abd0";

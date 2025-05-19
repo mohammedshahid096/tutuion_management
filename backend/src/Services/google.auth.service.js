@@ -95,6 +95,35 @@ class GoogleAuthServiceClass {
     try {
       const { tokens } = await this.getTokensFromDatabase();
       this.setCredentials(tokens);
+      // Check if access token is expired
+      const isTokenExpired = this.oAuth2Client.isTokenExpiring();
+
+      if (isTokenExpired) {
+        try {
+          // Try to refresh the token
+          const { credentials } = await this.oAuth2Client.refreshAccessToken();
+
+          // Save new tokens to database
+          await this.saveTokensToDatabase(credentials);
+
+          return credentials.access_token;
+        } catch (refreshError) {
+          // Handle refresh token expiration
+          if (
+            refreshError.message.includes("invalid_grant") ||
+            refreshError.message.includes("refresh token expired")
+          ) {
+            // Refresh token is expired - user needs to re-authenticate
+            const googleRefreshTokenExpiryError = new Error(
+              "REFRESH_TOKEN_EXPIRED"
+            );
+            googleRefreshTokenExpiryError.name =
+              "GoogleRefreshTokenExpiredError";
+            throw googleRefreshTokenExpiryError;
+          }
+          throw refreshError;
+        }
+      }
     } catch (error) {
       logger.error(
         "Services - Google.auth.service - GoogleAuthServiceClass - initializeAuth - error",
@@ -228,7 +257,12 @@ class GoogleAuthServiceClass {
             refreshError.message.includes("refresh token expired")
           ) {
             // Refresh token is expired - user needs to re-authenticate
-            throw new Error("REFRESH_TOKEN_EXPIRED");
+            const googleRefreshTokenExpiryError = new Error(
+              "REFRESH_TOKEN_EXPIRED"
+            );
+            googleRefreshTokenExpiryError.name =
+              "GoogleRefreshTokenExpiredError";
+            throw googleRefreshTokenExpiryError;
           }
           throw refreshError;
         }

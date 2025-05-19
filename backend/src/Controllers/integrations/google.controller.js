@@ -70,7 +70,10 @@ const getGoogleProfileDetailsController = async (req, res, next) => {
       "Integration - google.controller - getGoogleProfileDetailsController - start"
     );
     const userID = req.user._id;
-    const googleAuthService = await new GoogleAuthServiceClass(userID);
+
+    const googleAuthService = await new GoogleAuthServiceClass(
+      userID.toString()
+    );
     await googleAuthService.initializeAuth();
     const userInfo = await googleAuthService.getUserInfo();
 
@@ -79,7 +82,7 @@ const getGoogleProfileDetailsController = async (req, res, next) => {
     );
     res.status(200).json({
       success: true,
-      message: "Google Calendar events retrieved successfully",
+      message: "Google ProfileDetails retrieved successfully",
       userInfo,
     });
   } catch (error) {
