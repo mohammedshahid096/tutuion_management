@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Card,
@@ -8,14 +8,14 @@ import {
   CardDescription,
   CardFooter,
 } from '@/components/ui/card';
-import { ExternalLink, Calendar, Users, Video } from 'lucide-react';
+import { ExternalLink, Calendar, BadgeCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Link } from 'react-router-dom';
 import { BASE_URL } from '@/services/config';
 import { connectToGoogleApi } from '@/apis/integration.api';
+import { myDetailsActions } from '@/redux/combineActions';
 
-const integrations = [
+const integrationsConstants = [
   {
     id: 'google-calendar',
     name: 'Google Calendar',
@@ -24,6 +24,7 @@ const integrations = [
     consoleUrl: `${BASE_URL}/auth/google`,
     category: 'prayer',
     popular: true,
+    stateName: 'isGoogleConnected',
   },
 
   //   {
@@ -45,15 +46,23 @@ const integrations = [
   //   },
 ];
 const Integrations = () => {
-  //   const dispatch = useDispatch();
-  //   const { communityMosqueSettings } = useSelector((state) => state.mosqueState);
-  //   const { updateMosqueSettingsAction } = mosqueActions;
+  const dispatch = useDispatch();
+  const { integrations } = useSelector((state) => state.myDetailsState);
+  const { isGoogleConnectedAction } = myDetailsActions;
 
   const onClickConnectButton = (integrationDetails) => {
     if (integrationDetails?.id === 'google-calendar') {
       connectToGoogleApi();
     }
   };
+
+  useEffect(() => {
+    fetchGoogleIntegrationHandler();
+  }, []);
+
+  const fetchGoogleIntegrationHandler = useCallback(() => {
+    dispatch(isGoogleConnectedAction());
+  }, [integrations?.isGoogleConnected]);
 
   return (
     <>
@@ -67,7 +76,7 @@ const Integrations = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {integrations?.map((integration) => (
+            {integrationsConstants?.map((integration) => (
               <Card key={integration.id} className="overflow-hidden transition-all hover:shadow-md">
                 <CardHeader className="pb-4">
                   <div className="flex justify-between items-start">
@@ -78,10 +87,17 @@ const Integrations = () => {
                   <CardDescription>{integration.description}</CardDescription>
                 </CardHeader>
                 <CardFooter className="pt-2">
-                  <Button className="w-full" onClick={() => onClickConnectButton(integration)}>
-                    Connect
-                    <ExternalLink className="ml-2 h-4 w-4" />
-                  </Button>
+                  {integrations[integration?.stateName] ? (
+                    <Button className="w-full bg-green-800 hover:bg-green-900">
+                      Connected
+                      <BadgeCheck className="ml-2 h-4 w-4" />
+                    </Button>
+                  ) : (
+                    <Button className="w-full" onClick={() => onClickConnectButton(integration)}>
+                      Connect
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </Button>
+                  )}
                 </CardFooter>
               </Card>
             ))}

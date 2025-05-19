@@ -70,6 +70,7 @@ const getGoogleProfileDetailsController = async (req, res, next) => {
       "Integration - google.controller - getGoogleProfileDetailsController - start"
     );
     const userID = req.user._id;
+    const needProfileDetails = req.query?.profile || false;
 
     const googleAuthService = await new GoogleAuthServiceClass(
       userID.toString()
@@ -77,13 +78,20 @@ const getGoogleProfileDetailsController = async (req, res, next) => {
     await googleAuthService.initializeAuth();
     const userInfo = await googleAuthService.getUserInfo();
 
+    let data = {
+      isGoogleConnected: true,
+    };
     logger.info(
       "Integration - google.controller - getGoogleProfileDetailsController - end"
     );
+
+    if (needProfileDetails && userInfo) {
+      data.userInfo = userInfo;
+    }
     res.status(200).json({
       success: true,
       message: "Google ProfileDetails retrieved successfully",
-      userInfo,
+      data,
     });
   } catch (error) {
     logger.error(

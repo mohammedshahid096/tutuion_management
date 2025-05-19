@@ -1,9 +1,16 @@
-import { GET_MY_ATTENDANCE_LIST, GET_MY_ENROLLMENTS_LIST, GET_MY_SUBJECTS_LIST } from './constant';
+import {
+  GET_MY_ATTENDANCE_LIST,
+  GET_MY_ENROLLMENTS_LIST,
+  GET_MY_SUBJECTS_LIST,
+  IS_GOOGLE_INTEGRATION_CONNECTED,
+} from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
 import { getAccessToken } from '@/helpers/local-storage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { objectToQueryString } from '@/helpers';
+import { BASE_URL } from '@/services/config';
+import axios from 'axios';
 
 /**
  * This function retrieves a user's attendance list based on a query object and dispatches actions
@@ -64,8 +71,32 @@ export const getMyEnrollmentsListAction = createAsyncThunk(
   }
 );
 
+export const isGoogleConnectedAction = createAsyncThunk(
+  IS_GOOGLE_INTEGRATION_CONNECTED,
+  async (queryObject, { rejectWithValue }) => {
+    try {
+      const token = getAccessToken();
+
+      let url = `${BASE_URL}${API.BASE_AUTH}${API.BASE_ACTIONS_TYPES.GOOGLE}${API.BASE_ACTIONS_TYPES.MY_PROFILE}`;
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        return rejectWithValue(response.data);
+      }
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export default {
   getMyAttendanceListAction,
   getMySubjectsListAction,
   getMyEnrollmentsListAction,
+  isGoogleConnectedAction,
 };

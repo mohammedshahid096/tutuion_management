@@ -3,6 +3,7 @@ import {
   getMyAttendanceListAction,
   getMyEnrollmentsListAction,
   getMySubjectsListAction,
+  isGoogleConnectedAction,
 } from './action';
 
 const initialState = {
@@ -12,6 +13,9 @@ const initialState = {
   myAttendanceList: null,
   mySubjectList: null,
   myEnrollmentList: null,
+  integrations: {
+    isGoogleConnected: false,
+  },
 };
 
 const dataSlice = createSlice({
@@ -63,6 +67,15 @@ const dataSlice = createSlice({
         state.loading = false;
         state.error = action?.payload?.message || 'Fetching Enrollments List failed'; // Default error message
         state.statusCode = action?.payload?.statusCode || 500;
+      })
+      .addCase(isGoogleConnectedAction.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(isGoogleConnectedAction.fulfilled, (state) => {
+        state.integrations.isGoogleConnected = true;
+      })
+      .addCase(isGoogleConnectedAction.rejected, (state) => {
+        state.integrations.isGoogleConnected = false;
       });
   },
 });
