@@ -58,10 +58,6 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/v1", IndexRoutes);
 app.use("/auth/google", GoogleAuthRoutes);
-app.get("/test", async (req, res) => {
-  let data = await createNewLiveClassUtility();
-  res.send(data ?? { success: true });
-});
 
 //----------------------------------------
 //--------------- others -----------------

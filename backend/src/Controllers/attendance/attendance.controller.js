@@ -396,9 +396,36 @@ const updateAttendanceDetailsController = async (req, res, next) => {
   }
 };
 
+const createCronJobHandlerController = async (req, res, next) => {
+  try {
+    logger.info(
+      "Controllers - attendance - attendance.controller - createCronJobHandlerController - Start"
+    );
+
+    // await createNewLiveClassUtility()
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "cron job successfully completed",
+    });
+
+    logger.info(
+      "Controllers - attendance - attendance.controller - createCronJobHandlerController - End"
+    );
+  } catch (error) {
+    logger.error(
+      "Controllers - attendance - attendance.controller - createCronJobHandlerController -   - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 module.exports = {
   createNewLiveClassController,
   getAttendanceListController,
   getAttendanceByDateController,
   updateAttendanceDetailsController,
+  createCronJobHandlerController,
 };

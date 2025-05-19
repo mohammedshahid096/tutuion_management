@@ -9,6 +9,7 @@ const {
   getAttendanceListController,
   getAttendanceByDateController,
   updateAttendanceDetailsController,
+  createCronJobHandlerController,
 } = require("../../Controllers/attendance/attendance.controller");
 const {
   currentBatchDetailMiddleWare,
@@ -49,5 +50,8 @@ AttendanceRoutes.route("/admin/:attendanceId").put(
   updateAttendanceDetailsValidation,
   updateAttendanceDetailsController
 );
+
+// cron job route
+AttendanceRoutes.route("/cron-job").get(createCronJobHandlerController);
 
 module.exports = AttendanceRoutes;

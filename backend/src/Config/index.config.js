@@ -40,4 +40,7 @@ module.exports = {
   NODEMAILER_PORT: process.env.NODEMAILER_PORT,
   NODEMAILER_USER: process.env.NODEMAILER_USER,
   NODEMAILER_PASS: process.env.NODEMAILER_PASS,
+
+  // admin id
+  USER_ACCOUNT_ID: process.env.USER_ACCOUNT_ID || "672493276aa409505ecd9b43",
 };
