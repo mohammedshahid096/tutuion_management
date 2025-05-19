@@ -42,7 +42,7 @@ const Header = () => {
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex gap-2 items-center text-xl font-bold">
           <GraduationCap className="h-6 w-6" />
-          <span>EduExcellence</span>
+          <span>EduExcellence Tutorial</span>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-4">
           {/* Desktop Navigation - Hidden on mobile */}

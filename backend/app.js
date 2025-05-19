@@ -43,7 +43,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors(corsConfig));
 moment.tz.setDefault("Asia/Kolkata");
-// createLiveClassRemindersCronJob();
+createLiveClassRemindersCronJob();
 
 //----------------------------------------
 //--------------- Routes -----------------
