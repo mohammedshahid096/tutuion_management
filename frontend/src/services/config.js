@@ -8,4 +8,4 @@ const config_urls = {
 export const BASE_URL = config_urls[import.meta.env.VITE_DEVELOPMENT_MODE || 'development'];
 export const API_URL =
   config_urls[import.meta.env.VITE_DEVELOPMENT_MODE || 'development'] + '/api/v1';
-export const public_url = 'https://mosque-management-public-portal.vercel.app';
+export const public_url = 'https://www.eduexcellencetutorial.com';

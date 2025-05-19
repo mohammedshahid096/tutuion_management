@@ -5,8 +5,12 @@ import { Button } from '@/components/ui/button';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileDetails from './ProfileDetails';
 import ChangePassword from './ChangePassword';
+import Integrations from './Integrations';
+import _ from 'lodash';
+import { useSelector } from 'react-redux';
+import { ADMIN } from '@/constants/roles.constants';
 
-const menuItems = [
+const menuItemsConstant = [
   {
     id: 'my-profile',
     label: 'My Profile',
@@ -32,15 +36,35 @@ const settingsMenuMapper = {
 
 const Setting = () => {
   const { settingId } = useParams();
+  const { profileDetails } = useSelector((state) => state.userProfileState);
+  const [menuItems, setMenuItems] = useState(_.cloneDeep(menuItemsConstant));
+
+  useEffect(() => {
+    if (profileDetails?.role === ADMIN) {
+      setMenuItems((prev) => [
+        ...prev,
+        {
+          id: 'admin-integrations',
+          label: 'Admin Integrations',
+          breadCrumbs: [
+            { label: 'Settings', href: null },
+            { label: 'Admin Integrations', href: null },
+          ],
+        },
+      ]);
+      settingsMenuMapper['admin-integrations'] = Integrations;
+    }
+  }, [profileDetails?.role]);
+
   const navigate = useNavigate();
   const ComponentRender = useMemo(
     () => settingsMenuMapper[settingId] || settingsMenuMapper['my-profile'],
-    [settingId]
+    [settingId, menuItems]
   );
   const breadCrumbs = useMemo(() => {
     let current = menuItems.find((item) => item.id === settingId);
     return current?.breadCrumbs || menuItems[0].breadCrumbs;
-  }, [settingId]);
+  }, [settingId, menuItems]);
 
   const handleTabChange = useCallback(
     (id) => {

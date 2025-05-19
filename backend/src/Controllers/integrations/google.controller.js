@@ -16,10 +16,10 @@ const connectToGoogleController = async (req, res, next) => {
       req.user._id.toString()
     );
     const authUrl = googleAuthService.generateAuthUrl();
-    res.redirect(authUrl);
     logger.info(
       "Integration - google.controller - connectToGoogleController - end"
     );
+    res.status(200).json({ success: true, statusCode: 200, authUrl });
   } catch (error) {
     logger.error(
       "Integration - google.controller - connectToGoogleController - error",

@@ -15,7 +15,7 @@ const { ADMIN } = require("../../Constants/roles.constants");
 const GoogleAuthRoutes = express.Router();
 
 GoogleAuthRoutes.route("/").get(
-  setHeaderDevelopment,
+  // setHeaderDevelopment,
   Authentication,
   Authorization(ADMIN),
   connectToGoogleController
