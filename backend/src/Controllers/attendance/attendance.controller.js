@@ -10,6 +10,7 @@ const moment = require("moment");
 const NodeMailerServiceClass = require("../../aws_ses/mails/mail.index");
 const GoogleCalendarServiceClass = require("../../Services/google.calendar.service");
 const { subjects } = require("../../Constants/model.constants");
+const { decryptPasswordFunction } = require("../../Utils/encryption");
 
 const createNewLiveClassController = async (req, res, next) => {
   try {
@@ -402,7 +403,23 @@ const createCronJobHandlerController = async (req, res, next) => {
       "Controllers - attendance - attendance.controller - createCronJobHandlerController - Start"
     );
 
-    // await createNewLiveClassUtility()
+    let codeValue = "Cron@EduExcellence123";
+    const { iv, ciphertext } = req.query;
+    // let encrypt = {
+    //   iv: "rehuIYOSkKllJ958U230cA==",
+    //   ciphertext: "lexvdltLSWKGs29og3wI1Ji9ciska8B0XvCzWImIYm8=",
+    // };
+
+    let decryptKey = decryptPasswordFunction({
+      iv,
+      ciphertext,
+    });
+
+    if (codeValue !== decryptKey) {
+      return next(httpErrors.Unauthorized("key should me match"));
+    }
+
+    await createNewLiveClassUtility();
 
     res.status(200).json({
       success: true,
