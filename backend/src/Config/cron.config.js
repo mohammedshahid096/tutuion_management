@@ -3,7 +3,7 @@ const { createNewLiveClassUtility } = require("../Utils/classReminder.cron");
 
 const createLiveClassRemindersCronJob = () => {
   cron.schedule(
-    "* * * * *",
+    "0 6 * * *",
     () => {
       createNewLiveClassUtility();
     },
