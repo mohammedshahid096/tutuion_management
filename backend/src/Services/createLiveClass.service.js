@@ -37,35 +37,39 @@ class LiveClassServiceClass {
   }
 
   async createGoogleMeetMethod() {
-    const googleCalendarService = await new GoogleCalendarServiceClass(
-      this.userId
-    );
+    try {
+      const googleCalendarService = await new GoogleCalendarServiceClass(
+        this.userId
+      );
 
-    let googleEventDetails = {
-      summary: this.summary,
-      description: this.description,
-      startDate: this.startDate,
-      endDate: this.endDate,
-      timezone: "Asia/Kolkata",
-      location: "Google Meet",
-      attendees: [{ email: this.studentDetails.email }],
-    };
-
-    await googleCalendarService.initialize();
-    let eventResponseDetails = await googleCalendarService.createEvent(
-      "primary",
-      googleEventDetails
-    );
-
-    if (eventResponseDetails) {
-      this.googleMeet = {
-        meetLink: eventResponseDetails.hangoutLink,
-        conferenceId: eventResponseDetails.conferenceData.conferenceId,
-        details: eventResponseDetails,
+      let googleEventDetails = {
+        summary: this.summary,
+        description: this.description,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        timezone: "Asia/Kolkata",
+        location: "Google Meet",
+        attendees: [{ email: this.studentDetails.email }],
       };
-    }
 
-    return this.googleMeet;
+      await googleCalendarService.initialize();
+      let eventResponseDetails = await googleCalendarService.createEvent(
+        "primary",
+        googleEventDetails
+      );
+
+      if (eventResponseDetails) {
+        this.googleMeet = {
+          meetLink: eventResponseDetails.hangoutLink,
+          conferenceId: eventResponseDetails.conferenceData.conferenceId,
+          details: eventResponseDetails,
+        };
+      }
+
+      return this.googleMeet;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async getEnrollmentId() {

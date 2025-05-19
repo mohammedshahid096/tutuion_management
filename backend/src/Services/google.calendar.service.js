@@ -22,7 +22,7 @@ class GoogleCalendarServiceClass extends GoogleAuthServiceClass {
 
       return true;
     } catch (error) {
-      if (error.message === "REFRESH_TOKEN_EXPIRED") {
+      if (error?.message === "REFRESH_TOKEN_EXPIRED") {
         let googleRefreshTokenExpiredError = new Error(
           "User needs to re-authenticate with Google"
         );

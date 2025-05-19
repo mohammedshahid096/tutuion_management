@@ -11,6 +11,7 @@ const NodeMailerServiceClass = require("../../aws_ses/mails/mail.index");
 const GoogleCalendarServiceClass = require("../../Services/google.calendar.service");
 const { subjects } = require("../../Constants/model.constants");
 const { decryptPasswordFunction } = require("../../Utils/encryption");
+const { createNewLiveClassUtility } = require("../../Utils/classReminder.cron");
 
 const createNewLiveClassController = async (req, res, next) => {
   try {
@@ -418,7 +419,6 @@ const createCronJobHandlerController = async (req, res, next) => {
     if (codeValue !== decryptKey) {
       return next(httpErrors.Unauthorized("key should me match"));
     }
-
     await createNewLiveClassUtility();
 
     res.status(200).json({

@@ -28,14 +28,14 @@ const createNewLiveClassUtility = async () => {
       })
       .lean();
 
-    studentsList?.forEach(async (singleStudent, index) => {
-      let studentId = singleStudent._id.toString();
-      let startTime = singleStudent.timings.startTimeHHMM;
-      let endTime = singleStudent.timings.endTimeHHMM;
-      let currentDate = moment(startTime, "HH:mm").format("LLL");
-      let summary = currentDay + " " + currentDate + "";
-      let description =
-        "A live is schedule " + currentDay + " " + currentDate + "";
+    for (const singleStudent of studentsList) {
+      const studentId = singleStudent._id.toString();
+      const startTime = singleStudent.timings.startTimeHHMM;
+      const endTime = singleStudent.timings.endTimeHHMM;
+      const currentDate = moment(startTime, "HH:mm").format("LLL");
+      const summary = currentDay + " " + currentDate;
+      const description =
+        "A live is scheduled " + currentDay + " " + currentDate;
 
       const createLiveClass = new LiveClassServiceClass(
         studentId,
@@ -48,23 +48,26 @@ const createNewLiveClassUtility = async () => {
         USER_ACCOUNT_ID
       );
 
-      let enrollmentDetailsAvailable = await createLiveClass.getEnrollmentId();
-      let isClassAvailable = await createLiveClass.checkAvailabilityMethod();
-      // console.log("isAvailable", isClassAvailable);
+      const enrollmentDetailsAvailable =
+        await createLiveClass.getEnrollmentId();
+      const isClassAvailable = await createLiveClass.checkAvailabilityMethod();
 
-      if (isClassAvailable === null && enrollmentDetailsAvailable) {
-        let meetDetails = await createLiveClass.createGoogleMeetMethod();
-        // console.log("meetDetails", meetDetails);
-        if (meetDetails) {
-          let attendanceData = await createLiveClass.createMeetDocument();
-          // console.log("attendanceData", attendanceData);
-          if (attendanceData) {
-            await createLiveClass.sendMailMethod();
-            // console.log("mail send ");
+      try {
+        if (isClassAvailable === null && enrollmentDetailsAvailable) {
+          const meetDetails = await createLiveClass.createGoogleMeetMethod();
+
+          if (meetDetails) {
+            const attendanceData = await createLiveClass.createMeetDocument();
+            if (attendanceData) {
+              await createLiveClass.sendMailMethod();
+            }
           }
         }
+      } catch (error) {
+        console.error("Error scheduling class for student:", studentId, error);
+        throw error;
       }
-    });
+    }
 
     logger.info(
       "Utils - classReminder.cron -  createNewLiveClassController   - End"
@@ -74,7 +77,8 @@ const createNewLiveClassUtility = async () => {
       "Utils - classReminder.cron -  createNewLiveClassController   - Error",
       error
     );
-    return error;
+    throw error;
+    // return error;
   }
 };
 
