@@ -1,7 +1,7 @@
 const { redis } = require("../Config/redis.config");
 const redisExpiry = 3 * 24 * 60 * 60; // 3days
 
-class RedisClassService {
+class RedisServiceClass {
   constructor(time) {
     this.redisExpiry = time ?? redisExpiry;
   }
@@ -23,6 +23,15 @@ class RedisClassService {
       throw error;
     }
   }
+
+  async deleteRedisKey(key) {
+    try {
+      await redis.del(key);
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
-module.exports = RedisClassService;
+module.exports = RedisServiceClass;

@@ -4,6 +4,8 @@ const logger = require("../../Config/logger.config");
 const boardModel = require("../../Schema/boards/board.model");
 const errorHandling = require("../../Utils/errorHandling");
 const sortConstants = require("../../Constants/sort.constants");
+const RedisServiceClass = require("../../Services/redis.service");
+const { redisBoardsListKey } = require("../../Constants/redis.constants");
 
 const createNewBoardController = async (req, res, next) => {
   try {
@@ -26,6 +28,8 @@ const createNewBoardController = async (req, res, next) => {
     }
 
     let data = await boardModel.create(details);
+    const redisService = new RedisServiceClass();
+    await redisService.deleteRedisKey(redisBoardsListKey);
     data = data.toObject();
 
     data.createdBy = {
@@ -95,18 +99,32 @@ const getBoardsListController = async (req, res, next) => {
       "Controllers - board - board.controller - getSingleBoardDetailController - Start"
     );
 
+    let boardData = null;
+
     const { sort } = req.query;
 
     let sortQuery = sortConstants["-createdAt"];
     if (sort) {
       sortQuery = sortConstants[sort];
+      boardData = await boardModel
+        .find()
+        .populate("createdBy updatedBy", "name")
+        .sort(sortQuery)
+        .lean();
+    } else {
+      const redisService = new RedisServiceClass();
+      let cacheData = await redisService.getRedisJSON(redisBoardsListKey);
+      if (cacheData) {
+        boardData = cacheData;
+      } else {
+        boardData = await boardModel
+          .find()
+          .populate("createdBy updatedBy", "name")
+          .sort(sortQuery)
+          .lean();
+        await redisService.setRedisJSON(redisBoardsListKey, boardData);
+      }
     }
-
-    const boardData = await boardModel
-      .find()
-      .populate("createdBy updatedBy", "name")
-      .sort(sortQuery)
-      .lean();
 
     logger.info(
       "Controllers - board - board.controller - getBoardsListController - End"
@@ -150,6 +168,9 @@ const updateBoardController = async (req, res, next) => {
     if (!boardData) {
       return next(httpErrors.NotFound(BOARD_CONSTANTS.BOARD_NOT_FOUND));
     }
+
+    const redisService = new RedisServiceClass();
+    await redisService.deleteRedisKey(redisBoardsListKey);
 
     logger.info(
       "Controllers - board - board.controller - updateBoardController - End"

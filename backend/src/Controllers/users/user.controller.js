@@ -11,6 +11,7 @@ const { StrongPasswordValidation } = require("../../validators/users/user.joi");
 const moment = require("moment");
 const sortConstants = require("../../Constants/sort.constants");
 const NodeMailerServiceClass = require("../../aws_ses/mails/mail.index");
+const RedisServiceClass = require("../../Services/redis.service");
 
 const LoginUserController = async (req, res, next) => {
   try {
@@ -232,10 +233,22 @@ const singleStudentDetailsController = async (req, res, next) => {
 
 const MyProfileController = async (req, res, next) => {
   try {
-    let data = await userModel
-      .findById(req.user._id)
-      .populate("boardType", "name")
-      .select("-google");
+    let redisService = new RedisServiceClass();
+    let cacheData = await redisService.getRedisJSON(req.user._id.toString());
+    let data = null;
+
+    if (data) {
+      data = cacheData;
+    } else {
+      let selectData =
+        req.user.role === ADMIN ? "-google -days -dateOfJoining" : "-google";
+      data = await userModel
+        .findById(req.user._id)
+        .populate("boardType", "name")
+        .select(selectData)
+        .lean();
+      await redisService.setRedisJSON(req.user._id.toString(), data);
+    }
 
     res.status(200).json({
       success: true,
