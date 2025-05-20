@@ -7,8 +7,14 @@ module.exports = {
   DEVELOPMENT_MODE: process.env.DEVELOPMENT_MODE || "development",
   DEVELOPMENT_ACCESS_USER_TOKEN:
     process.env.DEVELOPMENT_ACCESS_USER_TOKEN || null,
+
+  // mongodb
   DEVELOPMENT_MONGODB_URL: process.env.DB_URL_DEV,
   PRODUCTION_MONGODB_URL: process.env.DB_URL,
+
+  // redis
+  REDIS_URL: process.env.REDIS_URL,
+  REDIS_URL_DEV: process.env.REDIS_URL_DEV,
 
   // token keys
   ACCESS_TOKEN_KEY: process.env.ACCESS_TOKEN_KEY,
