@@ -112,6 +112,7 @@ const updateStudentProgressController = async (req, res, next) => {
         enrollmentId,
         { $set: { "subjects.$[subject].chapters": req.body.chapters } },
         {
+          new: true,
           arrayFilters: [
             { "subject.subjectId": new mongoose.Types.ObjectId(subjectId) },
           ],

@@ -11,12 +11,10 @@ import toast from 'react-hot-toast';
 import MetaData from '@/utils/MetaData';
 import ProgressViewComp from '@/views/components/enrollments/ProgressViewComp';
 
-const breadCrumbs = [{ label: 'students', href: '/admin/students' }];
-
 const ProgressUpdate = ({ isEdit = true }) => {
   const dispatch = useDispatch();
   const { studentId, enrollmentId, subjectId } = useParams();
-  const { getPublicSubjectDetailAction } = subjectActions;
+  const { getPublicSubjectDetailAction, updateSubjectStateAction } = subjectActions;
   const { getStudentEnrollmentListAction, updateStudentProgressAction } = studentActions;
   const { publicSubjectDetail } = useSelector((state) => state.subjectState);
   const { enrollmentsList } = useSelector((state) => state.studentState);
@@ -137,6 +135,17 @@ const ProgressUpdate = ({ isEdit = true }) => {
     let response = await updateStudentProgressAction(enrollmentId, subjectId, json);
     if (response[0] === true) {
       toast.success('successfully updated');
+      let newUpdateList = _.cloneDeep(enrollmentsList);
+      for (let i = 0; i < (newUpdateList?.docs?.length || 0); i++) {
+        if (newUpdateList.docs[i]?._id === response[1]?.data?._id) {
+          console.log(newUpdateList.docs[i]?._id, response[1].data?._id, 'shahid');
+          newUpdateList.docs[i] = response[1]?.data;
+        }
+      }
+
+      console.log(newUpdateList.docs, 'shahid');
+
+      dispatch(updateSubjectStateAction({ enrollmentsList: newUpdateList }));
     } else {
       toast.error(response[1]?.message || 'failed to update the student  progress');
     }
