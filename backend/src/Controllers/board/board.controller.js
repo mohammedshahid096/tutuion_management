@@ -204,6 +204,9 @@ const deleteBoardController = async (req, res, next) => {
       return next(httpErrors.NotFound(BOARD_CONSTANTS.BOARD_NOT_FOUND));
     }
 
+    const redisService = new RedisServiceClass();
+    await redisService.deleteRedisKey(redisBoardsListKey);
+
     logger.info(
       "Controllers - board - board.controller - updateBoardController - End"
     );

@@ -13,6 +13,7 @@ const {
   DEVELOPMENT_ACCESS_USER_TOKEN,
 } = require("../Config/index.config");
 const userModel = require("../Schema/users/user.model");
+const RedisServiceClass = require("../Services/redis.service");
 // for authentication
 module.exports.Authentication = async (req, res, next) => {
   try {
@@ -32,7 +33,17 @@ module.exports.Authentication = async (req, res, next) => {
     }
 
     let userExist = null;
-    userExist = await userModel.findById(decode.id).lean();
+
+    const redisService = new RedisServiceClass();
+    const cacheData = await redisService.getRedisJSON(decode.id);
+    if (cacheData) {
+      userExist = cacheData;
+    }
+
+    if (!cacheData) {
+      userExist = await userModel.findById(decode.id).lean();
+    }
+
     if (!userExist) {
       return next(httpErrors.NotFound(USER_NOT_FOUND));
     }
