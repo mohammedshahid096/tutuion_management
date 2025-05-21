@@ -32,6 +32,18 @@ class RedisServiceClass {
       throw error;
     }
   }
+
+  async deletePattern(pattern) {
+    try {
+      const keys = await redis.keys(pattern);
+      if (keys.length > 0) {
+        await redis.del(keys);
+      }
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = RedisServiceClass;

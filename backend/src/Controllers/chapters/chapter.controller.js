@@ -4,6 +4,7 @@ const logger = require("../../Config/logger.config");
 const chapterModel = require("../../Schema/chapters/chapter.model");
 const errorHandling = require("../../Utils/errorHandling");
 const sortConstants = require("../../Constants/sort.constants");
+const RedisServiceClass = require("../../Services/redis.service");
 
 const updateChapterDetailsController = async (req, res, next) => {
   try {
@@ -35,6 +36,9 @@ const updateChapterDetailsController = async (req, res, next) => {
         httpErrors.NotFound("Chapter not  found with given chapterId")
       );
     }
+
+    const redisService = new RedisServiceClass();
+    await redisService.deletePattern("subjects:*");
 
     logger.info(
       "Controllers - chapters - chapter.controller - updateChapterDetailsController - End"

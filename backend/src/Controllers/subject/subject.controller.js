@@ -5,6 +5,8 @@ const subjectModel = require("../../Schema/subject/subject.model");
 const chapterModel = require("../../Schema/chapters/chapter.model");
 const errorHandling = require("../../Utils/errorHandling");
 const sortConstants = require("../../Constants/sort.constants");
+const RedisServiceClass = require("../../Services/redis.service");
+const { generateSubjectListCacheKey } = require("../../Utils/redis.utils");
 
 const createNewSubjectController = async (req, res, next) => {
   try {
@@ -83,6 +85,9 @@ const createNewSubjectController = async (req, res, next) => {
       { new: true }
     );
 
+    const redisService = new RedisServiceClass();
+    await redisService.deletePattern("subjects:*");
+
     logger.info(
       "Controllers - subject - subject.controller - createNewSubjectController- End"
     );
@@ -155,11 +160,28 @@ const getSubjectsListController = async (req, res, next) => {
       sortQuery = sortConstants[sort];
     }
 
-    const subjectData = await subjectModel
-      .find(query)
-      .populate("createdBy updatedBy boardType batch", "name")
-      .sort(sortQuery)
-      .lean();
+    let subjectData = null;
+    const cacheKey = generateSubjectListCacheKey({
+      sort,
+      classRoom,
+      boardType,
+      name,
+      batch,
+      userId: req.user?._id, // Include user ID if you have user-specific data
+    });
+    const redisService = new RedisServiceClass();
+    const cachedData = await redisService.getRedisJSON(cacheKey);
+    if (cachedData) {
+      subjectData = cachedData;
+    } else {
+      subjectData = await subjectModel
+        .find(query)
+        .populate("createdBy updatedBy boardType batch", "name")
+        .sort(sortQuery)
+        .lean();
+
+      await redisService.setRedisJSON(cacheKey, subjectData);
+    }
 
     logger.info(
       "Controllers - subject - subject.controller - getSubjectsListController - End"
@@ -205,6 +227,9 @@ const updateSubjectController = async (req, res, next) => {
       return next(httpErrors.NotFound(SUBJECT_CONSTANTS.SUBJECT_NOT_FOUND));
     }
 
+    const redisService = new RedisServiceClass();
+    await redisService.deletePattern("subjects:*");
+
     logger.info(
       "Controllers - subject - subject.controller - updateSubjectController - End"
     );
@@ -236,6 +261,9 @@ const deleteSubjectController = async (req, res, next) => {
     if (!subjectData) {
       return next(httpErrors.NotFound(SUBJECT_CONSTANTS.SUBJECT_NOT_FOUND));
     }
+
+    const redisService = new RedisServiceClass();
+    await redisService.deletePattern("subjects:*");
 
     logger.info(
       "Controllers - subject - subject.controller - deleteSubjectController - End"
