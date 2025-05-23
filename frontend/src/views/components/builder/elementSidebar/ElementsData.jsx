@@ -21,9 +21,19 @@ export default [
     type: 'button',
     content: 'Sample Button',
     url: '#',
-    styleClass:
-      'text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5',
-    style: {},
+    styleClass: '', //text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5
+    style: {
+      color: '#fff',
+      backgroundColor: '#1f2937',
+      fontWeight: 500,
+      borderRadius: '8px', // 0.5rem = 8px
+      fontSize: '14px', // 0.875rem = 14px
+      paddingLeft: '20px', // 1.25rem = 20px
+      paddingRight: '20px', // 1.25rem = 20px
+      paddingTop: '10px', // 0.625rem = 10px
+      paddingBottom: '10px', // 0.625rem = 10px
+      outline: 'none',
+    },
     outerStyle: {},
   },
   {

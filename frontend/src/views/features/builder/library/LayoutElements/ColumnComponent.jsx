@@ -65,11 +65,13 @@ const ColumnComponent = ({ layout, sectionIndex }) => {
     }));
   };
 
-  const setActiveElementFunction = (layout, block, subBlockId) => {
+  const setActiveElementFunction = (block, blockIndex, subBlockId, subBlockIndex) => {
     let data = {
       section_uuid: layout?.uuid,
       block_uuid: block?.uuid,
       sub_block_uuid: subBlockId,
+      block_index: blockIndex,
+      sub_block_index: subBlockIndex,
     };
 
     dispatch(setActiveSectionAction(data));
@@ -108,7 +110,12 @@ const ColumnComponent = ({ layout, sectionIndex }) => {
                     <div
                       className={cn('')}
                       onClick={() =>
-                        setActiveElementFunction(layout, singleBlock, singleSubBlock?.uuid)
+                        setActiveElementFunction(
+                          singleBlock,
+                          index,
+                          singleSubBlock?.uuid,
+                          subBlockIndex
+                        )
                       }
                     >
                       <ComponentType
