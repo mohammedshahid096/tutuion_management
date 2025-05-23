@@ -8,6 +8,7 @@ import { StudentReducer } from './students/reducer';
 import { GraphReducer } from './graphs/reducer';
 import { ContactFormReducer } from './contact/reducer';
 import { MyStudentDetailsReducer } from './myDetails/reducer';
+import { builderReducerToolkit } from './builder/reducer';
 
 const initialState = {};
 
@@ -21,6 +22,7 @@ const reducer = {
   graphState: GraphReducer,
   contactFormState: ContactFormReducer,
   myDetailsState: MyStudentDetailsReducer,
+  builderToolkitState: builderReducerToolkit,
 };
 const store = configureStore({
   reducer,

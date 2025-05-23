@@ -25,6 +25,7 @@ import MyAttendanceCalendar from './views/pages/attendance/MyAttendanceCalendar'
 import MySubjectLists from './views/pages/subject/MySubjectLists';
 import MyEnrollments from './views/pages/enrollments/MyEnrollments';
 import MyChapterProgress from './views/pages/progress/MyChapterProgress';
+import Builder from './views/pages/builder/Builder';
 
 const allRoutesMapper = [
   {
@@ -215,6 +216,8 @@ const allRoutesMapper = [
       </AuthWrapper>
     ),
   },
+
+  { path: '/builder', component: <Builder /> },
 
   {
     path: '*',
