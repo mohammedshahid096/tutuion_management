@@ -38,17 +38,27 @@ const SidebarSettings = () => {
 
         {/* Element Settings */}
         <TabsContent value="element">
-          {activeSection ? <ElementSettings /> : <NoSelectionPlaceholder />}
+          {activeSection?.section_uuid &&
+          activeSection?.block_uuid &&
+          activeSection?.sub_block_uuid ? (
+            <ElementSettings />
+          ) : (
+            <NoSelectionPlaceholder />
+          )}
         </TabsContent>
 
         {/* Block Settings */}
         <TabsContent value="block">
-          {activeSection ? <BlockSettings /> : <NoSelectionPlaceholder />}
+          {activeSection?.section_uuid && activeSection?.block_uuid ? (
+            <BlockSettings />
+          ) : (
+            <NoSelectionPlaceholder />
+          )}
         </TabsContent>
 
         {/* Section Settings */}
         <TabsContent value="section">
-          {activeSection ? <SectionSettings /> : <NoSelectionPlaceholder />}
+          {activeSection?.section_uuid ? <SectionSettings /> : <NoSelectionPlaceholder />}
         </TabsContent>
       </Tabs>
     </div>

@@ -11,20 +11,6 @@ const initialState = {
   activeSection: null,
 };
 
-export const builderReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case CLEAR_BUILDER_ERRORS:
-      return {
-        ...state,
-        error: null,
-      };
-    case RESET_BUILDER_STATE:
-      return initialState;
-    default:
-      return state;
-  }
-};
-
 const builderSlice = createSlice({
   name: 'builder',
   initialState,
