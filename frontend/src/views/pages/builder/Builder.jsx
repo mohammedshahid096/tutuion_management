@@ -3,11 +3,14 @@ import { builderActions } from '@/redux/combineActions';
 import { useDispatch, useSelector } from 'react-redux';
 import BuilderView from '@/views/features/builder/BuilderView';
 import { useParams } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Builder = () => {
   const dispatch = useDispatch();
   const { noteId } = useParams();
-  const { setBuilderEditModeAction, fetchTemplateNoteIdAction } = builderActions;
+  const isMobile = useIsMobile();
+  const { setBuilderEditModeAction, fetchTemplateNoteIdAction, setScreenSizeAction } =
+    builderActions;
   const { builderEditMode } = useSelector((state) => state.builderToolkitState);
 
   useEffect(() => {
@@ -16,6 +19,17 @@ const Builder = () => {
     }
     fetchNoteIdHandlerFunction();
   }, [noteId]);
+
+  useEffect(() => {
+    changeScreenSizeFunction(isMobile ? 'mobile' : 'desktop');
+  }, [isMobile]);
+
+  const changeScreenSizeFunction = useCallback(
+    (size) => {
+      dispatch(setScreenSizeAction(size));
+    },
+    [isMobile]
+  );
 
   const changeEditModeHandler = useCallback(() => {
     dispatch(setBuilderEditModeAction(false));
