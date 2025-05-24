@@ -14,7 +14,7 @@ const SidebarSettings = () => {
   const [activeTab, setActiveTab] = useState('element');
 
   return (
-    <div className="h-screen bg-white border-l border-gray-200 p-4 overflow-y-auto">
+    <div className="bg-white border-l border-gray-200 p-4">
       <h2 className="text-xl font-semibold mb-6 flex items-center">
         <Settings className="h-5 w-5 mr-2" />
         Settings
