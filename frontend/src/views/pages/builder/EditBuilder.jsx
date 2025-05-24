@@ -1,27 +1,27 @@
 import React, { memo, useCallback, useEffect } from 'react';
+import BuilderEditor from '@/views/features/builder/BuilderEditor';
 import { builderActions } from '@/redux/combineActions';
 import { useDispatch, useSelector } from 'react-redux';
-import BuilderView from '@/views/features/builder/BuilderView';
 
-const Builder = () => {
+const EditBuilder = () => {
   const dispatch = useDispatch();
   const { setBuilderEditModeAction } = builderActions;
   const { builderEditMode } = useSelector((state) => state.builderToolkitState);
 
   useEffect(() => {
-    if (builderEditMode) {
+    if (!builderEditMode) {
       changeEditModeHandler();
     }
   }, []);
 
   const changeEditModeHandler = useCallback(() => {
-    dispatch(setBuilderEditModeAction(false));
+    dispatch(setBuilderEditModeAction(true));
   }, [builderEditMode]);
   return (
     <div className="w-full h-screen">
-      <BuilderView />
+      <BuilderEditor />
     </div>
   );
 };
 
-export default memo(Builder);
+export default memo(EditBuilder);

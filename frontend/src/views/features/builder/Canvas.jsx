@@ -4,11 +4,12 @@ import { builderActions } from '@/redux/combineActions';
 import _ from 'lodash';
 import ColumnComponent from './library/LayoutElements/ColumnComponent';
 import { LucideMove } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const Canvas = () => {
   const dispatch = useDispatch();
   const { setDragLayoutAction, setTemplateDataAction } = builderActions;
-  const { screenSize, dragLayout, templateSections } = useSelector(
+  const { screenSize, dragLayout, templateSections, builderEditMode } = useSelector(
     (state) => state.builderToolkitState
   );
   const [info, setInfo] = useState({
@@ -56,9 +57,9 @@ const Canvas = () => {
   };
 
   return (
-    <div className="mt-20 flex justify-center">
+    <div className={cn(builderEditMode ? 'mt-20 flex justify-center' : 'flex justify-center')}>
       <div
-        className={`p-6 w-full ${screenSize === 'desktop' ? 'max-w-2xl' : 'max-w-lg'} ${
+        className={`p-6 w-full ${screenSize === 'desktop' ? 'max-w-6xl' : 'max-w-lg'} ${
           info?.dragOverClass
         }`}
         onDragOver={layoutDragOverFunction}

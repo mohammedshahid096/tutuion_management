@@ -2,7 +2,13 @@ import { CLEAR_BUILDER_ERRORS, RESET_BUILDER_STATE } from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
 import { setAccessToken } from '@/helpers/local-storage';
-import { setScreenSize, setDragLayout, setTemplateData, setActiveSection } from './reducer';
+import {
+  setScreenSize,
+  setDragLayout,
+  setTemplateData,
+  setActiveSection,
+  setBuilderEditMode,
+} from './reducer';
 
 const setScreenSizeAction = (screenSize) => (dispatch) => {
   dispatch(setScreenSize(screenSize));
@@ -20,6 +26,12 @@ const setActiveSectionAction = (section) => (dispatch) => {
   dispatch(setActiveSection(section));
 };
 
+const setBuilderEditModeAction =
+  (mode = true) =>
+  (dispatch) => {
+    dispatch(setBuilderEditMode(mode));
+  };
+
 const clearBuilderErrorsAction = () => (dispatch) => {
   dispatch({
     type: CLEAR_BUILDER_ERRORS,
@@ -35,6 +47,7 @@ export default {
   setDragLayoutAction,
   setTemplateDataAction,
   setActiveSectionAction,
+  setBuilderEditModeAction,
   clearBuilderErrorsAction,
   resetBuilderAction,
 };

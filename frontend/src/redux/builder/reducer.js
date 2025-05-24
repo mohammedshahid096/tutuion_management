@@ -28,9 +28,17 @@ const builderSlice = createSlice({
     setActiveSection: (state, action) => {
       state.activeSection = action.payload;
     },
+    setBuilderEditMode: (state, action) => {
+      state.builderEditMode = action.payload;
+    },
   },
 });
 
-export const { setScreenSize, setDragLayout, setTemplateData, setActiveSection } =
-  builderSlice.actions;
+export const {
+  setScreenSize,
+  setDragLayout,
+  setTemplateData,
+  setActiveSection,
+  setBuilderEditMode,
+} = builderSlice.actions;
 export const builderReducerToolkit = builderSlice.reducer;
