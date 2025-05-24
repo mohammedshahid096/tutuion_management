@@ -9,6 +9,7 @@ const initialState = {
   dragLayout: null,
   templateSections: [],
   activeSection: null,
+  builderEditMode: true,
 };
 
 const builderSlice = createSlice({

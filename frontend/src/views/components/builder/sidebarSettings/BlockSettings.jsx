@@ -51,6 +51,22 @@ const BlockSettings = () => {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
+          <Label>Minimum Height</Label>
+          <div className="flex items-center space-x-2">
+            <Slider
+              value={[getNumberFromPx(sectionLayout?.activeBlock?.blockStyles?.minHeight)]}
+              max={500}
+              min={10}
+              step={1}
+              onValueChange={(e) => changeSelectHandlerFunction(e[0], 'minHeight', true)}
+            />
+            <span className="w-12 text-center">
+              {sectionLayout?.activeBlock?.blockStyles?.minHeight}
+            </span>
+          </div>
+        </div>
+
+        <div className="space-y-2">
           <Label>Justify Content</Label>
           <Select
             defaultValue="center"
@@ -91,6 +107,25 @@ const BlockSettings = () => {
           </Select>
         </div>
 
+        {/* Flex Wrap Option */}
+        <div className="space-y-2">
+          <Label>Flex Wrap</Label>
+          <Select
+            defaultValue="nowrap"
+            value={sectionLayout?.activeBlock?.blockStyles?.flexWrap || 'nowrap'}
+            onValueChange={(e) => changeSelectHandlerFunction(e, 'flexWrap')}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select Flex Wrap" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="nowrap">No Wrap</SelectItem>
+              <SelectItem value="wrap">Wrap</SelectItem>
+              <SelectItem value="wrap-reverse">Wrap Reverse</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
         <div className="space-y-2">
           <Label htmlFor="section-margin">
             Gap : {sectionLayout?.activeBlock?.blockStyles?.gap}
@@ -103,6 +138,26 @@ const BlockSettings = () => {
             step={1}
             onValueChange={(e) => changeSelectHandlerFunction(e[0], 'gap', true)}
           />
+        </div>
+
+        <div className="space-y-2">
+          <Label>Align Items</Label>
+          <Select
+            defaultValue="center"
+            value={sectionLayout?.activeBlock?.blockStyles?.alignItems}
+            onValueChange={(e) => changeSelectHandlerFunction(e, 'alignItems')}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select Align Items" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="start">Start</SelectItem>
+              <SelectItem value="center">Center</SelectItem>
+              <SelectItem value="flex-end">Flex End</SelectItem>
+              <SelectItem value="stretch">Stretch</SelectItem>
+              <SelectItem value="baseline">Baseline</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="space-y-2">
