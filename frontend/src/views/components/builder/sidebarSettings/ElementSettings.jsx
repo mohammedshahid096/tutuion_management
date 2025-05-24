@@ -4,9 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import ButtonSettingsComp from '../elementSettings/ButtonSettingsComp';
+import TextSettingsComp from '../elementSettings/TextSettingsComp';
 
 const elementTypesConstants = {
   button: ButtonSettingsComp,
+  text: TextSettingsComp,
 };
 
 const ElementSettings = () => {
@@ -23,8 +25,8 @@ const ElementSettings = () => {
   }, [activeSection, templateSections]);
 
   const ActiveComponent = useMemo(() => {
-    return elementTypesConstants[elementDetails?.type] ?? null;
-  }, [elementDetails?.type]);
+    return elementTypesConstants[elementDetails?.type.toLowerCase()] ?? null;
+  }, [activeSection, elementDetails?.type]);
 
   return (
     <Card>
