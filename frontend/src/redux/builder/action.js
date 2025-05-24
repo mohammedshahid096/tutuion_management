@@ -9,6 +9,8 @@ import {
   setActiveSection,
   setBuilderEditMode,
 } from './reducer';
+import _ from 'lodash';
+import templatesData from '@/data/templates.json';
 
 const setScreenSizeAction = (screenSize) => (dispatch) => {
   dispatch(setScreenSize(screenSize));
@@ -26,11 +28,17 @@ const setActiveSectionAction = (section) => (dispatch) => {
   dispatch(setActiveSection(section));
 };
 
-const setBuilderEditModeAction =
-  (mode = true) =>
-  (dispatch) => {
-    dispatch(setBuilderEditMode(mode));
-  };
+const setBuilderEditModeAction = (mode) => (dispatch) => {
+  dispatch(setBuilderEditMode(mode ?? true));
+};
+
+const fetchTemplateNoteIdAction = (noteId) => (dispatch) => {
+  let currentTemplate = templatesData[noteId] || null;
+
+  if (currentTemplate) {
+    dispatch(setTemplateData(currentTemplate.templateSections));
+  }
+};
 
 const clearBuilderErrorsAction = () => (dispatch) => {
   dispatch({
@@ -48,6 +56,7 @@ export default {
   setTemplateDataAction,
   setActiveSectionAction,
   setBuilderEditModeAction,
+  fetchTemplateNoteIdAction,
   clearBuilderErrorsAction,
   resetBuilderAction,
 };

@@ -66,17 +66,17 @@ const Canvas = () => {
         onDrop={layoutDropHandler}
         onDragLeave={layoutDragLeaveFunction}
       >
-        {_.size(templateSections) > 0 ? (
-          templateSections?.map((block, index) => {
-            const Comp = componentRenderObject[block.type];
-            return <Comp key={block?.uuid || index} layout={block} sectionIndex={index} />;
-          })
-        ) : (
-          <div className="p-4 text-center flex justify-center items-center bg-gray-100 border border-dashed">
-            <LucideMove className="mr-2" />
-            <h2>Drag and Drop Layout</h2>
-          </div>
-        )}
+        {_.size(templateSections) > 0
+          ? templateSections?.map((block, index) => {
+              const Comp = componentRenderObject[block.type];
+              return <Comp key={block?.uuid || index} layout={block} sectionIndex={index} />;
+            })
+          : builderEditMode && (
+              <div className="p-4 text-center flex justify-center items-center bg-gray-100 border border-dashed">
+                <LucideMove className="mr-2" />
+                <h2>Drag and Drop Layout</h2>
+              </div>
+            )}
       </div>
     </div>
   );
