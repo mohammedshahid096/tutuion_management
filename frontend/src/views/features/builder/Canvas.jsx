@@ -57,7 +57,7 @@ const Canvas = () => {
   };
 
   return (
-    <div className={cn(builderEditMode ? 'mt-20 flex justify-center' : 'flex justify-center')}>
+    <div className={cn(builderEditMode ? 'flex justify-center' : 'flex justify-center')}>
       <div
         className={`p-6 w-full ${screenSize === 'desktop' ? 'max-w-6xl' : 'max-w-lg'} ${
           info?.dragOverClass

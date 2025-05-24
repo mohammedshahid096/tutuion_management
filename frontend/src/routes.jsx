@@ -218,7 +218,7 @@ const allRoutesMapper = [
     ),
   },
 
-  { path: '/builder', component: <EditBuilder /> },
+  { path: '/builder/:noteId', component: <EditBuilder /> },
   { path: '/notes/:noteId', component: <Builder /> },
 
   {

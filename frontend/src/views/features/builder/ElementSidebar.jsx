@@ -27,7 +27,7 @@ const ElementSidebar = () => {
   };
 
   return (
-    <div className="p-4 h-screen shadow-sm overflow-y-scroll">
+    <div className="p-4 shadow-sm">
       <h2 className="font-bold text-lg">Layouts</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-3">
         {LayoutsData?.map((layout, index) => {
