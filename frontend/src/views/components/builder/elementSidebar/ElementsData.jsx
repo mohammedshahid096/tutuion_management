@@ -12,6 +12,7 @@ import {
   Text,
   TextSelectionIcon,
   Twitter,
+  LetterText,
 } from 'lucide-react';
 
 export default [
@@ -52,6 +53,15 @@ export default [
       paddingTop: '0px',
       paddingBottom: '0px',
     },
+    outerStyle: {},
+  },
+  {
+    icon: LetterText,
+    type: 'editor',
+    label: 'Text Editor',
+    content: 'Sample Text',
+    styleClass: '',
+    style: {},
     outerStyle: {},
   },
   {

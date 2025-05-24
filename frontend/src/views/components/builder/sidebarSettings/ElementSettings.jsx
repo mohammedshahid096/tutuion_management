@@ -5,10 +5,12 @@ import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import ButtonSettingsComp from '../elementSettings/ButtonSettingsComp';
 import TextSettingsComp from '../elementSettings/TextSettingsComp';
+import EditorSettingsComp from '../elementSettings/EditorSettingsComp';
 
 const elementTypesConstants = {
   button: ButtonSettingsComp,
   text: TextSettingsComp,
+  editor: EditorSettingsComp,
 };
 
 const ElementSettings = () => {

@@ -10,6 +10,7 @@ const ModalV1 = ({
   size = 'medium',
   title = '',
   maxHeight = '80vh',
+  closeOutside = true,
 }) => {
   const modalRef = useRef(null);
 
@@ -53,7 +54,7 @@ const ModalV1 = ({
   };
 
   const handleOutsideClick = (e) => {
-    if (modalRef.current && !modalRef.current.contains(e.target)) {
+    if (modalRef.current && !modalRef.current.contains(e.target) && closeOutside) {
       closeFunctionGsap();
     }
   };
