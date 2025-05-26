@@ -90,6 +90,9 @@ export default [
       marginTop: '5px',
       marginBottom: '5px',
     },
+    outerStyle: {
+      alignItems: 'center',
+    },
   },
   // {
   //   icon: Video,

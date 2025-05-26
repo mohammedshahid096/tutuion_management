@@ -2,14 +2,22 @@ import React, { memo } from 'react';
 import { cn } from '@/lib/utils';
 import { useSelector } from 'react-redux';
 
-const DividerComponent = ({ uuid, style, styleClass, sectionDetails, blockDetails }) => {
+const DividerComponent = ({
+  uuid,
+  style,
+  styleClass,
+  outerStyle,
+  sectionDetails,
+  blockDetails,
+}) => {
   const { activeSection } = useSelector((state) => state.builderToolkitState);
   return (
     <div
       className={cn(
-        'w-full',
+        'w-full flex flex-col items-center',
         activeSection?.sub_block_uuid === uuid ? 'outline-2 outline-green-500 outline-dotted' : ''
       )}
+      style={outerStyle}
     >
       <div
         id={uuid}

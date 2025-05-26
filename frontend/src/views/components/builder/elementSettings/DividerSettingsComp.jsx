@@ -35,6 +35,19 @@ const DividerSettingsComp = ({ content, style }) => {
     dispatch(setTemplateDataAction(updatedTemplate));
   };
 
+  const changeHandlerOuterStyleFunction = (value, property, isPx = false, px = 'px') => {
+    let updatedTemplate = _.cloneDeep(templateSections);
+    updatedTemplate?.forEach((section) => {
+      let sectionId = section?.uuid;
+      if (sectionId === activeSection?.section_uuid) {
+        section['block'][activeSection.block_index]['subBlock'][activeSection.sub_block_index][
+          'outerStyle'
+        ][property] = isPx ? value + px : value;
+      }
+    });
+    dispatch(setTemplateDataAction(updatedTemplate));
+  };
+
   return (
     <>
       <div>
@@ -90,6 +103,24 @@ const DividerSettingsComp = ({ content, style }) => {
             <SelectItem value={'double'}>double</SelectItem>
             <SelectItem value={'groove'}>groove</SelectItem>
             <SelectItem value={'ridge'}>ridge</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Divider Position</Label>
+        <Select
+          defaultValue="center"
+          value={style?.alignItems}
+          onValueChange={(e) => changeHandlerOuterStyleFunction(e, 'alignItems')}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select Align Items" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="start">Start</SelectItem>
+            <SelectItem value="center">Center</SelectItem>
+            <SelectItem value="flex-end">End</SelectItem>
           </SelectContent>
         </Select>
       </div>
