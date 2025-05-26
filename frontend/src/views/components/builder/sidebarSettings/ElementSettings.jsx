@@ -7,12 +7,14 @@ import ButtonSettingsComp from '../elementSettings/ButtonSettingsComp';
 import TextSettingsComp from '../elementSettings/TextSettingsComp';
 import EditorSettingsComp from '../elementSettings/EditorSettingsComp';
 import ImageSettingsComp from '../elementSettings/ImageSettingsComp';
+import DividerSettingsComp from '../elementSettings/DividerSettingsComp';
 
 const elementTypesConstants = {
   button: ButtonSettingsComp,
   text: TextSettingsComp,
   editor: EditorSettingsComp,
   image: ImageSettingsComp,
+  divider: DividerSettingsComp,
 };
 
 const ElementSettings = () => {

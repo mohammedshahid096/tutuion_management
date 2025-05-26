@@ -84,8 +84,8 @@ export default [
     styleClass: '',
     style: {
       borderColor: '#000',
-      borderWidth: '1px',
       borderStyle: 'solid',
+      borderTopWidth: '1px',
       width: '100%',
       marginTop: '5px',
       marginBottom: '5px',
