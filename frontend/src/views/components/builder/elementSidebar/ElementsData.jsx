@@ -1,18 +1,10 @@
 import {
-  Columns2,
-  Facebook,
-  Frame,
-  Framer,
   Image,
-  Link2,
-  PanelTop,
-  Projector,
   RectangleEllipsis,
   SquareSplitVertical,
-  Text,
   TextSelectionIcon,
-  Twitter,
   LetterText,
+  Video,
 } from 'lucide-react';
 
 export default [
@@ -84,6 +76,33 @@ export default [
     },
     outerStyle: {},
   },
+  {
+    icon: SquareSplitVertical,
+    type: 'divider',
+    label: 'Divider',
+    content: '',
+    styleClass: '',
+    style: {
+      borderColor: '#000',
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      width: '100%',
+      marginTop: '5px',
+      marginBottom: '5px',
+    },
+  },
+  // {
+  //   icon: Video,
+  //   type: 'video',
+  //   label: 'Video',
+  //   videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+  //   style: {
+  //     height: 'auto',
+  //     width: '100%',
+  //     borderRadius: '8px',
+  //   },
+  // },
+
   // {
   //   icon: Frame,
   //   type: 'logo',
@@ -126,17 +145,7 @@ export default [
   //     width: '100%',
   //   },
   // },
-  // {
-  //   icon: SquareSplitVertical,
-  //   type: 'Divider',
-  //   label: 'Divider',
-  //   content: '',
-  //   style: {
-  //     color: '#000000',
-  //     padding: '10px',
-  //     width: '100%',
-  //   },
-  // },
+
   // {
   //   type: 'SocialIcons',
   //   icon: Twitter,
