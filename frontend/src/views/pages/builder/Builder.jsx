@@ -9,13 +9,20 @@ const Builder = () => {
   const dispatch = useDispatch();
   const { noteId } = useParams();
   const isMobile = useIsMobile();
-  const { setBuilderEditModeAction, fetchTemplateNoteIdAction, setScreenSizeAction } =
-    builderActions;
-  const { builderEditMode } = useSelector((state) => state.builderToolkitState);
+  const {
+    setBuilderEditModeAction,
+    fetchTemplateNoteIdAction,
+    setScreenSizeAction,
+    setActiveSectionAction,
+  } = builderActions;
+  const { builderEditMode, activeSection } = useSelector((state) => state.builderToolkitState);
 
   useEffect(() => {
     if (builderEditMode) {
       changeEditModeHandler();
+    }
+    if (activeSection) {
+      clearActiveSectionFunction();
     }
     fetchNoteIdHandlerFunction();
   }, [noteId]);
@@ -38,6 +45,10 @@ const Builder = () => {
   const fetchNoteIdHandlerFunction = useCallback(() => {
     dispatch(fetchTemplateNoteIdAction(noteId));
   }, [noteId]);
+
+  const clearActiveSectionFunction = useCallback(() => {
+    dispatch(setActiveSectionAction(null));
+  }, []);
   return (
     <div className="w-full h-screen">
       <BuilderView />

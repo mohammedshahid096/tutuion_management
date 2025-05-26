@@ -7,7 +7,7 @@ const ButtonComponent = ({ uuid, content, style, url = '', styleClass = '' }) =>
   return (
     <div
       className={cn(
-        activeSection?.sub_block_uuid === uuid ? 'outline-dashed outline-red-600 outline-2' : ''
+        activeSection?.sub_block_uuid === uuid ? 'outline-2 outline-green-500 outline-dotted' : ''
       )}
     >
       <a href={builderEditMode ? null : url}>

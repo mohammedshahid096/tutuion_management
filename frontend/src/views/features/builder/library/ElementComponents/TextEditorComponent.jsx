@@ -8,7 +8,7 @@ const TextEditorComponent = ({ content, style, styleClass, uuid }) => {
     <div
       className={cn(
         'h-auto',
-        activeSection?.sub_block_uuid === uuid ? 'outline-dashed outline-red-600 outline-2' : ''
+        activeSection?.sub_block_uuid === uuid ? 'outline-2 outline-green-500 outline-dotted' : ''
       )}
     >
       <div

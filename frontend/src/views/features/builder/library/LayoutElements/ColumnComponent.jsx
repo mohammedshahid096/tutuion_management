@@ -80,7 +80,11 @@ const ColumnComponent = ({ layout, sectionIndex }) => {
   };
 
   return (
-    <div>
+    <div
+      className={cn(
+        activeSection?.section_uuid === layout?.uuid ? 'border-2 border-purple-600' : ''
+      )}
+    >
       <div
         className={cn(layout?.styleClassName)}
         style={{
@@ -98,7 +102,7 @@ const ColumnComponent = ({ layout, sectionIndex }) => {
                 info?.dragOverClass && info?.dragOver?.index == index && info?.dragOverClass,
                 activeSection?.section_uuid === layout?.uuid &&
                   activeSection?.block_uuid === singleBlock?.uuid &&
-                  'border border-blue-500'
+                  'border-2 border-amber-950 border-dashed'
               )}
               onDragOver={(e) => onDragOverHandler(e, index)}
               onDragLeave={onDragLeaveHandler}
