@@ -9,6 +9,7 @@ import DividerComponent from '../ElementComponents/DividerComponent';
 import ImageComponent from '../ElementComponents/ImageComponent';
 import { cn } from '@/lib/utils';
 import TextEditorComponent from '../ElementComponents/TextEditorComponent';
+import VideoComponent from '../ElementComponents/VideoComponent';
 
 const ColumnComponent = ({ layout, sectionIndex }) => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const ColumnComponent = ({ layout, sectionIndex }) => {
     editor: TextEditorComponent,
     divider: DividerComponent,
     image: ImageComponent,
+    video: VideoComponent,
     // logo: LogoComponent,
   };
 

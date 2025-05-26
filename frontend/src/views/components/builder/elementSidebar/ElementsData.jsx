@@ -94,17 +94,16 @@ export default [
       alignItems: 'center',
     },
   },
-  // {
-  //   icon: Video,
-  //   type: 'video',
-  //   label: 'Video',
-  //   videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-  //   style: {
-  //     height: 'auto',
-  //     width: '100%',
-  //     borderRadius: '8px',
-  //   },
-  // },
+  {
+    icon: Video,
+    type: 'video',
+    label: 'Video',
+    videoUrl: 'https://youtu.be/HAnw168huqA?si=6KpACX_Luo9UHrQ_',
+    style: {
+      width: '640px',
+      height: '360px',
+    },
+  },
 
   // {
   //   icon: Frame,
