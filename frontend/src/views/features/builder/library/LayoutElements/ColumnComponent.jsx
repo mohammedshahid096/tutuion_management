@@ -84,6 +84,8 @@ const ColumnComponent = ({ layout, sectionIndex }) => {
       className={cn(
         activeSection?.section_uuid === layout?.uuid ? 'border-2 border-purple-600' : ''
       )}
+      id={layout?.uuid}
+      data-section-index={sectionIndex}
     >
       <div
         className={cn(layout?.styleClassName)}
@@ -94,6 +96,9 @@ const ColumnComponent = ({ layout, sectionIndex }) => {
         {layout?.block?.map((singleBlock, index) => {
           return (
             <div
+              id={singleBlock?.uuid || index}
+              data-section-uuid={layout?.uuid}
+              data-block-index={index}
               key={singleBlock?.uuid || index}
               className={cn(
                 singleBlock?.blockStyleClassName,

@@ -3,15 +3,17 @@ import { Monitor, Smartphone } from 'lucide-react';
 import React, { memo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { builderActions } from '@/redux/combineActions';
+import { set } from 'lodash';
 
 const BuilderHeader = () => {
   const dispatch = useDispatch();
-  const { setScreenSizeAction } = builderActions;
+  const { setScreenSizeAction, setActiveSectionAction } = builderActions;
   const { screenSize } = useSelector((state) => state.builderToolkitState);
 
   const changeScreenSizeHandler = useCallback(
     (type) => {
       dispatch(setScreenSizeAction(type));
+      dispatch(setActiveSectionAction(null));
     },
     [screenSize]
   );

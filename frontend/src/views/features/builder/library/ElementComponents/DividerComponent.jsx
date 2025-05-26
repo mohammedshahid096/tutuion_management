@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { cn } from '@/lib/utils';
 import { useSelector } from 'react-redux';
 
-const DividerComponent = ({ uuid, style, styleClass }) => {
+const DividerComponent = ({ uuid, style, styleClass, sectionDetails, blockDetails }) => {
   const { activeSection } = useSelector((state) => state.builderToolkitState);
   return (
     <div
@@ -11,7 +11,13 @@ const DividerComponent = ({ uuid, style, styleClass }) => {
         activeSection?.sub_block_uuid === uuid ? 'outline-2 outline-green-500 outline-dotted' : ''
       )}
     >
-      <div className={cn('w-full h-[1px]', styleClass)} style={style}></div>
+      <div
+        id={uuid}
+        data-section-uuid={sectionDetails?.uuid}
+        data-block-uuid={blockDetails?.uuid}
+        className={cn('w-full h-[1px]', styleClass)}
+        style={style}
+      ></div>
     </div>
   );
 };
