@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react';
+import React, { useState, useRef, useMemo, useEffect, memo } from 'react';
 import JoditEditor from 'jodit-react';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
@@ -11,7 +11,7 @@ import '@/assets/css/builder/editor-settings.css';
 import ModalV1 from '../../modal/ModalV1';
 import { Button } from '@/components/ui/button';
 
-const OpenEditorModal = ({ info, setInfo, data, changeHandlerFunction }) => {
+const OpenEditorModal = memo(({ info, setInfo, data, changeHandlerFunction }) => {
   const editor = useRef(null);
   const [content, setContent] = useState('');
 
@@ -70,7 +70,7 @@ const OpenEditorModal = ({ info, setInfo, data, changeHandlerFunction }) => {
       </div>
     </ModalV1>
   );
-};
+});
 
 const EditorSettingsComp = ({ content, style }) => {
   const dispatch = useDispatch();
@@ -119,4 +119,4 @@ const EditorSettingsComp = ({ content, style }) => {
   );
 };
 
-export default EditorSettingsComp;
+export default memo(EditorSettingsComp);

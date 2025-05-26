@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { cn } from '@/lib/utils';
 import { useSelector } from 'react-redux';
 
@@ -20,4 +20,4 @@ const TextEditorComponent = ({ content, style, styleClass, uuid }) => {
   );
 };
 
-export default TextEditorComponent;
+export default memo(TextEditorComponent);

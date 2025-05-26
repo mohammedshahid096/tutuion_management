@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Canvas from './Canvas';
 
 const BuilderView = () => {
@@ -9,4 +9,4 @@ const BuilderView = () => {
   );
 };
 
-export default BuilderView;
+export default memo(BuilderView);

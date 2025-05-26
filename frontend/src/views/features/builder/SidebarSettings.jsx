@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Settings, Layers, Box, Type } from 'lucide-react';
 import SectionSettings from '@/views/components/builder/sidebarSettings/SectionSettings';
@@ -65,4 +65,4 @@ const SidebarSettings = () => {
   );
 };
 
-export default SidebarSettings;
+export default memo(SidebarSettings);

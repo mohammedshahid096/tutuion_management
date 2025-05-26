@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { useSelector } from 'react-redux';
@@ -42,4 +42,4 @@ const ElementSettings = () => {
   );
 };
 
-export default ElementSettings;
+export default memo(ElementSettings);

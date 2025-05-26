@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
@@ -189,4 +189,4 @@ const TextSettingsComp = ({ content, style }) => {
   );
 };
 
-export default TextSettingsComp;
+export default memo(TextSettingsComp);

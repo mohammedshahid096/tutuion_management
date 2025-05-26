@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Monitor, Smartphone } from 'lucide-react';
-import React, { useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { builderActions } from '@/redux/combineActions';
 
@@ -41,4 +41,4 @@ const BuilderHeader = () => {
   );
 };
 
-export default BuilderHeader;
+export default memo(BuilderHeader);

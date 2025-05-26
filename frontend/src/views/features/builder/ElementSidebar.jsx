@@ -1,7 +1,7 @@
 import ElementLayoutCart from '@/views/components/builder/elementSidebar/ElementLayoutCart';
 import ElementsData from '@/views/components/builder/elementSidebar/ElementsData';
 import LayoutsData from '@/views/components/builder/elementSidebar/LayoutsData';
-import React from 'react';
+import React, { memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidV4 } from 'uuid';
 import { builderActions } from '@/redux/combineActions';
@@ -61,4 +61,4 @@ const ElementSidebar = () => {
   );
 };
 
-export default ElementSidebar;
+export default memo(ElementSidebar);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
@@ -158,7 +158,7 @@ const ButtonSettingsComp = ({ content, style }) => {
   );
 };
 
-export default ButtonSettingsComp;
+export default memo(ButtonSettingsComp);
 
 //    <div className="space-y-2">
 //         <Label>Typography</Label>

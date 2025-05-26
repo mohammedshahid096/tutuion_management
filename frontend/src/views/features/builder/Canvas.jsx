@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { builderActions } from '@/redux/combineActions';
 import _ from 'lodash';
@@ -120,4 +120,4 @@ const Canvas = () => {
   );
 };
 
-export default Canvas;
+export default memo(Canvas);

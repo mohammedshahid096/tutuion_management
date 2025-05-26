@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 const DividerComponent = () => {
   return <div>DividerComponent</div>;
 };
 
-export default DividerComponent;
+export default memo(DividerComponent);

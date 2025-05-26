@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 const ElementLayoutCart = ({ label, Icon }) => {
   return (
@@ -9,4 +9,4 @@ const ElementLayoutCart = ({ label, Icon }) => {
   );
 };
 
-export default ElementLayoutCart;
+export default memo(ElementLayoutCart);

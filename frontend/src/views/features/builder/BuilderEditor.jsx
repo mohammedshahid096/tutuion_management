@@ -1,5 +1,5 @@
 import BuilderHeader from '@/views/components/builder/header/Header';
-import React from 'react';
+import React, { memo } from 'react';
 import ElementSidebar from './ElementSidebar';
 import SidebarSettings from './SidebarSettings';
 import Canvas from './Canvas';
@@ -31,4 +31,4 @@ const BuilderEditor = () => {
   );
 };
 
-export default BuilderEditor;
+export default memo(BuilderEditor);

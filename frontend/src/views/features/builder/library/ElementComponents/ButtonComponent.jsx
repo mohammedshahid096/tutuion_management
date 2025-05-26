@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { cn } from '@/lib/utils';
 import { useSelector } from 'react-redux';
 
@@ -19,4 +19,4 @@ const ButtonComponent = ({ uuid, content, style, url = '', styleClass = '' }) =>
   );
 };
 
-export default ButtonComponent;
+export default memo(ButtonComponent);

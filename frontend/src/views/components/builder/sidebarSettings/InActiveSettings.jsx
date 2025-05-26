@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Layers, MousePointer, ArrowRight } from 'lucide-react';
 
@@ -46,4 +46,4 @@ const NoSelectionPlaceholder = () => {
   );
 };
 
-export default NoSelectionPlaceholder;
+export default memo(NoSelectionPlaceholder);
