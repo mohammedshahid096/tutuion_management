@@ -6,11 +6,13 @@ import _ from 'lodash';
 import ButtonSettingsComp from '../elementSettings/ButtonSettingsComp';
 import TextSettingsComp from '../elementSettings/TextSettingsComp';
 import EditorSettingsComp from '../elementSettings/EditorSettingsComp';
+import ImageSettingsComp from '../elementSettings/ImageSettingsComp';
 
 const elementTypesConstants = {
   button: ButtonSettingsComp,
   text: TextSettingsComp,
   editor: EditorSettingsComp,
+  image: ImageSettingsComp,
 };
 
 const ElementSettings = () => {
