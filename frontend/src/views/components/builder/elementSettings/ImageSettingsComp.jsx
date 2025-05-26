@@ -2,20 +2,10 @@ import React, { memo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Switch } from '@/components/ui/switch';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import ColorPicker from '../../color-picker/ColorPicker';
 import { getNumberFromPx } from '@/helpers/get-initials';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import { builderActions } from '@/redux/combineActions';
-import { Textarea } from '@/components/ui/textarea';
 
 const ImageSettingsComp = ({ imageUrl, alt, style }) => {
   const dispatch = useDispatch();
@@ -97,6 +87,60 @@ const ImageSettingsComp = ({ imageUrl, alt, style }) => {
             onValueChange={(e) => changeHandlerFunction(e[0], 'borderRadius', true, '%')}
           />
           <span className="w-12 text-center">{style?.borderRadius}</span>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Margin</Label>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label className="text-xs">Top</Label>
+            <Input
+              type="number"
+              defaultValue="2"
+              max={100}
+              min={1}
+              onChange={(e) => changeHandlerFunction(e?.target?.value, 'marginTop', true)}
+              value={getNumberFromPx(style?.marginTop || '2px')}
+              className="h-8"
+            />
+          </div>
+          <div>
+            <Label className="text-xs">Right</Label>
+            <Input
+              type="number"
+              defaultValue="2"
+              max={100}
+              min={1}
+              onChange={(e) => changeHandlerFunction(e?.target?.value, 'marginRight', true)}
+              value={getNumberFromPx(style?.marginRight || '2px')}
+              className="h-8"
+            />
+          </div>
+          <div>
+            <Label className="text-xs">Bottom</Label>
+            <Input
+              type="number"
+              defaultValue="2"
+              max={100}
+              min={1}
+              onChange={(e) => changeHandlerFunction(e?.target?.value, 'marginBottom', true)}
+              value={getNumberFromPx(style?.marginBottom || '2px')}
+              className="h-8"
+            />
+          </div>
+          <div>
+            <Label className="text-xs">Left</Label>
+            <Input
+              type="number"
+              defaultValue="2"
+              max={100}
+              min={1}
+              onChange={(e) => changeHandlerFunction(e?.target?.value, 'marginLeft', true)}
+              value={getNumberFromPx(style?.marginLeft || '2px')}
+              className="h-8"
+            />
+          </div>
         </div>
       </div>
     </>
