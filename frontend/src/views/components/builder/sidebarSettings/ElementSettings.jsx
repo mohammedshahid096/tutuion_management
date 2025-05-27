@@ -8,6 +8,7 @@ import TextSettingsComp from '../elementSettings/TextSettingsComp';
 import EditorSettingsComp from '../elementSettings/EditorSettingsComp';
 import ImageSettingsComp from '../elementSettings/ImageSettingsComp';
 import DividerSettingsComp from '../elementSettings/DividerSettingsComp';
+import VideoSettingsComp from '../elementSettings/VideoSettingsComp';
 
 const elementTypesConstants = {
   button: ButtonSettingsComp,
@@ -15,6 +16,7 @@ const elementTypesConstants = {
   editor: EditorSettingsComp,
   image: ImageSettingsComp,
   divider: DividerSettingsComp,
+  video: VideoSettingsComp,
 };
 
 const ElementSettings = () => {

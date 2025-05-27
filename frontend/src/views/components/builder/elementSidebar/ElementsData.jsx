@@ -102,6 +102,8 @@ export default [
     style: {
       width: '640px',
       height: '360px',
+      marginTop: '5px',
+      marginBottom: '5px',
     },
   },
 

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import { builderActions } from '@/redux/combineActions';
 
-const ImageSettingsComp = ({ imageUrl, alt, style }) => {
+const VideoSettingsComp = ({ videoUrl, alt, style }) => {
   const dispatch = useDispatch();
   const { setTemplateDataAction } = builderActions;
   const { templateSections, activeSection } = useSelector((state) => state.builderToolkitState);
@@ -17,7 +17,7 @@ const ImageSettingsComp = ({ imageUrl, alt, style }) => {
     updatedTemplate?.forEach((section) => {
       let sectionId = section?.uuid;
       if (sectionId === activeSection?.section_uuid) {
-        if (property === 'imageUrl' || property === 'alt') {
+        if (property === 'videoUrl') {
           section['block'][activeSection.block_index]['subBlock'][activeSection.sub_block_index][
             property
           ] = value;
@@ -34,27 +34,14 @@ const ImageSettingsComp = ({ imageUrl, alt, style }) => {
   return (
     <>
       <div className="space-y-2">
-        <Label htmlFor="image-source">Image Source</Label>
+        <Label htmlFor="image-source">Video Source</Label>
         <div className="flex gap-2">
           <Input
-            id="image-source"
+            id="video-source"
             type="text"
-            placeholder="Paste image URL"
-            value={imageUrl || ''}
-            onChange={(e) => changeHandlerFunction(e.target.value, 'imageUrl')}
-          />
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="image-source">Image Alt</Label>
-        <div className="flex gap-2">
-          <Input
-            id="image-alt"
-            type="text"
-            placeholder="Enter image alt text"
-            value={alt || ''}
-            onChange={(e) => changeHandlerFunction(e.target.value, 'alt')}
+            placeholder="Paste video URL"
+            value={videoUrl || ''}
+            onChange={(e) => changeHandlerFunction(e.target.value, 'videoUrl')}
           />
         </div>
       </div>
@@ -65,9 +52,13 @@ const ImageSettingsComp = ({ imageUrl, alt, style }) => {
           <Slider
             min={0}
             max={700}
-            value={[style?.width === '100%' ? 0 : getNumberFromPx(style?.width) || 0]}
+            value={[style?.width === 'auto' ? 0 : getNumberFromPx(style?.width) || 0]}
             onValueChange={(e) =>
-              changeHandlerFunction(e[0] === 0 ? '100%' : e[0], 'width', e[0] === 0 ? false : true)
+              changeHandlerFunction(
+                e[0] === 'auto' ? 'auto' : e[0],
+                'width',
+                e[0] === 'auto' ? false : true
+              )
             }
           />
           <span className="w-12 text-center">{style?.width}</span>
@@ -90,19 +81,6 @@ const ImageSettingsComp = ({ imageUrl, alt, style }) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="image-height">Border Radius</Label>
-        <div className="flex items-center space-x-2">
-          <Slider
-            min={0}
-            max={50}
-            value={[getNumberFromPx(style?.borderRadius) || 0]}
-            onValueChange={(e) => changeHandlerFunction(e[0], 'borderRadius', true, '%')}
-          />
-          <span className="w-12 text-center">{style?.borderRadius}</span>
-        </div>
-      </div>
-
-      <div className="space-y-2">
         <Label>Margin</Label>
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -118,18 +96,6 @@ const ImageSettingsComp = ({ imageUrl, alt, style }) => {
             />
           </div>
           <div>
-            <Label className="text-xs">Right</Label>
-            <Input
-              type="number"
-              defaultValue="2"
-              max={100}
-              min={1}
-              onChange={(e) => changeHandlerFunction(e?.target?.value, 'marginRight', true)}
-              value={getNumberFromPx(style?.marginRight || '2px')}
-              className="h-8"
-            />
-          </div>
-          <div>
             <Label className="text-xs">Bottom</Label>
             <Input
               type="number"
@@ -141,22 +107,10 @@ const ImageSettingsComp = ({ imageUrl, alt, style }) => {
               className="h-8"
             />
           </div>
-          <div>
-            <Label className="text-xs">Left</Label>
-            <Input
-              type="number"
-              defaultValue="2"
-              max={100}
-              min={1}
-              onChange={(e) => changeHandlerFunction(e?.target?.value, 'marginLeft', true)}
-              value={getNumberFromPx(style?.marginLeft || '2px')}
-              className="h-8"
-            />
-          </div>
         </div>
       </div>
     </>
   );
 };
 
-export default memo(ImageSettingsComp);
+export default memo(VideoSettingsComp);
