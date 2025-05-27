@@ -50,7 +50,7 @@ const SidebarSettings = () => {
         {/* Block Settings */}
         <TabsContent value="block">
           {activeSection?.section_uuid && activeSection?.block_uuid ? (
-            <BlockSettings />
+            <BlockSettings activeTab={activeTab} setActiveTab={setActiveTab} />
           ) : (
             <NoSelectionPlaceholder />
           )}
