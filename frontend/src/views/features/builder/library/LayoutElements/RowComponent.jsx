@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 import TextEditorComponent from '../ElementComponents/TextEditorComponent';
 import VideoComponent from '../ElementComponents/VideoComponent';
 
-const ColumnComponent = ({ layout, sectionIndex }) => {
+const RowComponent = ({ layout, sectionIndex }) => {
   const dispatch = useDispatch();
   const { setDragLayoutAction, setTemplateDataAction, setActiveSectionAction } = builderActions;
   const { dragLayout, templateSections, activeSection } = useSelector(
@@ -107,11 +107,11 @@ const ColumnComponent = ({ layout, sectionIndex }) => {
                 info?.dragOverClass && info?.dragOver?.index == index && info?.dragOverClass,
                 activeSection?.section_uuid === layout?.uuid &&
                   activeSection?.block_uuid === singleBlock?.uuid &&
-                  'border-2 border-amber-950 border-dashed'
+                  'border-2 border-amber-950 border-dashed',
 
-                // _.map(singleBlock?.subBlock, (item) => item.type).some((item) => item === 'divider')
-                //   ? 'block'
-                //   : ''
+                _.map(singleBlock?.subBlock, (item) => item.type).some((item) => item === 'divider')
+                  ? 'block'
+                  : ''
               )}
               onDragOver={(e) => onDragOverHandler(e, index)}
               onDragLeave={onDragLeaveHandler}
@@ -156,4 +156,4 @@ const ColumnComponent = ({ layout, sectionIndex }) => {
   );
 };
 
-export default memo(ColumnComponent);
+export default memo(RowComponent);

@@ -5,6 +5,7 @@ import _ from 'lodash';
 import ColumnComponent from './library/LayoutElements/ColumnComponent';
 import { LucideMove } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import RowComponent from './library/LayoutElements/RowComponent';
 
 const Canvas = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,8 @@ const Canvas = () => {
       e.preventDefault();
 
       if (!info?.dragOver) {
-        let dragOverClass = dragLayout.type === 'column' ? 'bg-green-200' : 'bg-red-200';
+        let dragOverClass =
+          dragLayout.type === 'column' || dragLayout.type === 'row' ? 'bg-green-200' : 'bg-red-200';
         setInfo((prev) => ({
           ...prev,
           dragOver: true,
@@ -35,7 +37,7 @@ const Canvas = () => {
 
   const layoutDropHandler = (e) => {
     let infoState = { dragOver: false, dragOverClass: 'bg-white' };
-    if (dragLayout?.type === 'column') {
+    if (dragLayout?.type === 'column' || dragLayout?.type === 'row') {
       let updatedSections = _.cloneDeep(templateSections || []);
       updatedSections.push(dragLayout?.json);
       dispatch(setTemplateDataAction(updatedSections));
@@ -54,6 +56,7 @@ const Canvas = () => {
 
   const componentRenderObject = {
     column: ColumnComponent,
+    row: RowComponent,
   };
 
   return (

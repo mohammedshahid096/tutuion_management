@@ -1,10 +1,11 @@
-import { Columns2, Columns3, Columns4, RectangleHorizontal } from 'lucide-react';
+import { Columns2, Columns3, Columns4, RectangleHorizontal, RectangleVertical } from 'lucide-react';
 
 export default [
+  // column
   {
     label: 'Column',
     type: 'column',
-    numOfColumns: 1,
+    numOfBlocks: 1,
     icon: RectangleHorizontal,
     json: {
       type: 'column',
@@ -37,7 +38,7 @@ export default [
   {
     label: '2 Column',
     type: 'column',
-    numOfColumns: 2,
+    numOfBlocks: 2,
     icon: Columns2,
     json: {
       type: 'column',
@@ -84,7 +85,7 @@ export default [
   {
     label: '3 Column',
     type: 'column',
-    numOfColumns: 3,
+    numOfBlocks: 3,
     icon: Columns3,
     json: {
       type: 'column',
@@ -146,7 +147,7 @@ export default [
   {
     label: '4 Column',
     type: 'column',
-    numOfColumns: 4,
+    numOfBlocks: 4,
     icon: Columns4,
     json: {
       type: 'column',
@@ -214,6 +215,41 @@ export default [
             paddingBottom: '2px',
             paddingLeft: '2px',
             paddingRight: '2px',
+          },
+          subBlock: [],
+        },
+      ],
+    },
+  },
+
+  // rows
+  {
+    label: 'Row',
+    type: 'row',
+    numOfBlocks: 1,
+    icon: RectangleVertical,
+    json: {
+      type: 'row',
+      styleClassName: 'grid gap-0 grid-cols-1',
+      styles: {},
+      properties: {
+        containerType: 'grid',
+        columns: 1,
+      },
+      block: [
+        {
+          index: 0,
+          blockStyleClassName: 'p-2 flex flex-col',
+          blockStyles: {
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '2px',
+            flexWrap: 'wrap',
+            paddingTop: '2px',
+            paddingBottom: '2px',
+            paddingLeft: '2px',
+            paddingRight: '2px',
+            minHeight: 'auto',
           },
           subBlock: [],
         },
