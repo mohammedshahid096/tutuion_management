@@ -12,8 +12,8 @@ const subBlockSchema = new mongoose.Schema({
   videoUrl: { type: String },
   imageUrl: { type: String },
   styleClass: { type: String },
-  style: { type: Schema.Types.Mixed },
-  outerStyle: { type: Schema.Types.Mixed },
+  style: { type: mongoose.Schema.Types.Mixed },
+  outerStyle: { type: mongoose.Schema.Types.Mixed },
   uuid: { type: String, required: true },
 });
 

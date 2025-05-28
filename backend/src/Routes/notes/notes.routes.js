@@ -6,18 +6,21 @@ const {
 const { ADMIN } = require("../../Constants/roles.constants");
 const {
   createNewNoteController,
+  getNotesDetailsController,
 } = require("../../Controllers/notes/notes.controller");
 const {
   createNewNotesValidation,
 } = require("../../validators/notes/notes.validation");
 
-const AiRoutes = express.Router();
+const NoteRoutes = express.Router();
 
-AiRoutes.route("/create-new-note").post(
+NoteRoutes.route("/create-new-note").post(
   Authentication,
   Authorization(ADMIN),
   createNewNotesValidation,
   createNewNoteController
 );
 
-module.exports = AiRoutes;
+NoteRoutes.route("/:slug").get(getNotesDetailsController);
+
+module.exports = NoteRoutes;
