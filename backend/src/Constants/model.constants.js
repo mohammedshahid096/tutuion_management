@@ -8,4 +8,5 @@ module.exports = {
   enrollmentProgress: "enrollment_progresses",
   attendances: "attendances",
   contactForms: "contact_forms",
+  notes: "notes",
 };

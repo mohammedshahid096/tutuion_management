@@ -119,7 +119,6 @@
                 "label": "Button",
                 "type": "button",
                 "content": "Sample Button",
-                "url": "#",
                 "styleClass": "",
                 "style": {
                   "color": "#fff",
