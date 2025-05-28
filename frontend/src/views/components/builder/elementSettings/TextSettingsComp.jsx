@@ -59,7 +59,7 @@ const TextSettingsComp = ({ content, style }) => {
     };
     let response = await submitBuilderTextPromptApi(json);
     if (response[0] === true) {
-      changeHandlerFunction(response[1]?.data, 'content');
+      changeHandlerFunction(response[1]?.data?.generatedText, 'content');
       setInfo((prev) => ({ ...prev, promptLoading: false, aiPrompt: '' }));
     } else {
       toast.error(response[1]?.message);

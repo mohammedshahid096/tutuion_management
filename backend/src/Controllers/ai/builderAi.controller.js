@@ -9,7 +9,13 @@ const builderTextAiController = async (req, res, next) => {
     logger.info("Controller - ai.controller - builderTextAiController - Start");
 
     const { userPrompt } = req.body;
-    const finalPrompt = `Write a clear, concise, and engaging explanation: ${userPrompt}`;
+    // const finalPrompt = `Write a clear, concise, and engaging explanation: ${userPrompt}`;
+    const finalPrompt = `
+                        Write a clear, concise, and engaging explanation in plain text format. 
+                        Avoid using **bold**, *italics*, or any other formatting symbols. 
+                        Just provide the raw text in a professional tone.
+                        Topic: ${userPrompt}
+                      `;
 
     const url = "https://openrouter.ai/api/v1/chat/completions";
     const config = {
@@ -35,12 +41,13 @@ const builderTextAiController = async (req, res, next) => {
       ],
     };
     const { data } = await axios.post(url, json, config);
+
     const generatedText = data.choices[0].message.content;
 
     res.status(200).json({
       success: true,
       statusCode: 200,
-      data: generatedText,
+      data: { generatedText, details: data },
     });
     logger.info("Controller - ai.controller - builderTextAiController - End");
   } catch (error) {
