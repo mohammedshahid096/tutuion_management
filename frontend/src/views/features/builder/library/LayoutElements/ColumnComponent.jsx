@@ -33,12 +33,15 @@ const ColumnComponent = ({ layout, sectionIndex }) => {
 
   const onDragOverHandler = (event, index) => {
     event.preventDefault();
+    let isElement = true;
+    if (dragLayout?.type === 'column' || dragLayout?.type === 'row') {
+      isElement = false;
+    }
     let dragOver = { index, columns: layout.uuid };
-
     setInfo((prev) => ({
       ...prev,
       dragOver,
-      dragOverClass: 'bg-purple-200',
+      dragOverClass: isElement ? 'bg-purple-200' : 'bg-red-200',
     }));
   };
 
