@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
@@ -16,11 +16,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import { builderActions } from '@/redux/combineActions';
 import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { Sparkles, Loader2 } from 'lucide-react';
+import { submitBuilderTextPromptApi } from '@/apis/ai.api';
+import toast from 'react-hot-toast';
 
 const TextSettingsComp = ({ content, style }) => {
   const dispatch = useDispatch();
   const { setTemplateDataAction } = builderActions;
   const { templateSections, activeSection } = useSelector((state) => state.builderToolkitState);
+
+  const [info, setInfo] = useState({
+    aiPrompt: '',
+    promptLoading: false,
+  });
 
   const changeHandlerFunction = (value, property, isPx = false) => {
     let updatedTemplate = _.cloneDeep(templateSections);
@@ -41,6 +50,23 @@ const TextSettingsComp = ({ content, style }) => {
     dispatch(setTemplateDataAction(updatedTemplate));
   };
 
+  const submitPromptMessageHandler = useCallback(async () => {
+    if (info?.promptLoading || !info?.aiPrompt) return;
+
+    setInfo((prev) => ({ ...prev, promptLoading: true }));
+    let json = {
+      userPrompt: info?.aiPrompt,
+    };
+    let response = await submitBuilderTextPromptApi(json);
+    if (response[0] === true) {
+      changeHandlerFunction(response[1]?.data, 'content');
+      setInfo((prev) => ({ ...prev, promptLoading: false, aiPrompt: '' }));
+    } else {
+      toast.error(response[1]?.message);
+      setInfo((prev) => ({ ...prev, promptLoading: false }));
+    }
+  }, [info?.aiPrompt, info?.promptLoading]);
+
   return (
     <>
       <div className="space-y-2">
@@ -53,6 +79,34 @@ const TextSettingsComp = ({ content, style }) => {
           rows={4}
           minLength={4}
         />
+      </div>
+
+      <div className="space-y-2">
+        <Label className="text-xs">AI Prompt(Optional)</Label>
+        <Input
+          type="text"
+          onChange={(e) => setInfo((prev) => ({ ...prev, aiPrompt: e?.target?.value }))}
+          value={info?.aiPrompt}
+          placeholder="Enter the prompt"
+          className="h-8"
+        />
+        <Button
+          className="w-full"
+          disabled={info?.promptLoading}
+          onClick={submitPromptMessageHandler}
+        >
+          {info?.promptLoading ? (
+            <>
+              {' '}
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating..{' '}
+            </>
+          ) : (
+            <>
+              Generate with AI
+              <Sparkles />
+            </>
+          )}
+        </Button>
       </div>
 
       <div>

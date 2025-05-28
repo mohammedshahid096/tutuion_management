@@ -14,7 +14,7 @@ const VideoComponent = ({
   sectionDetails,
   blockDetails,
 }) => {
-  const { activeSection } = useSelector((state) => state.builderToolkitState);
+  const { activeSection, screenSize } = useSelector((state) => state.builderToolkitState);
   return (
     <div
       className={cn(
@@ -26,7 +26,10 @@ const VideoComponent = ({
         id={uuid}
         data-section-uuid={sectionDetails?.uuid}
         data-block-uuid={blockDetails?.uuid}
-        style={style}
+        style={{
+          ...style,
+          width: screenSize === 'mobile' ? window.innerWidth : style?.width,
+        }}
         className={cn('max-w-5xl min-w-64')}
       >
         {videoUrl ? (
