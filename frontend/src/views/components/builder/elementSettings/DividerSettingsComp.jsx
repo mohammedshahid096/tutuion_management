@@ -63,8 +63,8 @@ const DividerSettingsComp = ({ content, style }) => {
         <div className="flex items-center space-x-2">
           <Slider
             value={[getNumberFromPx(style?.width)]}
-            max={50}
-            min={10}
+            max={100}
+            min={0}
             step={1}
             onValueChange={(e) => changeHandlerFunction(e[0], 'width', true, '%')}
           />

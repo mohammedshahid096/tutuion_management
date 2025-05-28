@@ -108,7 +108,6 @@ const RowComponent = ({ layout, sectionIndex }) => {
                 activeSection?.section_uuid === layout?.uuid &&
                   activeSection?.block_uuid === singleBlock?.uuid &&
                   'border-2 border-amber-950 border-dashed',
-
                 _.map(singleBlock?.subBlock, (item) => item.type).some((item) => item === 'divider')
                   ? 'block'
                   : ''
