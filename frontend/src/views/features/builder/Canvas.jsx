@@ -61,7 +61,7 @@ const Canvas = () => {
 
   return (
     <div className={cn(builderEditMode ? 'flex justify-center' : 'flex justify-center')}>
-      <div className={`relative ${screenSize === 'mobile' ? 'mx-auto my-8' : ''}`}>
+      <div className={`relative w-full ${screenSize === 'mobile' ? 'mx-auto my-8' : ''}`}>
         {/* Mobile device frame - only shown in edit mode */}
         {screenSize === 'mobile' && builderEditMode && (
           <div
@@ -102,7 +102,7 @@ const Canvas = () => {
             <div className={`${screenSize === 'mobile' ? 'p-4' : 'p-6'}`}>
               {_.size(templateSections) > 0
                 ? templateSections?.map((block, index) => {
-                    const Comp = componentRenderObject[block.type];
+                    const Comp = componentRenderObject[block?.type];
                     return <Comp key={block?.uuid || index} layout={block} sectionIndex={index} />;
                   })
                 : builderEditMode && (
