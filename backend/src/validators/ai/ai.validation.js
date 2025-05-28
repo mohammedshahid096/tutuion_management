@@ -2,7 +2,7 @@ const { celebrate, Joi } = require("celebrate");
 
 const textBuilderAiPromptValidation = celebrate({
   body: Joi.object({
-    userPrompt: Joi.string().required().label("user prompt"),
+    userPrompt: Joi.string().trim().required().label("user prompt"),
   }),
 });
 
