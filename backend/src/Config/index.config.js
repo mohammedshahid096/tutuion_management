@@ -49,4 +49,7 @@ module.exports = {
 
   // admin id
   USER_ACCOUNT_ID: process.env.USER_ACCOUNT_ID || "672493276aa409505ecd9b43",
+
+  // open router api key
+  OPEN_ROUTER_API_KEY: process.env.OPEN_ROUTER_API_KEY,
 };

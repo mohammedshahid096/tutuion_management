@@ -9,6 +9,7 @@ const GraphRoutes = require("./graphs/grahph.route");
 const ContactFormRoutes = require("./contact/contact.route");
 const StudentAttendanceRoutes = require("./attendance/studentAttendance.route");
 const StudentEnrollmentRoutes = require("./enrollment-progress/studentEnrollment.routes");
+const AiRoutes = require("./ai/ai.routes");
 
 // Route config
 const IndexRoutes = express.Router();
@@ -54,6 +55,11 @@ IndexRoutes.use("/graph", GraphRoutes);
 //  Contact-Forms routes
 // ----------------------------------------
 IndexRoutes.use("/contact", ContactFormRoutes);
+
+// ----------------------------------------
+//  Ai routes
+// ----------------------------------------
+IndexRoutes.use("/ai", AiRoutes);
 
 // export the routes
 module.exports = IndexRoutes;
