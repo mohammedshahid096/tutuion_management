@@ -1,16 +1,18 @@
-import { CLEAR_BUILDER_ERRORS, RESET_BUILDER_STATE } from './constant';
+import { CLEAR_BUILDER_ERRORS, GET_NOTE_DETAILS, RESET_BUILDER_STATE } from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
-import { setAccessToken } from '@/helpers/local-storage';
 import {
   setScreenSize,
   setDragLayout,
   setTemplateData,
   setActiveSection,
   setBuilderEditMode,
+  clearBuilderErrors,
+  resetBuilder,
 } from './reducer';
 import _ from 'lodash';
 import templatesData from '@/data/templates.json';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const setScreenSizeAction = (screenSize) => (dispatch) => {
   dispatch(setScreenSize(screenSize));
@@ -32,22 +34,24 @@ const setBuilderEditModeAction = (mode) => (dispatch) => {
   dispatch(setBuilderEditMode(mode ?? true));
 };
 
-const fetchTemplateNoteIdAction = (noteId) => (dispatch) => {
-  let currentTemplate = templatesData[noteId] || null;
-
-  if (currentTemplate) {
-    dispatch(setTemplateData(currentTemplate.templateSections));
+export const fetchTemplateNoteIdAction = createAsyncThunk(
+  GET_NOTE_DETAILS,
+  async (noteId, { rejectWithValue }) => {
+    let response = await Service.fetchGet(`${API.BASE_NOTES}/${noteId}`);
+    if (response[0] === true) {
+      return response[1]?.data;
+    } else {
+      return rejectWithValue(response[1]);
+    }
   }
-};
+);
 
 const clearBuilderErrorsAction = () => (dispatch) => {
-  dispatch({
-    type: CLEAR_BUILDER_ERRORS,
-  });
+  dispatch(clearBuilderErrors());
 };
 
 const resetBuilderAction = () => (dispatch) => {
-  dispatch({ type: RESET_BUILDER_STATE });
+  dispatch(resetBuilder());
 };
 
 export default {

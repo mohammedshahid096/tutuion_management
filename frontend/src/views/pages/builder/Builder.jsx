@@ -4,6 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import BuilderView from '@/views/features/builder/BuilderView';
 import { useParams } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
+import toast from 'react-hot-toast';
+import { Card } from '@/components/ui/card';
+import { BookOpen } from 'lucide-react';
+import Header from '@/views/components/navbar/Header';
+import InitialLoader from '@/views/components/loaders/loader';
 
 const Builder = () => {
   const dispatch = useDispatch();
@@ -14,8 +19,10 @@ const Builder = () => {
     fetchTemplateNoteIdAction,
     setScreenSizeAction,
     setActiveSectionAction,
+    clearBuilderErrorsAction,
   } = builderActions;
-  const { builderEditMode, activeSection } = useSelector((state) => state.builderToolkitState);
+  const { builderEditMode, activeSection, singleTemplateData, error, loading, templateSections } =
+    useSelector((state) => state.builderToolkitState);
 
   useEffect(() => {
     if (builderEditMode) {
@@ -24,8 +31,18 @@ const Builder = () => {
     if (activeSection) {
       clearActiveSectionFunction();
     }
-    fetchNoteIdHandlerFunction();
+
+    if (!singleTemplateData && singleTemplateData?.slug !== noteId) {
+      fetchNoteIdHandlerFunction();
+    }
   }, [noteId]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      clearErrorFunctionHandler();
+    }
+  }, [error]);
 
   useEffect(() => {
     changeScreenSizeFunction(isMobile ? 'mobile' : 'desktop');
@@ -44,14 +61,38 @@ const Builder = () => {
 
   const fetchNoteIdHandlerFunction = useCallback(() => {
     dispatch(fetchTemplateNoteIdAction(noteId));
-  }, [noteId]);
+  }, [noteId, singleTemplateData]);
 
   const clearActiveSectionFunction = useCallback(() => {
     dispatch(setActiveSectionAction(null));
   }, []);
+
+  const clearErrorFunctionHandler = useCallback(() => {
+    dispatch(clearBuilderErrorsAction());
+  }, [error]);
+
+  console.log(templateSections, templateSections, 'shahid');
   return (
     <div className="w-full h-screen">
-      <BuilderView />
+      <Header />
+      {loading ? (
+        <div>
+          <InitialLoader loading={true} />
+        </div>
+      ) : templateSections ? (
+        <BuilderView />
+      ) : (
+        <Card className="flex flex-col items-center justify-center p-8 text-center shadow-none border-0">
+          <div className="rounded-full p-3 bg-muted mb-4">
+            <BookOpen className="h-12 w-12 text-muted-foreground" />
+          </div>
+          <h3 className="text-xl font-semibold">Notes Not Found</h3>
+          <p className="text-muted-foreground mt-2 max-w-sm">
+            The requested notes could not be found. Please check the notes slug or try another
+            search.
+          </p>
+        </Card>
+      )}
     </div>
   );
 };

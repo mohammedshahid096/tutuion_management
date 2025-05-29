@@ -1,5 +1,5 @@
-import { CLEAR_BUILDER_ERRORS, RESET_BUILDER_STATE } from './constant';
 import { createSlice } from '@reduxjs/toolkit';
+import { fetchTemplateNoteIdAction } from './action';
 
 const initialState = {
   loading: false,
@@ -7,7 +7,8 @@ const initialState = {
   statusCode: null,
   screenSize: 'desktop',
   dragLayout: null,
-  templateSections: [],
+  templateSections: null,
+  singleTemplateData: null,
   activeSection: null,
   builderEditMode: true,
 };
@@ -31,6 +32,29 @@ const builderSlice = createSlice({
     setBuilderEditMode: (state, action) => {
       state.builderEditMode = action.payload;
     },
+    clearBuilderErrors: (state, action) => {
+      state.statusCode = null;
+      state.error = null;
+    },
+    resetBuilder: (state, action) => {
+      state = initialState;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTemplateNoteIdAction.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchTemplateNoteIdAction.fulfilled, (state, action) => {
+        state.loading = false;
+        state.singleTemplateData = action.payload || null;
+        state.templateSections = action.payload?.templateSections || null;
+      })
+      .addCase(fetchTemplateNoteIdAction.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action?.payload?.message || 'Fetching note details failed'; // Default error message
+        state.statusCode = action?.payload?.statusCode || 500;
+      });
   },
 });
 
@@ -40,5 +64,7 @@ export const {
   setTemplateData,
   setActiveSection,
   setBuilderEditMode,
+  clearBuilderErrors,
+  resetBuilder,
 } = builderSlice.actions;
 export const builderReducerToolkit = builderSlice.reducer;
