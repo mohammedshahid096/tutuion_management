@@ -80,7 +80,7 @@ const Canvas = () => {
 
         {/* Actual canvas content */}
         <div
-          className={`w-full ${screenSize === 'desktop' ? 'max-w-6xl p-6' : 'max-w-md'} ${
+          className={`w-full m-auto ${screenSize === 'desktop' ? 'max-w-6xl' : 'max-w-md'} ${
             info?.dragOverClass
           } ${
             screenSize === 'mobile'
@@ -99,7 +99,7 @@ const Canvas = () => {
         >
           {/* Scrollable content container */}
           <div className={`${screenSize === 'mobile' ? 'h-full overflow-y-auto' : ''}`}>
-            <div className={`${screenSize === 'mobile' ? 'p-4' : 'p-6'}`}>
+            <div className={`${builderEditMode && (screenSize === 'mobile' ? 'p-4' : 'p-6')}`}>
               {_.size(templateSections) > 0
                 ? templateSections?.map((block, index) => {
                     const Comp = componentRenderObject[block?.type];
