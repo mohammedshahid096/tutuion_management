@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchTemplateNoteIdAction } from './action';
+import { fetchTemplateNoteIdAction, fetchNotesAction } from './action';
+import _ from 'lodash';
 
 const initialState = {
   loading: false,
@@ -11,6 +12,7 @@ const initialState = {
   singleTemplateData: null,
   activeSection: null,
   builderEditMode: true,
+  notesList: null,
 };
 
 const builderSlice = createSlice({
@@ -31,6 +33,9 @@ const builderSlice = createSlice({
     },
     setBuilderEditMode: (state, action) => {
       state.builderEditMode = action.payload;
+    },
+    updateBuilderState: (state, action) => {
+      _.assign(state, action.payload);
     },
     clearBuilderErrors: (state, action) => {
       state.statusCode = null;
@@ -54,6 +59,18 @@ const builderSlice = createSlice({
         state.loading = false;
         state.error = action?.payload?.message || 'Fetching note details failed'; // Default error message
         state.statusCode = action?.payload?.statusCode || 500;
+      })
+      .addCase(fetchNotesAction.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchNotesAction.fulfilled, (state, action) => {
+        state.loading = false;
+        state.notesList = action.payload || null;
+      })
+      .addCase(fetchNotesAction.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action?.payload?.message || 'Fetching notes list failed'; // Default error message
+        state.statusCode = action?.payload?.statusCode || 500;
       });
   },
 });
@@ -63,6 +80,7 @@ export const {
   setDragLayout,
   setTemplateData,
   setActiveSection,
+  updateBuilderState,
   setBuilderEditMode,
   clearBuilderErrors,
   resetBuilder,

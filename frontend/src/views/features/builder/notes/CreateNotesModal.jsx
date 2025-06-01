@@ -11,18 +11,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import slugify from 'slugify';
 import toast from 'react-hot-toast';
+import _ from 'lodash';
 
 const CreateNotesModal = ({ info, setInfo }) => {
   const dispatch = useDispatch();
-  const {} = useSelector((state) => state.boardState);
-  const { createNewNotesAction } = builderActions;
+  const { notesList } = useSelector((state) => state.builderToolkitState);
+  const { createNewNotesAction, updateBuilderStateAction } = builderActions;
 
   const validateSchema = Yup.object().shape({
     title: Yup.string()
       .min(3, 'title must be at least 3 characters')
       .max(50, 'title cannot exceed 50 characters')
       .required('title name is required'),
-    description: Yup.string().max(200, 'Description cannot exceed 200 characters'),
+    description: Yup.string()
+      .max(200, 'Description cannot exceed 200 characters')
+      .required('description is required'),
   });
 
   const formik = useFormik({
@@ -49,11 +52,7 @@ const CreateNotesModal = ({ info, setInfo }) => {
 
   const submitHandlerFunction = useCallback(
     async (json) => {
-      console.log(info?.isSubmitting, 'shahid');
       if (info?.isSubmitting) return;
-
-      console.log('hsle shahid');
-
       setInfo((prev) => ({
         ...prev,
         isSubmitting: true,
@@ -61,6 +60,9 @@ const CreateNotesModal = ({ info, setInfo }) => {
       let response = await createNewNotesAction(json);
       if (response[2] === 201) {
         toast.success('successfully created a new notes');
+        let updatedDatedList = _.cloneDeep(notesList);
+        updatedDatedList?.docs?.unshift(response[1]?.data);
+        dispatch(updateBuilderStateAction({ notesList: updatedDatedList }));
         resetForm();
       } else {
         toast.error(response[1]?.message || 'unable to add to a new notes');
@@ -68,6 +70,7 @@ const CreateNotesModal = ({ info, setInfo }) => {
       setInfo((prev) => ({
         ...prev,
         isSubmitting: false,
+        openCreateModal: response[2] === 201 ? false : true,
       }));
     },
     [info?.isSubmitting]
@@ -159,7 +162,9 @@ const CreateNotesModal = ({ info, setInfo }) => {
             className="resize-none"
             readOnly={info?.isSubmitting}
           />
-          <p className="text-sm text-muted-foreground">Optional description for your notes</p>
+          {touched?.description && errors?.description && (
+            <p className="text-sm text-red-500 mt-1">{errors?.description}</p>
+          )}
         </div>
 
         <div className="flex justify-end gap-3 pt-4">

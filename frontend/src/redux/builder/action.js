@@ -1,4 +1,4 @@
-import { GET_NOTE_DETAILS } from './constant';
+import { GET_NOTE_DETAILS, GET_NOTES_LIST } from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
 import {
@@ -9,11 +9,13 @@ import {
   setBuilderEditMode,
   clearBuilderErrors,
   resetBuilder,
+  updateBuilderState,
 } from './reducer';
 import _ from 'lodash';
 import templatesData from '@/data/templates.json';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getAccessToken } from '@/helpers/local-storage';
+import { objectToQueryString } from '@/helpers';
 
 const setScreenSizeAction = (screenSize) => (dispatch) => {
   dispatch(setScreenSize(screenSize));
@@ -47,6 +49,21 @@ export const fetchTemplateNoteIdAction = createAsyncThunk(
   }
 );
 
+export const fetchNotesAction = createAsyncThunk(
+  GET_NOTES_LIST,
+  async (queryObject = null, { rejectWithValue }) => {
+    let query = queryObject ? objectToQueryString(queryObject) : '';
+    let response = await Service.fetchGet(
+      `${API.BASE_NOTES}${API.NOTES_ACTION_TYPES.NOTES_LIST}${query}`
+    );
+    if (response[0] === true) {
+      return response[1]?.data;
+    } else {
+      return rejectWithValue(response[1]);
+    }
+  }
+);
+
 const createNewNotesAction = async (json) => {
   const token = getAccessToken();
   const response = await Service.fetchPost(
@@ -56,6 +73,10 @@ const createNewNotesAction = async (json) => {
   );
 
   return response;
+};
+
+const updateBuilderStateAction = (state) => (dispatch) => {
+  dispatch(updateBuilderState(state));
 };
 
 const clearBuilderErrorsAction = () => (dispatch) => {
@@ -74,6 +95,8 @@ export default {
   setBuilderEditModeAction,
   fetchTemplateNoteIdAction,
   createNewNotesAction,
+  fetchNotesAction,
+  updateBuilderStateAction,
   clearBuilderErrorsAction,
   resetBuilderAction,
 };
