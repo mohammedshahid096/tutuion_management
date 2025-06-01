@@ -14,6 +14,7 @@ import {
   Book,
   House,
   FileText,
+  Notebook,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -131,6 +132,18 @@ const data = {
         {
           title: 'Form Responses',
           url: '/admin/contact-forms',
+        },
+      ],
+    },
+    {
+      title: 'Notes',
+      url: '#',
+      icon: Notebook,
+      isActive: false,
+      items: [
+        {
+          title: 'Notes',
+          url: '/admin/notes',
         },
       ],
     },

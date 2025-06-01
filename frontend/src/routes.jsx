@@ -27,6 +27,7 @@ import MyEnrollments from './views/pages/enrollments/MyEnrollments';
 import MyChapterProgress from './views/pages/progress/MyChapterProgress';
 import Builder from './views/pages/builder/Builder';
 import EditBuilder from './views/pages/builder/EditBuilder';
+import NotesList from './views/pages/builder/NotesList';
 
 const allRoutesMapper = [
   {
@@ -217,9 +218,31 @@ const allRoutesMapper = [
       </AuthWrapper>
     ),
   },
+  {
+    path: '/admin/notes',
+    component: (
+      <AuthWrapper roles={[ADMIN]}>
+        <NotesList />
+      </AuthWrapper>
+    ),
+  },
 
-  { path: '/builder/:noteId', component: <EditBuilder /> },
-  { path: '/builder', component: <EditBuilder /> },
+  {
+    path: '/builder/:noteId',
+    component: (
+      <AuthWrapper roles={[ADMIN]}>
+        <EditBuilder />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/builder',
+    component: (
+      <AuthWrapper roles={[ADMIN]}>
+        <EditBuilder />
+      </AuthWrapper>
+    ),
+  },
   { path: '/notes/:noteId', component: <Builder /> },
 
   {
