@@ -44,6 +44,14 @@ const ModelSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
     templateSections: [columnSchema],
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

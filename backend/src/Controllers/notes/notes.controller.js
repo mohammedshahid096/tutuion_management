@@ -12,7 +12,7 @@ const createNewNoteController = async (req, res, next) => {
       "Controller - notes.controller - createNewNoteController - Start"
     );
 
-    const { noteName } = req.body;
+    const { noteName, description } = req.body;
     const slug = slugify(noteName, { lower: true, strict: true });
     const isSlugPresent = await notesModel.findOne({ slug });
     if (isSlugPresent) {
@@ -40,6 +40,8 @@ const createNewNoteController = async (req, res, next) => {
 
     let details = {
       slug,
+      title: noteName,
+      description,
       templateSections,
       createdBy: req.user._id,
       updatedBy: req.user._id,
