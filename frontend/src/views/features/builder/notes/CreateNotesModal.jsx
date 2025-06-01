@@ -10,11 +10,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import slugify from 'slugify';
+import toast from 'react-hot-toast';
 
 const CreateNotesModal = ({ info, setInfo }) => {
   const dispatch = useDispatch();
-  const { boardsList } = useSelector((state) => state.boardState);
-  const { createNewBoardAction, updateBoardAction } = builderActions;
+  const {} = useSelector((state) => state.boardState);
+  const { createNewNotesAction } = builderActions;
 
   const validateSchema = Yup.object().shape({
     title: Yup.string()
@@ -33,7 +34,7 @@ const CreateNotesModal = ({ info, setInfo }) => {
     validationSchema: validateSchema,
     onSubmit: async (values) => {
       let json = {
-        name: values?.name,
+        noteName: values?.title,
         description: values?.description,
       };
 
@@ -46,18 +47,33 @@ const CreateNotesModal = ({ info, setInfo }) => {
   });
   const { errors, values, touched, handleChange, handleSubmit, handleBlur, resetForm } = formik;
 
-  const submitHandlerFunction = async (json) => {
-    // let response = await createNewBoardAction(json);
-    // if (response[2] === 201) {
-    //   let updateData = _.cloneDeep(boardsList);
-    //   openCloseCreateModal(false);
-    //   resetForm();
-    // } else {
-    //   toast.error(response[1]?.message || 'unable to add to a board');
-    // }
-  };
+  const submitHandlerFunction = useCallback(
+    async (json) => {
+      console.log(info?.isSubmitting, 'shahid');
+      if (info?.isSubmitting) return;
 
-  const updateSubmitHandlerFunction = async (json) => {
+      console.log('hsle shahid');
+
+      setInfo((prev) => ({
+        ...prev,
+        isSubmitting: true,
+      }));
+      let response = await createNewNotesAction(json);
+      if (response[2] === 201) {
+        toast.success('successfully created a new notes');
+        resetForm();
+      } else {
+        toast.error(response[1]?.message || 'unable to add to a new notes');
+      }
+      setInfo((prev) => ({
+        ...prev,
+        isSubmitting: false,
+      }));
+    },
+    [info?.isSubmitting]
+  );
+
+  const updateSubmitHandlerFunction = useCallback(async (json) => {
     // let response = await updateBoardAction(info?.selectedBoardId, json);
     // if (response[0]) {
     //   let updateData = _.cloneDeep(boardsList)?.map((item) => {
@@ -73,7 +89,7 @@ const CreateNotesModal = ({ info, setInfo }) => {
     // } else {
     //   toast.error(response[1]?.message || 'unable to add to a board');
     // }
-  };
+  }, []);
 
   const closeModalFunction = useCallback(() => {
     setInfo((prev) => ({

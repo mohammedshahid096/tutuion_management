@@ -16,12 +16,9 @@ const NotesList = () => {
     setInfo((prev) => ({
       ...prev,
       openCreateModal: true,
-      noteDetails: {
-        title: '',
-        description: '',
-      },
     }));
   }, [info?.noteDetails, info?.openCreateModal]);
+
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="Notes | EduExcellence" />
