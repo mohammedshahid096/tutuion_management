@@ -101,7 +101,65 @@ const getNotesDetailsController = async (req, res, next) => {
   }
 };
 
+const getNotesListController = async (req, res, next) => {
+  try {
+    logger.info(
+      "Controller - notes.controller - getNotesListController - Start"
+    );
+
+    let { limit = 15, page = 1, sort = "-createdAt" } = req.query;
+    const { title = null, description = null } = req.query;
+
+    limit = Number(limit);
+    page = Number(page);
+
+    const skip_docs = (page - 1) * limit;
+
+    const query = {};
+    if (title) query.title = { $regex: title, $options: "i" };
+    if (description) query.description = { $regex: description, $options: "i" };
+
+    const totalDocs = await notesModel.countDocuments(query);
+    const totalPages = Math.ceil(totalDocs / limit);
+
+    const docs = await notesModel
+      .find(query)
+      .skip(skip_docs)
+      .limit(limit)
+      .sort(sort);
+
+    const hasNext = totalDocs > skip_docs + limit;
+    const hasPrev = page > 1;
+
+    const data = {
+      totalDocs,
+      totalPages,
+      docs,
+      currentPage: page,
+      hasNext,
+      hasPrev,
+      limit,
+    };
+
+    res.status(200).send({
+      success: true,
+      statusCode: 200,
+      message: "Notes list fetched successfully",
+      data,
+    });
+
+    logger.info("Controller - notes.controller - getNotesListController - End");
+  } catch (error) {
+    logger.error(
+      "Controller - notes.controller - getNotesListController - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 module.exports = {
   createNewNoteController,
   getNotesDetailsController,
+  getNotesListController,
 };
