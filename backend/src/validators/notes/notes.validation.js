@@ -52,21 +52,23 @@ const notesUpdateValidation = celebrate({
                       content: Joi.string().allow("").optional(),
                       videoUrl: Joi.string().allow("").optional(),
                       imageUrl: Joi.string().allow("").optional(),
+                      alt: Joi.string().allow("").optional(),
+                      url: Joi.string().allow("").optional(),
                       styleClass: Joi.string().allow("").optional(),
                       style: Joi.object().optional(),
                       outerStyle: Joi.object().optional(),
                       uuid: Joi.string().required(),
-                      _id: Joi.string().required(),
+                      _id: Joi.string().optional(),
                     })
                   )
                   .optional(),
                 uuid: Joi.string().required(),
-                _id: Joi.string().required(),
+                _id: Joi.string().optional(),
               })
             )
             .optional(),
           uuid: Joi.string().required(),
-          _id: Joi.string().required(),
+          _id: Joi.string().optional(),
         })
       )
       .optional(),

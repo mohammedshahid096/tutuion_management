@@ -10,9 +10,9 @@ const { DEVELOPMENT_MODE } = require("./src/Config/index.config");
 const errorHandling = require("./src/Utils/errorHandling");
 var moment = require("moment-timezone");
 const GoogleAuthRoutes = require("./src/Routes/auth/google.route");
-const { createLiveClassRemindersCronJob } = require("./src/Config/cron.config");
-const { createNewLiveClassUtility } = require("./src/Utils/classReminder.cron");
 const corsConfig = require("./src/Config/cors.config");
+const compression = require("compression");
+// const { createNewLiveClassUtility } = require("./src/Utils/classReminder.cron");
 
 const app = express();
 app.use(
@@ -38,11 +38,14 @@ if (DEVELOPMENT_MODE === "development") {
 }
 
 app.use(ratelimitConfig);
-app.use(express.json());
+app.use(compression({ level: 6 }));
+app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors(corsConfig));
 moment.tz.setDefault("Asia/Kolkata");
+
+// ! in vercel it wont work as it is a serverless in vercel
 // createLiveClassRemindersCronJob();
 
 //----------------------------------------
@@ -52,6 +55,15 @@ app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
     message: "Welcome Message",
+  });
+});
+
+app.get("/health", (req, res) => {
+  let headers = req.headers;
+  res.status(200).json({
+    success: true,
+    message: "Hello from EduExcellence V1 Api",
+    headers,
   });
 });
 
