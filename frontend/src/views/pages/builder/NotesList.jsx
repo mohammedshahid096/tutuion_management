@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, memo } from 'react';
 import { Button } from '@/components/ui/button';
 import MetaData from '@/utils/MetaData';
 import CreateNotesModal from '@/views/features/builder/notes/CreateNotesModal';
@@ -8,16 +8,37 @@ import { builderActions } from '@/redux/combineActions';
 import CustomTable1 from '@/views/components/tables/TableV1';
 import moment from 'moment';
 import { format } from 'timeago.js';
-
+import { Trash, Pencil, Eye, FilePenLine } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 const breadCrumbs = [{ label: 'Notes', href: null }];
 const headers = [
   { title: 'Title', key: 'title' },
   { title: 'Description', key: 'description' },
+  { title: 'Date', key: 'date' },
+  { title: 'Time Ago', key: 'timeAgo' },
 ];
+
+const TableRow = memo(({ row, onDelete, onClickNavigationFunction }) => (
+  <div className="flex gap-4">
+    <Button onClick={() => onClickNavigationFunction(row, 'noteView')}>
+      <Eye />{' '}
+    </Button>
+    <Button onClick={() => onClickNavigationFunction(row, 'noteEdit')}>
+      <FilePenLine />
+    </Button>
+    <Button variant="outline" onClick={() => onClickNavigationFunction(row, 'edit')}>
+      <Pencil color="black" className="cursor-pointer size-5" />
+    </Button>
+    <Button variant="outline">
+      <Trash color="red" className="cursor-pointer size-5" onClick={() => onDelete(row)} />
+    </Button>
+  </div>
+));
 
 const NotesList = () => {
   const { fetchNotesAction } = builderActions;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { notesList, loading } = useSelector((state) => state.builderToolkitState);
 
   const [info, setInfo] = useState({
@@ -60,7 +81,24 @@ const NotesList = () => {
       ...prev,
       openCreateModal: true,
     }));
-  }, [info?.noteDetails, info?.openCreateModal]);
+  }, [info?.openCreateModal]);
+
+  const onClickNavigationFunction = useCallback(
+    (row, type) => {
+      if (type === 'noteView') {
+        navigate(`/notes/${row?.slug}`);
+      } else if (type === 'noteEdit') {
+        navigate(`/builder/${row?.slug}`);
+      } else if (type === 'edit') {
+        setInfo((prev) => ({
+          ...prev,
+          openCreateModal: true,
+          noteDetails: row,
+        }));
+      }
+    },
+    [info?.openCreateModal, info?.noteDetails]
+  );
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
@@ -83,6 +121,13 @@ const NotesList = () => {
           totalPages={notesList?.totalPages}
           currentPage={notesList?.currentPage}
           onPageChange={paginationFunctionHandler}
+          actions={(row) => (
+            <TableRow
+              row={row}
+              onDelete={() => {}}
+              onClickNavigationFunction={onClickNavigationFunction}
+            />
+          )}
         />
       </div>
 
@@ -91,4 +136,4 @@ const NotesList = () => {
   );
 };
 
-export default NotesList;
+export default memo(NotesList);

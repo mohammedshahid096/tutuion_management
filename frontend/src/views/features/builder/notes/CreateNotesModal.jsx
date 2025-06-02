@@ -168,7 +168,7 @@ const CreateNotesModal = ({ info, setInfo }) => {
         </div>
 
         <div className="flex justify-end gap-3 pt-4">
-          {info?.noteDetails ? (
+          {!info?.noteDetails ? (
             <>
               <Button
                 type="button"
@@ -197,7 +197,7 @@ const CreateNotesModal = ({ info, setInfo }) => {
                   Updating...
                 </>
               ) : (
-                'Update Board'
+                'Update Note'
               )}
             </Button>
           )}
