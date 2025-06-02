@@ -8,10 +8,12 @@ const {
   createNewNoteController,
   getNotesDetailsController,
   getNotesListController,
+  updateNoteController,
 } = require("../../Controllers/notes/notes.controller");
 const {
   createNewNotesValidation,
   notesListValidation,
+  notesUpdateValidation,
 } = require("../../validators/notes/notes.validation");
 
 const NoteRoutes = express.Router();
@@ -26,6 +28,13 @@ NoteRoutes.route("/notes-list").get(
   notesListValidation,
   getNotesListController
 );
-NoteRoutes.route("/:slug").get(getNotesDetailsController);
+NoteRoutes.route("/:slug")
+  .get(getNotesDetailsController)
+  .put(
+    Authentication,
+    Authorization(ADMIN),
+    notesUpdateValidation,
+    updateNoteController
+  );
 
 module.exports = NoteRoutes;

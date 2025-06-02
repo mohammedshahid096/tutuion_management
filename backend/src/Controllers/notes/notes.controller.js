@@ -101,6 +101,48 @@ const getNotesDetailsController = async (req, res, next) => {
   }
 };
 
+const updateNoteController = async (req, res, next) => {
+  try {
+    logger.info("Controller - notes.controller - updateNoteController - Start");
+
+    const { slug } = req.params;
+    const updateData = req.body;
+
+    if (updateData?.title) {
+      const newSlug = slugify(updateData?.title, { lower: true, strict: true });
+      let isSlugExist = await notesModel.findOne({ slug: newSlug });
+
+      if (isSlugExist)
+        return next(httpErrors.BadRequest("slug is already available"));
+
+      updateData.slug = newSlug;
+    }
+
+    const note = await notesModel.findOneAndUpdate(
+      { slug },
+      { ...updateData, updatedBy: req.user._id },
+      { new: true }
+    );
+
+    if (!note) return next(httpErrors.NotFound("Note not found"));
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "Note updated successfully",
+      data: note,
+    });
+
+    logger.info("Controller - notes.controller - updateNoteController - End");
+  } catch (error) {
+    logger.error(
+      "Controller - notes.controller - updateNoteController - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 const getNotesListController = async (req, res, next) => {
   try {
     logger.info(
@@ -162,4 +204,5 @@ module.exports = {
   createNewNoteController,
   getNotesDetailsController,
   getNotesListController,
+  updateNoteController,
 };

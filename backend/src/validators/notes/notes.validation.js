@@ -15,7 +15,15 @@ const notesListValidation = celebrate({
   }),
 });
 
+const notesUpdateValidation = celebrate({
+  body: Joi.object({
+    slug: Joi.string().trim().optional().label("note name"),
+    description: Joi.string().trim().optional().label("description"),
+  }),
+});
+
 module.exports = {
   createNewNotesValidation,
   notesListValidation,
+  notesUpdateValidation,
 };
