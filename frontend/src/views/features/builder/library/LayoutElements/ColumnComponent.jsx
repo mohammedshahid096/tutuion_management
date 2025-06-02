@@ -13,7 +13,7 @@ import VideoComponent from '../ElementComponents/VideoComponent';
 const ColumnComponent = ({ layout, sectionIndex }) => {
   const dispatch = useDispatch();
   const { setDragLayoutAction, setTemplateDataAction, setActiveSectionAction } = builderActions;
-  const { dragLayout, templateSections, activeSection } = useSelector(
+  const { dragLayout, templateSections, activeSection, builderEditMode } = useSelector(
     (state) => state.builderToolkitState
   );
 
@@ -147,7 +147,12 @@ const ColumnComponent = ({ layout, sectionIndex }) => {
                   ) : null;
                 })
               ) : (
-                <h2 className={cn('p-4 text-center text-sm bg-gray-100 border border-dashed')}>
+                <h2
+                  className={cn(
+                    'p-4 text-center text-sm bg-gray-100 border border-dashed',
+                    builderEditMode ? '' : 'hidden'
+                  )}
+                >
                   Add Element
                 </h2>
               )}
