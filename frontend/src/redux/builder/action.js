@@ -75,6 +75,12 @@ const createNewNotesAction = async (json) => {
   return response;
 };
 
+const updateNoteIdAction = async (noteId, json) => {
+  const token = getAccessToken();
+  let response = await Service.fetchPut(`${API.BASE_NOTES}/${noteId}`, json, token);
+  return response;
+};
+
 const updateBuilderStateAction = (state) => (dispatch) => {
   dispatch(updateBuilderState(state));
 };
@@ -96,6 +102,7 @@ export default {
   fetchTemplateNoteIdAction,
   createNewNotesAction,
   fetchNotesAction,
+  updateNoteIdAction,
   updateBuilderStateAction,
   clearBuilderErrorsAction,
   resetBuilderAction,

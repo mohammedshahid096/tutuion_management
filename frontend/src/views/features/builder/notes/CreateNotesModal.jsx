@@ -16,7 +16,7 @@ import _ from 'lodash';
 const CreateNotesModal = ({ info, setInfo }) => {
   const dispatch = useDispatch();
   const { notesList } = useSelector((state) => state.builderToolkitState);
-  const { createNewNotesAction, updateBuilderStateAction } = builderActions;
+  const { createNewNotesAction, updateBuilderStateAction, updateNoteIdAction } = builderActions;
 
   const validateSchema = Yup.object().shape({
     title: Yup.string()
@@ -37,13 +37,14 @@ const CreateNotesModal = ({ info, setInfo }) => {
     validationSchema: validateSchema,
     onSubmit: async (values) => {
       let json = {
-        noteName: values?.title,
         description: values?.description,
       };
 
       if (info?.noteDetails) {
+        if (values?.title !== info?.noteDetails?.title) json.title = values?.title;
         await updateSubmitHandlerFunction(json);
       } else {
+        json.noteName = values?.title;
         await submitHandlerFunction(json);
       }
     },
@@ -76,29 +77,47 @@ const CreateNotesModal = ({ info, setInfo }) => {
     [info?.isSubmitting]
   );
 
-  const updateSubmitHandlerFunction = useCallback(async (json) => {
-    // let response = await updateBoardAction(info?.selectedBoardId, json);
-    // if (response[0]) {
-    //   let updateData = _.cloneDeep(boardsList)?.map((item) => {
-    //     if (item._id === info?.selectedBoardId) {
-    //       return response[1]?.data;
-    //     } else {
-    //       return item;
-    //     }
-    //   });
-    //   openCloseCreateModal(false);
-    //   resetForm();
-    //   dispatch({ type: BOARD_LIST.update, payload: updateData });
-    // } else {
-    //   toast.error(response[1]?.message || 'unable to add to a board');
-    // }
-  }, []);
+  const updateSubmitHandlerFunction = useCallback(
+    async (json) => {
+      if (info?.isSubmitting) return;
+      setInfo((prev) => ({
+        ...prev,
+        isSubmitting: true,
+      }));
+      let response = await updateNoteIdAction(info?.noteDetails?.slug, json);
+      console.log(response, 'shahid');
+      if (response[0] === true) {
+        let updateData = _.cloneDeep(notesList);
+        updateData.docs = updateData?.docs?.map((item) => {
+          if (item?.slug === info?.noteDetails?.slug) {
+            return response[1]?.data;
+          } else {
+            return item;
+          }
+        });
+        dispatch(updateBuilderStateAction({ notesList: updateData }));
+        resetForm();
+        toast.success(response[1]?.message);
+      } else {
+        toast.error(response[1]?.message || 'unable to update note details');
+      }
+
+      setInfo((prev) => ({
+        ...prev,
+        isSubmitting: false,
+        openCreateModal: response[2] === 200 ? false : true,
+        noteDetails: response[2] === 200 ? null : info?.noteDetails,
+      }));
+    },
+    [info?.isSubmitting, info?.noteDetails, notesList]
+  );
 
   const closeModalFunction = useCallback(() => {
     setInfo((prev) => ({
       ...prev,
       openCreateModal: false,
       noteDetails: null,
+      isSubmitting: false,
     }));
   }, [info?.openCreateModal, info?.noteDetails]);
 

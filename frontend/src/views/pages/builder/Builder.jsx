@@ -71,7 +71,6 @@ const Builder = () => {
     dispatch(clearBuilderErrorsAction());
   }, [error]);
 
-  console.log(templateSections, templateSections, 'shahid');
   return (
     <div className="w-full h-screen">
       <Header />

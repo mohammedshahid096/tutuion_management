@@ -8,13 +8,15 @@ const EditBuilder = () => {
   const dispatch = useDispatch();
   const { noteId } = useParams();
   const { setBuilderEditModeAction, fetchTemplateNoteIdAction } = builderActions;
-  const { builderEditMode } = useSelector((state) => state.builderToolkitState);
+  const { builderEditMode, singleTemplateData } = useSelector((state) => state.builderToolkitState);
 
   useEffect(() => {
     if (!builderEditMode) {
       changeEditModeHandler();
     }
-    fetchNoteIdHandlerFunction();
+    if (!singleTemplateData && singleTemplateData?.slug !== noteId) {
+      fetchNoteIdHandlerFunction();
+    }
   }, []);
 
   const changeEditModeHandler = useCallback(() => {

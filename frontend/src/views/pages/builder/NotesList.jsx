@@ -36,7 +36,7 @@ const TableRow = memo(({ row, onDelete, onClickNavigationFunction }) => (
 ));
 
 const NotesList = () => {
-  const { fetchNotesAction } = builderActions;
+  const { fetchNotesAction, updateBuilderStateAction } = builderActions;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { notesList, loading } = useSelector((state) => state.builderToolkitState);
@@ -87,8 +87,22 @@ const NotesList = () => {
     (row, type) => {
       if (type === 'noteView') {
         navigate(`/notes/${row?.slug}`);
+
+        dispatch(
+          updateBuilderStateAction({
+            singleTemplateData: row,
+            templateSections: row?.templateSections,
+          })
+        );
       } else if (type === 'noteEdit') {
         navigate(`/builder/${row?.slug}`);
+
+        dispatch(
+          updateBuilderStateAction({
+            singleTemplateData: row,
+            templateSections: row?.templateSections,
+          })
+        );
       } else if (type === 'edit') {
         setInfo((prev) => ({
           ...prev,
