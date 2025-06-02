@@ -85,7 +85,6 @@ const CreateNotesModal = ({ info, setInfo }) => {
         isSubmitting: true,
       }));
       let response = await updateNoteIdAction(info?.noteDetails?.slug, json);
-      console.log(response, 'shahid');
       if (response[0] === true) {
         let updateData = _.cloneDeep(notesList);
         updateData.docs = updateData?.docs?.map((item) => {
