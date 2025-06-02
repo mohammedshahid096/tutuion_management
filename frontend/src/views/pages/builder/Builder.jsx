@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/card';
 import { BookOpen } from 'lucide-react';
 import Header from '@/views/components/navbar/Header';
 import InitialLoader from '@/views/components/loaders/loader';
+import MetaData from '@/utils/MetaData';
 
 const Builder = () => {
   const dispatch = useDispatch();
@@ -76,10 +77,17 @@ const Builder = () => {
       <Header />
       {loading ? (
         <div>
+          <MetaData title={`${noteId} | EduExcellence`} description={`${noteId} | EduExcellence`} />
           <InitialLoader loading={true} />
         </div>
       ) : templateSections ? (
-        <BuilderView />
+        <>
+          <MetaData
+            title={`${singleTemplateData?.title} | EduExcellence`}
+            description={`${singleTemplateData?.description} | EduExcellence`}
+          />
+          <BuilderView />
+        </>
       ) : (
         <Card className="flex flex-col items-center justify-center p-8 text-center shadow-none border-0">
           <div className="rounded-full p-3 bg-muted mb-4">
