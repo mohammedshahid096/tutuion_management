@@ -53,7 +53,7 @@ const ContactList = () => {
   });
 
   useEffect(() => {
-    if (!contactList) {
+    if (!contactList && contactList?.currentPage !== 1) {
       fetchFormResponseListHandler();
     }
   }, []);
@@ -67,6 +67,21 @@ const ContactList = () => {
       dispatch(getContactFormListAction(query));
     },
     [contactList, info?.currentPage, info?.limit]
+  );
+
+  const paginationFunctionHandler = useCallback(
+    (page) => {
+      let queryObject = {
+        currentPage: page,
+      };
+
+      setInfo((prev) => ({
+        ...prev,
+        ...queryObject,
+      }));
+      fetchFormResponseListHandler(queryObject);
+    },
+    [info?.currentPage]
   );
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
@@ -93,7 +108,7 @@ const ContactList = () => {
         loading={loading}
         totalPages={contactList?.totalPages}
         currentPage={contactList?.currentPage}
-        onPageChange={(page) => console.log(first)(page)}
+        onPageChange={paginationFunctionHandler}
       />
     </MainWrapper>
   );
