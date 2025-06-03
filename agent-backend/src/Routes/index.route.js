@@ -5,7 +5,7 @@ const AgentRoutes = require("./agents/agent.routes");
 const IndexRoutes = express.Router();
 
 // ----------------------------------------
-//  user  routes
+//  agent  routes
 // ----------------------------------------
 IndexRoutes.use("/agent", AgentRoutes);
 

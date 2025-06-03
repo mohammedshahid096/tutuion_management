@@ -4,6 +4,6 @@ const {
 } = require("../../Controllers/agents/agent.controller");
 
 const AgentRoutes = express.Router();
-AgentRoutes.route("/chat-agent").get(agentChatController);
+AgentRoutes.route("/chat-agent").post(agentChatController);
 
 module.exports = AgentRoutes;
