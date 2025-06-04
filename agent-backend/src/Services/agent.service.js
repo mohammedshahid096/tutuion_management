@@ -12,10 +12,12 @@ class AgentService {
     maxOutputTokens = 500,
     temperature = 0.7,
     sessionId = null,
+    historyCount = 5,
   } = {}) {
     this.maxOutputTokens = maxOutputTokens;
     this.temperature = temperature;
     this.sessionId = sessionId;
+    this.historyCount = historyCount;
     this.prompt = ChatPromptTemplate.fromMessages([
       [
         "system",
@@ -36,9 +38,13 @@ class AgentService {
   async getMemoryFunction(history = []) {
     try {
       const chatHistory = new ChatMessageHistory();
+      const historyCount = this.historyCount || 6; // Default to last 6 messages
+
+      // Take only the last N messages
+      const recentHistory = history.slice(-historyCount);
 
       // Convert raw history to proper message instances
-      for (const message of history) {
+      for (const message of recentHistory) {
         if (message.role === "user" || message.role === "human") {
           await chatHistory.addMessage(new HumanMessage(message.content));
         } else if (message.role === "ai" || message.role === "assistant") {
