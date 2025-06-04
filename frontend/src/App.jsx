@@ -6,10 +6,11 @@ import MetaData from './utils/MetaData';
 import ChatComponent from './views/features/chats/ChatComponent';
 
 const OtherComponents = () => {
+  const mode = import.meta.env.VITE_DEVELOPMENT_MODE || 'development';
   return (
     <>
       <Toaster />
-      <ChatComponent />
+      {mode === 'development' && <ChatComponent />}
     </>
   );
 };
