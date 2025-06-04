@@ -44,7 +44,10 @@ const agentChatController = async (req, res, next) => {
     res.status(200).json({
       success: true,
       statusCode: 200,
-      data,
+      data: {
+        details: isSessionExist,
+        outputData: data,
+      },
     });
     logger.info("Controller - agent.controller - agentChatController - end");
   } catch (error) {
@@ -66,6 +69,8 @@ const createNewChatSession = async (req, res, next) => {
       user: userId,
       createdBy: userId,
       updatedBy: userId,
+      messages: [],
+      history: [],
     });
     await newSession.save();
 

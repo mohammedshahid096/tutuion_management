@@ -1,48 +1,65 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, memo, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import ChatMessage from './ChatMessage';
 import { X, Send } from 'lucide-react';
+import { submitMessageChatApi } from '@/apis/ai.api';
 
-export default function Chat({ isOpen, onClose }) {
-  const [messages, setMessages] = useState([
-    { id: 1, role: 'ai', content: 'Hello! How can I help you today?' },
-  ]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
   const messagesEndRef = useRef(null);
 
   // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [info?.sessionDetails?.messages]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  const handleMessageChange = useCallback(
+    (e) => {
+      setInfo((prev) => ({
+        ...prev,
+        inputMessage: e.target.value,
+      }));
+    },
+    [info?.inputMessage]
+  );
 
-    // Add user message
-    const userMessage = { id: Date.now(), role: 'user', content: input };
-    setMessages((prev) => [...prev, userMessage]);
-    setInput('');
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!info?.inputMessage?.trim() || info?.messageLoading) return;
+      setInfo((prev) => ({
+        ...prev,
+        messageLoading: true,
+      }));
 
-    // Simulate AI response
-    setIsLoading(true);
-    setTimeout(() => {
-      const aiMessage = {
-        id: Date.now() + 1,
-        role: 'ai',
-        content: `Thanks for your message! This is a simulated response to: "${input}"`,
+      let json = {
+        message: info?.inputMessage,
       };
-      setMessages((prev) => [...prev, aiMessage]);
-      setIsLoading(false);
-    }, 1000);
-  };
+      const response = await submitMessageChatApi(info?.sessionId, json);
+      let stateDetails = null;
+      if (response?.success) {
+        stateDetails = {
+          sessionDetails: response?.data?.details,
+          inputMessage: '',
+          messageLoading: false,
+        };
+      } else {
+        stateDetails = {
+          messageLoading: false,
+        };
+      }
+      setInfo((prev) => ({
+        ...prev,
+        ...stateDetails,
+      }));
+    },
+    [info?.inputMessage, info?.sessionDetails, info?.messageLoading]
+  );
 
   return (
     <div
-      className={`fixed inset-y-0 right-0 w-full sm:w-96 bg-background shadow-xl transform transition-transform duration-300 ease-in-out z-50 h-[88%] rounded-full  ${
+      className={`fixed inset-y-2 right-0 w-full sm:w-96 bg-background shadow-xl transform transition-transform duration-300 ease-in-out z-50 h-[88%] rounded-full  ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
@@ -60,11 +77,11 @@ export default function Chat({ isOpen, onClose }) {
 
         {/* Messages area */}
         <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
-          {messages.map((message) => (
-            <ChatMessage key={message.id} message={message} />
+          {info?.sessionDetails?.messages?.map((message) => (
+            <ChatMessage key={message._id} message={message} />
           ))}
 
-          {isLoading && (
+          {info?.messageLoading && (
             <div className="flex items-center space-x-2 text-muted-foreground">
               <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
                 <X />
@@ -93,13 +110,13 @@ export default function Chat({ isOpen, onClose }) {
         <CardFooter className="p-4 border-t bg-secondary text-secondary-foreground">
           <form onSubmit={handleSubmit} className="flex justify-between  w-full space-x-2">
             <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
+              value={info?.inputMessage || ''}
+              onChange={handleMessageChange}
               placeholder="Type your message..."
-              disabled={isLoading}
+              disabled={info?.messageLoading}
               className="flex-1"
             />
-            <Button type="submit" disabled={isLoading || !input.trim()}>
+            <Button type="submit" disabled={info?.messageLoading}>
               <Send />
               Send
             </Button>
@@ -108,4 +125,6 @@ export default function Chat({ isOpen, onClose }) {
       </Card>
     </div>
   );
-}
+};
+
+export default memo(ChatModel);

@@ -1,6 +1,7 @@
-export default function ChatMessage({ message }) {
-  const isAi = message.role === 'ai';
+import { memo } from 'react';
 
+const ChatMessage = ({ message }) => {
+  const isAi = message?.role === 'ai';
   return (
     <div className={`flex ${isAi ? 'justify-start' : 'justify-end'}`}>
       <div
@@ -10,8 +11,9 @@ export default function ChatMessage({ message }) {
             : 'bg-primary text-primary-foreground rounded-tr-none'
         }`}
       >
-        <p className=" text-sm">{message.content}</p>
+        <p className=" text-sm">{message?.content}</p>
       </div>
     </div>
   );
-}
+};
+export default memo(ChatMessage);
