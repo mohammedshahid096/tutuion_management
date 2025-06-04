@@ -2,14 +2,38 @@ const logger = require("../../Config/logger.config");
 const errorHandling = require("../../Utils/errorHandling");
 const AgentService = require("../../Services/agent.service");
 const agentChatModel = require("../../Schema/agent-chat/agentChat.model");
+const httpError = require("http-errors");
 
 const agentChatController = async (req, res, next) => {
   try {
     logger.info("Controller - agent.controller - agentChatController - start");
 
+    const { sessionId } = req.params;
+    let isSessionExist = await agentChatModel.findById(sessionId);
+
+    if (!isSessionExist) {
+      return next(httpError(404, "Session not found"));
+    }
+    const userTimestamp = new Date();
+
     const { message } = req.body;
     const agentService = new AgentService();
     const data = await agentService.processRequest(message);
+
+    isSessionExist.messages.push(
+      {
+        content: data?.input || "",
+        role: "user",
+        timestamp: userTimestamp,
+      },
+      {
+        content: data?.output || "",
+        role: "ai",
+        timestamp: new Date(),
+      }
+    );
+
+    await isSessionExist.save();
 
     res.status(200).json({
       success: true,

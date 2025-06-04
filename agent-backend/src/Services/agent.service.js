@@ -9,7 +9,10 @@ class AgentService {
     this.maxOutputTokens = maxOutputTokens;
     this.temperature = temperature;
     this.prompt = ChatPromptTemplate.fromMessages([
-      ["system", "You are a helpful assistant."],
+      [
+        "system",
+        "You are a helpful assistant. Use tools when appropriate. Ask questions to get any missing required information.",
+      ],
       // ["placeholder", "{history}"],
       ["human", "{input}"],
       ["placeholder", "{agent_scratchpad}"],
@@ -22,7 +25,7 @@ class AgentService {
     });
   }
 
-  async processRequest(input = "") {
+  async processRequest(input = "", history) {
     try {
       logger.info("Service - agent.service - processRequest - Start", input);
       const agent_tools = [getStudentInfoTool];
