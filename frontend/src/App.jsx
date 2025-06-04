@@ -3,11 +3,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import allRoutesMapper from './routes';
 import { Toaster } from 'react-hot-toast';
 import MetaData from './utils/MetaData';
+import ChatComponent from './views/features/chats/ChatComponent';
 
 const OtherComponents = () => {
   return (
     <>
       <Toaster />
+      <ChatComponent />
     </>
   );
 };
