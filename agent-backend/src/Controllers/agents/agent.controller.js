@@ -85,4 +85,35 @@ const createNewChatSession = async (req, res, next) => {
     errorHandling.handleCustomErrorService(error, next);
   }
 };
-module.exports = { agentChatController, createNewChatSession };
+
+const getSessionDetails = async (req, res, next) => {
+  try {
+    logger.info("Controller - agent.controller - getSessionDetails - start");
+
+    const { sessionId } = req.params;
+    const sessionData = await agentChatModel.findById(sessionId);
+
+    if (!sessionData) {
+      return next(httpError(404, "Session not found"));
+    }
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      data: sessionData,
+    });
+
+    logger.info("Controller - agent.controller - getSessionDetails - end");
+  } catch (error) {
+    logger.error(
+      "Controller - agent.controller - getSessionDetails - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+module.exports = {
+  agentChatController,
+  createNewChatSession,
+  getSessionDetails,
+};
