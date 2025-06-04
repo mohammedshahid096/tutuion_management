@@ -16,7 +16,7 @@ const agentChatController = async (req, res, next) => {
     }
     const userTimestamp = new Date();
 
-    const { message, historyCount = 6 } = req.body;
+    const { message, historyCount = 2 } = req.body;
 
     const agentService = new AgentService({ sessionId, historyCount });
     const data = await agentService.processRequest(message, isSessionExist);

@@ -6,13 +6,14 @@ const { RunnableWithMessageHistory } = require("@langchain/core/runnables");
 const { HumanMessage, AIMessage } = require("@langchain/core/messages");
 const { getStudentInfoTool } = require("../tools/getStudentInfo.tool");
 const logger = require("../Config/logger.config");
+const { getEducationalBoardsTool } = require("../tools/getBoards.tool");
 
 class AgentService {
   constructor({
     maxOutputTokens = 500,
     temperature = 0.7,
     sessionId = null,
-    historyCount = 5,
+    historyCount = 6,
   } = {}) {
     this.maxOutputTokens = maxOutputTokens;
     this.temperature = temperature;
@@ -62,7 +63,7 @@ class AgentService {
   async processRequest(input = "", sessionData = {}) {
     try {
       logger.info("Service - agent.service - processRequest - Start", input);
-      const agent_tools = [getStudentInfoTool];
+      const agent_tools = [getStudentInfoTool, getEducationalBoardsTool];
 
       const agent = createToolCallingAgent({
         llm: this.googleModel,
