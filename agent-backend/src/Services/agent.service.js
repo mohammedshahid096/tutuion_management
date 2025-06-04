@@ -21,7 +21,7 @@ class AgentService {
     this.prompt = ChatPromptTemplate.fromMessages([
       [
         "system",
-        "You are a helpful assistant. Use tools when appropriate. Ask questions to get any missing required information.",
+        "You are a helpful assistant, Name is EduExcellence Agent. Use tools when appropriate. Ask questions to get any missing required information.",
       ],
       ["placeholder", "{history}"],
       ["human", "{input}"],

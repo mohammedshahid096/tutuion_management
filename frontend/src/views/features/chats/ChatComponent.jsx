@@ -16,7 +16,7 @@ const ChatComponent = () => {
 
   useEffect(() => {
     if (!info?.sessionId && info?.isChatOpen) {
-      fetchSessionDetails('68408fd645206376b82bde6b' || '68402819b144289ea3471056');
+      fetchSessionDetails('684092e43342a365441537a2' || '68402819b144289ea3471056');
     }
   }, [info?.sessionId, info?.isChatOpen]);
 
