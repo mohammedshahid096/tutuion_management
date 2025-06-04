@@ -6,10 +6,9 @@ const agentChatController = async (req, res, next) => {
   try {
     logger.info("Controller - agent.controller - agentChatController - start");
 
+    const { message } = req.body;
     const agentService = new AgentService();
-    const data = await agentService.processRequest(
-      "i want the student details of this email test1@gmail.com"
-    );
+    const data = await agentService.processRequest(message);
 
     res.status(200).json({
       success: true,

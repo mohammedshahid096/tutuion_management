@@ -24,7 +24,7 @@ class AgentService {
 
   async processRequest(input = "") {
     try {
-      logger.info("Service - agent.service - processRequest - Start");
+      logger.info("Service - agent.service - processRequest - Start", input);
       const agent_tools = [getStudentInfoTool];
 
       const agent = createToolCallingAgent({
