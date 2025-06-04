@@ -27,8 +27,10 @@ const ModelSchema = new mongoose.Schema(
           default: Date.now,
         },
         metadata: mongoose.Schema.Types.Mixed,
+        // history: mongoose.Schema.Types.Mixed,
       },
     ],
+    history: mongoose.Schema.Types.Mixed,
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: user,

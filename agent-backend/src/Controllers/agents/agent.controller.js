@@ -17,8 +17,8 @@ const agentChatController = async (req, res, next) => {
     const userTimestamp = new Date();
 
     const { message } = req.body;
-    const agentService = new AgentService();
-    const data = await agentService.processRequest(message);
+    const agentService = new AgentService({ sessionId });
+    const data = await agentService.processRequest(message, isSessionExist);
 
     isSessionExist.messages.push(
       {
@@ -32,6 +32,7 @@ const agentChatController = async (req, res, next) => {
         timestamp: new Date(),
       }
     );
+    isSessionExist.history = data?.history || [];
 
     await isSessionExist.save();
 
