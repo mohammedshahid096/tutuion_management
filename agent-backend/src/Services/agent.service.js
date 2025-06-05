@@ -7,6 +7,7 @@ const { HumanMessage, AIMessage } = require("@langchain/core/messages");
 const { getStudentInfoTool } = require("../tools/getStudentInfo.tool");
 const logger = require("../Config/logger.config");
 const { getEducationalBoardsTool } = require("../tools/getBoards.tool");
+const { updateStudentInfoTool } = require("../tools/updateStudentInfo.tool");
 
 class AgentService {
   constructor({
@@ -63,7 +64,8 @@ class AgentService {
   async processRequest(input = "", sessionData = {}) {
     try {
       logger.info("Service - agent.service - processRequest - Start", input);
-      const agent_tools = [getStudentInfoTool, getEducationalBoardsTool];
+      // const agent_tools = [getStudentInfoTool, getEducationalBoardsTool,updateStudentInfoTool];
+      const agent_tools = [updateStudentInfoTool];
 
       const agent = createToolCallingAgent({
         llm: this.googleModel,
