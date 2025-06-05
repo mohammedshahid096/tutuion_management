@@ -5,6 +5,10 @@ const actionHandlers = {
     ...state,
     isChatModalOpen: action.payload,
   }),
+  FETCH_SESSION_DETAILS: (state, action) => ({
+    ...state,
+    sessionDetails: action.payload,
+  }),
   RESET_STATE: () => ({ ...initialState }),
 };
 const Reducer = (state, action) => {

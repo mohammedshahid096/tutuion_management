@@ -2,19 +2,17 @@ import { useCallback, useState, memo, useEffect, useContext } from 'react';
 import { Button } from '@/components/ui/button';
 import ChatModel from './ChatModel';
 import { MessageSquareMore } from 'lucide-react';
-import { getSessionDetailsApi } from '@/apis/ai.api';
 import Context from '@/context/context';
 
 const ChatComponent = () => {
   // * contexts
   const {
-    chatAgentState: { isChatModalOpen, chatModalAction },
+    chatAgentState: { isChatModalOpen, sessionDetails, chatModalAction, fetchSessionDetailsAction },
   } = useContext(Context);
 
   // * states
   const [info, setInfo] = useState({
     sessionId: null,
-    sessionDetails: null,
     loading: false,
     isChatOpen: false,
     inputMessage: '',
@@ -37,10 +35,9 @@ const ChatComponent = () => {
 
       let details = {};
 
-      const response = await getSessionDetailsApi(sessionId);
+      const response = await fetchSessionDetailsAction(sessionId);
       if (response?.success) {
         details = {
-          sessionDetails: response?.data,
           loading: false,
           sessionId: response?.data?._id || sessionId,
         };
@@ -54,7 +51,7 @@ const ChatComponent = () => {
         ...details,
       }));
     },
-    [info?.sessionId, info?.loading, info?.sessionDetails]
+    [info?.sessionId, info?.loading, sessionDetails]
   );
 
   return (

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, memo, useCallback } from 'react';
+import { useState, useRef, useEffect, memo, useCallback, useContext } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
@@ -6,14 +6,18 @@ import ChatMessage from './ChatMessage';
 import { X, Send } from 'lucide-react';
 import { submitMessageChatApi } from '@/apis/ai.api';
 import { speakTextFunction } from '@/helpers/speach';
+import Context from '@/context/context';
 
 const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
+  const {
+    chatAgentState: { sessionDetails },
+  } = useContext(Context);
   const messagesEndRef = useRef(null);
 
   // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [info?.sessionDetails?.messages]);
+  }, [sessionDetails?.messages]);
 
   const handleMessageChange = useCallback(
     (e) => {
@@ -59,7 +63,7 @@ const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
         ...stateDetails,
       }));
     },
-    [info?.inputMessage, info?.sessionDetails, info?.messageLoading]
+    [info?.inputMessage, sessionDetails, info?.messageLoading]
   );
 
   return (
@@ -82,7 +86,7 @@ const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
 
         {/* Messages area */}
         <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
-          {info?.sessionDetails?.messages?.map((message) => (
+          {sessionDetails?.messages?.map((message) => (
             <ChatMessage key={message._id} message={message} />
           ))}
 
