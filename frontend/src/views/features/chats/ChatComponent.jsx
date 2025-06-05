@@ -1,10 +1,17 @@
-import { useCallback, useState, memo, useEffect } from 'react';
+import { useCallback, useState, memo, useEffect, useContext } from 'react';
 import { Button } from '@/components/ui/button';
 import ChatModel from './ChatModel';
 import { MessageSquareMore } from 'lucide-react';
 import { getSessionDetailsApi } from '@/apis/ai.api';
+import Context from '@/context/context';
 
 const ChatComponent = () => {
+  // * contexts
+  const {
+    chatAgentState: { isChatModalOpen, chatModalAction },
+  } = useContext(Context);
+
+  // * states
   const [info, setInfo] = useState({
     sessionId: null,
     sessionDetails: null,
@@ -15,10 +22,10 @@ const ChatComponent = () => {
   });
 
   useEffect(() => {
-    if (!info?.sessionId && info?.isChatOpen) {
+    if (!info?.sessionId && isChatModalOpen) {
       fetchSessionDetails('684092e43342a365441537a2' || '68402819b144289ea3471056');
     }
-  }, [info?.sessionId, info?.isChatOpen]);
+  }, [info?.sessionId, isChatModalOpen]);
 
   const fetchSessionDetails = useCallback(
     async (sessionId) => {
@@ -50,20 +57,10 @@ const ChatComponent = () => {
     [info?.sessionId, info?.loading, info?.sessionDetails]
   );
 
-  const chatModelFunction = useCallback(
-    (value) => {
-      setInfo((prev) => ({
-        ...prev,
-        isChatOpen: value,
-      }));
-    },
-    [info?.isChatOpen]
-  );
-
   return (
     <div>
       <Button
-        onClick={() => chatModelFunction(true)}
+        onClick={() => chatModalAction(true)}
         className="fixed bottom-6 right-6 rounded-full shadow-lg z-10"
         size="lg"
       >
@@ -73,8 +70,8 @@ const ChatComponent = () => {
 
       {/* Chat component */}
       <ChatModel
-        isOpen={info?.isChatOpen || false}
-        onClose={() => chatModelFunction(false)}
+        isOpen={isChatModalOpen || false}
+        onClose={() => chatModalAction(false)}
         info={info}
         setInfo={setInfo}
       />

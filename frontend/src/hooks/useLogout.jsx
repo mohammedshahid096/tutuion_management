@@ -1,5 +1,5 @@
+import { use, useCallback, useContext } from 'react';
 import { clearAll } from '@/helpers/local-storage';
-import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {
@@ -12,10 +12,14 @@ import {
   graphActions,
   myDetailsActions,
 } from '@/redux/combineActions';
+import Context from '@/context/context';
 
 const useLogout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {
+    chatAgentState: { resetChatAgentAction },
+  } = useContext(Context);
 
   const resetApplications = useCallback(async () => {
     //add here all reset context state func
@@ -28,8 +32,9 @@ const useLogout = () => {
     dispatch(studentActions.resetStudentAction());
     dispatch(graphActions.resetGraphAction());
     dispatch(myDetailsActions.resetMyDetailsAction());
-    navigate('/');
+    resetChatAgentAction();
     clearAll();
+    navigate('/');
   }, []);
 
   return resetApplications;
