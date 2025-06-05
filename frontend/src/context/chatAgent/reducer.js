@@ -9,6 +9,10 @@ const actionHandlers = {
     ...state,
     sessionDetails: action.payload,
   }),
+  UPDATE_CHAT_AGENT_STATE: (state, action) => ({
+    ...state,
+    ...action.payload,
+  }),
   RESET_STATE: () => ({ ...initialState }),
 };
 const Reducer = (state, action) => {

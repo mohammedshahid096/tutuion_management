@@ -7,10 +7,11 @@ import { X, Send } from 'lucide-react';
 import { submitMessageChatApi } from '@/apis/ai.api';
 import { speakTextFunction } from '@/helpers/speach';
 import Context from '@/context/context';
+import { update } from 'lodash';
 
 const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
   const {
-    chatAgentState: { sessionDetails },
+    chatAgentState: { sessionDetails, updateChatAgentStateAction },
   } = useContext(Context);
   const messagesEndRef = useRef(null);
 
@@ -45,12 +46,14 @@ const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
       let stateDetails = null;
       if (response?.success) {
         stateDetails = {
-          sessionDetails: response?.data?.details,
           inputMessage: '',
           messageLoading: false,
         };
 
-        console.log(response?.data, 'shahid');
+        updateChatAgentStateAction({
+          sessionDetails: response?.data?.details,
+        });
+
         let message = response?.data?.outputData?.output || '';
         speakTextFunction(message);
       } else {

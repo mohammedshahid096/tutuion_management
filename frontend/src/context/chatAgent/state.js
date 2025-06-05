@@ -28,6 +28,10 @@ export const ChatAgentState = () => {
     return response;
   };
 
+  const updateChatAgentStateAction = (payload) => {
+    dispatch({ type: Actions.UPDATE_CHAT_AGENT_STATE, payload });
+  };
+
   const resetChatAgentAction = () => {
     dispatch({ type: Actions.RESET_STATE });
   };
@@ -36,6 +40,7 @@ export const ChatAgentState = () => {
     ...state,
     chatModalAction,
     fetchSessionDetailsAction,
+    updateChatAgentStateAction,
     resetChatAgentAction,
   };
 };
