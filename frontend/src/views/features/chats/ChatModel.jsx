@@ -5,6 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import ChatMessage from './ChatMessage';
 import { X, Send } from 'lucide-react';
 import { submitMessageChatApi } from '@/apis/ai.api';
+import { speakTextFunction } from '@/helpers/speach';
 
 const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
   const messagesEndRef = useRef(null);
@@ -44,6 +45,10 @@ const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
           inputMessage: '',
           messageLoading: false,
         };
+
+        console.log(response?.data, 'shahid');
+        let message = response?.data?.outputData?.output || '';
+        speakTextFunction(message);
       } else {
         stateDetails = {
           messageLoading: false,

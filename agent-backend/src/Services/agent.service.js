@@ -64,8 +64,12 @@ class AgentService {
   async processRequest(input = "", sessionData = {}) {
     try {
       logger.info("Service - agent.service - processRequest - Start", input);
-      // const agent_tools = [getStudentInfoTool, getEducationalBoardsTool,updateStudentInfoTool];
-      const agent_tools = [updateStudentInfoTool];
+      const agent_tools = [
+        getStudentInfoTool,
+        getEducationalBoardsTool,
+        updateStudentInfoTool,
+      ];
+      // const agent_tools = [getEducationalBoardsTool];
 
       const agent = createToolCallingAgent({
         llm: this.googleModel,
