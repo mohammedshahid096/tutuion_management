@@ -12,7 +12,14 @@ const createNewChatSessionValidation = celebrate({
   }),
 });
 
+const publicHomeAiAgentValidation = celebrate({
+  body: Joi.object({
+    userPrompt: Joi.string().trim().required().label("user prompt"),
+  }),
+});
+
 module.exports = {
   textBuilderAiPromptValidation,
   createNewChatSessionValidation,
+  publicHomeAiAgentValidation,
 };
