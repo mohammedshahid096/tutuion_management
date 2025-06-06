@@ -6,7 +6,11 @@ const ModelSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: user,
-      required: true,
+      default: null,
+    },
+    isPublic: {
+      type: Boolean,
+      default: false,
     },
     date: {
       type: Date,
@@ -34,12 +38,12 @@ const ModelSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: user,
-      required: true,
+      default: null,
     },
     updatedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: user,
-      required: true,
+      default: null,
     },
   },
   { timestamps: true }

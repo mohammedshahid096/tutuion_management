@@ -6,6 +6,13 @@ const textBuilderAiPromptValidation = celebrate({
   }),
 });
 
+const createNewChatSessionValidation = celebrate({
+  body: Joi.object({
+    userId: Joi.string().optional().allow(null).default(null).label("user ID"),
+  }),
+});
+
 module.exports = {
   textBuilderAiPromptValidation,
+  createNewChatSessionValidation,
 };

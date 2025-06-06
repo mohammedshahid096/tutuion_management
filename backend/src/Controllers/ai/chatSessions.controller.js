@@ -34,10 +34,11 @@ const createNewChatSessionController = async (req, res, next) => {
   try {
     logger.info("Controller - ai.controller - createNewChatSession - start");
 
-    const userId = req?.user?._id || "";
+    const userId = req?.body?.userId || null;
 
     const newSession = new agentChatModel({
       user: userId,
+      isPublic: userId ? false : true,
       createdBy: userId,
       updatedBy: userId,
       messages: [],

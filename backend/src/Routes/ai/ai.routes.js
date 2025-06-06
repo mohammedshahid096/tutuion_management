@@ -9,6 +9,7 @@ const {
 } = require("../../Controllers/ai/builderAi.controller");
 const {
   textBuilderAiPromptValidation,
+  createNewChatSessionValidation,
 } = require("../../validators/ai/ai.validation");
 const {
   publicHomeAiAgentController,
@@ -29,7 +30,10 @@ AiRoutes.route("/builder/text").post(
 
 AiRoutes.route("/public/agent").post(publicHomeAiAgentController);
 
-AiRoutes.route("/chat-agent/new-session").get(createNewChatSessionController);
+AiRoutes.route("/chat-agent/new-session").get(
+  createNewChatSessionValidation,
+  createNewChatSessionController
+);
 
 AiRoutes.route("/session-details/:sessionId").get(getSessionDetailsController);
 
