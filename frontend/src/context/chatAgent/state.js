@@ -2,6 +2,7 @@ import { useReducer } from 'react';
 import { Actions } from './action';
 import Reducer from './reducer';
 import { getSessionDetailsApi } from '@/apis/ai.api';
+import { removeChatSessionId } from '@/helpers/session-storage';
 
 export const initialState = {
   isChatModalOpen: false,
@@ -14,6 +15,13 @@ export const ChatAgentState = () => {
 
   const chatModalAction = (isOpen) => {
     dispatch({ type: Actions.CHAT_MODEL, payload: isOpen });
+  };
+
+  const setSessionIdAction = (sessionId = null) => {
+    if (sessionId === null) {
+      removeChatSessionId();
+    }
+    dispatch({ type: Actions.SET_SESSION_ID, payload: sessionId });
   };
 
   const fetchSessionDetailsAction = async (sessionId) => {
@@ -39,6 +47,7 @@ export const ChatAgentState = () => {
   return {
     ...state,
     chatModalAction,
+    setSessionIdAction,
     fetchSessionDetailsAction,
     updateChatAgentStateAction,
     resetChatAgentAction,

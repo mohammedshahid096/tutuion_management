@@ -5,6 +5,10 @@ const actionHandlers = {
     ...state,
     isChatModalOpen: action.payload,
   }),
+  SET_SESSION_ID: (state, action) => ({
+    ...state,
+    sessionId: action.payload,
+  }),
   FETCH_SESSION_DETAILS: (state, action) => ({
     ...state,
     sessionDetails: action.payload,

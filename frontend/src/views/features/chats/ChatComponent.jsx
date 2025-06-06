@@ -3,16 +3,23 @@ import { Button } from '@/components/ui/button';
 import ChatModel from './ChatModel';
 import { MessageSquareMore } from 'lucide-react';
 import Context from '@/context/context';
+import { getChatSessionId, setChatSessionId } from '@/helpers/session-storage';
 
 const ChatComponent = () => {
   // * contexts
   const {
-    chatAgentState: { isChatModalOpen, sessionDetails, chatModalAction, fetchSessionDetailsAction },
+    chatAgentState: {
+      isChatModalOpen,
+      sessionDetails,
+      sessionId,
+      chatModalAction,
+      setSessionIdAction,
+      fetchSessionDetailsAction,
+    },
   } = useContext(Context);
 
   // * states
   const [info, setInfo] = useState({
-    sessionId: null,
     loading: false,
     isChatOpen: false,
     inputMessage: '',
@@ -20,10 +27,21 @@ const ChatComponent = () => {
   });
 
   useEffect(() => {
-    if (!info?.sessionId && isChatModalOpen) {
-      fetchSessionDetails('684092e43342a365441537a2' || '68402819b144289ea3471056');
+    setSessionIdFromSessionStorageFunction();
+  }, []);
+
+  useEffect(() => {
+    if (sessionId && !sessionDetails) {
+      fetchSessionDetails(sessionId || '68402819b144289ea3471056');
     }
-  }, [info?.sessionId, isChatModalOpen]);
+  }, [sessionId]);
+
+  const setSessionIdFromSessionStorageFunction = useCallback(() => {
+    let sessionStorageId = getChatSessionId();
+    if (sessionStorageId) {
+      setSessionIdAction(sessionStorageId);
+    }
+  }, [sessionId]);
 
   const fetchSessionDetails = useCallback(
     async (sessionId) => {
@@ -33,25 +51,20 @@ const ChatComponent = () => {
         loading: true,
       }));
 
-      let details = {};
+      let details = {
+        loading: false,
+      };
 
       const response = await fetchSessionDetailsAction(sessionId);
-      if (response[0]) {
-        details = {
-          loading: false,
-          sessionId: response[1]?.data?._id || sessionId,
-        };
-      } else {
-        details = {
-          loading: false,
-        };
+      if (response[2] !== 200) {
+        setSessionIdAction(null);
       }
       setInfo((prev) => ({
         ...prev,
         ...details,
       }));
     },
-    [info?.sessionId, info?.loading, sessionDetails]
+    [sessionId, info?.loading, sessionDetails]
   );
 
   return (

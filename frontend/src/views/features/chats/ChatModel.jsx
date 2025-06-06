@@ -2,12 +2,12 @@ import { useState, useRef, useEffect, memo, useCallback, useContext } from 'reac
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import ChatMessage from './ChatMessage';
+import { Skeleton } from '@/components/ui/skeleton';
+import ChatMessage, { ChatMessageLoading, ChatMessageSkeleton } from './ChatMessage';
 import { X, Send } from 'lucide-react';
 import { submitMessageChatApi } from '@/apis/ai.api';
 import { speakTextFunction } from '@/helpers/speach';
 import Context from '@/context/context';
-import { update } from 'lodash';
 
 const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
   const {
@@ -89,51 +89,50 @@ const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
 
         {/* Messages area */}
         <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
-          {sessionDetails?.messages?.map((message) => (
-            <ChatMessage key={message._id} message={message} />
-          ))}
+          {info?.loading ? (
+            [false, true, false, true]?.map((item) => <ChatMessageSkeleton isAi={item} />)
+          ) : (
+            <>
+              {sessionDetails?.messages?.map((message) => (
+                <ChatMessage key={message._id} message={message} />
+              ))}
 
-          {info?.messageLoading && (
-            <div className="flex items-center space-x-2 text-muted-foreground">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                <X />
-              </div>
-              <div className="flex space-x-1">
-                <div
-                  className="w-2 h-2 rounded-full bg-primary animate-bounce"
-                  style={{ animationDelay: '0ms' }}
-                ></div>
-                <div
-                  className="w-2 h-2 rounded-full bg-primary animate-bounce"
-                  style={{ animationDelay: '150ms' }}
-                ></div>
-                <div
-                  className="w-2 h-2 rounded-full bg-primary animate-bounce"
-                  style={{ animationDelay: '300ms' }}
-                ></div>
-              </div>
-            </div>
+              {info?.messageLoading && <ChatMessageLoading />}
+
+              <div ref={messagesEndRef} />
+            </>
           )}
-
-          <div ref={messagesEndRef} />
         </CardContent>
 
         {/* Input area */}
-        <CardFooter className="p-4 border-t bg-secondary text-secondary-foreground">
-          <form onSubmit={handleSubmit} className="flex justify-between  w-full space-x-2">
-            <Input
-              value={info?.inputMessage || ''}
-              onChange={handleMessageChange}
-              placeholder="Type your message..."
-              disabled={info?.messageLoading}
-              className="flex-1"
-            />
-            <Button type="submit" disabled={info?.messageLoading}>
-              <Send />
-              Send
-            </Button>
-          </form>
-        </CardFooter>
+
+        {info?.loading ? (
+          <CardFooter className="p-4 border-t bg-secondary text-secondary-foreground">
+            <div className="flex justify-between w-full space-x-2">
+              {/* Input Skeleton */}
+              <Skeleton className="flex-1 h-10 rounded-md" />
+
+              {/* Button Skeleton */}
+              <Skeleton className="h-10 w-20 rounded-md" />
+            </div>
+          </CardFooter>
+        ) : (
+          <CardFooter className="p-4 border-t bg-secondary text-secondary-foreground">
+            <form onSubmit={handleSubmit} className="flex justify-between  w-full space-x-2">
+              <Input
+                value={info?.inputMessage || ''}
+                onChange={handleMessageChange}
+                placeholder="Type your message..."
+                disabled={info?.messageLoading}
+                className="flex-1"
+              />
+              <Button type="submit" disabled={info?.messageLoading}>
+                <Send />
+                Send
+              </Button>
+            </form>
+          </CardFooter>
+        )}
       </Card>
     </div>
   );
