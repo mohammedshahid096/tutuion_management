@@ -34,7 +34,7 @@ AiRoutes.route("/:sessionId/public-chat-agent").post(
   publicHomeAiAgentController
 );
 
-AiRoutes.route("/chat-agent/new-session").get(
+AiRoutes.route("/chat-agent/new-session").post(
   createNewChatSessionValidation,
   createNewChatSessionController
 );

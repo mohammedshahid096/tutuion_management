@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/button';
 import ChatModel from './ChatModel';
 import { MessageSquareMore } from 'lucide-react';
 import Context from '@/context/context';
-import { getChatSessionId, setChatSessionId } from '@/helpers/session-storage';
+import { getChatSessionId } from '@/helpers/session-storage';
+import { createChatSessionApi } from '@/apis/ai.api';
 
 const ChatComponent = () => {
   // * contexts
@@ -15,6 +16,7 @@ const ChatComponent = () => {
       chatModalAction,
       setSessionIdAction,
       fetchSessionDetailsAction,
+      updateChatAgentStateAction,
     },
   } = useContext(Context);
 
@@ -29,6 +31,12 @@ const ChatComponent = () => {
   useEffect(() => {
     setSessionIdFromSessionStorageFunction();
   }, []);
+
+  useEffect(() => {
+    if (!sessionId && !sessionDetails && isChatModalOpen) {
+      createNewChatSessionHandler();
+    }
+  }, [isChatModalOpen]);
 
   useEffect(() => {
     if (sessionId && !sessionDetails) {
@@ -66,6 +74,35 @@ const ChatComponent = () => {
     },
     [sessionId, info?.loading, sessionDetails]
   );
+
+  const createNewChatSessionHandler = useCallback(async () => {
+    if (info?.loading || sessionDetails || sessionId) return;
+
+    setInfo((prev) => ({
+      ...prev,
+      loading: true,
+    }));
+
+    const json = {
+      userId: null,
+    };
+
+    const response = await createChatSessionApi(json);
+    if (response[2] === 201) {
+      const sessionId = response[1]?.sessionId;
+      setSessionIdAction(sessionId);
+      updateChatAgentStateAction({
+        sessionDetails: response[1]?.data,
+      });
+    } else {
+      console.error('Failed to create new chat session:', response[1]);
+    }
+
+    setInfo((prev) => ({
+      ...prev,
+      loading: false,
+    }));
+  }, [isChatModalOpen, sessionId, info?.loading]);
 
   return (
     <div>

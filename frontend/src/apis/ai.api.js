@@ -14,6 +14,11 @@ export const getSessionDetailsApi = async (sessionId) => {
   return response;
 };
 
+export const createChatSessionApi = async (json) => {
+  const response = await Service.fetchPost('/ai/chat-agent/new-session', json);
+  return response;
+};
+
 export const submitMessageChatApi = async (sessionId, json) => {
   try {
     const token = getAccessToken();
