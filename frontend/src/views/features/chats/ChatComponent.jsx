@@ -36,10 +36,10 @@ const ChatComponent = () => {
       let details = {};
 
       const response = await fetchSessionDetailsAction(sessionId);
-      if (response?.success) {
+      if (response[0]) {
         details = {
           loading: false,
-          sessionId: response?.data?._id || sessionId,
+          sessionId: response[1]?.data?._id || sessionId,
         };
       } else {
         details = {

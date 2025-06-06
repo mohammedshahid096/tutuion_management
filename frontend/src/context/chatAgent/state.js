@@ -18,10 +18,10 @@ export const ChatAgentState = () => {
 
   const fetchSessionDetailsAction = async (sessionId) => {
     let response = await getSessionDetailsApi(sessionId);
-    if (response?.success === true) {
+    if (response[0] === true) {
       dispatch({
         type: Actions.FETCH_SESSION_DETAILS,
-        payload: response?.data,
+        payload: response[1]?.data,
       });
     }
 

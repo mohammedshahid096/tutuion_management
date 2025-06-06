@@ -9,24 +9,9 @@ export const submitBuilderTextPromptApi = async (json) => {
 };
 
 export const getSessionDetailsApi = async (sessionId) => {
-  try {
-    const token = getAccessToken();
-    const url = `http://localhost:8002/api/v1/agent/session-details/${sessionId}`;
-    const { data } = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return data;
-  } catch (error) {
-    console.log('shahid', error);
-    return (
-      error.response?.data || {
-        success: false,
-        message: 'Failed to fetch session details',
-      }
-    );
-  }
+  const token = getAccessToken();
+  const response = await Service.fetchGet(`/ai/session-details/${sessionId}`, token);
+  return response;
 };
 
 export const submitMessageChatApi = async (sessionId, json) => {
