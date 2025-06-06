@@ -3,6 +3,9 @@ const logger = require("../../Config/logger.config");
 const errorHandling = require("../../Utils/errorHandling");
 const axios = require("axios");
 const { OPEN_ROUTER_API_KEY } = require("../../Config/index.config");
+const {
+  getSessionDetails,
+} = require("../../../../agent-backend/src/Controllers/agents/agent.controller");
 
 const publicHomeAiAgentController = async (req, res, next) => {
   try {
@@ -10,6 +13,12 @@ const publicHomeAiAgentController = async (req, res, next) => {
 
     const { userPrompt } = req.body;
     const { sessionId } = req.params;
+    let isSessionExist = await agentChatModel.findById(sessionId);
+
+    if (!isSessionExist) {
+      return next(httpErrors(404, "Session not found"));
+    }
+    const userTimestamp = new Date();
 
     const finalPrompt = `
       You are an AI teaching assistant for EduExcellence Tutorial, an educational platform dedicated to 
@@ -55,18 +64,43 @@ const publicHomeAiAgentController = async (req, res, next) => {
           ],
         },
       ],
-      temperature: 0.7, // Slightly creative but mostly factual
-      max_tokens: 1000, // Limit response length
+      temperature: 0.7,
+      max_tokens: 1000,
     };
 
     const { data } = await axios.post(url, json, config);
 
     const generatedText = data.choices[0].message.content;
 
+    isSessionExist.messages.push(
+      {
+        content: userPrompt,
+        role: "user",
+        timestamp: userTimestamp,
+      },
+      {
+        content: generatedText,
+        role: "ai",
+        timestamp: new Date(),
+      }
+    );
+
+    await isSessionExist.save();
+    logger.info(
+      "Controller - ai.controller - publicAiAgentController - Session updated successfully"
+    );
+
     res.status(200).json({
       success: true,
       statusCode: 200,
-      data: { generatedText },
+      message: "AI response generated successfully",
+      data: {
+        details: isSessionExist,
+        outputData: {
+          input: userPrompt,
+          output: generatedText,
+        },
+      },
     });
     logger.info("Controller - ai.controller - publicAiAgentController - End");
   } catch (error) {
