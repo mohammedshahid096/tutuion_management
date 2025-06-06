@@ -1,5 +1,6 @@
 const { ChatPromptTemplate } = require("@langchain/core/prompts");
 const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
+const { ChatOpenAI } = require("@langchain/openai");
 const { AgentExecutor, createToolCallingAgent } = require("langchain/agents");
 const { ChatMessageHistory } = require("langchain/memory");
 const { RunnableWithMessageHistory } = require("@langchain/core/runnables");
@@ -8,6 +9,7 @@ const { getStudentInfoTool } = require("../tools/getStudentInfo.tool");
 const logger = require("../Config/logger.config");
 const { getEducationalBoardsTool } = require("../tools/getBoards.tool");
 const { updateStudentInfoTool } = require("../tools/updateStudentInfo.tool");
+const { OPENAI_API_KEY } = require("../Config/index.config");
 
 class AgentService {
   constructor({
@@ -107,6 +109,29 @@ class AgentService {
       logger.info("Service - agent.service - processRequest - Error", error);
       throw error;
     }
+  }
+
+  async publicAgentRequest(input = "") {
+    const chat = new ChatOpenAI(
+      {
+        modelName: "deepseek/deepseek-chat-v3-0324:free",
+        temperature: 0.7,
+        openAIApiKey: OPENAI_API_KEY,
+      },
+      {
+        basePath: "https://openrouter.ai/api/v1",
+        baseUrl: "https://openrouter.ai/api/v1",
+        baseOptions: {
+          headers: {
+            "HTTP-Referer": "https://www.eduexcellencetutorial.com",
+            "X-Title": "eduExcellence Public Agent",
+          },
+        },
+      }
+    );
+
+    const response = await chat.invoke(input);
+    return response;
   }
 }
 

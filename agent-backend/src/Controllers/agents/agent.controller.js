@@ -117,8 +117,69 @@ const getSessionDetails = async (req, res, next) => {
     errorHandling.handleCustomErrorService(error, next);
   }
 };
+
+const publicChatAgentController = async (req, res, next) => {
+  try {
+    logger.info(
+      "Controller - agent.controller - publicAgentController - start"
+    );
+
+    const { sessionId } = req.params;
+    // let isSessionExist = await agentChatModel.findById(sessionId);
+
+    // if (!isSessionExist) {
+    //   return next(httpError(404, "Session not found"));
+    // }
+    // const userTimestamp = new Date();
+
+    const { message, historyCount = 2 } = req.body;
+
+    const agentService = new AgentService({ sessionId, historyCount });
+    const data = await agentService.publicAgentRequest(
+      message,
+      (isSessionExist = {})
+    );
+
+    // isSessionExist.messages.push(
+    //   {
+    //     content: data?.input || "",
+    //     role: "user",
+    //     timestamp: userTimestamp,
+    //   },
+    //   {
+    //     content: data?.output || "",
+    //     role: "ai",
+    //     timestamp: new Date(),
+    //   }
+    // );
+
+    // isSessionExist.history = [
+    //   ...isSessionExist.history,
+    //   ...(data?.history ? data.history.slice(-2) : []),
+    // ];
+
+    // await isSessionExist.save();
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      data: {
+        // details: isSessionExist,
+        outputData: data,
+      },
+    });
+    logger.info("Controller - agent.controller - publicAgentController - end");
+  } catch (error) {
+    logger.error(
+      "Controller - agent.controller - publicAgentController - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
 module.exports = {
   agentChatController,
+  publicChatAgentController,
   createNewChatSession,
   getSessionDetails,
 };

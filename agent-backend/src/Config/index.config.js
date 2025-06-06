@@ -29,4 +29,5 @@ module.exports = {
 
   // open router api key
   OPEN_ROUTER_API_KEY: process.env.OPEN_ROUTER_API_KEY,
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY,
 };

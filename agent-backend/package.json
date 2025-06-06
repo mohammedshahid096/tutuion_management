@@ -15,6 +15,7 @@
     "@langchain/community": "^0.3.45",
     "@langchain/core": "^0.3.57",
     "@langchain/google-genai": "^0.2.10",
+    "@langchain/openai": "^0.5.12",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
