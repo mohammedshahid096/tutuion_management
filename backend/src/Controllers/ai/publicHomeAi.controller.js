@@ -3,9 +3,6 @@ const logger = require("../../Config/logger.config");
 const errorHandling = require("../../Utils/errorHandling");
 const axios = require("axios");
 const { OPEN_ROUTER_API_KEY } = require("../../Config/index.config");
-const {
-  getSessionDetails,
-} = require("../../../../agent-backend/src/Controllers/agents/agent.controller");
 
 const publicHomeAiAgentController = async (req, res, next) => {
   try {
