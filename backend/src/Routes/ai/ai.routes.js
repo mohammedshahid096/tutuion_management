@@ -15,6 +15,7 @@ const {
 } = require("../../Controllers/ai/publicHomeAi.controller");
 const {
   getSessionDetailsController,
+  createNewChatSessionController,
 } = require("../../Controllers/ai/chatSessions.controller");
 
 const AiRoutes = express.Router();
@@ -27,6 +28,8 @@ AiRoutes.route("/builder/text").post(
 );
 
 AiRoutes.route("/public/agent").post(publicHomeAiAgentController);
+
+AiRoutes.route("/chat-agent/new-session").get(createNewChatSessionController);
 
 AiRoutes.route("/session-details/:sessionId").get(getSessionDetailsController);
 

@@ -30,6 +30,39 @@ const getSessionDetailsController = async (req, res, next) => {
   }
 };
 
+const createNewChatSessionController = async (req, res, next) => {
+  try {
+    logger.info("Controller - ai.controller - createNewChatSession - start");
+
+    const userId = req?.user?._id || "";
+
+    const newSession = new agentChatModel({
+      user: userId,
+      createdBy: userId,
+      updatedBy: userId,
+      messages: [],
+      history: [],
+    });
+    await newSession.save();
+
+    logger.info("Controller - ai.controller - createNewChatSession - End");
+    res.status(201).json({
+      success: true,
+      statusCode: 201,
+      message: "New chat session created successfully",
+      sessionId: newSession._id,
+      data: newSession,
+    });
+  } catch (error) {
+    logger.error(
+      "Controller - ai.controller - createNewChatSession - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 module.exports = {
   getSessionDetailsController,
+  createNewChatSessionController,
 };
