@@ -10,6 +10,12 @@ const {
 const {
   textBuilderAiPromptValidation,
 } = require("../../validators/ai/ai.validation");
+const {
+  publicHomeAiAgentController,
+} = require("../../Controllers/ai/publicHomeAi.controller");
+const {
+  getSessionDetailsController,
+} = require("../../Controllers/ai/chatSessions.controller");
 
 const AiRoutes = express.Router();
 
@@ -19,5 +25,9 @@ AiRoutes.route("/builder/text").post(
   textBuilderAiPromptValidation,
   builderTextAiController
 );
+
+AiRoutes.route("/public/agent").post(publicHomeAiAgentController);
+
+AiRoutes.route("/session-details/:sessionId").get(getSessionDetailsController);
 
 module.exports = AiRoutes;

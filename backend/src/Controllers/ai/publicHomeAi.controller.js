@@ -1,0 +1,83 @@
+const httpErrors = require("http-errors");
+const logger = require("../../Config/logger.config");
+const errorHandling = require("../../Utils/errorHandling");
+const axios = require("axios");
+const { OPEN_ROUTER_API_KEY } = require("../../Config/index.config");
+
+const publicHomeAiAgentController = async (req, res, next) => {
+  try {
+    logger.info("Controller - ai.controller - publicAiAgentController - Start");
+
+    const { userPrompt } = req.body;
+    const { sessionId } = req.params;
+
+    const finalPrompt = `
+      You are an AI teaching assistant for EduExcellence Tutorial, an educational platform dedicated to 
+      providing clear and accurate learning resources. Your responses should be:
+
+      1. Professional yet approachable in tone
+      2. Factually accurate and educationally sound
+      3. Structured for easy reading (but without markdown formatting)
+      4. Focused on the educational needs of students
+      5. Limited to academic and learning-related topics
+
+      If the question is not education-related, politely decline to answer and suggest academic topics.
+
+      Current request: ${userPrompt}
+
+      Please provide a helpful, depending upon the request provide a extra-short/short/medium/detailed response suitable for students of all levels.
+    `;
+
+    const url = "https://openrouter.ai/api/v1/chat/completions";
+    const config = {
+      headers: {
+        Authorization: `Bearer ${OPEN_ROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+        "X-Title": "eduexcellence",
+        Referer: "https://www.eduexcellencetutorial.com",
+      },
+    };
+    const json = {
+      model: "meta-llama/llama-4-scout:free",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are an AI teaching assistant for EduExcellence Tutorial, focused on providing high-quality educational content.",
+        },
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: finalPrompt,
+            },
+          ],
+        },
+      ],
+      temperature: 0.7, // Slightly creative but mostly factual
+      max_tokens: 1000, // Limit response length
+    };
+
+    const { data } = await axios.post(url, json, config);
+
+    const generatedText = data.choices[0].message.content;
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      data: { generatedText },
+    });
+    logger.info("Controller - ai.controller - publicAiAgentController - End");
+  } catch (error) {
+    logger.error(
+      "Controller - ai.controller - publicAiAgentController - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
+module.exports = {
+  publicHomeAiAgentController,
+};
