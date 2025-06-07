@@ -10,7 +10,7 @@ const OtherComponents = () => {
   return (
     <>
       <Toaster />
-      {mode === 'development' && <ChatComponent />}
+      <ChatComponent />
     </>
   );
 };
