@@ -11,7 +11,7 @@ import Context from '@/context/context';
 import { useSelector } from 'react-redux';
 import { v4 as uuidV4 } from 'uuid';
 
-const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
+const ChatModel = ({ isOpen, onClose, info, setInfo, isMobile }) => {
   const { profileDetails } = useSelector((state) => state.userProfileState);
 
   const {
@@ -90,11 +90,16 @@ const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
     [info?.inputMessage, sessionDetails, info?.messageLoading]
   );
 
+  console.log(isMobile, 'shahid');
   return (
     <div
-      className={`fixed inset-y-2 right-0 w-full sm:w-96 bg-background shadow-xl transform transition-transform duration-300 ease-in-out z-50 h-[88%] rounded-full  ${
-        isOpen ? 'translate-x-0' : 'translate-x-full'
-      }`}
+      className={
+        !isMobile
+          ? `fixed inset-y-2 right-0 w-full sm:w-96 bg-background shadow-xl transform transition-transform duration-300 ease-in-out z-50 h-[88%] rounded-full  ${
+              isOpen ? 'translate-x-0' : 'translate-x-full'
+            }`
+          : 'w-full h-[95%] p-0 mt-3'
+      }
     >
       <Card className="h-full flex flex-col py-0 overflow-hidden">
         {/* Chat header */}

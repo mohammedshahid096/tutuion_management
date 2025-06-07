@@ -14,7 +14,6 @@ const MobileNavbar = ({ navList, loginNavigate, pathname, handleClick2 }) => {
   const navigate = useNavigate();
 
   const handleClick = (to) => {
-    console.log(to, 'shahid');
     navigate(to);
 
     // Extract hash

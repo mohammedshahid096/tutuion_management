@@ -5,6 +5,8 @@ import { MessageSquareMore } from 'lucide-react';
 import Context from '@/context/context';
 import { getChatSessionId } from '@/helpers/session-storage';
 import { createChatSessionApi } from '@/apis/ai.api';
+import { useIsMobile } from '@/hooks/use-mobile';
+import MobileChatDrawer from './MobileChatDrawer';
 
 const ChatComponent = () => {
   // * contexts
@@ -19,6 +21,9 @@ const ChatComponent = () => {
       updateChatAgentStateAction,
     },
   } = useContext(Context);
+
+  // * hooks
+  const isMobile = useIsMobile();
 
   // * states
   const [info, setInfo] = useState({
@@ -104,7 +109,15 @@ const ChatComponent = () => {
     }));
   }, [isChatModalOpen, sessionId, info?.loading]);
 
-  return (
+  return isMobile ? (
+    <MobileChatDrawer
+      chatModalAction={chatModalAction}
+      isOpen={isChatModalOpen || false}
+      info={info}
+      setInfo={setInfo}
+      isMobile={isMobile}
+    />
+  ) : (
     <div>
       <Button
         onClick={() => chatModalAction(true)}
@@ -121,6 +134,7 @@ const ChatComponent = () => {
         onClose={() => chatModalAction(false)}
         info={info}
         setInfo={setInfo}
+        isMobile={isMobile}
       />
     </div>
   );
