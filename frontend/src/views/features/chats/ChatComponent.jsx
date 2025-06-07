@@ -7,8 +7,11 @@ import { getChatSessionId } from '@/helpers/session-storage';
 import { createChatSessionApi } from '@/apis/ai.api';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MobileChatDrawer from './MobileChatDrawer';
+import { useSelector } from 'react-redux';
 
 const ChatComponent = () => {
+  // * redux state
+  const { profileDetails } = useSelector((state) => state.userProfileState);
   // * contexts
   const {
     chatAgentState: {
@@ -89,7 +92,7 @@ const ChatComponent = () => {
     }));
 
     const json = {
-      userId: null,
+      userId: profileDetails?._id || null,
     };
 
     const response = await createChatSessionApi(json);

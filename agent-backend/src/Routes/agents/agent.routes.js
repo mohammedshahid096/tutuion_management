@@ -10,12 +10,12 @@ const AgentRoutes = express.Router();
 
 AgentRoutes.route("/:sessionId/chat-agent").post(agentChatController);
 
-AgentRoutes.route("/:sessionId/public-chat-agent").post(
-  publicChatAgentController
-);
+// AgentRoutes.route("/:sessionId/public-chat-agent").post(
+//   publicChatAgentController
+// );
 
-AgentRoutes.route("/chat-agent/new-session").get(createNewChatSession);
+// AgentRoutes.route("/chat-agent/new-session").get(createNewChatSession);
 
-AgentRoutes.route("/session-details/:sessionId").get(getSessionDetails);
+// AgentRoutes.route("/session-details/:sessionId").get(getSessionDetails);
 
 module.exports = AgentRoutes;

@@ -57,11 +57,13 @@ const ChatModel = ({ isOpen, onClose, info, setInfo, isMobile }) => {
         sessionDetails: tempUpdateState,
       });
 
-      let json = {};
+      let json = {
+        userPrompt: info?.inputMessage,
+      };
       let response = null;
       if (profileDetails) {
+        response = await submitMessageChatApi(sessionId, json);
       } else {
-        json.userPrompt = info?.inputMessage;
         response = await submitPublicAiAgentApi(sessionId, json);
       }
       let stateDetails = null;
@@ -90,7 +92,6 @@ const ChatModel = ({ isOpen, onClose, info, setInfo, isMobile }) => {
     [info?.inputMessage, sessionDetails, info?.messageLoading]
   );
 
-  console.log(isMobile, 'shahid');
   return (
     <div
       className={
