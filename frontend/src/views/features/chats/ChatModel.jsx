@@ -5,13 +5,17 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton';
 import ChatMessage, { ChatMessageLoading, ChatMessageSkeleton } from './ChatMessage';
 import { X, Send } from 'lucide-react';
-import { submitMessageChatApi } from '@/apis/ai.api';
+import { submitMessageChatApi, submitPublicAiAgentApi } from '@/apis/ai.api';
 import { speakTextFunction } from '@/helpers/speach';
 import Context from '@/context/context';
+import { useSelector } from 'react-redux';
+import { v4 as uuidV4 } from 'uuid';
 
 const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
+  const { profileDetails } = useSelector((state) => state.userProfileState);
+
   const {
-    chatAgentState: { sessionDetails, updateChatAgentStateAction },
+    chatAgentState: { sessionDetails, sessionId, updateChatAgentStateAction },
   } = useContext(Context);
   const messagesEndRef = useRef(null);
 
@@ -39,10 +43,27 @@ const ChatModel = ({ isOpen, onClose, info, setInfo }) => {
         messageLoading: true,
       }));
 
-      let json = {
-        message: info?.inputMessage,
+      let tempMessage = {
+        content: info?.inputMessage,
+        role: 'user',
+        timestamp: new Date().toISOString(),
+        _id: uuidV4(),
       };
-      const response = await submitMessageChatApi(info?.sessionId, json);
+
+      let tempUpdateState = sessionDetails;
+      tempUpdateState.messages.push(tempMessage);
+
+      updateChatAgentStateAction({
+        sessionDetails: tempUpdateState,
+      });
+
+      let json = {};
+      let response = null;
+      if (profileDetails) {
+      } else {
+        json.userPrompt = info?.inputMessage;
+        response = await submitPublicAiAgentApi(sessionId, json);
+      }
       let stateDetails = null;
       if (response?.success) {
         stateDetails = {

@@ -39,3 +39,8 @@ export const submitMessageChatApi = async (sessionId, json) => {
     );
   }
 };
+
+export const submitPublicAiAgentApi = async (sessionId, json) => {
+  const response = await Service.fetchPost(`/ai/${sessionId}/public-chat-agent`, json);
+  return response[1];
+};
