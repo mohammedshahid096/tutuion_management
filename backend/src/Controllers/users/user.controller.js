@@ -114,8 +114,6 @@ const RegisterStudentController = async (req, res, next) => {
     //   })
     //   .lean();
 
-    // console.log("shahid", isTimingsAvailable);
-
     // let isTimingsAvailable = await userModel
     //   .findOne({ "timings.startTimeHHMM": details.timings.startTimeHHMM })
     //   .lean();

@@ -138,12 +138,9 @@ const ProgressUpdate = ({ isEdit = true }) => {
       let newUpdateList = _.cloneDeep(enrollmentsList);
       for (let i = 0; i < (newUpdateList?.docs?.length || 0); i++) {
         if (newUpdateList.docs[i]?._id === response[1]?.data?._id) {
-          console.log(newUpdateList.docs[i]?._id, response[1].data?._id, 'shahid');
           newUpdateList.docs[i] = response[1]?.data;
         }
       }
-
-      console.log(newUpdateList.docs, 'shahid');
 
       dispatch(updateSubjectStateAction({ enrollmentsList: newUpdateList }));
     } else {

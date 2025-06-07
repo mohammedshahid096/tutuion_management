@@ -158,9 +158,6 @@ const AdminAttendanceMark = () => {
       },
     };
 
-    // console.log(json, 'shahid');
-    // return;
-
     let response = await updateAttendanceAction(info?.selectedAttendance?._id, json);
     if (response[0] === true) {
       toast.success(response[1]?.message);
