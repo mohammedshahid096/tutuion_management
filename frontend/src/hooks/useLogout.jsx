@@ -1,4 +1,4 @@
-import { use, useCallback, useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { clearAll } from '@/helpers/local-storage';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -11,8 +11,10 @@ import {
   studentActions,
   graphActions,
   myDetailsActions,
+  builderActions,
 } from '@/redux/combineActions';
 import Context from '@/context/context';
+import { clearAllChatSessions } from '@/helpers/session-storage';
 
 const useLogout = () => {
   const navigate = useNavigate();
@@ -32,8 +34,11 @@ const useLogout = () => {
     dispatch(studentActions.resetStudentAction());
     dispatch(graphActions.resetGraphAction());
     dispatch(myDetailsActions.resetMyDetailsAction());
+    dispatch(builderActions.resetBuilderAction());
+    // Reset chat agent state
     resetChatAgentAction();
     clearAll();
+    clearAllChatSessions();
     navigate('/');
   }, []);
 
