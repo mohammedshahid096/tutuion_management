@@ -4,7 +4,6 @@ export const speakTextFunction = (text) => {
     return;
   }
 
-  console.log('Speaking text:', text);
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'en-US'; // Set the language to English

@@ -43,6 +43,8 @@ const ChatModel = ({ isOpen, onClose, info, setInfo, isMobile }) => {
         messageLoading: true,
       }));
 
+      window?.speechSynthesis?.cancel();
+
       let tempMessage = {
         content: info?.inputMessage,
         role: 'user',
