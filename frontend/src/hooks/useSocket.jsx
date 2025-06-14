@@ -8,10 +8,12 @@ const useSocket = ({ dependencies = [], isAdmin = false }) => {
   const [isConnected, setIsConnected] = useState(false);
   const socketRef = useRef(null);
   const {
-    notificationState: { updateSocketNotification },
+    notificationState: { updateSocketNotificationAction, notifications },
   } = useContext(Context);
 
   useEffect(() => {
+    // if (socketRef.current) return;
+
     const socket = io(BASE_URL);
     socketRef.current = socket;
 
@@ -27,8 +29,7 @@ const useSocket = ({ dependencies = [], isAdmin = false }) => {
 
       // 👇 Setup the listener
       socket.on(admin_receiver_listeners.adminNotification, (notification) => {
-        console.log(notification, 'received inside hook shahid');
-        updateSocketNotification(notification);
+        updateSocketNotificationAction(notification);
       });
     });
 

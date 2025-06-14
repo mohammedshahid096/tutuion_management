@@ -9,7 +9,7 @@ const DashboardHeader = ({ children }) => {
 
   const markAsReadNotificationFun = useCallback(
     async (notificationId) => {
-      let response = await updateNotificationAction(notificationId);
+      await updateNotificationAction(notificationId);
     },
     [notifications]
   );

@@ -171,10 +171,10 @@ const data = {
 const AdminSidebar = ({ user, children }) => {
   const logoutFunction = useLogout();
   const navigate = useNavigate();
-  const { isConnected, socketRef } = useSocket({ isAdmin: true });
   const {
-    notificationState: { fetchNotificationsAction },
+    notificationState: { fetchNotificationsAction, notifications },
   } = useContext(Context);
+  const { isConnected, socketRef } = useSocket({ isAdmin: true, dependencies: [notifications] });
   useEffect(() => {
     fetchNotificationsAction();
   }, []);

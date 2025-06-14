@@ -58,10 +58,11 @@ export const NotificationState = () => {
     return response;
   };
 
-  const updateSocketNotification = (notification) => {
-    const updateNotificationArray = state.notifications ?? null;
+  const updateSocketNotificationAction = (newNotification) => {
+    const updateNotificationArray = state.notifications || null;
+
     if (updateNotificationArray) {
-      updateNotificationArray.docs.unshift(notification);
+      updateNotificationArray.docs = [newNotification, ...updateNotificationArray.docs];
       dispatch({
         type: Actions.FETCH_NOTIFICATIONS,
         payload: updateNotificationArray,
@@ -81,7 +82,7 @@ export const NotificationState = () => {
     ...state,
     fetchNotificationsAction,
     updateNotificationAction,
-    updateSocketNotification,
+    updateSocketNotificationAction,
     updateNotificationStateAction,
     resetNotificationAction,
   };
