@@ -58,6 +58,17 @@ export const NotificationState = () => {
     return response;
   };
 
+  const updateSocketNotification = (notification) => {
+    const updateNotificationArray = state.notifications ?? null;
+    if (updateNotificationArray) {
+      updateNotificationArray.docs.unshift(notification);
+      dispatch({
+        type: Actions.FETCH_NOTIFICATIONS,
+        payload: updateNotificationArray,
+      });
+    }
+  };
+
   const updateNotificationStateAction = (payload) => {
     dispatch({ type: Actions.UPDATE_CHAT_AGENT_STATE, payload });
   };
@@ -70,6 +81,7 @@ export const NotificationState = () => {
     ...state,
     fetchNotificationsAction,
     updateNotificationAction,
+    updateSocketNotification,
     updateNotificationStateAction,
     resetNotificationAction,
   };

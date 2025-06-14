@@ -12,7 +12,6 @@ const emitNotificationToAdmin = (notificationData) => {
         ...notificationData,
         timestamp: new Date(),
       });
-    console.log("Notification sent to admin");
     return isEmitted;
   } else {
     console.error("Socket.IO instance not available");

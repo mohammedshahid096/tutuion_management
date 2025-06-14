@@ -40,9 +40,10 @@ const createContactFormController = async (req, res, next) => {
     );
 
     let newNotificationData = await notificationModel.create({
-      message: newContactDetails.name,
+      message: "Contact-Form : " + newContactDetails.name,
       type: "contact_form",
       recipientType: "admin",
+      url: "/admin/contact-forms",
     });
 
     await emitNotificationToAdmin(newNotificationData.toObject());
