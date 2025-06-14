@@ -14,8 +14,9 @@ import { useNavigate } from 'react-router-dom';
 import { STUDENT, ADMIN } from '@/constants/roles.constants';
 import AdminSidebar from './Admin';
 import { useSelector } from 'react-redux';
+import DashboardHeader from '../components/navbar/DashboardHeader';
 
-const Mainwrapper = ({ breadCrumbs = [], children }) => {
+const MainWrapper = ({ breadCrumbs = [], children }) => {
   const navigate = useNavigate();
   const { profileDetails } = useSelector((state) => state.userProfileState);
 
@@ -28,14 +29,14 @@ const Mainwrapper = ({ breadCrumbs = [], children }) => {
 
   return (
     <SidebarComponent user={profileDetails}>
-      <header className="flex h-16 shrink-0 items-center gap-2">
+      <DashboardHeader>
         <div className="flex items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
             <BreadcrumbList>
               {breadCrumbs?.map((singleBreadcrumb, index) => (
-                <React.Fragment key={'breadrumb' + index}>
+                <React.Fragment key={'breadcrumb' + index}>
                   {singleBreadcrumb?.href ? (
                     <BreadcrumbItem className="hidden md:block">
                       <BreadcrumbLink
@@ -59,10 +60,10 @@ const Mainwrapper = ({ breadCrumbs = [], children }) => {
             </BreadcrumbList>
           </Breadcrumb>
         </div>
-      </header>
+      </DashboardHeader>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0 overflow-auto w-full">{children}</div>
     </SidebarComponent>
   );
 };
 
-export default Mainwrapper;
+export default MainWrapper;
