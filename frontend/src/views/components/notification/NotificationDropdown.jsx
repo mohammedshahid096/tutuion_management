@@ -70,7 +70,7 @@ const NotificationDropdown = ({ notifications }) => {
                 key={notification._id}
                 className={cn(
                   'flex gap-3 px-4 py-3 border-b',
-                  !notification.isRead && 'bg-gray-50'
+                  !notification.isRead && 'bg-gray-50 cursor-pointer'
                 )}
                 onClick={() => markAsRead(notification._id)}
               >

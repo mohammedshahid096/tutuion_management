@@ -71,6 +71,45 @@ const getNotificationsController = async (req, res, next) => {
   }
 };
 
+const updateNotificationController = async (req, res, next) => {
+  try {
+    logger.info(
+      "Controller - notification.controller - updateNotificationController - Start"
+    );
+
+    const { notificationId } = req.params;
+    const updateData = req.body;
+
+    const updatedNotification = await notificationModel.findByIdAndUpdate(
+      notificationId,
+      updateData,
+      { new: true }
+    );
+
+    if (!updatedNotification) {
+      return next(httpErrors.NotFound("Notification not found"));
+    }
+
+    res.status(200).send({
+      success: true,
+      statusCode: 200,
+      message: "Notification updated successfully",
+      data: updatedNotification,
+    });
+
+    logger.info(
+      "Controller - notification.controller - updateNotificationController - End"
+    );
+  } catch (error) {
+    logger.error(
+      "Controller - notification.controller - updateNotificationController - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 module.exports = {
   getNotificationsController,
+  updateNotificationController,
 };
