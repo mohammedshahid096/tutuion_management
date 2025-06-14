@@ -32,12 +32,12 @@ const createContactFormController = async (req, res, next) => {
     };
 
     const nodeMailerService = new NodeMailerServiceClass();
-    // await nodeMailerService.sendMail(
-    //   newContactDetails?.email,
-    //   "contactFormResponseTemplate",
-    //   null,
-    //   mailDetails
-    // );
+    await nodeMailerService.sendMail(
+      newContactDetails?.email,
+      "contactFormResponseTemplate",
+      null,
+      mailDetails
+    );
 
     let newNotificationData = await notificationModel.create({
       message: newContactDetails.name,

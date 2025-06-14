@@ -12,6 +12,7 @@ const StudentEnrollmentRoutes = require("./enrollment-progress/studentEnrollment
 const AiRoutes = require("./ai/ai.routes");
 const NoteRoutes = require("./notes/notes.routes");
 const { emitNotificationToAdmin } = require("../Utils/socket.utils");
+const NotificationRoutes = require("./notifications/notification.routes");
 
 // Route config
 const IndexRoutes = express.Router();
@@ -68,16 +69,8 @@ IndexRoutes.use("/ai", AiRoutes);
 // ----------------------------------------
 IndexRoutes.use("/notes", NoteRoutes);
 
-IndexRoutes.get("/test2", (req, res) => {
-  const notification = {
-    message: `New student registered:`,
-    type: "student_registered",
-  };
-
-  emitNotificationToAdmin(notification);
-
-  res.send(notification);
-});
+// Notifications
+IndexRoutes.use("/notifications", NotificationRoutes);
 
 // export the routes
 module.exports = IndexRoutes;
