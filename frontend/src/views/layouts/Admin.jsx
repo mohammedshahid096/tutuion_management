@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import {
   School,
   Users,
@@ -48,6 +48,7 @@ import useLogout from '@/hooks/useLogout';
 import { Link, useNavigate } from 'react-router-dom';
 import getInitials from '@/helpers/get-initials';
 import useSocket from '@/hooks/useSocket';
+import Context from '@/context/context';
 
 const data = {
   navMain: [
@@ -171,6 +172,12 @@ const AdminSidebar = ({ user, children }) => {
   const logoutFunction = useLogout();
   const navigate = useNavigate();
   const { isConnected, socketRef } = useSocket({ isAdmin: true });
+  const {
+    notificationState: { fetchNotificationsAction },
+  } = useContext(Context);
+  useEffect(() => {
+    fetchNotificationsAction();
+  }, []);
 
   return (
     <SidebarProvider>

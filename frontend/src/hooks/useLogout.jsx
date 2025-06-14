@@ -21,6 +21,7 @@ const useLogout = () => {
   const dispatch = useDispatch();
   const {
     chatAgentState: { resetChatAgentAction },
+    notificationState: { resetNotificationAction },
   } = useContext(Context);
 
   const resetApplications = useCallback(async () => {
@@ -37,6 +38,7 @@ const useLogout = () => {
     dispatch(builderActions.resetBuilderAction());
     // Reset chat agent state
     resetChatAgentAction();
+    resetNotificationAction();
     clearAll();
     clearAllChatSessions();
     navigate('/');

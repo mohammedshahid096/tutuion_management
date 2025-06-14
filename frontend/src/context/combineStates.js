@@ -1,9 +1,14 @@
 import { useMemo } from 'react';
 import { ChatAgentState } from './chatAgent/state';
+import { NotificationState } from './notifications/state';
 
 const useCombineState = () => {
   const chatAgentState = ChatAgentState();
-  return useMemo(() => ({ chatAgentState }), [chatAgentState]);
+  const notificationState = NotificationState();
+  return useMemo(
+    () => ({ chatAgentState, notificationState }),
+    [chatAgentState, notificationState]
+  );
 };
 
 export default useCombineState;

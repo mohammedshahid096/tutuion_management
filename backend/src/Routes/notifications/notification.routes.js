@@ -5,15 +5,15 @@ const {
 } = require("../../Middlewares/Auth.middleware");
 const { ADMIN } = require("../../Constants/roles.constants");
 const {
-  getNotesDetailsController,
-} = require("../../Controllers/notes/notes.controller");
+  getNotificationsController,
+} = require("../../Controllers/notifcations/notification.controller");
 
 const NotificationRoutes = express.Router();
 
 NotificationRoutes.route("/notifications-list").get(
   Authentication,
   Authorization(ADMIN),
-  getNotesDetailsController
+  getNotificationsController
 );
 
 module.exports = NotificationRoutes;
