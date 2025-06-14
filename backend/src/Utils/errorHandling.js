@@ -80,8 +80,8 @@ class ErrorHandler {
         success: false,
         statusCode: err.status || 500,
         message: err.message || "internal server error",
-        // errorType: err.name,
-        // stack: err.stack || "not present",
+        errorType: err.name,
+        stack: err.stack || "not present",
       });
     }
   }
