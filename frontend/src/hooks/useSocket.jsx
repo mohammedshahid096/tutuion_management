@@ -11,8 +11,69 @@ const useSocket = ({ dependencies = [], isAdmin = false }) => {
     notificationState: { updateSocketNotificationAction, notifications },
   } = useContext(Context);
 
+  // Create refs to keep track of the latest values
+  const updateActionRef = useRef(updateSocketNotificationAction);
+  const notificationsRef = useRef(notifications);
+
+  // Update refs when values change
   useEffect(() => {
-    // if (socketRef.current) return;
+    updateActionRef.current = updateSocketNotificationAction;
+    notificationsRef.current = notifications;
+  }, [updateSocketNotificationAction, notifications]);
+
+  useEffect(() => {
+    if (socketRef.current) return;
+
+    const socket = io(BASE_URL);
+    socketRef.current = socket;
+
+    const handleNotification = (notification) => {
+      console.log(notificationsRef.current, 'shahid'); // Now always current
+      updateActionRef.current(notification); // Now always current
+    };
+
+    socket.on('connect', () => {
+      setIsConnected(true);
+      console.log('Socket connected');
+
+      if (isAdmin) {
+        let admin_name = 'edu_excellence_admin';
+        socket.emit('joinAdminRoom', admin_name);
+      }
+
+      // Use the ref-based handler
+      socket.on(admin_receiver_listeners.adminNotification, handleNotification);
+    });
+
+    socket.on('disconnect', () => setIsConnected(false));
+    socket.on('error', (error) => console.error('Socket error:', error));
+
+    return () => {
+      if (socketRef.current) {
+        socket.off('connect');
+        socket.off('disconnect');
+        socket.off('error');
+        socket.off(admin_receiver_listeners.adminNotification, handleNotification);
+        socket.disconnect();
+        socketRef.current = null;
+      }
+    };
+  }, [...dependencies]);
+
+  return { isConnected, socketRef };
+};
+export default useSocket;
+
+// old if state change again new connection
+const useSocketStateChange = ({ dependencies = [], isAdmin = false }) => {
+  const [isConnected, setIsConnected] = useState(false);
+  const socketRef = useRef(null);
+  const {
+    notificationState: { updateSocketNotificationAction, notifications },
+  } = useContext(Context);
+
+  useEffect(() => {
+    if (socketRef.current) return;
 
     const socket = io(BASE_URL);
     socketRef.current = socket;
@@ -51,11 +112,10 @@ const useSocket = ({ dependencies = [], isAdmin = false }) => {
         socket.off('error');
         socket.off('newNotification');
         socketRef.current.disconnect();
+        socketRef.current = null;
       }
     };
   }, [...dependencies]);
 
   return { isConnected, socketRef };
 };
-
-export default useSocket;

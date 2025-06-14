@@ -174,7 +174,7 @@ const AdminSidebar = ({ user, children }) => {
   const {
     notificationState: { fetchNotificationsAction, notifications },
   } = useContext(Context);
-  const { isConnected, socketRef } = useSocket({ isAdmin: true, dependencies: [notifications] });
+  const { isConnected, socketRef } = useSocket({ isAdmin: true });
   useEffect(() => {
     fetchNotificationsAction();
   }, []);
