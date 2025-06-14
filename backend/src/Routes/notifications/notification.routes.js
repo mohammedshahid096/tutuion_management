@@ -17,7 +17,7 @@ NotificationRoutes.route("/notifications-list").get(
   getNotificationsController
 );
 
-NotificationRoutes.route("/:notificationId").get(
+NotificationRoutes.route("/:notificationId").put(
   Authentication,
   Authorization(ADMIN),
   updateNotificationController

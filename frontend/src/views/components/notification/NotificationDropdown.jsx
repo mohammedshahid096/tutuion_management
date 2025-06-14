@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { format } from 'timeago.js';
 import moment from 'moment';
 
-const NotificationDropdown = ({ notifications }) => {
+const NotificationDropdown = ({ notifications, markAsReadNotificationFun }) => {
   const [unreadNotifications, setUnreadNotifications] = useState(0);
 
   useEffect(() => {
@@ -21,7 +21,9 @@ const NotificationDropdown = ({ notifications }) => {
 
   const markAsRead = (id) => {
     // Here you would typically make an API call to mark the notification as read
+
     setUnreadNotifications((prev) => prev - 1);
+    markAsReadNotificationFun(id);
   };
 
   const markAllAsRead = () => {
@@ -72,7 +74,7 @@ const NotificationDropdown = ({ notifications }) => {
                   'flex gap-3 px-4 py-3 border-b',
                   !notification.isRead && 'bg-gray-50 cursor-pointer'
                 )}
-                onClick={() => markAsRead(notification._id)}
+                onClick={!notification.isRead ? () => markAsRead(notification._id) : null}
               >
                 <div className="flex-shrink-0">{getNotificationIcon(notification.type)}</div>
                 <div className="flex-1 min-w-0">
