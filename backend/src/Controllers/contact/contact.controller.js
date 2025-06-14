@@ -2,8 +2,10 @@ const httpErrors = require("http-errors");
 const logger = require("../../Config/logger.config");
 const errorHandling = require("../../Utils/errorHandling");
 const contactFormModel = require("../../Schema/contact/contact.model");
+const notificationModel = require("../../Schema/notification/notification.schema");
 const sortConstants = require("../../Constants/sort.constants");
 const NodeMailerServiceClass = require("../../aws_ses/mails/mail.index");
+const { emitNotificationToAdmin } = require("../../Utils/socket.utils");
 
 const createContactFormController = async (req, res, next) => {
   try {
@@ -30,12 +32,20 @@ const createContactFormController = async (req, res, next) => {
     };
 
     const nodeMailerService = new NodeMailerServiceClass();
-    await nodeMailerService.sendMail(
-      newContactDetails?.email,
-      "contactFormResponseTemplate",
-      null,
-      mailDetails
-    );
+    // await nodeMailerService.sendMail(
+    //   newContactDetails?.email,
+    //   "contactFormResponseTemplate",
+    //   null,
+    //   mailDetails
+    // );
+
+    let newNotificationData = await notificationModel.create({
+      message: newContactDetails.name,
+      type: "contact_form",
+      recipientType: "admin",
+    });
+
+    await emitNotificationToAdmin(newNotificationData.toObject());
 
     logger.info(
       "Controller - contact.controller - CreateContactFormController - End"
