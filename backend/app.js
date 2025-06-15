@@ -1,24 +1,18 @@
 const express = require("express");
-const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const MongoDataBaseConn = require("./src/Config/db.config");
-// const CloudinaryConn = require("./src/Config/cloudinary.config");
-const IndexRoutes = require("./src/Routes/index.route");
-const { ratelimitConfig } = require("./src/Config/ratelimit.config");
-const { DEVELOPMENT_MODE } = require("./src/Config/index.config");
-const errorHandling = require("./src/Utils/errorHandling");
-var moment = require("moment-timezone");
-const corsConfig = require("./src/Config/cors.config");
 const compression = require("compression");
+let moment = require("moment-timezone");
+const MongoDataBaseConn = require("./src/Config/db.config");
+const { DEVELOPMENT_MODE } = require("./src/Config/index.config");
+const ratelimitConfig = require("./src/Config/ratelimit.config");
+const corsConfig = require("./src/Config/cors.config");
+const morganConfigFunction = require("./src/Config/morgan.config");
+const helmetConfig = require("./src/Config/helmet.config");
+const IndexRoutes = require("./src/Routes/index.route");
+const errorHandling = require("./src/Utils/errorHandling");
 // const { createNewLiveClassUtility } = require("./src/Utils/classReminder.cron");
 
 const app = express();
-app.use(
-  helmet({
-    xPoweredBy: false,
-  })
-);
 
 //----------------------------------------
 //------------ config --------------------
@@ -27,20 +21,16 @@ app.use(
 MongoDataBaseConn();
 
 if (DEVELOPMENT_MODE === "development") {
-  const morgan = require("morgan");
-  const {
-    morganFilePath,
-    morganFormat,
-  } = require("./src/Config/morgan.config");
-  app.use(morgan(morganFormat.COMBINE, { stream: morganFilePath }));
+  app.use(morganConfigFunction());
 }
 
+app.use(helmetConfig);
 app.use(ratelimitConfig);
 app.use(compression({ level: 6 }));
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors(corsConfig));
+app.use(corsConfig);
 moment.tz.setDefault("Asia/Kolkata");
 
 // ! in vercel it wont work as it is a serverless in vercel
