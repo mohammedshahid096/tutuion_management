@@ -11,4 +11,5 @@ module.exports = {
   notes: "notes",
   agentChatMessages: "agent_chat_messages",
   notifications: "notifications",
+  homeworks: "homeworks",
 };

@@ -8,6 +8,9 @@ const {
   getNotificationsController,
   updateNotificationController,
 } = require("../../Controllers/notifcations/notification.controller");
+const {
+  updateNotificationValidation,
+} = require("../../validators/notifications/notification.joi");
 
 const NotificationRoutes = express.Router();
 
@@ -20,6 +23,7 @@ NotificationRoutes.route("/notifications-list").get(
 NotificationRoutes.route("/:notificationId").put(
   Authentication,
   Authorization(ADMIN),
+  updateNotificationValidation,
   updateNotificationController
 );
 
