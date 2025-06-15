@@ -1,5 +1,6 @@
 const cron = require("node-cron");
 const { createNewLiveClassUtility } = require("../Utils/classReminder.cron");
+const { deleteNotificationUtility } = require("../Utils/notification.cron");
 
 const createLiveClassRemindersCronJob = () => {
   cron.schedule(
@@ -13,6 +14,18 @@ const createLiveClassRemindersCronJob = () => {
   );
 };
 
+const deleteNotificationCronJob = () => {
+  cron.schedule(
+    "0 1 * * *",
+    () => {
+      deleteNotificationUtility();
+    },
+    {
+      timezone: "Asia/Kolkata",
+    }
+  );
+};
 module.exports = {
   createLiveClassRemindersCronJob,
+  deleteNotificationCronJob,
 };
