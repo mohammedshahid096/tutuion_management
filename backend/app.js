@@ -9,7 +9,6 @@ const { ratelimitConfig } = require("./src/Config/ratelimit.config");
 const { DEVELOPMENT_MODE } = require("./src/Config/index.config");
 const errorHandling = require("./src/Utils/errorHandling");
 var moment = require("moment-timezone");
-const GoogleAuthRoutes = require("./src/Routes/auth/google.route");
 const corsConfig = require("./src/Config/cors.config");
 const compression = require("compression");
 // const { createNewLiveClassUtility } = require("./src/Utils/classReminder.cron");
@@ -26,7 +25,6 @@ app.use(
 //----------------------------------------
 // MongoDataBaseConn
 MongoDataBaseConn();
-// CloudinaryConn();
 
 if (DEVELOPMENT_MODE === "development") {
   const morgan = require("morgan");
@@ -48,42 +46,8 @@ moment.tz.setDefault("Asia/Kolkata");
 // ! in vercel it wont work as it is a serverless in vercel
 // createLiveClassRemindersCronJob();
 
-//----------------------------------------
-//--------------- Routes -----------------
-//----------------------------------------
-app.get("/", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Welcome Message",
-  });
-});
-
-app.get("/health", (req, res) => {
-  let headers = req.headers;
-  res.status(200).json({
-    success: true,
-    message: "Hello from EduExcellence V1 Api",
-    headers,
-  });
-});
-
 // Routes
-app.use("/api/v1", IndexRoutes);
-app.use("/auth/google", GoogleAuthRoutes);
-
-//----------------------------------------
-//--------------- others -----------------
-//----------------------------------------
-// if no routes findout
-app.use("*", (req, res) => {
-  res.status(404).json({
-    success: false,
-    statusCode: 404,
-    url: req.baseUrl,
-    type: req.method,
-    message: "API not found",
-  });
-});
+app.use(IndexRoutes);
 
 // response for error message
 app.use((err, req, res, next) => {

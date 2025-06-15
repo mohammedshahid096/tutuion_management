@@ -1,76 +1,45 @@
 const express = require("express");
-const UserRoutes = require("./users/user.routes");
-const BoardRoutes = require("./board/board.routes");
-const SubjectRoutes = require("./subject/subject.routes");
-const BatchRoutes = require("./batch/batch.routes");
-const EnrollmentRoutes = require("./enrollment-progress/enrollment.routes");
-const AttendanceRoutes = require("./attendance/attendance.route");
-const GraphRoutes = require("./graphs/grahph.route");
-const ContactFormRoutes = require("./contact/contact.route");
-const StudentAttendanceRoutes = require("./attendance/studentAttendance.route");
-const StudentEnrollmentRoutes = require("./enrollment-progress/studentEnrollment.routes");
-const AiRoutes = require("./ai/ai.routes");
-const NoteRoutes = require("./notes/notes.routes");
-const { emitNotificationToAdmin } = require("../Utils/socket.utils");
-const NotificationRoutes = require("./notifications/notification.routes");
+const ApiV1Routes = require("./api.v1.routes");
+const GoogleAuthRoutes = require("./auth/google.route");
 
 // Route config
 const IndexRoutes = express.Router();
 
-// ----------------------------------------
-//  user  routes
-// ----------------------------------------
-IndexRoutes.use("/user", UserRoutes);
+IndexRoutes.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Welcome Message",
+  });
+});
 
-// ----------------------------------------
-//  board  routes
-// ----------------------------------------
-IndexRoutes.use("/board", BoardRoutes);
+IndexRoutes.get("/health", (req, res) => {
+  let headers = req.headers;
+  res.status(200).json({
+    success: true,
+    message: "Hello from EduExcellence V1 Api",
+    headers,
+  });
+});
 
-// ----------------------------------------
-//  subject  routes
-// ----------------------------------------
-IndexRoutes.use("/subject", SubjectRoutes);
+// api v1 routes
+IndexRoutes.use("/api/v1", ApiV1Routes);
 
-// ----------------------------------------
-//  Batches  routes
-// ----------------------------------------
-IndexRoutes.use("/batch", BatchRoutes);
+// google auth routes
+IndexRoutes.use("/auth/google", GoogleAuthRoutes);
 
-// ----------------------------------------
-//  Enrollment- Progress  routes
-// ----------------------------------------
-IndexRoutes.use("/enrollment", EnrollmentRoutes);
-IndexRoutes.use("/student-enrollment", StudentEnrollmentRoutes);
-
-// ----------------------------------------
-//  Attendance  routes
-// ----------------------------------------
-IndexRoutes.use("/attendance", AttendanceRoutes);
-IndexRoutes.use("/student-attendance", StudentAttendanceRoutes);
-
-// ----------------------------------------
-//  Graph routes
-// ----------------------------------------
-IndexRoutes.use("/graph", GraphRoutes);
-
-// ----------------------------------------
-//  Contact-Forms routes
-// ----------------------------------------
-IndexRoutes.use("/contact", ContactFormRoutes);
-
-// ----------------------------------------
-//  Ai routes
-// ----------------------------------------
-IndexRoutes.use("/ai", AiRoutes);
-
-// ----------------------------------------
-//  Ai routes
-// ----------------------------------------
-IndexRoutes.use("/notes", NoteRoutes);
-
-// Notifications
-IndexRoutes.use("/notifications", NotificationRoutes);
+//----------------------------------------
+//--------------- others -----------------
+//----------------------------------------
+// if no routes findout
+IndexRoutes.use("*", (req, res) => {
+  res.status(404).json({
+    success: false,
+    statusCode: 404,
+    url: req.baseUrl,
+    type: req.method,
+    message: "API not found",
+  });
+});
 
 // export the routes
 module.exports = IndexRoutes;
