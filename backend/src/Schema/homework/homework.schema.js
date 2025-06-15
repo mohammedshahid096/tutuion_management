@@ -18,7 +18,11 @@ const ModelSchema = new mongoose.Schema(
     },
     deadline: {
       type: Date,
-      required: true,
+      default: () => {
+        const date = new Date();
+        date.setDate(date.getDate() + 1);
+        return date;
+      },
     },
     assignedBy: {
       type: mongoose.Schema.Types.ObjectId,
