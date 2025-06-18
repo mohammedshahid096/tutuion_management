@@ -6,6 +6,8 @@ const {
 const { ADMIN } = require("../../Constants/roles.constants");
 const {
   createStudentHomeworkController,
+  getSingleHomeworkController,
+  getHomeworkListController,
 } = require("../../Controllers/homework/homework.controller");
 const {
   createStudentHomeworkValidation,
@@ -22,6 +24,18 @@ HomeworkRoutes.route("/assign-new-homework/:studentId").post(
   currentBatchDetailMiddleWare,
   createStudentHomeworkValidation,
   createStudentHomeworkController
+);
+
+HomeworkRoutes.route("/homework-list").get(
+  Authentication,
+  Authorization(ADMIN),
+  getHomeworkListController
+);
+
+HomeworkRoutes.route("/:homeworkId").get(
+  Authentication,
+  Authorization(ADMIN),
+  getSingleHomeworkController
 );
 
 module.exports = HomeworkRoutes;

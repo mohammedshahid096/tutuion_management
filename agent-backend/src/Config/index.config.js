@@ -30,4 +30,10 @@ module.exports = {
   // open router api key
   OPEN_ROUTER_API_KEY: process.env.OPEN_ROUTER_API_KEY,
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+
+  // twilio keys
+  TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
+  TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
+  TWILIO_PHONE_NUMBER: process.env.TWILIO_PHONE_NUMBER,
+  TWILIO_WEBHOOK_URL: process.env.TWILIO_WEBHOOK_URL || "",
 };
