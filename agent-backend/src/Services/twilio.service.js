@@ -91,6 +91,8 @@ class TwilioService {
       // Here you can add logic to handle different speech inputs
       const callingAgentService = new CallingAgentService();
       let response = await callingAgentService.processRequest(speechResult);
+
+      console.log(response.content);
       twiml.say(response.content);
 
       logger.info(

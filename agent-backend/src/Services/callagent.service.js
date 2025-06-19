@@ -1,5 +1,6 @@
 const { ChatPromptTemplate } = require("@langchain/core/prompts");
 const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
+const logger = require("../Config/logger.config");
 
 class CallingAgentService {
   constructor({ maxOutputTokens = 500, temperature = 0.7 } = {}) {
@@ -16,6 +17,10 @@ class CallingAgentService {
 
   async processRequest(userMessage) {
     try {
+      logger.info(
+        "Service - callagent.service - processRequest - Start",
+        userMessage
+      );
       // Update the prompt to indicate this is a calling agent interaction
       this.prompt = ChatPromptTemplate.fromMessages([
         [
@@ -26,15 +31,20 @@ class CallingAgentService {
         ],
         ["human", "{input}"],
       ]);
-      // Create the chain with the updated prompt
+
       const chain = this.prompt.pipe(this.googleModel);
-      // Invoke the LLM with the user's message
+
       const response = await chain.invoke({
         input: userMessage,
       });
+
+      logger.info("Service - callagent.service - processRequest - End");
       return response;
     } catch (error) {
-      console.error("Error processing request:", error);
+      logger.error(
+        "Service - callagent.service - processRequest - Error",
+        error
+      );
       throw new Error("Failed to process the request. Please try again.");
     }
   }
