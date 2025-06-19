@@ -8,7 +8,7 @@ const CallingAgentService = require("./callagent.service");
 const logger = require("../Config/logger.config");
 
 class TwilioService {
-  constructor({}) {
+  constructor() {
     this.client = twilioClient;
     this.fromNumber = TWILIO_PHONE_NUMBER;
     this.baseUrl = `${TWILIO_WEBHOOK_URL}/api/v1/calling-agent`;
@@ -51,7 +51,7 @@ class TwilioService {
         method: "POST",
       });
       gather.say(
-        "Hello! This is your AI EduExcellence assistant. How can I help you today? Please speak after the beep."
+        "Hello! This is your AI EduExcellence assistant. How can I help you today?"
       );
 
       logger.info(

@@ -70,9 +70,11 @@ const processSpeechAgentController = async (req, res, next) => {
       "Controller - call_agents.controller - processSpeechAgentController - Start"
     );
 
-    const { speechResult } = req.body;
+    const { SpeechResult } = req.body;
+
+    console.log(req.body);
     const twilioService = new TwilioService();
-    const resultXml = await twilioService.processSpeech(speechResult);
+    const resultXml = await twilioService.processSpeech(SpeechResult);
 
     logger.info(
       "Controller - call_agents.controller - processSpeechAgentController - End"
