@@ -4,6 +4,7 @@ const AgentService = require("../../Services/agent.service");
 const TwilioService = require("../../Services/twilio.service");
 const agentChatModel = require("../../Schema/agent-chat/agentChat.model");
 const httpError = require("http-errors");
+const CallingAgentService = require("../../Services/callagent.service");
 
 const callInitialController = async (req, res, next) => {
   try {
@@ -15,7 +16,11 @@ const callInitialController = async (req, res, next) => {
     const twilioMlNextUrl = "/voice";
 
     const twilioService = new TwilioService();
-    const callDetails = twilioService.makeCall(phoneNumber, twilioMlNextUrl);
+
+    const callDetails = await twilioService.makeCall(
+      phoneNumber,
+      twilioMlNextUrl
+    );
 
     logger.info(
       "Controller - call_agents.controller - callInitialController - End"
@@ -23,10 +28,8 @@ const callInitialController = async (req, res, next) => {
     res.status(200).json({
       success: true,
       statusCode: 200,
+      message: "caller initiated successfully",
       data: {
-        success: true,
-        statusCode: 200,
-        message: "caller initiated successfully",
         callDetails,
       },
     });
@@ -84,8 +87,15 @@ const processSpeechAgentController = async (req, res, next) => {
   }
 };
 
+const testAiCallingAgentController = async (req, res, next) => {
+  const callingAgentService = new CallingAgentService();
+  let response = await callingAgentService.processRequest("hello");
+  res.send(response.content);
+};
+
 module.exports = {
   callInitialController,
   voiceCallAgentController,
   processSpeechAgentController,
+  testAiCallingAgentController,
 };
