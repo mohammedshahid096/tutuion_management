@@ -8,7 +8,7 @@ const deleteNotificationUtility = async () => {
     logger.info(
       "Utils - notification.cron - deleteNotificationUtility - Start"
     );
-    console.log("Running daily job at 1 AM");
+
     const twoDaysAgo = moment().subtract(2, "days").startOf("day").toDate();
     const result = await notificationModel.deleteMany({
       createdAt: { $lte: twoDaysAgo },

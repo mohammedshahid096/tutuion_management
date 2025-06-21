@@ -10,7 +10,7 @@ const morganConfigFunction = require("./src/Config/morgan.config");
 const helmetConfig = require("./src/Config/helmet.config");
 const IndexRoutes = require("./src/Routes/index.route");
 const errorHandling = require("./src/Utils/errorHandling");
-// const { createNewLiveClassUtility } = require("./src/Utils/classReminder.cron");
+const { deleteNotificationCronJob } = require("./src/Config/cron.config");
 
 const app = express();
 
@@ -22,6 +22,8 @@ MongoDataBaseConn();
 
 if (DEVELOPMENT_MODE === "development") {
   app.use(morganConfigFunction());
+} else {
+  deleteNotificationCronJob();
 }
 
 app.use(helmetConfig);

@@ -6,6 +6,7 @@ const createLiveClassRemindersCronJob = () => {
   cron.schedule(
     "0 6 * * *",
     () => {
+      console.log("Running daily job at 6 AM");
       createNewLiveClassUtility();
     },
     {
@@ -18,6 +19,7 @@ const deleteNotificationCronJob = () => {
   cron.schedule(
     "0 1 * * *",
     () => {
+      console.log("Running daily job at 1 AM");
       deleteNotificationUtility();
     },
     {
