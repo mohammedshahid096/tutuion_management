@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import allRoutesMapper from './routes';
 import { Toaster } from 'react-hot-toast';
 import MetaData from './utils/MetaData';
 import ChatComponent from './views/features/chats/ChatComponent';
+import moment from 'moment-timezone';
 
 const OtherComponents = () => {
   const mode = import.meta.env.VITE_DEVELOPMENT_MODE || 'development';
@@ -16,6 +18,9 @@ const OtherComponents = () => {
 };
 
 function App() {
+  useEffect(() => {
+    moment.tz.setDefault('Asia/Kolkata');
+  }, []);
   return (
     <div className="app">
       <MetaData />
