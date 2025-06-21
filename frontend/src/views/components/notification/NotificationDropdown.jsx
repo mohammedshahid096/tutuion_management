@@ -1,5 +1,11 @@
 import React, { memo, useEffect } from 'react';
-import { BellIcon, MailIcon, MessageSquareIcon, AlertTriangleIcon, FileText } from 'lucide-react';
+import {
+  BellIcon,
+  MailIcon,
+  MessageSquareIcon,
+  AlertTriangleIcon,
+  CalendarSync,
+} from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,6 +41,8 @@ const NotificationDropdown = ({ notifications, markAsReadNotificationFun }) => {
     switch (type) {
       case 'contact_form':
         return <MailIcon className="h-4 w-4 text-blue-500" />;
+      case 'google_meet_cron':
+        return <CalendarSync className="h-4 w-4 text-green-500" />;
       case 'message':
         return <MessageSquareIcon className="h-4 w-4 text-green-500" />;
       case 'alert':
