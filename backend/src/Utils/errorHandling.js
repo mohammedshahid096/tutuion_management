@@ -33,8 +33,8 @@ class ErrorHandler {
     } else if (error.name === "ValidationError") {
       httpError = httpErrors.BadRequest(error.message);
     } else if (error.name === "GoogleRefreshTokenExpiredError") {
-      httpError = httpErrors.BadRequest(
-        "User needs to re-authenticate with Google"
+      httpError = httpErrors.Unauthorized(
+        "Google token is missing or invalid. Please connect your Google account."
       );
     } else {
       httpError = httpErrors.InternalServerError(error.message);

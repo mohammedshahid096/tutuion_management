@@ -53,10 +53,8 @@ class GoogleAuthServiceClass {
 
       // Store tokens in database
       if (this.userID && isConnected) {
-        console.log("connected");
         userDetails = await this.saveTokensToDatabase(tokens);
       } else if (this.userID && !isConnected) {
-        console.log("not disconnected");
         let profileDetails = await this.getUserInfo();
         profileDetails = {
           resourceName: profileDetails.resourceName,
@@ -94,6 +92,14 @@ class GoogleAuthServiceClass {
     );
     try {
       const { tokens } = await this.getTokensFromDatabase();
+
+      if (tokens === null) {
+        const googleRefreshTokenExpiryError = new Error(
+          "REFRESH_TOKEN_EXPIRED"
+        );
+        googleRefreshTokenExpiryError.name = "GoogleRefreshTokenExpiredError";
+        throw googleRefreshTokenExpiryError;
+      }
       this.setCredentials(tokens);
       // Check if access token is expired
       const isTokenExpired = this.oAuth2Client.isTokenExpiring();
@@ -119,6 +125,16 @@ class GoogleAuthServiceClass {
             );
             googleRefreshTokenExpiryError.name =
               "GoogleRefreshTokenExpiredError";
+
+            await userModel.findByIdAndUpdate(this.userID, {
+              $set: {
+                google: {
+                  isConnected: false,
+                  tokens: null,
+                  profileDetails: null,
+                },
+              },
+            });
             throw googleRefreshTokenExpiryError;
           }
           throw refreshError;
