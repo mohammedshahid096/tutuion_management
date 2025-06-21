@@ -46,7 +46,9 @@ const createContactFormController = async (req, res, next) => {
       url: "/admin/contact-forms",
     });
 
-    await emitNotificationToAdmin(newNotificationData.toObject());
+    await emitNotificationToAdmin({
+      notificationData: newNotificationData.toObject(),
+    });
 
     logger.info(
       "Controller - contact.controller - CreateContactFormController - End"

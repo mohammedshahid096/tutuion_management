@@ -2,7 +2,7 @@ const { getSocketIO } = require("../../socket.io");
 const logger = require("../Config/logger.config");
 const { admin_emit_listeners } = require("../Constants/socket.constants");
 
-const emitNotificationToAdmin = (notificationData) => {
+const emitNotificationToAdmin = ({ notificationData }) => {
   const io = getSocketIO();
   logger.info("Utils - emitNotificationToAdmin - Start");
   if (io) {

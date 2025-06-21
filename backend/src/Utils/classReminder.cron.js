@@ -7,6 +7,8 @@ const LiveClassServiceClass = require("../Services/createLiveClass.service");
 const errorHandling = require("../Utils/errorHandling");
 const moment = require("moment");
 const { USER_ACCOUNT_ID } = require("../Config/index.config");
+const { emitNotificationToAdmin } = require("./socket.utils");
+const notificationModel = require("../Schema/notification/notification.schema");
 
 const createNewLiveClassUtility = async () => {
   try {
@@ -68,6 +70,17 @@ const createNewLiveClassUtility = async () => {
         throw error;
       }
     }
+
+    let newNotificationData = await notificationModel.create({
+      message: "Google Meet classes have been scheduled for today.",
+      type: "google_meet_cron",
+      recipientType: "admin",
+      url: "/admin/mark-attendance",
+    });
+
+    await emitNotificationToAdmin({
+      notificationData: newNotificationData.toObject(),
+    });
 
     logger.info(
       "Utils - classReminder.cron -  createNewLiveClassController   - End"

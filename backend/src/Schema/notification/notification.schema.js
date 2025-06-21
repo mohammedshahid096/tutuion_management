@@ -14,9 +14,14 @@ const ModelSchema = new mongoose.Schema(
       default: null,
     },
 
+    category: {
+      type: String,
+      enum: ["primary", "warning", "success", "danger", "info"],
+      default: "primary",
+    },
     type: {
       type: String,
-      enum: ["contact_form", "custom"],
+      enum: ["contact_form", "custom", "google_meet_cron"],
       default: "custom",
     },
 
