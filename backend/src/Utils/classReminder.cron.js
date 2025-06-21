@@ -71,8 +71,8 @@ const createNewLiveClassUtility = async () => {
       }
     }
 
-    let newNotificationData = await notificationModel.create({
-      message: "Google Meet classes have been scheduled for today.",
+    const newNotificationData = await notificationModel.create({
+      message: "Google Meet classes are scheduled.",
       type: "google_meet_cron",
       recipientType: "admin",
       url: "/admin/mark-attendance",
