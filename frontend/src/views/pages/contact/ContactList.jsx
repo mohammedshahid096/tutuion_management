@@ -109,6 +109,7 @@ const ContactList = () => {
         totalPages={contactList?.totalPages}
         currentPage={contactList?.currentPage}
         onPageChange={paginationFunctionHandler}
+        limit={info?.limit}
       />
     </MainWrapper>
   );

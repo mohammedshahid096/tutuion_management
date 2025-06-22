@@ -135,6 +135,7 @@ const NotesList = () => {
           totalPages={notesList?.totalPages}
           currentPage={notesList?.currentPage}
           onPageChange={paginationFunctionHandler}
+          limit={info?.limit}
           actions={(row) => (
             <TableRow
               row={row}

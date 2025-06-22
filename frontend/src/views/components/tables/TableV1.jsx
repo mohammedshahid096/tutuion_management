@@ -24,6 +24,7 @@ const CustomTable1 = ({
   totalPages = 1,
   onPageChange,
   loading = false,
+  limit = 10,
 }) => {
   // Check if data is empty
   const isEmptyData = !docs || docs?.length === 0;
@@ -68,7 +69,7 @@ const CustomTable1 = ({
               ) : (
                 docs?.map((item, rowIndex) => (
                   <TableRow key={rowIndex}>
-                    {index && <TableCell>{rowIndex + 1}.</TableCell>}
+                    {index && <TableCell>{(currentPage - 1) * limit + rowIndex + 1}.</TableCell>}
                     {headers.map((header, colIndex) => (
                       <TableCell key={colIndex}>
                         <div className="text-sm">{item[header.key] || 'N/A'}</div>
@@ -114,6 +115,7 @@ CustomTable1.prototype = {
   onPageChange: PropTypes.func,
   cardTitle: PropTypes.string,
   loading: PropTypes.bool,
+  limit: PropTypes.number,
 };
 
 export default CustomTable1;

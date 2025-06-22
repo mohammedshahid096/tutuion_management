@@ -89,6 +89,7 @@ const MyAttendance = () => {
         totalPages={myAttendanceList?.totalPages}
         currentPage={myAttendanceList?.currentPage}
         onPageChange={(page) => paginationHandlerFunction(page)}
+        limit={info?.limit}
       />
     </MainWrapper>
   );
