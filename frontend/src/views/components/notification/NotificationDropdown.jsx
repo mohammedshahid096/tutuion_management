@@ -107,8 +107,8 @@ const NotificationDropdown = ({ notifications, markAsReadNotificationFun }) => {
         </div>
         {notifications?.length > 0 && (
           <div className="px-4 py-2 text-center border-t">
-            <button className="text-xs text-blue-500 hover:underline">
-              View all notifications
+            <button className="text-xs text-red-500 hover:underline">
+              delete all notifications
             </button>
           </div>
         )}

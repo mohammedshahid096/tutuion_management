@@ -69,6 +69,36 @@ class TwilioService {
     }
   }
 
+  async continueResponse() {
+    try {
+      logger.info(
+        "Services - twilio.service -  TwilioService - continueResponse - Start"
+      );
+      const VoiceResponse = twilio.twiml.VoiceResponse;
+      const twiml = new VoiceResponse();
+      const gather = twiml.gather({
+        input: "speech",
+        speechTimeout: "auto",
+        action: `${this.baseUrl}/process-speech`,
+        method: "POST",
+      });
+      gather.say("Is there anything else I can help you with?");
+
+      logger.info(
+        "Services - twilio.service -  TwilioService - continueResponse - End"
+      );
+
+      return twiml.toString();
+    } catch (error) {
+      logger.error(
+        "Services - twilio.service -  TwilioService - continueResponse - End",
+        error
+      );
+
+      throw new Error(`Twilio continueResponse failed: ${error.message}`);
+    }
+  }
+
   async processSpeech(speechResult) {
     try {
       logger.info(
@@ -94,6 +124,18 @@ class TwilioService {
 
       console.log(response.content);
       twiml.say(response.content);
+
+      const lowerSpeech = speechResult.toLowerCase();
+      if (
+        lowerSpeech.includes("bye") ||
+        lowerSpeech.includes("hang up") ||
+        lowerSpeech.includes("hangup")
+      ) {
+        twiml.say("Goodbye! Ending the call now.");
+        twiml.hangup();
+      } else {
+        twiml.redirect(`${this.baseUrl}/continue`);
+      }
 
       logger.info(
         "Services - twilio.service -  TwilioService - processSpeech - End"

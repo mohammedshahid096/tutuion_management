@@ -89,15 +89,31 @@ const processSpeechAgentController = async (req, res, next) => {
   }
 };
 
-const testAiCallingAgentController = async (req, res, next) => {
-  const callingAgentService = new CallingAgentService();
-  let response = await callingAgentService.processRequest("hello");
-  res.send(response.content);
+const continueAiCallingAgentController = async (req, res, next) => {
+  try {
+    logger.info(
+      "Controller - call_agents.controller - continueAiCallingAgentController - start"
+    );
+
+    const twilioService = new TwilioService();
+    const resultXml = await twilioService.voiceResponse();
+
+    logger.info(
+      "Controller - call_agents.controller - continueAiCallingAgentController - End"
+    );
+    res.type("text/xml").send(resultXml);
+  } catch (error) {
+    logger.error(
+      "Controller -  call_agents.controller - continueAiCallingAgentController - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
 };
 
 module.exports = {
   callInitialController,
   voiceCallAgentController,
   processSpeechAgentController,
-  testAiCallingAgentController,
+  continueAiCallingAgentController,
 };
