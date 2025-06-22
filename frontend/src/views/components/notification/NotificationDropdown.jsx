@@ -66,7 +66,7 @@ const NotificationDropdown = ({ notifications, markAsReadNotificationFun }) => {
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-80 p-0" align="end">
+      <DropdownMenuContent className="w-[22rem] p-0" align="end">
         <div className="flex items-center justify-between mt-1 px-4 py-3 border-b">
           <h2 className="font-semibold text-sm">Notifications</h2>
           {unreadNotifications > 0 && (
