@@ -17,9 +17,11 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { format } from 'timeago.js';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 const NotificationDropdown = ({ notifications, markAsReadNotificationFun }) => {
   const [unreadNotifications, setUnreadNotifications] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setUnreadNotifications(notifications?.filter((n) => !n.isRead).length);
@@ -79,10 +81,14 @@ const NotificationDropdown = ({ notifications, markAsReadNotificationFun }) => {
               <DropdownMenuItem
                 key={notification._id}
                 className={cn(
-                  'flex gap-3 px-4 py-3 border-b',
-                  !notification.isRead && 'bg-gray-50 cursor-pointer'
+                  'flex gap-3 px-4 py-3 border-b cursor-pointer',
+                  !notification.isRead && 'bg-gray-50'
                 )}
-                onClick={!notification.isRead ? () => markAsRead(notification._id) : null}
+                onClick={
+                  !notification.isRead
+                    ? () => markAsRead(notification._id)
+                    : () => notification?.url && navigate(notification?.url)
+                }
               >
                 <div className="flex-shrink-0">{getNotificationIcon(notification.type)}</div>
                 <div className="flex-1 min-w-0">
