@@ -87,6 +87,8 @@ const ContactList = () => {
     <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="Form Responses | EduExcellence" />
 
+      <br />
+
       <CustomTable1
         headers={headers}
         docs={contactList?.docs?.map((singleData) => ({

@@ -47,7 +47,6 @@ import {
 import useLogout from '@/hooks/useLogout';
 import { Link, useNavigate } from 'react-router-dom';
 import getInitials from '@/helpers/get-initials';
-import useSocket from '@/hooks/useSocket';
 import Context from '@/context/context';
 
 const data = {
@@ -174,7 +173,7 @@ const AdminSidebar = ({ user, children }) => {
   const {
     notificationState: { fetchNotificationsAction, notifications },
   } = useContext(Context);
-  const { isConnected, socketRef } = useSocket({ isAdmin: true });
+
   useEffect(() => {
     fetchNotificationsAction();
   }, []);
