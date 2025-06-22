@@ -72,7 +72,7 @@ const processSpeechAgentController = async (req, res, next) => {
 
     const { SpeechResult } = req.body;
 
-    console.log(req.body);
+    // console.log(req.body);
     const twilioService = new TwilioService();
     const resultXml = await twilioService.processSpeech(SpeechResult);
 
@@ -96,7 +96,7 @@ const continueAiCallingAgentController = async (req, res, next) => {
     );
 
     const twilioService = new TwilioService();
-    const resultXml = await twilioService.voiceResponse();
+    const resultXml = await twilioService.continueResponse();
 
     logger.info(
       "Controller - call_agents.controller - continueAiCallingAgentController - End"
