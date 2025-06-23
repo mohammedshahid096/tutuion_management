@@ -5,6 +5,7 @@ const TwilioService = require("../../Services/twilio.service");
 const agentChatModel = require("../../Schema/agent-chat/agentChat.model");
 const httpError = require("http-errors");
 const CallingAgentService = require("../../Services/callagent.service");
+const callAgentChatModel = require("../../Schema/agent-chat/callagentChat.model");
 
 const callInitialController = async (req, res, next) => {
   try {
@@ -22,6 +23,15 @@ const callInitialController = async (req, res, next) => {
       twilioMlNextUrl
     );
 
+    let details = new callAgentChatModel({
+      sid: callDetails.sid,
+      to: callDetails.to,
+      // callDetails:{},
+      messages: [],
+    });
+
+    await details.save();
+
     logger.info(
       "Controller - call_agents.controller - callInitialController - End"
     );
@@ -29,9 +39,8 @@ const callInitialController = async (req, res, next) => {
       success: true,
       statusCode: 200,
       message: "caller initiated successfully",
-      data: {
-        callDetails,
-      },
+      data: details,
+      callDetails,
     });
   } catch (error) {
     logger.error(
@@ -70,11 +79,14 @@ const processSpeechAgentController = async (req, res, next) => {
       "Controller - call_agents.controller - processSpeechAgentController - Start"
     );
 
-    const { SpeechResult } = req.body;
+    const { SpeechResult, CallSid } = req.body;
 
     // console.log(req.body);
     const twilioService = new TwilioService();
-    const resultXml = await twilioService.processSpeech(SpeechResult);
+    const resultXml = await twilioService.processSpeech({
+      speechResult: SpeechResult,
+      sid: CallSid,
+    });
 
     logger.info(
       "Controller - call_agents.controller - processSpeechAgentController - End"

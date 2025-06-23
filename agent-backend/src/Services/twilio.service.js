@@ -99,7 +99,7 @@ class TwilioService {
     }
   }
 
-  async processSpeech(speechResult) {
+  async processSpeech({ speechResult, sid }) {
     try {
       logger.info(
         "Services - twilio.service -  TwilioService - processSpeech - Start"

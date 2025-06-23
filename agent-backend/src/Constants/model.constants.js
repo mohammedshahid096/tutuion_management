@@ -10,4 +10,5 @@ module.exports = {
   contactForms: "contact_forms",
   notes: "notes",
   agentChatMessages: "agent_chat_messages",
+  callAgentChatMessages: "call_agent_chat_messages",
 };
