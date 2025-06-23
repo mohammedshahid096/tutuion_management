@@ -115,7 +115,10 @@ class TwilioService {
         logger.info(
           "Services - twilio.service -  TwilioService - processSpeech - No speech detected"
         );
-        return twiml.toString();
+        return {
+          resultXml: twiml.toString(),
+          data: null,
+        };
       }
 
       const callingAgentService = new CallingAgentService({
@@ -127,8 +130,8 @@ class TwilioService {
         sessionDetails
       );
 
-      // console.log(response.content);
-      twiml.say(response.content);
+      // console.log(data);
+      twiml.say(data?.output || "");
 
       const lowerSpeech = speechResult.toLowerCase();
       if (

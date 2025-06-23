@@ -109,7 +109,7 @@ const processSpeechAgentController = async (req, res, next) => {
 
     // console.log(req.body);
     const twilioService = new TwilioService();
-    const { resultXml, data } = await twilioService.processSpeech({
+    const { resultXml, data = null } = await twilioService.processSpeech({
       speechResult: SpeechResult,
       sessionDetails: isSessionExist,
       historyCount: 6,
@@ -119,25 +119,27 @@ const processSpeechAgentController = async (req, res, next) => {
       "Controller - call_agents.controller - processSpeechAgentController - End"
     );
 
-    isSessionExist.messages.push(
-      {
-        content: data?.input || "",
-        role: "user",
-        timestamp: userTimestamp,
-      },
-      {
-        content: data?.output || "",
-        role: "ai",
-        timestamp: new Date(),
-      }
-    );
+    if (data) {
+      isSessionExist.messages.push(
+        {
+          content: data?.input || "",
+          role: "user",
+          timestamp: userTimestamp,
+        },
+        {
+          content: data?.output || "",
+          role: "ai",
+          timestamp: new Date(),
+        }
+      );
 
-    isSessionExist.history = [
-      ...isSessionExist.history,
-      ...(data?.history ? data.history.slice(-2) : []),
-    ];
+      isSessionExist.history = [
+        ...isSessionExist.history,
+        ...(data?.history ? data.history.slice(-2) : []),
+      ];
 
-    await isSessionExist.save();
+      await isSessionExist.save();
+    }
 
     res.type("text/xml").send(resultXml);
   } catch (error) {
