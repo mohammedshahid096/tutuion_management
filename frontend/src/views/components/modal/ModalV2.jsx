@@ -8,7 +8,7 @@ const ModalV2 = ({
   onClose,
   children,
   title = '',
-  side = 'left', // 'left' or 'right'
+  side = 'right', // 'left' or 'right'
   width = 'md', // 'sm', 'md', 'lg', 'full', or custom Tailwind class
   maxHeight = '80vh',
   closeOutside = true,

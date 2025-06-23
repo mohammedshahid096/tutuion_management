@@ -7,6 +7,8 @@ import { format } from 'timeago.js';
 import { useParams } from 'react-router-dom';
 import MetaData from '@/utils/MetaData';
 import CustomTable1 from '@/views/components/tables/TableV1';
+import { Button } from '@/components/ui/button';
+import CreateHomework from '@/views/features/homework/createHomework';
 
 const headers = [
   { title: 'Title', key: 'title' },
@@ -26,6 +28,12 @@ const HomeworkList = () => {
   const [info, setInfo] = useState({
     limit: 20,
     currentPage: 1,
+    openModal: false,
+    isSubmitting: false,
+    initialValues: {
+      title: '',
+      description: '',
+    },
   });
 
   useEffect(() => {
@@ -60,8 +68,16 @@ const HomeworkList = () => {
     [info?.currentPage]
   );
 
+  const closeModalFunction = useCallback(() => {
+    setInfo((prev) => ({ ...prev, openModal: false }));
+  }, [info?.openModal]);
+
   return (
     <div>
+      <div className="my-3 flex justify-end">
+        <Button onClick={() => setInfo({ ...info, openModal: true })}>Create Homework</Button>
+      </div>
+
       <MetaData title={`Admin Student Homework | EduExcellence `} />
 
       <CustomTable1
@@ -79,6 +95,8 @@ const HomeworkList = () => {
         onPageChange={paginationFunctionHandler}
         limit={info?.limit}
       />
+
+      <CreateHomework info={info} setInfo={setInfo} closeModalFunction={closeModalFunction} />
     </div>
   );
 };
