@@ -6,8 +6,10 @@ export const STUDENT_ACTIONS_TYPES = {
   ATTENDANCE: '/attendances',
   ADMIN: '/admin',
   DATE_WISE: '/date-wise',
+  HOMEWORK_LIST: '/homework-list',
 };
 
 export const BASE_STUDENT = '/user';
 export const ENROLLMENT_BASE = '/enrollment';
 export const ATTENDANCE_BASE = '/attendance';
+export const HOMEWORK_BASE = '/homework';

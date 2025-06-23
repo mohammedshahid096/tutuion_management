@@ -7,6 +7,7 @@ import {
   ATTENDANCE_LIST,
   UPDATE_STUDENT_STATE,
   DATE_WISE_ATTENDANCE,
+  HOMEWORK_LIST,
 } from './constant';
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
   attendanceList: null,
   dateWiseAttendance: null,
   myAttendanceList: null,
+  homeworkList: null,
 };
 
 export const StudentReducer = (state = initialState, action) => {
@@ -42,6 +44,10 @@ export const StudentReducer = (state = initialState, action) => {
       loading: true,
     }),
     [DATE_WISE_ATTENDANCE.request]: () => ({
+      ...state,
+      loading: true,
+    }),
+    [HOMEWORK_LIST.request]: () => ({
       ...state,
       loading: true,
     }),
@@ -72,6 +78,11 @@ export const StudentReducer = (state = initialState, action) => {
       loading: false,
       dateWiseAttendance: action.payload,
     }),
+    [HOMEWORK_LIST.success]: () => ({
+      ...state,
+      loading: false,
+      homeworkList: action.payload,
+    }),
 
     // updating state
     [STUDENT_LIST.update]: () => ({
@@ -89,6 +100,10 @@ export const StudentReducer = (state = initialState, action) => {
     [ATTENDANCE_LIST.update]: () => ({
       ...state,
       attendanceList: action.payload,
+    }),
+    [HOMEWORK_LIST.update]: () => ({
+      ...state,
+      homeworkList: action.payload,
     }),
 
     // Failure state
@@ -119,7 +134,13 @@ export const StudentReducer = (state = initialState, action) => {
     [DATE_WISE_ATTENDANCE.fail]: () => ({
       ...state,
       loading: false,
-      error: action?.payload?.message || 'Fetching attendance failed', // Default error message
+      error: action?.payload?.message || 'Fetching date wise attendance failed', // Default error message
+      statusCode: action?.payload?.statusCode || 500,
+    }),
+    [HOMEWORK_LIST.fail]: () => ({
+      ...state,
+      loading: false,
+      error: action?.payload?.message || 'Fetching homework failed', // Default error message
       statusCode: action?.payload?.statusCode || 500,
     }),
 

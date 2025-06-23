@@ -7,6 +7,7 @@ import {
   ATTENDANCE_LIST,
   UPDATE_STUDENT_STATE,
   DATE_WISE_ATTENDANCE,
+  HOMEWORK_LIST,
 } from './constant';
 import Service from '@/services';
 import * as API from './actionTypes';
@@ -257,6 +258,35 @@ const getDateWiseAttendanceAction = (queryObject) => async (dispatch) => {
 };
 
 /**
+ * The function `getStudentHomeworkListAction` fetches a student's homework list based on the
+ * provided student ID and query parameters.
+ * @param {String} studentId - The unique identifier of the student for whom you want to retrieve the homework list.
+ * @param {Object} queryObject - An object containing query parameters for filtering or customizing the homework list.
+ */
+const getStudentHomeworkListAction = (studentId, queryObject) => async (dispatch) => {
+  dispatch({ type: HOMEWORK_LIST.request });
+
+  const token = getAccessToken();
+  const query = queryObject ? objectToQueryString(queryObject) : '';
+  const response = await Service.fetchGet(
+    `${API.HOMEWORK_BASE}${API.STUDENT_ACTIONS_TYPES.HOMEWORK_LIST}${query}`,
+    token
+  );
+  if (response[0] === true) {
+    const payload = {
+      _id: studentId,
+      ...response[1]?.data,
+    };
+    dispatch({ type: HOMEWORK_LIST.success, payload });
+  } else {
+    dispatch({
+      type: HOMEWORK_LIST.fail,
+      payload: response[1],
+    });
+  }
+};
+
+/**
  * The function `updateAttendanceAction` updates attendance information for a specific attendance ID
  * using a PUT request with the provided JSON data and access token.
  * @param {String} attendanceId - The `attendanceId` parameter is the unique identifier of the attendance record
@@ -322,6 +352,7 @@ export default {
   getStudentAttendanceListAction,
   updateStudentStateAction,
   getDateWiseAttendanceAction,
+  getStudentHomeworkListAction,
   updateAttendanceAction,
   clearStudentErrorsAction,
   resetStudentAction,

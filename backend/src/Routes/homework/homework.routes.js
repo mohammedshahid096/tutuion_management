@@ -11,6 +11,7 @@ const {
 } = require("../../Controllers/homework/homework.controller");
 const {
   createStudentHomeworkValidation,
+  getHomeworkListValidation,
 } = require("../../validators/homework/homework.joi");
 const {
   currentBatchDetailMiddleWare,
@@ -29,6 +30,7 @@ HomeworkRoutes.route("/assign-new-homework/:studentId").post(
 HomeworkRoutes.route("/homework-list").get(
   Authentication,
   Authorization(ADMIN),
+  getHomeworkListValidation,
   getHomeworkListController
 );
 

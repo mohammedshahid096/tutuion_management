@@ -7,6 +7,7 @@ import UpdateStudentDetails from './UpateStudentDetails';
 import AttendanceList from './AttendanceList';
 import Enrollments from './Enrollments';
 import AttendanceCalendar from './AttendanceCalendar';
+import HomeworkList from './HomeworkList';
 
 const menuItems = [
   {
@@ -45,6 +46,15 @@ const menuItems = [
       { label: 'Attendance Calendar', href: null },
     ],
   },
+  {
+    id: 'student-homework',
+    label: 'HomeWorks',
+    breadCrumbs: [
+      { label: 'Students', href: '/admin/students' },
+      { label: 'Student Details', href: null },
+      { label: 'Homeworks', href: null },
+    ],
+  },
 ];
 
 const settingsMenuMapper = {
@@ -52,6 +62,7 @@ const settingsMenuMapper = {
   'student-enrollments': Enrollments,
   'student-attendance': AttendanceList,
   'student-attendance-calendar': AttendanceCalendar,
+  'student-homework': HomeworkList,
 };
 
 const StudentDetails = () => {
