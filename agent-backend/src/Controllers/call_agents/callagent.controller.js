@@ -23,11 +23,29 @@ const callInitialController = async (req, res, next) => {
       twilioMlNextUrl
     );
 
+    // console.log(callDetails);
+
     let details = new callAgentChatModel({
       sid: callDetails.sid,
       to: callDetails.to,
-      // callDetails:{},
+      callDetails: {
+        sid: callDetails.sid,
+        dateCreated: callDetails.dateCreated,
+        dateUpdated: callDetails.dateUpdated,
+        accountSid: callDetails.accountSid,
+        to: callDetails.to,
+        toFormatted: callDetails.toFormatted,
+        from: callDetails.from,
+        fromFormatted: callDetails.fromFormatted,
+        startTime: callDetails.startTime,
+        endTime: callDetails.endTime,
+        duration: callDetails.duration,
+        price: callDetails.price,
+        direction: callDetails.direction,
+        answeredBy: callDetails.answeredBy,
+      },
       messages: [],
+      history: [],
     });
 
     await details.save();
@@ -81,16 +99,46 @@ const processSpeechAgentController = async (req, res, next) => {
 
     const { SpeechResult, CallSid } = req.body;
 
+    let isSessionExist = await callAgentChatModel.findOne({ sid: CallSid });
+
+    if (!isSessionExist) {
+      return next(httpError(404, "Session not found"));
+    }
+
+    const userTimestamp = new Date();
+
     // console.log(req.body);
     const twilioService = new TwilioService();
-    const resultXml = await twilioService.processSpeech({
+    const { resultXml, data } = await twilioService.processSpeech({
       speechResult: SpeechResult,
-      sid: CallSid,
+      sessionDetails: isSessionExist,
+      historyCount: 6,
     });
 
     logger.info(
       "Controller - call_agents.controller - processSpeechAgentController - End"
     );
+
+    isSessionExist.messages.push(
+      {
+        content: data?.input || "",
+        role: "user",
+        timestamp: userTimestamp,
+      },
+      {
+        content: data?.output || "",
+        role: "ai",
+        timestamp: new Date(),
+      }
+    );
+
+    isSessionExist.history = [
+      ...isSessionExist.history,
+      ...(data?.history ? data.history.slice(-2) : []),
+    ];
+
+    await isSessionExist.save();
+
     res.type("text/xml").send(resultXml);
   } catch (error) {
     logger.error(
@@ -123,9 +171,59 @@ const continueAiCallingAgentController = async (req, res, next) => {
   }
 };
 
+const testController = async (req, res, next) => {
+  let message = "i need  student details";
+  let sid = "CA760a2641c02c0c68a32e59e29b602c12";
+
+  let isSessionExist = await callAgentChatModel.findOne({ sid });
+
+  if (!isSessionExist) {
+    return next(httpError(404, "Session not found"));
+  }
+
+  const userTimestamp = new Date();
+
+  let callingAgentService = new CallingAgentService({
+    sessionId: sid,
+    historyCount: 6,
+  });
+
+  const data = await callingAgentService.processRequest(
+    message,
+    isSessionExist
+  );
+
+  isSessionExist.messages.push(
+    {
+      content: data?.input || "",
+      role: "user",
+      timestamp: userTimestamp,
+    },
+    {
+      content: data?.output || "",
+      role: "ai",
+      timestamp: new Date(),
+    }
+  );
+
+  isSessionExist.history = [
+    ...isSessionExist.history,
+    ...(data?.history ? data.history.slice(-2) : []),
+  ];
+
+  await isSessionExist.save();
+
+  res.status(200).json({
+    success: true,
+    isSessionExist,
+    data,
+  });
+};
+
 module.exports = {
   callInitialController,
   voiceCallAgentController,
   processSpeechAgentController,
   continueAiCallingAgentController,
+  testController,
 };

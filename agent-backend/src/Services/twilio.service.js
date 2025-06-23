@@ -99,7 +99,7 @@ class TwilioService {
     }
   }
 
-  async processSpeech({ speechResult, sid }) {
+  async processSpeech({ speechResult, sessionDetails, historyCount }) {
     try {
       logger.info(
         "Services - twilio.service -  TwilioService - processSpeech - Start"
@@ -118,11 +118,16 @@ class TwilioService {
         return twiml.toString();
       }
 
-      // Here you can add logic to handle different speech inputs
-      const callingAgentService = new CallingAgentService();
-      let response = await callingAgentService.processRequest(speechResult);
+      const callingAgentService = new CallingAgentService({
+        sessionId: sessionDetails.sid,
+        historyCount,
+      });
+      let data = await callingAgentService.processRequest(
+        speechResult,
+        sessionDetails
+      );
 
-      console.log(response.content);
+      // console.log(response.content);
       twiml.say(response.content);
 
       const lowerSpeech = speechResult.toLowerCase();
@@ -140,7 +145,10 @@ class TwilioService {
       logger.info(
         "Services - twilio.service -  TwilioService - processSpeech - End"
       );
-      return twiml.toString();
+      return {
+        resultXml: twiml.toString(),
+        data,
+      };
     } catch (error) {
       logger.error(
         "Services - twilio.service -  TwilioService - processSpeech - Error",
