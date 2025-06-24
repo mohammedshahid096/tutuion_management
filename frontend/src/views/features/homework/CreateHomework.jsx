@@ -11,10 +11,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { studentActions } from '@/redux/combineActions';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 
 const createHomework = ({ info, setInfo, closeModalFunction }) => {
-  const { assignNewHomeworkAction } = studentActions;
+  const { assignNewHomeworkAction, updateStudentStateAction } = studentActions;
   const { studentId } = useParams();
+  const dispatch = useDispatch();
+  const { homeworkList } = useSelector((state) => state.studentState);
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required').min(2, 'Title is too short!'),
     description: Yup.string()
@@ -49,6 +53,9 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
       };
       const response = await assignNewHomeworkAction(studentId, json);
       if (response[2] === 201) {
+        let updateList = _.cloneDeep(homeworkList);
+        updateList.docs = [response[1]?.data, ...updateList.docs];
+        dispatch(updateStudentStateAction({ homeworkList: updateList }));
         resetForm();
         closeModalFunction();
       } else {
