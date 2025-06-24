@@ -7,12 +7,16 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
 import { Label } from '@radix-ui/react-dropdown-menu';
 import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import { studentActions } from '@/redux/combineActions';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
+import { CalendarIcon } from 'lucide-react';
+import { Calendar } from '@/components/ui/calendar';
+import { format } from 'date-fns';
 
 const createHomework = ({ info, setInfo, closeModalFunction }) => {
   const { assignNewHomeworkAction, updateStudentStateAction } = studentActions;
@@ -24,12 +28,14 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
     description: Yup.string()
       .required('Description is required')
       .min(5, 'Description is too short!'),
+    deadline: Yup.date().required('Date of birth is required'),
   });
 
   const formik = useFormik({
     initialValues: {
-      title: info?.title || '',
-      description: info?.description || '',
+      title: info?.initialValues?.title || '',
+      description: info?.initialValues?.description || '',
+      deadline: info?.initialValues?.deadline || new Date(),
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -37,7 +43,17 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
       submitAssignHomeworkFormHandler(values);
     },
   });
-  const { errors, values, touched, handleChange, handleSubmit, handleBlur, resetForm } = formik;
+
+  const {
+    errors,
+    values,
+    touched,
+    handleChange,
+    setFieldValue,
+    handleSubmit,
+    handleBlur,
+    resetForm,
+  } = formik;
 
   const submitAssignHomeworkFormHandler = useCallback(
     async (values) => {
@@ -71,6 +87,7 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
     <ModalV2
       isOpen={info?.openModal}
       title="Create New Homework"
+      closeOutside={false}
       onClose={() => {
         resetForm();
         closeModalFunction();
@@ -115,6 +132,27 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
               />
               {touched?.description && errors?.description && (
                 <p className="text-sm text-red-500 mt-1">{errors?.description}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="deadline" className="block text-sm font-medium">
+                Deadline to Submit *
+              </Label>
+              <input
+                id="deadline"
+                type="date"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Select date"
+                value={values?.deadline}
+                onChange={(e) => setFieldValue('deadline', e.target.value)}
+                onBlur={handleBlur}
+                min={new Date().toISOString().split('T')[0]}
+                readOnly={info?.isSubmitting}
+              />
+
+              {touched?.deadline && errors?.deadline && (
+                <span className="text-red-500 text-sm">{errors?.deadline}</span>
               )}
             </div>
 

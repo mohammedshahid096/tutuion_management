@@ -68,13 +68,7 @@ const SubjectDetailsCardSkeleton = memo(() => {
 const RegisterStudent = () => {
   const { getBatchesListAction } = batchActions;
   const { getBoardsListAction } = boardActions;
-  const {
-    registerNewStudentAction,
-    updateStudentDetailsAction,
-    getSingleStudentDetailAction,
-    getStudentEnrollmentListAction,
-    createNewEnrollmentAction,
-  } = studentActions;
+  const { registerNewStudentAction } = studentActions;
 
   const dispatch = useDispatch();
   const { batchesList } = useSelector((state) => state.batchState);

@@ -33,6 +33,7 @@ const HomeworkList = () => {
     initialValues: {
       title: '',
       description: '',
+      deadline: moment().add(1, 'days').format('YYYY-MM-DD'),
     },
   });
 
@@ -76,9 +77,10 @@ const HomeworkList = () => {
       initialValues: {
         title: '',
         description: '',
+        deadline: moment().add(1, 'days').format('YYYY-MM-DD'),
       },
     }));
-  }, [info?.openModal]);
+  }, [info?.openModal, info?.isSubmitting, info?.initialValues]);
 
   return (
     <div>
