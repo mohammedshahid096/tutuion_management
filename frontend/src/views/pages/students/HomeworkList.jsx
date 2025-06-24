@@ -38,7 +38,7 @@ const HomeworkList = () => {
   });
 
   useEffect(() => {
-    if (!homeworkList && homeworkList?._id !== studentId && homeworkList?.currentPage !== 1) {
+    if (!homeworkList || homeworkList?._id !== studentId || homeworkList?.currentPage !== 1) {
       fetchHomeworkListHandler();
     }
   }, []);
@@ -48,6 +48,7 @@ const HomeworkList = () => {
       let query = {
         page: queryObject?.currentPage ?? info?.currentPage,
         limit: queryObject?.limit ?? info?.limit,
+        student: studentId,
       };
       dispatch(getStudentHomeworkListAction(query, query));
     },

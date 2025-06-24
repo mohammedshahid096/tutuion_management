@@ -96,7 +96,7 @@ const getHomeworkListController = async (req, res, next) => {
       .skip(skip_docs)
       .limit(limit)
       .sort(sortConstants[sort] || sortConstants["-createdAt"])
-      .populate("assignedBy", "name")
+      // .populate("assignedBy", "name")
       .lean();
 
     const hasNext = totalDocs > skip_docs + limit;

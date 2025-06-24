@@ -68,7 +68,11 @@ const CustomPagination = ({
               e.preventDefault();
               if (currentPage > 1) onPageChange(currentPage - 1);
             }}
-            className={currentPage <= 1 ? 'pointer-events-none cursor-not-allowed opacity-50' : ''}
+            className={
+              currentPage <= 1
+                ? 'pointer-events-none cursor-not-allowed opacity-50'
+                : 'cursor-pointer'
+            }
           />
         </PaginationItem>
 
