@@ -172,6 +172,7 @@ const AdminSidebar = ({ user, children }) => {
   const navigate = useNavigate();
   const {
     notificationState: { fetchNotificationsAction, notifications },
+    sidebarState: { isSidebarOpen },
   } = useContext(Context);
 
   useEffect(() => {
@@ -181,7 +182,7 @@ const AdminSidebar = ({ user, children }) => {
   }, []);
 
   return (
-    <SidebarProvider>
+    <SidebarProvider open={isSidebarOpen}>
       <Sidebar collapsible="icon">
         <SidebarHeader>
           <SidebarMenu>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useContext } from 'react';
 import StudentSidebar from './StudentLayout';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
@@ -15,11 +15,14 @@ import { STUDENT, ADMIN } from '@/constants/roles.constants';
 import AdminSidebar from './Admin';
 import { useSelector } from 'react-redux';
 import DashboardHeader from '../components/navbar/DashboardHeader';
+import Context from '@/context/context';
 
 const MainWrapper = ({ breadCrumbs = [], children }) => {
   const navigate = useNavigate();
   const { profileDetails } = useSelector((state) => state.userProfileState);
-
+  const {
+    sidebarState: { isSidebarOpen, isSidebarOpenAction },
+  } = useContext(Context);
   const RoleWiseSidebar = {
     [STUDENT]: StudentSidebar,
     [ADMIN]: AdminSidebar,
@@ -27,11 +30,15 @@ const MainWrapper = ({ breadCrumbs = [], children }) => {
 
   const SidebarComponent = RoleWiseSidebar[profileDetails?.role] || AdminSidebar;
 
+  const handleSidebarTrigger = useCallback(() => {
+    isSidebarOpenAction(!isSidebarOpen);
+  }, [isSidebarOpen]);
+
   return (
     <SidebarComponent user={profileDetails}>
       <DashboardHeader profileDetails={profileDetails}>
         <div className="flex items-center gap-2 px-4">
-          <SidebarTrigger className="-ml-1" />
+          <SidebarTrigger className="-ml-1" onClick={handleSidebarTrigger} />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
             <BreadcrumbList>
