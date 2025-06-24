@@ -26,7 +26,7 @@ const HomeworkList = () => {
   const { homeworkList, loading } = useSelector((state) => state.studentState);
 
   const [info, setInfo] = useState({
-    limit: 20,
+    limit: 10,
     currentPage: 1,
     openModal: false,
     isSubmitting: false,
@@ -37,7 +37,7 @@ const HomeworkList = () => {
   });
 
   useEffect(() => {
-    if (!homeworkList && homeworkList?._id !== studentId) {
+    if (!homeworkList && homeworkList?._id !== studentId && homeworkList?.currentPage !== 1) {
       fetchHomeworkListHandler();
     }
   }, []);
@@ -48,7 +48,7 @@ const HomeworkList = () => {
         page: queryObject?.currentPage ?? info?.currentPage,
         limit: queryObject?.limit ?? info?.limit,
       };
-      dispatch(getStudentHomeworkListAction(query));
+      dispatch(getStudentHomeworkListAction(query, query));
     },
     [studentId, homeworkList, info?.currentPage, info?.limit]
   );

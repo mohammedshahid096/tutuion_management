@@ -263,28 +263,30 @@ const getDateWiseAttendanceAction = (queryObject) => async (dispatch) => {
  * @param {String} studentId - The unique identifier of the student for whom you want to retrieve the homework list.
  * @param {Object} queryObject - An object containing query parameters for filtering or customizing the homework list.
  */
-const getStudentHomeworkListAction = (studentId, queryObject) => async (dispatch) => {
-  dispatch({ type: HOMEWORK_LIST.request });
+const getStudentHomeworkListAction =
+  (studentId, queryObject = null) =>
+  async (dispatch) => {
+    dispatch({ type: HOMEWORK_LIST.request });
 
-  const token = getAccessToken();
-  const query = queryObject ? objectToQueryString(queryObject) : '';
-  const response = await Service.fetchGet(
-    `${API.HOMEWORK_BASE}${API.STUDENT_ACTIONS_TYPES.HOMEWORK_LIST}${query}`,
-    token
-  );
-  if (response[0] === true) {
-    const payload = {
-      _id: studentId,
-      ...response[1]?.data,
-    };
-    dispatch({ type: HOMEWORK_LIST.success, payload });
-  } else {
-    dispatch({
-      type: HOMEWORK_LIST.fail,
-      payload: response[1],
-    });
-  }
-};
+    const token = getAccessToken();
+    const query = queryObject ? objectToQueryString(queryObject) : '';
+    const response = await Service.fetchGet(
+      `${API.HOMEWORK_BASE}${API.STUDENT_ACTIONS_TYPES.HOMEWORK_LIST}${query}`,
+      token
+    );
+    if (response[0] === true) {
+      const payload = {
+        _id: studentId,
+        ...response[1]?.data,
+      };
+      dispatch({ type: HOMEWORK_LIST.success, payload });
+    } else {
+      dispatch({
+        type: HOMEWORK_LIST.fail,
+        payload: response[1],
+      });
+    }
+  };
 
 /**
  * The function `assignNewHomeworkAction` asynchronously assigns new homework to a student using a POST

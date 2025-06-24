@@ -175,7 +175,9 @@ const AdminSidebar = ({ user, children }) => {
   } = useContext(Context);
 
   useEffect(() => {
-    fetchNotificationsAction();
+    if (!notifications) {
+      fetchNotificationsAction();
+    }
   }, []);
 
   return (
