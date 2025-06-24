@@ -4,6 +4,15 @@ import Reducer from './reducer';
 
 export const initialState = {
   isSidebarOpen: true,
+  navMainAdmin: {
+    dashboard: false,
+    batch: false,
+    education_boards: false,
+    tuition_subject: true,
+    students: true,
+    contact: false,
+    notes: false,
+  },
 };
 
 export const SidebarState = () => {
@@ -11,6 +20,10 @@ export const SidebarState = () => {
 
   const isSidebarOpenAction = (isOpen) => {
     dispatch({ type: Actions.IS_SIDEBAR_OPEN, payload: isOpen });
+  };
+
+  const changeNavMainAdminAction = (payload) => {
+    dispatch({ type: Actions.CHANGE_NAV_MAIN_ADMIN, payload });
   };
 
   const updateSidebarStateAction = (payload) => {
@@ -24,6 +37,7 @@ export const SidebarState = () => {
   return {
     ...state,
     isSidebarOpenAction,
+    changeNavMainAdminAction,
     updateSidebarStateAction,
     resetSidebarAction,
   };

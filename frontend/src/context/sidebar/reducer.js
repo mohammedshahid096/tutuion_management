@@ -5,6 +5,10 @@ const actionHandlers = {
     ...state,
     isSidebarOpen: action.payload,
   }),
+  CHANGE_NAV_MAIN_ADMIN: (state, action) => ({
+    ...state,
+    navMainAdmin: action.payload,
+  }),
   UPDATE_SIDEBAR_STATE: (state, action) => ({
     ...state,
     ...action.payload,

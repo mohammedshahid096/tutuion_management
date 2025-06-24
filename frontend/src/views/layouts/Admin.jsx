@@ -48,10 +48,12 @@ import useLogout from '@/hooks/useLogout';
 import { Link, useNavigate } from 'react-router-dom';
 import getInitials from '@/helpers/get-initials';
 import Context from '@/context/context';
+import _ from 'lodash';
 
 const data = {
   navMain: [
     {
+      id: 'dashboard',
       title: 'Dashboard',
       url: '#',
       icon: School,
@@ -69,6 +71,7 @@ const data = {
     },
 
     {
+      id: 'batch',
       title: 'Batch',
       url: '#',
       icon: GraduationCap,
@@ -81,6 +84,7 @@ const data = {
       ],
     },
     {
+      id: 'education_boards',
       title: 'Education Boards',
       url: '#',
       icon: University,
@@ -93,6 +97,7 @@ const data = {
       ],
     },
     {
+      id: 'tuition_subject',
       title: 'Tuition Subject',
       url: '#',
       icon: Book,
@@ -109,6 +114,7 @@ const data = {
       ],
     },
     {
+      id: 'students',
       title: 'Students',
       url: '#',
       icon: Users,
@@ -125,6 +131,7 @@ const data = {
       ],
     },
     {
+      id: 'contact',
       title: 'Contact',
       url: '#',
       icon: FileText,
@@ -137,6 +144,7 @@ const data = {
       ],
     },
     {
+      id: 'notes',
       title: 'Notes',
       url: '#',
       icon: Notebook,
@@ -172,7 +180,7 @@ const AdminSidebar = ({ user, children }) => {
   const navigate = useNavigate();
   const {
     notificationState: { fetchNotificationsAction, notifications },
-    sidebarState: { isSidebarOpen },
+    sidebarState: { isSidebarOpen, navMainAdmin, changeNavMainAdminAction },
   } = useContext(Context);
 
   useEffect(() => {
@@ -180,6 +188,16 @@ const AdminSidebar = ({ user, children }) => {
       fetchNotificationsAction();
     }
   }, []);
+
+  const changeNavMainAdminGroupFunction = useCallback(
+    (id) => {
+      let value = navMainAdmin[id];
+      let updateState = _.cloneDeep(navMainAdmin);
+      updateState[id] = !value;
+      changeNavMainAdminAction(updateState);
+    },
+    [navMainAdmin]
+  );
 
   return (
     <SidebarProvider open={isSidebarOpen}>
@@ -212,11 +230,15 @@ const AdminSidebar = ({ user, children }) => {
                 <Collapsible
                   key={item.title}
                   asChild
-                  defaultOpen={item.isActive}
+                  // defaultOpen={navMainAdmin[item?.id] ?? false}
+                  open={navMainAdmin[item?.id] ?? false}
                   className="group/collapsible"
                 >
                   <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
+                    <CollapsibleTrigger
+                      asChild
+                      onClick={() => changeNavMainAdminGroupFunction(item.id)}
+                    >
                       <SidebarMenuButton tooltip={item.title}>
                         {item.icon && <item.icon />}
                         <span>{item.title}</span>

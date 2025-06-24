@@ -41,7 +41,7 @@ const HomeworkList = () => {
     if (!homeworkList || homeworkList?._id !== studentId || homeworkList?.currentPage !== 1) {
       fetchHomeworkListHandler();
     }
-  }, []);
+  }, [studentId]);
 
   const fetchHomeworkListHandler = useCallback(
     async (queryObject = {}) => {
