@@ -1,15 +1,20 @@
 import ModalV2 from '@/views/components/modal/ModalV2';
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
 import { Label } from '@radix-ui/react-dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { studentActions } from '@/redux/combineActions';
+import { useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const createHomework = ({ info, setInfo, closeModalFunction }) => {
+  const { assignNewHomeworkAction } = studentActions;
+  const { studentId } = useParams();
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required').min(2, 'Title is too short!'),
     description: Yup.string()
@@ -25,13 +30,45 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
     enableReinitialize: true,
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      submitContactFormHandler(values);
+      submitAssignHomeworkFormHandler(values);
     },
   });
   const { errors, values, touched, handleChange, handleSubmit, handleBlur, resetForm } = formik;
 
+  const submitAssignHomeworkFormHandler = useCallback(
+    async (values) => {
+      if (info?.isSubmitting) return;
+
+      setInfo((prev) => ({ ...prev, isSubmitting: true }));
+      let json = {
+        title: values?.title,
+        description: values?.description,
+      };
+      let updateInfoState = {
+        loading: false,
+      };
+      const response = await assignNewHomeworkAction(studentId, json);
+      if (response[2] === 201) {
+        resetForm();
+        closeModalFunction();
+      } else {
+        toast.error(response[1]?.message || 'unable to assign the home work');
+      }
+
+      setInfo((prev) => ({ ...prev, ...updateInfoState }));
+    },
+    [info?.isSubmitting]
+  );
+
   return (
-    <ModalV2 isOpen={info?.openModal} title="Create New Homework" onClose={closeModalFunction}>
+    <ModalV2
+      isOpen={info?.openModal}
+      title="Create New Homework"
+      onClose={() => {
+        resetForm();
+        closeModalFunction();
+      }}
+    >
       <Card className="lg:col-span-2">
         <CardContent>
           <form className="space-y-4 mt-4" onSubmit={handleSubmit}>
@@ -45,7 +82,7 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
                 value={values?.title}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className={`${errors?.title ? 'border-red-500' : ''}`}
+                className={`${touched?.title && errors?.title ? 'border-red-500' : ''}`}
                 readOnly={info?.isSubmitting}
               />
               {touched?.title && errors?.title && (
@@ -64,7 +101,9 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
                 value={values?.description}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className={` resize-none ${errors?.description ? 'border-red-500' : ''}`}
+                className={`resize-none ${
+                  touched?.description && errors?.description ? 'border-red-500' : ''
+                }`}
                 readOnly={info?.isSubmitting}
               />
               {touched?.description && errors?.description && (
@@ -90,7 +129,7 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
                         Creating...
                       </>
                     ) : (
-                      'Create Board'
+                      'Create New Homework'
                     )}
                   </Button>
                 </>
@@ -102,7 +141,7 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
                       Updating...
                     </>
                   ) : (
-                    'Update Board'
+                    'Update Homework'
                   )}
                 </Button>
               )}

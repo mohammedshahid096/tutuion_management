@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import MetaData from '@/utils/MetaData';
 import CustomTable1 from '@/views/components/tables/TableV1';
 import { Button } from '@/components/ui/button';
-import CreateHomework from '@/views/features/homework/createHomework';
+import CreateHomework from '@/views/features/homework/CreateHomework';
 
 const headers = [
   { title: 'Title', key: 'title' },
@@ -69,7 +69,15 @@ const HomeworkList = () => {
   );
 
   const closeModalFunction = useCallback(() => {
-    setInfo((prev) => ({ ...prev, openModal: false }));
+    setInfo((prev) => ({
+      ...prev,
+      openModal: false,
+      isSubmitting: false,
+      initialValues: {
+        title: '',
+        description: '',
+      },
+    }));
   }, [info?.openModal]);
 
   return (

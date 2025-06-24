@@ -287,6 +287,29 @@ const getStudentHomeworkListAction = (studentId, queryObject) => async (dispatch
 };
 
 /**
+ * The function `assignNewHomeworkAction` asynchronously assigns new homework to a student using a POST
+ * request with the provided JSON data and access token.
+ * @param {String} studentId - The `studentId` parameter in the `assignNewHomeworkAction` function is the unique
+ * identifier of the student to whom the homework is being assigned.
+ * @param {Object} json - The `json` parameter in the `assignNewHomeworkAction` function is a JavaScript object
+ * that contains the details of the homework assignment to be assigned to the student. It typically
+ * includes information such as the title of the homework, the due date, instructions, and any other
+ * relevant details needed for the
+ * @returns The `assignNewHomeworkAction` function returns the response from the API call made to
+ * assign new homework to a specific student.
+ */
+const assignNewHomeworkAction = async (studentId, json) => {
+  const token = getAccessToken();
+  const response = await Service.fetchPost(
+    `${API.HOMEWORK_BASE}${API.STUDENT_ACTIONS_TYPES.ASSIGN_HOME_WORK}/${studentId}`,
+    json,
+    token
+  );
+
+  return response;
+};
+
+/**
  * The function `updateAttendanceAction` updates attendance information for a specific attendance ID
  * using a PUT request with the provided JSON data and access token.
  * @param {String} attendanceId - The `attendanceId` parameter is the unique identifier of the attendance record
@@ -353,6 +376,7 @@ export default {
   updateStudentStateAction,
   getDateWiseAttendanceAction,
   getStudentHomeworkListAction,
+  assignNewHomeworkAction,
   updateAttendanceAction,
   clearStudentErrorsAction,
   resetStudentAction,
