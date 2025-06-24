@@ -35,7 +35,7 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
     initialValues: {
       title: info?.initialValues?.title || '',
       description: info?.initialValues?.description || '',
-      deadline: info?.initialValues?.deadline || new Date(),
+      deadline: info?.initialValues?.deadline || null,
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -63,6 +63,7 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
       let json = {
         title: values?.title,
         description: values?.description,
+        deadline: values?.deadline,
       };
       let updateInfoState = {
         loading: false,

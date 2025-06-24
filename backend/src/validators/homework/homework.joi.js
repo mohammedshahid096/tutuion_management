@@ -4,7 +4,7 @@ const createStudentHomeworkValidation = celebrate({
   body: Joi.object({
     title: Joi.string().trim().required(),
     description: Joi.string().optional().allow(""),
-    deadline: Joi.date().optional(),
+    deadline: Joi.date().iso().optional().label("Date should be YYYY-MM-DD"),
   }),
 });
 
