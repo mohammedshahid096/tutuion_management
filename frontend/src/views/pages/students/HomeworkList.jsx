@@ -12,7 +12,7 @@ import CreateHomework from '@/views/features/homework/CreateHomework';
 
 const headers = [
   { title: 'Title', key: 'title' },
-  { title: 'title', key: 'description' },
+  // { title: 'title', key: 'description' },
   { title: 'Deadline', key: 'deadline' },
   { title: 'Date', key: 'date' },
   { title: 'Time Ago', key: 'timeAgo' },

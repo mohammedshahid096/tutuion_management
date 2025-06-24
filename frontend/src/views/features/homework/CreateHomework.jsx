@@ -1,5 +1,5 @@
+import React, { memo, useCallback, useRef, useMemo } from 'react';
 import ModalV2 from '@/views/components/modal/ModalV2';
-import React, { memo, useCallback } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '@/components/ui/button';
@@ -7,21 +7,20 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
 import { Label } from '@radix-ui/react-dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import { studentActions } from '@/redux/combineActions';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
-import { CalendarIcon } from 'lucide-react';
-import { Calendar } from '@/components/ui/calendar';
-import { format } from 'date-fns';
+import JoditEditor from 'jodit-react';
 
 const createHomework = ({ info, setInfo, closeModalFunction }) => {
   const { assignNewHomeworkAction, updateStudentStateAction } = studentActions;
   const { studentId } = useParams();
   const dispatch = useDispatch();
+  const editorRef = useRef(null);
+
   const { homeworkList } = useSelector((state) => state.studentState);
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Title is required').min(2, 'Title is too short!'),
@@ -43,6 +42,14 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
       submitAssignHomeworkFormHandler(values);
     },
   });
+
+  const config = useMemo(
+    () => ({
+      readonly: false,
+      placeholder: 'Start typing...',
+    }),
+    []
+  );
 
   const {
     errors,
@@ -109,6 +116,7 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
                 onBlur={handleBlur}
                 className={`${touched?.title && errors?.title ? 'border-red-500' : ''}`}
                 readOnly={info?.isSubmitting}
+                tabIndex={1}
               />
               {touched?.title && errors?.title && (
                 <p className="text-sm text-red-500 mt-1">{errors?.title}</p>
@@ -119,7 +127,7 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
               <Label htmlFor="description" className="block text-sm font-medium">
                 Description *
               </Label>
-              <Textarea
+              {/* <Textarea
                 id="description"
                 placeholder="Enter board description"
                 rows={5}
@@ -130,7 +138,16 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
                   touched?.description && errors?.description ? 'border-red-500' : ''
                 }`}
                 readOnly={info?.isSubmitting}
-              />
+              /> */}
+              <div className="mb-4">
+                <JoditEditor
+                  ref={editorRef}
+                  value={values?.description}
+                  config={config}
+                  tabIndex={2}
+                  onChange={(newContent) => setFieldValue('description', newContent)}
+                />
+              </div>
               {touched?.description && errors?.description && (
                 <p className="text-sm text-red-500 mt-1">{errors?.description}</p>
               )}
@@ -150,6 +167,7 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
                 onBlur={handleBlur}
                 min={new Date().toISOString().split('T')[0]}
                 readOnly={info?.isSubmitting}
+                tabIndex={3}
               />
 
               {touched?.deadline && errors?.deadline && (
@@ -165,10 +183,11 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
                     variant="outline"
                     disabled={info?.isSubmitting || false}
                     onClick={resetForm}
+                    tabIndex={6}
                   >
                     Reset
                   </Button>
-                  <Button type="submit" disabled={info?.isSubmitting || false}>
+                  <Button type="submit" disabled={info?.isSubmitting || false} tabIndex={5}>
                     {info?.isSubmitting ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -180,7 +199,7 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
                   </Button>
                 </>
               ) : (
-                <Button type="submit" disabled={info?.isSubmitting || false}>
+                <Button type="submit" disabled={info?.isSubmitting || false} tabIndex={5}>
                   {info?.isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
