@@ -83,11 +83,13 @@ const ProgressUpdate = () => {
       {info?.loading ? (
         <ProgressSkeleton />
       ) : (
-        <ProgressViewComp
-          publicSubjectDetail={publicSubjectDetail}
-          info={info}
-          sliderProgress={info?.sliderProgress}
-        />
+        <div className="max-w-[78vw]">
+          <ProgressViewComp
+            publicSubjectDetail={publicSubjectDetail}
+            info={info}
+            sliderProgress={info?.sliderProgress}
+          />
+        </div>
       )}
     </MainWrapper>
   );
