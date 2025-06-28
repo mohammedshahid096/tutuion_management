@@ -63,6 +63,7 @@ const MyEnrollments = () => {
   }, [myEnrollmentList]);
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
+      <br />
       {loading ? (
         <DataTableSkeleton />
       ) : (
@@ -87,13 +88,13 @@ const MyEnrollments = () => {
                         <TableCell className="font-medium">{singleEnrollment?.class}</TableCell>
                         <TableCell>{singleEnrollment?.batch?.name}</TableCell>
                         <TableCell>{singleEnrollment?.board?.name}</TableCell>
-                        <TableCell>
+                        <TableCell className="">
                           {singleEnrollment?.subjects?.map((singleSubject, index) => (
                             <TableRow
                               key={`${singleEnrollment?._id}-subject-${index}`}
                               className="w-full"
                             >
-                              <TableCell className="px-4 font-semibold :">
+                              <TableCell className="px-4 font-semibold">
                                 Subject {index + 1}
                               </TableCell>
                               <TableCell className="px-4">

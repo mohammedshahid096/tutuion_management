@@ -60,7 +60,7 @@ const MySubjectLists = () => {
   const fetchSubjectsListHandler = useCallback(async () => {
     let query = {
       classRoom: profileDetails?.class,
-      boardType: profileDetails?.boardType,
+      boardType: profileDetails?.boardType?._id,
     };
     dispatch(getMySubjectsListAction(query));
   }, []);
@@ -73,7 +73,7 @@ const MySubjectLists = () => {
   );
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
         {loading ? (
           <SubjectCardSkeleton />
         ) : mySubjectList?.length > 0 ? (
