@@ -42,7 +42,7 @@ const StudentRegistrationForm = ({
 
   return (
     <div className="container mx-auto py-8">
-      <Card className=" mx-auto">
+      <Card className="mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl font-bold flex justify-between">
             {' '}

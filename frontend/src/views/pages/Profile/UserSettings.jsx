@@ -75,9 +75,11 @@ const Setting = () => {
 
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
-      <div className="flex gap-6">
-        <div className="flex flex-col gap-6  w-4/5">
-          <ComponentRender />
+      <div className="flex gap-6 mt-4 h-[85vh]">
+        <div className="flex flex-col  gap-6  w-4/5 ">
+          <div className=" max-h-[82vh] overflow-y-auto pr-2">
+            <ComponentRender />
+          </div>
         </div>
 
         <div className="sticky w-1/5 top-4">
