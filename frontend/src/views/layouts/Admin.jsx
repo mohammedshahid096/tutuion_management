@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, memo } from 'react';
 import {
   School,
   Users,
@@ -361,4 +361,4 @@ const AdminSidebar = ({ user, children }) => {
   );
 };
 
-export default AdminSidebar;
+export default memo(AdminSidebar);

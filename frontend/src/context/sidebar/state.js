@@ -13,6 +13,12 @@ export const initialState = {
     contact: false,
     notes: false,
   },
+
+  navMainStudent: {
+    dashboard: false,
+    subjects: true,
+    attendance: false,
+  },
 };
 
 export const SidebarState = () => {
@@ -24,6 +30,10 @@ export const SidebarState = () => {
 
   const changeNavMainAdminAction = (payload) => {
     dispatch({ type: Actions.CHANGE_NAV_MAIN_ADMIN, payload });
+  };
+
+  const changeNavMainStudentAction = (payload) => {
+    dispatch({ type: Actions.CHANGE_NAV_MAIN_STUDENT, payload });
   };
 
   const updateSidebarStateAction = (payload) => {
@@ -38,6 +48,7 @@ export const SidebarState = () => {
     ...state,
     isSidebarOpenAction,
     changeNavMainAdminAction,
+    changeNavMainStudentAction,
     updateSidebarStateAction,
     resetSidebarAction,
   };

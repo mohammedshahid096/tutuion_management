@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { useCallback, useContext, useEffect, memo } from 'react';
 import {
   School,
   ChartPie,
@@ -44,10 +44,13 @@ import {
 import getInitials from '@/helpers/get-initials';
 import { Link, useNavigate } from 'react-router-dom';
 import useLogout from '@/hooks/useLogout';
+import Context from '@/context/context';
+import _ from 'lodash';
 
 const data = {
   navMain: [
     {
+      id: 'dashboard',
       title: 'Dashboard',
       url: '#',
       icon: ChartPie,
@@ -63,7 +66,9 @@ const data = {
         },
       ],
     },
+
     {
+      id: 'subjects',
       title: 'Subjects',
       url: '#',
       icon: BookOpen,
@@ -80,6 +85,7 @@ const data = {
       ],
     },
     {
+      id: 'attendance',
       title: 'Attendance',
       url: '#',
       icon: Clock,
@@ -119,8 +125,23 @@ const StudentSidebar = ({ user, children }) => {
   const logoutFunction = useLogout();
   const navigate = useNavigate();
 
+  const {
+    notificationState: { fetchNotificationsAction, notifications },
+    sidebarState: { isSidebarOpen, navMainStudent, changeNavMainStudentAction },
+  } = useContext(Context);
+
+  const changeNavMainStudentGroupFunction = useCallback(
+    (id) => {
+      let value = navMainStudent[id];
+      let updateState = _.cloneDeep(navMainStudent);
+      updateState[id] = !value;
+      changeNavMainStudentAction(updateState);
+    },
+    [navMainStudent]
+  );
+
   return (
-    <SidebarProvider>
+    <SidebarProvider open={isSidebarOpen}>
       <Sidebar collapsible="icon">
         <SidebarHeader>
           <SidebarMenu>
@@ -148,11 +169,15 @@ const StudentSidebar = ({ user, children }) => {
                 <Collapsible
                   key={item.title}
                   asChild
-                  defaultOpen={item.isActive}
+                  // defaultOpen={item.isActive}
+                  open={navMainStudent[item?.id] ?? false}
                   className="group/collapsible"
                 >
                   <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
+                    <CollapsibleTrigger
+                      asChild
+                      onClick={() => changeNavMainStudentGroupFunction(item.id)}
+                    >
                       <SidebarMenuButton tooltip={item.title}>
                         {item.icon && <item.icon />}
                         <span>{item.title}</span>
