@@ -19,12 +19,12 @@ const currentBatchDetailMiddleWare = async (req, res, next) => {
 
     req.batch = currentBatch;
     logger.info(
-      "Controllers - subject - subject.controller - getSingleSubjectDetailController - End"
+      "MiddleWares - batch.middleware  - getCurrentBatchDetails - End"
     );
     next();
   } catch (error) {
     logger.error(
-      "Controllers - board - board.controller - getSingleSubjectDetailController - Error",
+      "MiddleWares - batch.middleware  - getCurrentBatchDetails - Error",
       error
     );
     errorHandling.handleCustomErrorService(error, next);
