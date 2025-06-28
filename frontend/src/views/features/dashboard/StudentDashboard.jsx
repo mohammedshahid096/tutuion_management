@@ -1,14 +1,29 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useCallback, useEffect } from 'react';
 import MetaData from '@/utils/MetaData';
 import AttendanceGraph from '@/views/components/graphsStudents/AttendanceGraph';
 import MainWrapper from '@/views/layouts/Mainwrapper';
-import { LoaderPinwheel } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { useDispatch, useSelector } from 'react-redux';
+import { graphActions } from '@/redux/combineActions';
 
 const StudentDashboard = () => {
   const [info, setInfo] = useState({
     loading: false,
   });
+
+  const { getStudentDashboardListAction } = graphActions;
+  const dispatch = useDispatch();
+  const { attendanceGraphData, loading } = useSelector((state) => state.graphState);
+
+  useEffect(() => {
+    if (!attendanceGraphData) {
+      fetchStudentDashboardGraphDataHandler();
+    }
+  }, []);
+
+  const fetchStudentDashboardGraphDataHandler = useCallback(() => {
+    dispatch(getStudentDashboardListAction());
+  }, [attendanceGraphData]);
   return (
     <MainWrapper>
       <MetaData title="Student Dashboard | EduExcellence" />
@@ -29,22 +44,7 @@ const StudentDashboard = () => {
           {' '}
           <div className="">
             <Card className="w-full">
-              <AttendanceGraph
-                attendanceData={[
-                  {
-                    _id: '6833b61d3bbae42ea36a37b4',
-                    student: '681b01b3fab308b1358461c1',
-                    startDate: '2025-05-26T02:30:00.000Z',
-                    isPresent: false,
-                  },
-                  {
-                    _id: '6833b61d3bbae42ea36a37b5',
-                    student: '681b01b3fab308b1358461c1',
-                    startDate: '2025-05-27T02:30:00.000Z',
-                    isPresent: true,
-                  },
-                ]}
-              />
+              <AttendanceGraph attendanceData={attendanceGraphData} />
             </Card>
 
             {/* <Card>

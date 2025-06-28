@@ -1,4 +1,9 @@
-import { DASHBOARD_GRAPH_DATA, CLEAR_GRAPH_ERRORS, RESET_GRAPH_STATE } from './constant';
+import {
+  DASHBOARD_GRAPH_DATA,
+  CLEAR_GRAPH_ERRORS,
+  RESET_GRAPH_STATE,
+  STUDENT_DASHBOARD_GRAPH_DATA,
+} from './constant';
 
 const initialState = {
   loading: false,
@@ -7,12 +12,17 @@ const initialState = {
   genderGraphData: null,
   classWiseStudentsGraphData: null,
   boardWiseStudentsGraphData: null,
+  attendanceGraphData: null,
 };
 
 export const GraphReducer = (state = initialState, action) => {
   const actionHandlers = {
     // Loading state
     [DASHBOARD_GRAPH_DATA.request]: () => ({
+      ...state,
+      loading: true,
+    }),
+    [STUDENT_DASHBOARD_GRAPH_DATA]: () => ({
       ...state,
       loading: true,
     }),
@@ -25,15 +35,30 @@ export const GraphReducer = (state = initialState, action) => {
       classWiseStudentsGraphData: action.payload.classWiseStudentsGraphData,
       boardWiseStudentsGraphData: action.payload.boardWiseStudentsGraphData,
     }),
+    [STUDENT_DASHBOARD_GRAPH_DATA.success]: () => ({
+      ...state,
+      loading: false,
+      attendanceGraphData: action.payload.attendanceGraphData,
+    }),
 
     // update state
     [DASHBOARD_GRAPH_DATA.update]: () => ({
       ...state,
       ...action.payload,
     }),
+    [STUDENT_DASHBOARD_GRAPH_DATA.update]: () => ({
+      ...state,
+      ...action.payload,
+    }),
 
     // Failure state
     [DASHBOARD_GRAPH_DATA.fail]: () => ({
+      ...state,
+      loading: false,
+      error: action?.payload?.message || 'Graph data fetch failed', // Default error message
+      statusCode: action?.payload?.statusCode || 500,
+    }),
+    [STUDENT_DASHBOARD_GRAPH_DATA.fail]: () => ({
       ...state,
       loading: false,
       error: action?.payload?.message || 'Graph data fetch failed', // Default error message

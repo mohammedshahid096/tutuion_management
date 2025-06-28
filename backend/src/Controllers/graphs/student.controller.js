@@ -25,6 +25,7 @@ const studentDashboardGraphController = async (req, res, next) => {
         student: req?.query?.studentId ?? req.user?._id,
         batch: req.batch._id,
       })
+      .sort("+startDate")
       .select("startDate isPresent")
       .lean();
 

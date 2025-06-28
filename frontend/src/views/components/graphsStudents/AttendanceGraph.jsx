@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const AttendanceGraph = ({ attendanceData }) => {
+const AttendanceGraph = ({ attendanceData = null }) => {
   // Format data
-  const seriesData = attendanceData.map((record) => ({
-    x: new Date(record.startDate),
-    y: record.isPresent ? 1 : 0,
+  const seriesData = attendanceData?.map((record) => ({
+    x: new Date(record?.startDate),
+    y: record?.isPresent ? 1 : 0,
   }));
 
   const options = {
@@ -53,7 +53,7 @@ const AttendanceGraph = ({ attendanceData }) => {
     },
     markers: {
       size: 4,
-      colors: seriesData.map((d) => (d.y === 1 ? '#4CAF50' : '#F44336')),
+      colors: seriesData?.map((d) => (d.y === 1 ? '#4CAF50' : '#F44336')),
       strokeWidth: 0,
     },
     tooltip: {
