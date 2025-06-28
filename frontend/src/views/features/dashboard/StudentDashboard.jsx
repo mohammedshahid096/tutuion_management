@@ -5,6 +5,7 @@ import MainWrapper from '@/views/layouts/Mainwrapper';
 import { Card } from '@/components/ui/card';
 import { useDispatch, useSelector } from 'react-redux';
 import { graphActions } from '@/redux/combineActions';
+import SubjectProgressGraph from '@/views/components/graphsStudents/SubjectProgressGraph';
 
 const StudentDashboard = () => {
   const [info, setInfo] = useState({
@@ -13,7 +14,9 @@ const StudentDashboard = () => {
 
   const { getStudentDashboardListAction } = graphActions;
   const dispatch = useDispatch();
-  const { attendanceGraphData, loading } = useSelector((state) => state.graphState);
+  const { attendanceGraphData, subjectProgressGraphData, loading } = useSelector(
+    (state) => state.graphState
+  );
 
   useEffect(() => {
     if (!attendanceGraphData) {
@@ -27,29 +30,21 @@ const StudentDashboard = () => {
   return (
     <MainWrapper>
       <MetaData title="Student Dashboard | EduExcellence" />
-      {/* <div className="flex flex-col items-center justify-center h-96">
-        <span className="text-5xl mb-4 text-gray-400">
-          <LoaderPinwheel size={'50'} className="text-black" />
-        </span>
-        <h2 className="text-2xl font-semibold text-gray-700 mb-2">On Progress Development</h2>
-        <p className="text-gray-500">
-          This feature is currently under development. Please check back soon!
-        </p>
-      </div> */}
 
       {info?.loading ? (
         <DashboardSkeleton />
       ) : (
         <div className=" space-y-8 p-2">
           {' '}
-          <div className="">
+          <div className="p-3 space-y-4">
             <Card className="w-full">
               <AttendanceGraph attendanceData={attendanceGraphData} />
             </Card>
-
-            {/* <Card>
-              <AdminClassWiseStudentGraph data={classWiseStudentsGraphData} />
-            </Card> */}
+          </div>
+          <div className="grid grid-cols-2 gap-8 max-sm:grid-cols-1">
+            <Card>
+              <SubjectProgressGraph subjectsProgress={subjectProgressGraphData?.subjectsProgress} />
+            </Card>
           </div>
         </div>
       )}

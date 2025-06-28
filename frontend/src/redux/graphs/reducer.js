@@ -13,6 +13,7 @@ const initialState = {
   classWiseStudentsGraphData: null,
   boardWiseStudentsGraphData: null,
   attendanceGraphData: null,
+  subjectProgressGraphData: null,
 };
 
 export const GraphReducer = (state = initialState, action) => {
@@ -39,6 +40,7 @@ export const GraphReducer = (state = initialState, action) => {
       ...state,
       loading: false,
       attendanceGraphData: action.payload.attendanceGraphData,
+      subjectProgressGraphData: action.payload.subjectProgressGraphData,
     }),
 
     // update state

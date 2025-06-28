@@ -65,13 +65,14 @@ const MyAttendance = () => {
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="My Attendance | EduExcellence" />
+      <br />
       <CustomTable1
         headers={headers}
         docs={myAttendanceList?.docs?.map((singleData) => ({
           ...singleData,
           subjectName: singleData?.subject?.name,
           chapterName: singleData?.progress?.chapter?.title,
-          value: singleData?.progress?.value + '%',
+          value: singleData?.progress?.value || 0 + '%',
           isPresent: singleData?.isPresent ? (
             <Badge className="bg-green-900">Present</Badge>
           ) : (
