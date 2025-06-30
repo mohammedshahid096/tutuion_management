@@ -176,7 +176,7 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
             </div>
 
             <div className="flex justify-end gap-3 pt-4">
-              {!info?.selectedBoardId ? (
+              {!info?.homeworkDetails ? (
                 <>
                   <Button
                     type="button"

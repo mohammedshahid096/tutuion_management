@@ -9,6 +9,7 @@ import MetaData from '@/utils/MetaData';
 import CustomTable1 from '@/views/components/tables/TableV1';
 import { Button } from '@/components/ui/button';
 import CreateHomework from '@/views/features/homework/CreateHomework';
+import { Trash, Pencil, Eye, FilePenLine } from 'lucide-react';
 
 const headers = [
   { title: 'Title', key: 'title' },
@@ -17,6 +18,17 @@ const headers = [
   { title: 'Date', key: 'date' },
   { title: 'Time Ago', key: 'timeAgo' },
 ];
+
+const TableRow = memo(({ row, editHomeworkFunction }) => (
+  <div className="flex gap-4">
+    <Button variant="outline" onClick={() => editHomeworkFunction(row)}>
+      <Pencil color="black" className="cursor-pointer size-5" />
+    </Button>
+    {/* <Button variant="outline">
+      <Trash color="red" className="cursor-pointer size-5" />
+    </Button> */}
+  </div>
+));
 
 const HomeworkList = () => {
   const { getStudentHomeworkListAction } = studentActions;
@@ -35,10 +47,11 @@ const HomeworkList = () => {
       description: '',
       deadline: moment().add(1, 'days').format('YYYY-MM-DD'),
     },
+    homeworkDetails: null,
   });
 
   useEffect(() => {
-    if (!homeworkList || homeworkList?._id !== studentId || homeworkList?.currentPage !== 1) {
+    if ((!homeworkList && homeworkList?._id !== studentId) || homeworkList?.currentPage !== 1) {
       fetchHomeworkListHandler();
     }
   }, [studentId]);
@@ -75,6 +88,7 @@ const HomeworkList = () => {
       ...prev,
       openModal: false,
       isSubmitting: false,
+      homeworkDetails: null,
       initialValues: {
         title: '',
         description: '',
@@ -82,6 +96,22 @@ const HomeworkList = () => {
       },
     }));
   }, [info?.openModal, info?.isSubmitting, info?.initialValues]);
+
+  const editHomeworkFunction = useCallback(
+    (row) => {
+      setInfo((prev) => ({
+        ...prev,
+        homeworkDetails: row,
+        openModal: true,
+        initialValues: {
+          title: row?.title,
+          description: row?.description,
+          deadline: moment(row?.deadline).add(1, 'days').format('YYYY-MM-DD'),
+        },
+      }));
+    },
+    [info?.initialValues]
+  );
 
   return (
     <div>
@@ -105,6 +135,7 @@ const HomeworkList = () => {
         currentPage={homeworkList?.currentPage}
         onPageChange={paginationFunctionHandler}
         limit={info?.limit}
+        actions={(row) => <TableRow row={row} editHomeworkFunction={editHomeworkFunction} />}
       />
 
       <CreateHomework info={info} setInfo={setInfo} closeModalFunction={closeModalFunction} />
