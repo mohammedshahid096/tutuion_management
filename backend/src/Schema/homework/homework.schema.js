@@ -46,6 +46,18 @@ const ModelSchema = new mongoose.Schema(
       ref: enrollmentProgress,
       required: true,
     },
+    rating: {
+      type: Number,
+      default: null,
+    },
+    ratedOn: {
+      type: Date,
+      default: null,
+    },
+    feedback: {
+      type: String,
+      default: null,
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: user,

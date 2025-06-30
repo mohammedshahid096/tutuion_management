@@ -8,10 +8,15 @@ const {
   createStudentHomeworkController,
   getSingleHomeworkController,
   getHomeworkListController,
+  assignHomeworkRatingController,
+  updateHomeworkController,
+  deleteHomeworkController,
 } = require("../../Controllers/homework/homework.controller");
 const {
   createStudentHomeworkValidation,
   getHomeworkListValidation,
+  assignHomeworkRatingValidation,
+  updateHomeworkValidation,
 } = require("../../validators/homework/homework.joi");
 const {
   currentBatchDetailMiddleWare,
@@ -34,10 +39,21 @@ HomeworkRoutes.route("/homework-list").get(
   getHomeworkListController
 );
 
-HomeworkRoutes.route("/:homeworkId").get(
+HomeworkRoutes.route("/:homeworkId")
+  .get(Authentication, Authorization(ADMIN), getSingleHomeworkController)
+  .put(
+    Authentication,
+    Authorization(ADMIN),
+    updateHomeworkValidation,
+    updateHomeworkController
+  )
+  .delete(Authentication, Authorization(ADMIN), deleteHomeworkController);
+
+HomeworkRoutes.route("/assign-rating/:homeworkId").patch(
   Authentication,
   Authorization(ADMIN),
-  getSingleHomeworkController
+  assignHomeworkRatingValidation,
+  assignHomeworkRatingController
 );
 
 module.exports = HomeworkRoutes;

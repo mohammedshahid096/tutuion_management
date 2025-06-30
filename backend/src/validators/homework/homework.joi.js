@@ -17,7 +17,25 @@ const getHomeworkListValidation = celebrate({
   }),
 });
 
+const assignHomeworkRatingValidation = celebrate({
+  body: Joi.object({
+    homeworkId: Joi.string().required(),
+    rating: Joi.number().integer().min(1).max(10).required(),
+    feedback: Joi.string().optional().allow(""),
+  }),
+});
+
+const updateHomeworkValidation = celebrate({
+  body: Joi.object({
+    title: Joi.string().trim().optional(),
+    description: Joi.string().optional().allow(""),
+    deadline: Joi.date().iso().optional().label("Date should be YYYY-MM-DD"),
+  }),
+});
+
 module.exports = {
   createStudentHomeworkValidation,
   getHomeworkListValidation,
+  assignHomeworkRatingValidation,
+  updateHomeworkValidation,
 };

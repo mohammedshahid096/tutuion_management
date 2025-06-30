@@ -167,8 +167,138 @@ const getSingleHomeworkController = async (req, res, next) => {
   }
 };
 
+const assignHomeworkRatingController = async (req, res, next) => {
+  try {
+    logger.info(
+      "Controllers - homework - homework.controller - assignHomeworkRatingController - Start"
+    );
+
+    const { homeworkId } = req.params;
+    const { rating = null, feedback = null } = req.body;
+
+    if (
+      rating !== null &&
+      (typeof rating !== "number" || rating < 1 || rating > 5)
+    ) {
+      return next(
+        httpErrors.BadRequest("Rating must be a number between 1 and 5.")
+      );
+    }
+
+    const update = {
+      rating,
+      feedback,
+      ratedOn: rating !== null ? new Date() : null,
+      updatedBy: req.user._id,
+    };
+
+    const updatedHomework = await homeworkModel
+      .findByIdAndUpdate(homeworkId, { $set: update }, { new: true })
+      .lean();
+
+    if (!updatedHomework) {
+      return next(httpErrors.NotFound("Homework not found"));
+    }
+
+    logger.info(
+      "Controllers - homework - homework.controller - assignHomeworkRatingController - End"
+    );
+
+    res.status(200).send({
+      success: true,
+      statusCode: 200,
+      message: "Homework rating assigned successfully.",
+      data: updatedHomework,
+    });
+  } catch (error) {
+    logger.error(
+      "Controllers - homework - homework.controller - assignHomeworkRatingController - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
+const updateHomeworkController = async (req, res, next) => {
+  try {
+    logger.info(
+      "Controllers - homework - homework.controller - updateHomeworkController - Start"
+    );
+
+    const { homeworkId } = req.params;
+    const updateData = {
+      ...req.body,
+      updatedBy: req.user._id,
+      updatedAt: new Date(),
+    };
+
+    const updatedHomework = await homeworkModel
+      .findByIdAndUpdate(homeworkId, { $set: updateData }, { new: true })
+      .lean();
+
+    if (!updatedHomework) {
+      return next(httpErrors.NotFound("Homework not found"));
+    }
+
+    logger.info(
+      "Controllers - homework - homework.controller - updateHomeworkController - End"
+    );
+
+    res.status(200).send({
+      success: true,
+      statusCode: 200,
+      message: "Homework updated successfully.",
+      data: updatedHomework,
+    });
+  } catch (error) {
+    logger.error(
+      "Controllers - homework - homework.controller - updateHomeworkController - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
+const deleteHomeworkController = async (req, res, next) => {
+  try {
+    logger.info(
+      "Controllers - homework - homework.controller - deleteHomeworkController - Start"
+    );
+
+    const { homeworkId } = req.params;
+
+    const deletedHomework = await homeworkModel
+      .findByIdAndDelete(homeworkId)
+      .lean();
+
+    if (!deletedHomework) {
+      return next(httpErrors.NotFound("Homework not found"));
+    }
+
+    logger.info(
+      "Controllers - homework - homework.controller - deleteHomeworkController - End"
+    );
+
+    res.status(200).send({
+      success: true,
+      statusCode: 200,
+      message: "Homework deleted successfully.",
+      data: deletedHomework,
+    });
+  } catch (error) {
+    logger.error(
+      "Controllers - homework - homework.controller - deleteHomeworkController - Error",
+      error
+    );
+    errorHandling.handleCustomErrorService(error, next);
+  }
+};
+
 module.exports = {
   createStudentHomeworkController,
   getSingleHomeworkController,
   getHomeworkListController,
+  assignHomeworkRatingController,
+  updateHomeworkController,
+  deleteHomeworkController,
 };
