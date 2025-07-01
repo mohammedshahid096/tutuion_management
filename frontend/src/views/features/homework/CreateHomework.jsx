@@ -88,7 +88,7 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
 
       setInfo((prev) => ({ ...prev, ...updateInfoState }));
     },
-    [info?.isSubmitting]
+    [info?.isSubmitting, homeworkList]
   );
 
   return (

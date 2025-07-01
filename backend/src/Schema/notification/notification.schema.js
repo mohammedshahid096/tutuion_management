@@ -21,7 +21,7 @@ const ModelSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["contact_form", "custom", "google_meet_cron"],
+      enum: ["contact_form", "custom", "google_meet_cron", "home_work"],
       default: "custom",
     },
 

@@ -5,6 +5,7 @@ const sortConstants = require("../../Constants/sort.constants");
 const moment = require("moment");
 const enrollmentProgressModel = require("../../Schema/enrollment-progress/enrollmentProgress.model");
 const homeworkModel = require("../../Schema/homework/homework.schema");
+const notificationModel = require("../../Schema/notification/notification.schema");
 
 const createStudentHomeworkController = async (req, res, next) => {
   try {
@@ -43,6 +44,16 @@ const createStudentHomeworkController = async (req, res, next) => {
 
     const newHomeworkDetails = new homeworkModel(details);
     await newHomeworkDetails.save();
+
+    let newNotificationData = await notificationModel.create({
+      message: `New homework assigned: ${
+        details.title || "Untitled Homework"
+      }. Deadline: ${moment(details.deadline).format("YYYY-MM-DD HH:mm")}`,
+      type: "home_work",
+      recipientType: "student",
+      recipientUser: studentId,
+      url: `/my-homeworks/${newHomeworkDetails._id}`,
+    });
 
     logger.info(
       "Controllers - homework - homework.controller - createStudentHomeworkController - End"
