@@ -48,6 +48,8 @@ const HomeworkList = () => {
       deadline: moment().add(1, 'days').format('YYYY-MM-DD'),
     },
     homeworkDetails: null,
+    feedbackRating: null,
+    feedbackLoading: false,
   });
 
   useEffect(() => {
@@ -89,6 +91,8 @@ const HomeworkList = () => {
       openModal: false,
       isSubmitting: false,
       homeworkDetails: null,
+      feedbackRating: null,
+      feedbackLoading: false,
       initialValues: {
         title: '',
         description: '',
@@ -102,6 +106,10 @@ const HomeworkList = () => {
       setInfo((prev) => ({
         ...prev,
         homeworkDetails: row,
+        feedbackRating: {
+          rating: 4,
+          feedback: '',
+        },
         openModal: true,
         initialValues: {
           title: row?.title,

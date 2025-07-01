@@ -73,6 +73,18 @@ const Service = {
     }
   },
 
+  fetchPatch: async (url, body = null, token = null, contentType = 'json') => {
+    try {
+      const endpoint = API_URL + url;
+      const headers = handleHeaders(token, contentType);
+      const response = await apiFetch.patchMethod(endpoint, body, headers);
+      return processResponse(response);
+    } catch (error) {
+      onFailure('network', url);
+      return processResponse(error?.response || error);
+    }
+  },
+
   fetchDelete: async (url, token = null, body = {}, contentType = 'json') => {
     try {
       const endpoint = API_URL + url;

@@ -108,6 +108,16 @@ export class RequestMethodInstance {
     cleanup();
     return response;
   }
+
+  async patchMethod(url, body, headers) {
+    const controller = new AbortController();
+    const config = { ...headers, signal: controller.signal };
+    const cleanup = this._registerRequest(url, 'PATCH', controller);
+    const response = await axios.patch(url, body, config);
+    cleanup();
+    return response;
+  }
+
   async deleteMethod(url, body, headers) {
     const controller = new AbortController();
     const config = { ...headers, signal: controller.signal };

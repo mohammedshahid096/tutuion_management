@@ -19,7 +19,6 @@ const getHomeworkListValidation = celebrate({
 
 const assignHomeworkRatingValidation = celebrate({
   body: Joi.object({
-    homeworkId: Joi.string().required(),
     rating: Joi.number().integer().min(1).max(10).required(),
     feedback: Joi.string().optional().allow(""),
   }),

@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
-import { Label } from '@radix-ui/react-dropdown-menu';
+import { Label, Separator } from '@radix-ui/react-dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { studentActions } from '@/redux/combineActions';
@@ -14,9 +14,12 @@ import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import JoditEditor from 'jodit-react';
+import { Rating } from '@/components/custom/Rating';
+import moment from 'moment';
 
 const createHomework = ({ info, setInfo, closeModalFunction }) => {
-  const { assignNewHomeworkAction, updateStudentStateAction } = studentActions;
+  const { assignNewHomeworkAction, updateStudentStateAction, updateRatingHomeworkAction } =
+    studentActions;
   const { studentId } = useParams();
   const dispatch = useDispatch();
   const editorRef = useRef(null);
@@ -73,7 +76,7 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
         deadline: values?.deadline,
       };
       let updateInfoState = {
-        loading: false,
+        isSubmitting: false,
       };
       const response = await assignNewHomeworkAction(studentId, json);
       if (response[2] === 201) {
@@ -91,6 +94,51 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
     [info?.isSubmitting, homeworkList]
   );
 
+  const feedbackChangeHandler = useCallback(
+    (value, key) => {
+      setInfo((prev) => ({
+        ...prev,
+        feedbackRating: { ...prev.feedbackRating, [key]: value },
+      }));
+    },
+    [info?.feedbackRating]
+  );
+
+  const submitRatingFormHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (info?.feedbackLoading) return;
+
+      setInfo((prev) => ({ ...prev, feedbackLoading: true }));
+      let json = {
+        rating: info?.feedbackRating?.rating,
+        feedback: info?.feedbackRating?.feedback,
+      };
+      let updateInfoState = {
+        feedbackLoading: false,
+      };
+      const response = await updateRatingHomeworkAction(info?.homeworkDetails?._id, json);
+      console.log(response, 'shahid');
+      if (response[0] === true) {
+        let updateList = _.cloneDeep(homeworkList);
+        updateList.docs = updateList?.docs?.map((item) => {
+          if (item._id === info?.homeworkDetails?._id) {
+            return response[1]?.data || {};
+          } else {
+            return item;
+          }
+        });
+        dispatch(updateStudentStateAction({ homeworkList: updateList }));
+        closeModalFunction();
+      } else {
+        toast.error(response[1]?.message || 'unable to add the rating');
+      }
+
+      setInfo((prev) => ({ ...prev, ...updateInfoState }));
+    },
+    [info?.feedbackLoading, homeworkList, info?.homeworkDetails, info?.feedbackRating]
+  );
+
   return (
     <ModalV2
       isOpen={info?.openModal}
@@ -101,6 +149,57 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
         closeModalFunction();
       }}
     >
+      {info?.homeworkDetails && !info?.homeworkDetails?.ratedOn && (
+        <>
+          <Card className="lg:col-span-2">
+            <CardContent>
+              <form className="space-y-4 mt-4" onSubmit={submitRatingFormHandler}>
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="block text-sm font-medium">
+                    Rating *
+                  </Label>
+
+                  <Rating
+                    value={info?.feedbackRating?.rating}
+                    onChange={(value) => feedbackChangeHandler(value, 'rating')}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="description" className="block text-sm font-medium">
+                    Feedback
+                  </Label>
+                  <Textarea
+                    id="feedback"
+                    placeholder="Enter the Feedback"
+                    rows={3}
+                    value={info?.feedbackRating?.feedback}
+                    className="resize-none border-gray-400"
+                    onChange={(e) => feedbackChangeHandler(e.target.value, 'feedback')}
+                    disabled={info?.feedbackLoading}
+                  />
+                </div>
+
+                <div className="flex justify-end gap-3 pt-4">
+                  <Button type="submit" disabled={info?.isSubmitting || false} tabIndex={5}>
+                    {info?.feedbackLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        submitting...
+                      </>
+                    ) : (
+                      'Submit Rating'
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+
+          <Separator className="w-full h-[2px] bg-gray-200 my-3" />
+        </>
+      )}
+
       <Card className="lg:col-span-2">
         <CardContent>
           <form className="space-y-4 mt-4" onSubmit={handleSubmit}>
@@ -122,7 +221,6 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
                 <p className="text-sm text-red-500 mt-1">{errors?.title}</p>
               )}
             </div>
-
             <div className="space-y-2">
               <Label htmlFor="description" className="block text-sm font-medium">
                 Description *
@@ -152,7 +250,6 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
                 <p className="text-sm text-red-500 mt-1">{errors?.description}</p>
               )}
             </div>
-
             <div className="space-y-2">
               <Label htmlFor="deadline" className="block text-sm font-medium">
                 Deadline to Submit *
@@ -174,7 +271,6 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
                 <span className="text-red-500 text-sm">{errors?.deadline}</span>
               )}
             </div>
-
             <div className="flex justify-end gap-3 pt-4">
               {!info?.homeworkDetails ? (
                 <>

@@ -312,6 +312,29 @@ const assignNewHomeworkAction = async (studentId, json) => {
 };
 
 /**
+ * The function `updateRatingHomeworkAction` asynchronously updates the rating for a specific homework
+ * assignment.
+ * @param {String} homeworkId - The `homeworkId` parameter is the unique identifier of the homework for which
+ * you want to update the rating.
+ * @param {Object} json - The `json` parameter in the `updateRatingHomeworkAction` function likely contains the
+ * data that needs to be updated for the homework with the specified `homeworkId`. This data could
+ * include the new rating or any other information related to the homework that needs to be modified.
+ * The function sends a
+ * @returns The `updateRatingHomeworkAction` function is returning the response from the PATCH request
+ * made to the API endpoint for updating the rating of a homework assignment.
+ */
+const updateRatingHomeworkAction = async (homeworkId, json) => {
+  const token = getAccessToken();
+  const response = await Service.fetchPatch(
+    `${API.HOMEWORK_BASE}${API.STUDENT_ACTIONS_TYPES.ASSIGN_RATING}/${homeworkId}`,
+    json,
+    token
+  );
+
+  return response;
+};
+
+/**
  * The function `updateAttendanceAction` updates attendance information for a specific attendance ID
  * using a PUT request with the provided JSON data and access token.
  * @param {String} attendanceId - The `attendanceId` parameter is the unique identifier of the attendance record
@@ -379,6 +402,7 @@ export default {
   getDateWiseAttendanceAction,
   getStudentHomeworkListAction,
   assignNewHomeworkAction,
+  updateRatingHomeworkAction,
   updateAttendanceAction,
   clearStudentErrorsAction,
   resetStudentAction,

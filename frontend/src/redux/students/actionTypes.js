@@ -8,6 +8,7 @@ export const STUDENT_ACTIONS_TYPES = {
   DATE_WISE: '/date-wise',
   HOMEWORK_LIST: '/homework-list',
   ASSIGN_HOME_WORK: '/assign-new-homework',
+  ASSIGN_RATING: '/assign-rating',
 };
 
 export const BASE_STUDENT = '/user';
