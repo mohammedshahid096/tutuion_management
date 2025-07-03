@@ -7,6 +7,8 @@ import MetaData from './utils/MetaData';
 import ChatComponent from './views/features/chats/ChatComponent';
 import moment from 'moment-timezone';
 import useSocket from './hooks/useSocket';
+import { useSelector } from 'react-redux';
+import { ADMIN } from './constants/roles.constants';
 
 const OtherComponents = () => {
   const mode = import.meta.env.VITE_DEVELOPMENT_MODE || 'development';
@@ -19,7 +21,12 @@ const OtherComponents = () => {
 };
 
 function App() {
-  const { isConnected, socketRef } = useSocket({ isAdmin: true });
+  const { profileDetails } = useSelector((state) => state.userProfileState);
+  const { isConnected, socketRef } = useSocket({
+    dependencies: [profileDetails?.role],
+    isAdmin: profileDetails?.role === ADMIN ? true : false,
+    profileDetails,
+  });
   useEffect(() => {
     moment.tz.setDefault('Asia/Kolkata');
   }, []);

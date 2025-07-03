@@ -6,6 +6,7 @@ const moment = require("moment");
 const enrollmentProgressModel = require("../../Schema/enrollment-progress/enrollmentProgress.model");
 const homeworkModel = require("../../Schema/homework/homework.schema");
 const notificationModel = require("../../Schema/notification/notification.schema");
+const { emitNotificationToStudent } = require("../../Utils/socket.utils");
 
 const createStudentHomeworkController = async (req, res, next) => {
   try {
@@ -53,6 +54,11 @@ const createStudentHomeworkController = async (req, res, next) => {
       recipientType: "student",
       recipientUser: studentId,
       url: `/my-homeworks/${newHomeworkDetails._id}`,
+    });
+
+    await emitNotificationToStudent({
+      notificationData: newNotificationData.toObject(),
+      studentId: studentId,
     });
 
     logger.info(

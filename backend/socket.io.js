@@ -17,6 +17,11 @@ function initializeSocketServer(httpServer) {
       console.log(`Admin ${adminId} joined room`);
     });
 
+    socket.on("joinStudentRoom", (studentId) => {
+      socket.join(studentId);
+      console.log(`Student ${studentId} joined room`);
+    });
+
     // Client disconnect
     socket.on("disconnect", () => {
       console.log("Client disconnected:", socket.id);
