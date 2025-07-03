@@ -5,6 +5,7 @@ import {
   MessageSquareIcon,
   AlertTriangleIcon,
   CalendarSync,
+  NotebookPen,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -29,14 +30,13 @@ const NotificationDropdown = ({ notifications, markAsReadNotificationFun }) => {
 
   const markAsRead = (id) => {
     // Here you would typically make an API call to mark the notification as read
-
     setUnreadNotifications((prev) => prev - 1);
     markAsReadNotificationFun(id);
   };
 
   const markAllAsRead = () => {
     // API call to mark all as read
-    setUnreadNotifications(0);
+    // setUnreadNotifications(0);
   };
 
   const getNotificationIcon = (type) => {
@@ -49,6 +49,8 @@ const NotificationDropdown = ({ notifications, markAsReadNotificationFun }) => {
         return <MessageSquareIcon className="h-4 w-4 text-green-500" />;
       case 'alert':
         return <AlertTriangleIcon className="h-4 w-4 text-yellow-500" />;
+      case 'home_work':
+        return <NotebookPen className="h-4 w-4 text-purple-500" />;
       default:
         return <BellIcon className="h-4 w-4 text-gray-500" />;
     }

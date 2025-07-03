@@ -3,7 +3,7 @@ const {
   Authentication,
   Authorization,
 } = require("../../Middlewares/Auth.middleware");
-const { ADMIN } = require("../../Constants/roles.constants");
+const { ADMIN, STUDENT } = require("../../Constants/roles.constants");
 const {
   getNotificationsController,
   updateNotificationController,
@@ -16,13 +16,13 @@ const NotificationRoutes = express.Router();
 
 NotificationRoutes.route("/notifications-list").get(
   Authentication,
-  Authorization(ADMIN),
+  Authorization(ADMIN, STUDENT),
   getNotificationsController
 );
 
 NotificationRoutes.route("/:notificationId").put(
   Authentication,
-  Authorization(ADMIN),
+  Authorization(ADMIN, STUDENT),
   updateNotificationValidation,
   updateNotificationController
 );

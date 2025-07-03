@@ -130,6 +130,12 @@ const StudentSidebar = ({ user, children }) => {
     sidebarState: { isSidebarOpen, navMainStudent, changeNavMainStudentAction },
   } = useContext(Context);
 
+  useEffect(() => {
+    if (!notifications) {
+      fetchNotificationsAction();
+    }
+  }, []);
+
   const changeNavMainStudentGroupFunction = useCallback(
     (id) => {
       let value = navMainStudent[id];

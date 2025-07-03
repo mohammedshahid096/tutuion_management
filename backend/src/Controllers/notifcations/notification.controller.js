@@ -3,6 +3,7 @@ const logger = require("../../Config/logger.config");
 const errorHandling = require("../../Utils/errorHandling");
 const sortConstants = require("../../Constants/sort.constants");
 const notificationModel = require("../../Schema/notification/notification.schema");
+const { ADMIN } = require("../../Constants/roles.constants");
 
 const getNotificationsController = async (req, res, next) => {
   try {
@@ -11,12 +12,6 @@ const getNotificationsController = async (req, res, next) => {
     );
 
     let { limit = 15, page = 1, sort = "-createdAt" } = req.query;
-    const {
-      type = null,
-      status = null,
-      recipient = null,
-      recipientType = null,
-    } = req.query;
 
     limit = Number(limit);
     page = Number(page);
@@ -25,10 +20,11 @@ const getNotificationsController = async (req, res, next) => {
 
     const query = {};
 
-    if (type) query.type = type;
-    if (status) query.status = status;
-    if (recipient) query.recipient = recipient;
-    if (recipientType) query.recipientType = recipientType;
+    if (req.__type__ === ADMIN) {
+      query.recipientType = { $in: ["admin", "both"] };
+    } else {
+      query.$or = [{ recipientType: "both" }, { recipientUser: req.user._id }];
+    }
 
     const totalDocs = await notificationModel.countDocuments(query);
     const totalPages = Math.ceil(totalDocs / limit);
