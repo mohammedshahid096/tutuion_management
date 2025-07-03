@@ -118,7 +118,6 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
         feedbackLoading: false,
       };
       const response = await updateRatingHomeworkAction(info?.homeworkDetails?._id, json);
-      console.log(response, 'shahid');
       if (response[0] === true) {
         let updateList = _.cloneDeep(homeworkList);
         updateList.docs = updateList?.docs?.map((item) => {

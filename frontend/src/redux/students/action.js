@@ -258,6 +258,28 @@ const getDateWiseAttendanceAction = (queryObject) => async (dispatch) => {
 };
 
 /**
+ * The function `updateAttendanceAction` updates attendance information for a specific attendance ID
+ * using a PUT request with the provided JSON data and access token.
+ * @param {String} attendanceId - The `attendanceId` parameter is the unique identifier of the attendance record
+ * that you want to update.
+ * @param {Object} json - The `json` parameter in the `updateAttendanceAction` function is a JavaScript object
+ * that contains the data you want to update for the attendance record identified by `attendanceId`.
+ * This object should include the fields and values that you want to change or modify in the attendance
+ * record.
+ * @returns {Object} The `updateAttendanceAction` function returns the response from the PUT request made to the
+ * specified API endpoint with the provided JSON data and access token.
+ */
+const updateAttendanceAction = async (attendanceId, json) => {
+  const token = getAccessToken();
+  const response = await Service.fetchPut(
+    `${API.ATTENDANCE_BASE}${API.STUDENT_ACTIONS_TYPES.ADMIN}/${attendanceId}`,
+    json,
+    token
+  );
+  return response;
+};
+
+/**
  * The function `getStudentHomeworkListAction` fetches a student's homework list based on the
  * provided student ID and query parameters.
  * @param {String} studentId - The unique identifier of the student for whom you want to retrieve the homework list.
@@ -335,24 +357,15 @@ const updateRatingHomeworkAction = async (homeworkId, json) => {
 };
 
 /**
- * The function `updateAttendanceAction` updates attendance information for a specific attendance ID
- * using a PUT request with the provided JSON data and access token.
- * @param {String} attendanceId - The `attendanceId` parameter is the unique identifier of the attendance record
- * that you want to update.
- * @param {Object} json - The `json` parameter in the `updateAttendanceAction` function is a JavaScript object
- * that contains the data you want to update for the attendance record identified by `attendanceId`.
- * This object should include the fields and values that you want to change or modify in the attendance
- * record.
- * @returns {Object} The `updateAttendanceAction` function returns the response from the PUT request made to the
- * specified API endpoint with the provided JSON data and access token.
+ * This function deletes a homework item using an API call with the provided homework ID.
+ * @param {String} homeworkId - The `homeworkId` parameter is the unique identifier of the homework that you
+ * want to delete. It is used to specify which homework should be deleted from the system.
+ * @returns The `deleteHomeworkAction` function is returning the response from the API call made to
+ * delete a homework item with the specified `homeworkId`.
  */
-const updateAttendanceAction = async (attendanceId, json) => {
+const deleteHomeworkAction = async (homeworkId) => {
   const token = getAccessToken();
-  const response = await Service.fetchPut(
-    `${API.ATTENDANCE_BASE}${API.STUDENT_ACTIONS_TYPES.ADMIN}/${attendanceId}`,
-    json,
-    token
-  );
+  const response = await Service.fetchDelete(`${API.HOMEWORK_BASE}/${homeworkId}`, token);
   return response;
 };
 
@@ -400,10 +413,11 @@ export default {
   getStudentAttendanceListAction,
   updateStudentStateAction,
   getDateWiseAttendanceAction,
+  updateAttendanceAction,
   getStudentHomeworkListAction,
   assignNewHomeworkAction,
   updateRatingHomeworkAction,
-  updateAttendanceAction,
+  deleteHomeworkAction,
   clearStudentErrorsAction,
   resetStudentAction,
 };

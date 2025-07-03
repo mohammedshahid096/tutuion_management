@@ -9,7 +9,8 @@ import MetaData from '@/utils/MetaData';
 import CustomTable1 from '@/views/components/tables/TableV1';
 import { Button } from '@/components/ui/button';
 import CreateHomework from '@/views/features/homework/CreateHomework';
-import { Trash, Pencil, Eye, FilePenLine } from 'lucide-react';
+import { Trash, Pencil } from 'lucide-react';
+import DeleteHomework from '@/views/features/homework/DeleteHomework';
 
 const headers = [
   { title: 'Title', key: 'title' },
@@ -19,12 +20,12 @@ const headers = [
   { title: 'Rating', key: 'rating' },
 ];
 
-const TableRow = memo(({ row, editHomeworkFunction }) => (
+const TableRow = memo(({ row, editHomeworkFunction, deleteHomeworkFunction }) => (
   <div className="flex gap-4">
     <Button variant="outline" onClick={() => editHomeworkFunction(row)}>
       <Pencil color="black" className="cursor-pointer size-5" />
     </Button>
-    <Button variant="outline">
+    <Button variant="outline" onClick={() => deleteHomeworkFunction(row)}>
       <Trash color="red" className="cursor-pointer size-5" />
     </Button>
   </div>
@@ -41,6 +42,7 @@ const HomeworkList = () => {
     limit: 10,
     currentPage: 1,
     openModal: false,
+    deleteModal: false,
     isSubmitting: false,
     initialValues: {
       title: '',
@@ -89,6 +91,7 @@ const HomeworkList = () => {
     setInfo((prev) => ({
       ...prev,
       openModal: false,
+      deleteModal: false,
       isSubmitting: false,
       homeworkDetails: null,
       feedbackRating: null,
@@ -99,7 +102,7 @@ const HomeworkList = () => {
         deadline: moment().add(1, 'days').format('YYYY-MM-DD'),
       },
     }));
-  }, [info?.openModal, info?.isSubmitting, info?.initialValues]);
+  }, [info?.openModal, info?.isSubmitting, info?.initialValues, info?.deleteModal]);
 
   const editHomeworkFunction = useCallback(
     (row) => {
@@ -119,6 +122,17 @@ const HomeworkList = () => {
       }));
     },
     [info?.initialValues]
+  );
+
+  const deleteHomeworkFunction = useCallback(
+    (row) => {
+      setInfo((prev) => ({
+        ...prev,
+        deleteModal: true,
+        homeworkDetails: row,
+      }));
+    },
+    [homeworkList, info?.deleteModal]
   );
 
   return (
@@ -143,10 +157,17 @@ const HomeworkList = () => {
         currentPage={homeworkList?.currentPage}
         onPageChange={paginationFunctionHandler}
         limit={info?.limit}
-        actions={(row) => <TableRow row={row} editHomeworkFunction={editHomeworkFunction} />}
+        actions={(row) => (
+          <TableRow
+            row={row}
+            editHomeworkFunction={editHomeworkFunction}
+            deleteHomeworkFunction={deleteHomeworkFunction}
+          />
+        )}
       />
 
       <CreateHomework info={info} setInfo={setInfo} closeModalFunction={closeModalFunction} />
+      <DeleteHomework info={info} closeModalFunction={closeModalFunction} />
     </div>
   );
 };
