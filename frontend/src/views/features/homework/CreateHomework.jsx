@@ -18,8 +18,12 @@ import { Rating } from '@/components/custom/Rating';
 import moment from 'moment';
 
 const createHomework = ({ info, setInfo, closeModalFunction }) => {
-  const { assignNewHomeworkAction, updateStudentStateAction, updateRatingHomeworkAction } =
-    studentActions;
+  const {
+    assignNewHomeworkAction,
+    updateStudentStateAction,
+    updateRatingHomeworkAction,
+    updateHomeworkDetailsAction,
+  } = studentActions;
   const { studentId } = useParams();
   const dispatch = useDispatch();
   const editorRef = useRef(null);
@@ -42,7 +46,11 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
     enableReinitialize: true,
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      submitAssignHomeworkFormHandler(values);
+      if (info?.homeworkDetails) {
+        updateHomeworkSubmitHandler(values);
+      } else {
+        submitAssignHomeworkFormHandler(values);
+      }
     },
   });
 
@@ -136,6 +144,40 @@ const createHomework = ({ info, setInfo, closeModalFunction }) => {
       setInfo((prev) => ({ ...prev, ...updateInfoState }));
     },
     [info?.feedbackLoading, homeworkList, info?.homeworkDetails, info?.feedbackRating]
+  );
+
+  const updateHomeworkSubmitHandler = useCallback(
+    async (values) => {
+      if (info?.isSubmitting) return;
+
+      setInfo((prev) => ({ ...prev, isSubmitting: true }));
+      let json = {
+        title: values?.title,
+        description: values?.description,
+        deadline: values?.deadline,
+      };
+      let updateInfoState = {
+        isSubmitting: false,
+      };
+      const response = await updateHomeworkDetailsAction(info?.homeworkDetails?._id, json);
+      if (response[0] === true) {
+        let updateList = _.cloneDeep(homeworkList);
+        updateList.docs = updateList?.docs?.map((item) => {
+          if (item._id === info?.homeworkDetails?._id) {
+            return response[1]?.data || {};
+          } else {
+            return item;
+          }
+        });
+        dispatch(updateStudentStateAction({ homeworkList: updateList }));
+        closeModalFunction();
+      } else {
+        toast.error(response[1]?.message || 'unable to update the homework');
+      }
+
+      setInfo((prev) => ({ ...prev, ...updateInfoState }));
+    },
+    [info?.isSubmitting, homeworkList, info?.homeworkDetails]
   );
 
   return (

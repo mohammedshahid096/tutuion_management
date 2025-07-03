@@ -370,6 +370,24 @@ const deleteHomeworkAction = async (homeworkId) => {
 };
 
 /**
+ * This function updates homework details by sending a PUT request to the API endpoint with the
+ * provided homework ID and JSON data, using the access token for authentication.
+ * @param {String} homeworkId - The `homeworkId` parameter is the unique identifier of the homework that you
+ * want to update.
+ * @param {Object} json - The `json` parameter in the `updateHomeworkDetailsAction` function is an object
+ * containing the details that you want to update for a specific homework. It could include properties
+ * such as `title`, `description`, `dueDate`, `subject`, etc. This object will be sent as the payload
+ * @returns The `updateHomeworkDetailsAction` function is returning the response from the PUT request
+ * made to the API endpoint `${API.HOMEWORK_BASE}/` with the updated homework details in
+ * JSON format.
+ */
+const updateHomeworkDetailsAction = async (homeworkId, json) => {
+  const token = getAccessToken();
+  const response = await Service.fetchPut(`${API.HOMEWORK_BASE}/${homeworkId}`, json, token);
+  return response;
+};
+
+/**
  * The function `updateStudentStateAction` is a Redux action creator that dispatches an action of type
  * `UPDATE_STUDENT_STATE` with a given payload.
  * @param {Object} payload - The `payload` parameter in the `updateStudentStateAction` function typically
@@ -418,6 +436,7 @@ export default {
   assignNewHomeworkAction,
   updateRatingHomeworkAction,
   deleteHomeworkAction,
+  updateHomeworkDetailsAction,
   clearStudentErrorsAction,
   resetStudentAction,
 };
