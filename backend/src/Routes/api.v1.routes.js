@@ -13,6 +13,7 @@ const AiRoutes = require("./ai/ai.routes");
 const NoteRoutes = require("./notes/notes.routes");
 const NotificationRoutes = require("./notifications/notification.routes");
 const HomeworkRoutes = require("./homework/homework.routes");
+const StudentHomeworkRoutes = require("./homework/studentHomework.routes");
 
 // Route config
 const ApiV1Routes = express.Router();
@@ -74,6 +75,7 @@ ApiV1Routes.use("/notifications", NotificationRoutes);
 
 // Homework
 ApiV1Routes.use("/homework", HomeworkRoutes);
+ApiV1Routes.use("/student-homework", StudentHomeworkRoutes);
 
 // export the routes
 module.exports = ApiV1Routes;
