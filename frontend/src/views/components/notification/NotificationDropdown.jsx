@@ -94,7 +94,7 @@ const NotificationDropdown = ({ notifications, markAsReadNotificationFun }) => {
               >
                 <div className="flex-shrink-0">{getNotificationIcon(notification.type)}</div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{notification.message}</p>
+                  <p className="text-sm font-medium ">{notification.message}</p>
                   <p className="text-xs text-gray-500 mt-1">
                     {moment(notification.createdAt).format('LLL')} ({format(notification.createdAt)}
                     )
