@@ -41,6 +41,11 @@ const ModelSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // expiresAt: {
+    //   type: Date,
+    //   default: () => Date.now() + 2 * 24 * 60 * 60 * 1000, //after 2days
+    //   index: { expires: 0 },
+    // },
   },
   {
     timestamps: true,

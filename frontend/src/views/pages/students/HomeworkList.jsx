@@ -13,10 +13,10 @@ import { Trash, Pencil, Eye, FilePenLine } from 'lucide-react';
 
 const headers = [
   { title: 'Title', key: 'title' },
-  // { title: 'title', key: 'description' },
   { title: 'Deadline', key: 'deadline' },
   { title: 'Date', key: 'date' },
   { title: 'Time Ago', key: 'timeAgo' },
+  { title: 'Rating', key: 'rating' },
 ];
 
 const TableRow = memo(({ row, editHomeworkFunction }) => (
@@ -24,9 +24,9 @@ const TableRow = memo(({ row, editHomeworkFunction }) => (
     <Button variant="outline" onClick={() => editHomeworkFunction(row)}>
       <Pencil color="black" className="cursor-pointer size-5" />
     </Button>
-    {/* <Button variant="outline">
+    <Button variant="outline">
       <Trash color="red" className="cursor-pointer size-5" />
-    </Button> */}
+    </Button>
   </div>
 ));
 
