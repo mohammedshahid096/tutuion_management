@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState, useContext } from 'react';
-import { admin_receiver_listeners, student_receiver_listeners } from '@/constants/socket.constants';
+import {
+  admin_emit_listeners,
+  admin_receiver_listeners,
+  student_emit_listeners,
+  student_receiver_listeners,
+} from '@/constants/socket.constants';
 import Context from '@/context/context';
 import { BASE_URL } from '@/services/config';
 import { io } from 'socket.io-client';
@@ -42,10 +47,10 @@ const useSocket = ({ dependencies = [], isAdmin = false, profileDetails = null }
 
       if (isAdmin) {
         let admin_name = 'edu_excellence_admin';
-        socket.emit('joinAdminRoom', admin_name);
+        socket.emit(admin_emit_listeners.join_admin_room, admin_name);
       } else {
         let student_id = `student_${profileDetails?._id}`;
-        socket.emit('joinStudentRoom', student_id);
+        socket.emit(student_emit_listeners.join_student_room, student_id);
       }
 
       // Use the ref-based handler

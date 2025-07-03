@@ -2,6 +2,10 @@
 // const { createServer } = require("http");
 const { Server } = require("socket.io");
 const { CORS_ALLOW_ORIGINS } = require("./src/Config/index.config");
+const {
+  admin_receiver_listeners,
+  student_receiver_listeners,
+} = require("./src/Constants/socket.constants");
 
 let ioInstance = null;
 
@@ -12,12 +16,12 @@ function initializeSocketServer(httpServer) {
     console.log("Client connected:", socket.id);
 
     // Admin joins their room
-    socket.on("joinAdminRoom", (adminId) => {
+    socket.on(admin_receiver_listeners.join_admin_room, (adminId) => {
       socket.join(adminId);
       console.log(`Admin ${adminId} joined room`);
     });
 
-    socket.on("joinStudentRoom", (studentId) => {
+    socket.on(student_receiver_listeners.join_student_room, (studentId) => {
       socket.join(studentId);
       console.log(`Student ${studentId} joined room`);
     });
