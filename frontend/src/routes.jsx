@@ -28,6 +28,7 @@ import MyChapterProgress from './views/pages/progress/MyChapterProgress';
 import Builder from './views/pages/builder/Builder';
 import EditBuilder from './views/pages/builder/EditBuilder';
 import NotesList from './views/pages/builder/NotesList';
+import MyHomeworks from './views/pages/homework/MyHomeworks';
 
 const allRoutesMapper = [
   {
@@ -215,6 +216,14 @@ const allRoutesMapper = [
     component: (
       <AuthWrapper roles={[STUDENT]}>
         <MyChapterProgress />
+      </AuthWrapper>
+    ),
+  },
+  {
+    path: '/my-homeworks',
+    component: (
+      <AuthWrapper roles={[STUDENT]}>
+        <MyHomeworks />
       </AuthWrapper>
     ),
   },

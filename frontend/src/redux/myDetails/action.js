@@ -1,6 +1,7 @@
 import {
   GET_MY_ATTENDANCE_LIST,
   GET_MY_ENROLLMENTS_LIST,
+  GET_MY_HOMEWORK_LIST,
   GET_MY_SUBJECTS_LIST,
   IS_GOOGLE_INTEGRATION_CONNECTED,
 } from './constant';
@@ -71,6 +72,23 @@ export const getMyEnrollmentsListAction = createAsyncThunk(
   }
 );
 
+export const getMyHomeworkListAction = createAsyncThunk(
+  GET_MY_HOMEWORK_LIST,
+  async (queryObject, { rejectWithValue }) => {
+    const token = getAccessToken();
+    const query = queryObject ? objectToQueryString(queryObject) : '';
+    const response = await Service.fetchGet(
+      `${API.BASE_STUDENT_HOMEWORK}${API.BASE_ACTIONS_TYPES.MY_HOMEWORKS}${query}`,
+      token
+    );
+    if (response[0] === true) {
+      return response[1].data;
+    } else {
+      return rejectWithValue(response[1]);
+    }
+  }
+);
+
 export const isGoogleConnectedAction = createAsyncThunk(
   IS_GOOGLE_INTEGRATION_CONNECTED,
   async (queryObject, { rejectWithValue }) => {
@@ -98,5 +116,6 @@ export default {
   getMyAttendanceListAction,
   getMySubjectsListAction,
   getMyEnrollmentsListAction,
+  getMyHomeworkListAction,
   isGoogleConnectedAction,
 };

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   getMyAttendanceListAction,
   getMyEnrollmentsListAction,
+  getMyHomeworkListAction,
   getMySubjectsListAction,
   isGoogleConnectedAction,
 } from './action';
@@ -13,6 +14,7 @@ const initialState = {
   myAttendanceList: null,
   mySubjectList: null,
   myEnrollmentList: null,
+  myHomeworkList: null,
   integrations: {
     google: {
       isApiCalled: false,
@@ -69,6 +71,18 @@ const dataSlice = createSlice({
       .addCase(getMyEnrollmentsListAction.rejected, (state, action) => {
         state.loading = false;
         state.error = action?.payload?.message || 'Fetching Enrollments List failed'; // Default error message
+        state.statusCode = action?.payload?.statusCode || 500;
+      })
+      .addCase(getMyHomeworkListAction.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMyHomeworkListAction.fulfilled, (state, action) => {
+        state.loading = false;
+        state.myHomeworkList = action.payload;
+      })
+      .addCase(getMyHomeworkListAction.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action?.payload?.message || 'Fetching Homework List failed';
         state.statusCode = action?.payload?.statusCode || 500;
       })
       .addCase(isGoogleConnectedAction.pending, (state) => {
