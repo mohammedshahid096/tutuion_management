@@ -217,6 +217,23 @@ const assignHomeworkRatingController = async (req, res, next) => {
       return next(httpErrors.NotFound("Homework not found"));
     }
 
+    // Create notification for homework rating
+    let studentId = updatedHomework.student.toString();
+    let newNotificationData = await notificationModel.create({
+      message: `Your homework "${
+        updatedHomework.title || "Untitled Homework"
+      }" has been rated${rating ? `: ${rating} star(s)` : ""}.`,
+      type: "home_work",
+      recipientType: "student",
+      recipientUser: studentId,
+      url: `/my-homeworks/${updatedHomework._id}`,
+    });
+
+    await emitNotificationToStudent({
+      notificationData: newNotificationData.toObject(),
+      studentId: studentId,
+    });
+
     logger.info(
       "Controllers - homework - homework.controller - assignHomeworkRatingController - End"
     );
