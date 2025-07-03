@@ -17,7 +17,8 @@ export const initialState = {
   navMainStudent: {
     dashboard: false,
     subjects: true,
-    attendance: false,
+    attendance: true,
+    homework: true,
   },
 };
 

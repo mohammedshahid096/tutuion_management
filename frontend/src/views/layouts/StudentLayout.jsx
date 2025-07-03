@@ -12,6 +12,7 @@ import {
   Clock,
   House,
   CalendarDays,
+  NotebookPen,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -98,6 +99,19 @@ const data = {
         {
           title: 'Attendance Calendar',
           url: '/my-attendance/attendance-calendar',
+        },
+      ],
+    },
+    {
+      id: 'homework',
+      title: 'Homework',
+      url: '#',
+      icon: NotebookPen,
+      isActive: true,
+      items: [
+        {
+          title: 'My Homework List',
+          url: '/my-homeworks',
         },
       ],
     },
