@@ -18,3 +18,8 @@
 #Docker running compose file
 for docker builder => docker-compose up --build
 for running compose file => docker-compose up
+
+
+// for grafana
+docker run -d -p 3000:3000 --name=grafana grafana/grafana-oss
+

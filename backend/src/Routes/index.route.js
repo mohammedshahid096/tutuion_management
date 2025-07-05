@@ -1,9 +1,23 @@
 const express = require("express");
 const ApiV1Routes = require("./api.v1.routes");
 const GoogleAuthRoutes = require("./auth/google.route");
+const { DEVELOPMENT_MODE } = require("../Config/index.config");
 
 // Route config
 const IndexRoutes = express.Router();
+
+if (DEVELOPMENT_MODE === "development") {
+  const {
+    initializePrometheusMetrics,
+    promClient,
+  } = require("../Config/prometheus.config");
+  initializePrometheusMetrics();
+  IndexRoutes.get("/metrics", async (req, res) => {
+    res.setHeader("Content-Type", promClient.register.contentType);
+    const metrics = await promClient.register.metrics();
+    res.send(metrics);
+  });
+}
 
 IndexRoutes.get("/", (req, res) => {
   res.status(200).json({
