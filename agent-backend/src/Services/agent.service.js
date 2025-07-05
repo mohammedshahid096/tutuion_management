@@ -11,6 +11,9 @@ const { getEducationalBoardsTool } = require("../tools/getBoards.tool");
 const { updateStudentInfoTool } = require("../tools/updateStudentInfo.tool");
 const { OPENAI_API_KEY } = require("../Config/index.config");
 const { genderDistributionTool } = require("../tools/genderDistribution.tool");
+const {
+  classWiseStudentCountTool,
+} = require("../tools/classWiseStudentCount.tool");
 
 class AgentService {
   constructor({
@@ -72,6 +75,7 @@ class AgentService {
         // getEducationalBoardsTool,
         // updateStudentInfoTool,
         genderDistributionTool,
+        classWiseStudentCountTool,
       ];
       // const agent_tools = [getEducationalBoardsTool];
 
