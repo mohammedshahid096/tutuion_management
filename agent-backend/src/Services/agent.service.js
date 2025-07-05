@@ -14,6 +14,9 @@ const { genderDistributionTool } = require("../tools/genderDistribution.tool");
 const {
   classWiseStudentCountTool,
 } = require("../tools/classWiseStudentCount.tool");
+const {
+  boardWiseStudentCountTool,
+} = require("../tools/boardWiseStudentCount.tool");
 
 class AgentService {
   constructor({
@@ -76,6 +79,7 @@ class AgentService {
         // updateStudentInfoTool,
         genderDistributionTool,
         classWiseStudentCountTool,
+        boardWiseStudentCountTool,
       ];
       // const agent_tools = [getEducationalBoardsTool];
 
