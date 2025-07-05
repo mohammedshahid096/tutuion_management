@@ -9,6 +9,13 @@ const { getStudentInfoTool } = require("../tools/getStudentInfo.tool");
 const logger = require("../Config/logger.config");
 const { getEducationalBoardsTool } = require("../tools/getBoards.tool");
 const { updateStudentInfoTool } = require("../tools/updateStudentInfo.tool");
+const { genderDistributionTool } = require("../tools/genderDistribution.tool");
+const {
+  classWiseStudentCountTool,
+} = require("../tools/classWiseStudentCount.tool");
+const {
+  boardWiseStudentCountTool,
+} = require("../tools/boardWiseStudentCount.tool");
 
 class CallingAgentService {
   constructor({
@@ -74,6 +81,9 @@ class CallingAgentService {
         getStudentInfoTool,
         getEducationalBoardsTool,
         // updateStudentInfoTool,
+        genderDistributionTool,
+        classWiseStudentCountTool,
+        boardWiseStudentCountTool,
       ];
 
       const agent = createToolCallingAgent({
