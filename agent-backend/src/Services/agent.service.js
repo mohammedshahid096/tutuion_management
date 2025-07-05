@@ -10,6 +10,7 @@ const logger = require("../Config/logger.config");
 const { getEducationalBoardsTool } = require("../tools/getBoards.tool");
 const { updateStudentInfoTool } = require("../tools/updateStudentInfo.tool");
 const { OPENAI_API_KEY } = require("../Config/index.config");
+const { genderDistributionTool } = require("../tools/genderDistribution.tool");
 
 class AgentService {
   constructor({
@@ -68,8 +69,9 @@ class AgentService {
       logger.info("Service - agent.service - processRequest - Start", input);
       const agent_tools = [
         getStudentInfoTool,
-        getEducationalBoardsTool,
-        updateStudentInfoTool,
+        // getEducationalBoardsTool,
+        // updateStudentInfoTool,
+        genderDistributionTool,
       ];
       // const agent_tools = [getEducationalBoardsTool];
 

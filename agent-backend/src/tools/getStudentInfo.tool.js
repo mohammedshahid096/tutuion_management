@@ -18,6 +18,7 @@ const allowed_fields = [
   "timings",
   "days",
 ];
+
 const getStudentInfoSchema = z.object({
   email: z.string().describe("The student's valid email address"),
   fields: z
@@ -51,7 +52,7 @@ const getStudentInfoTool = new DynamicStructuredTool({
       );
       return studentDetails;
     } catch (error) {
-      logger.info(
+      logger.error(
         "Tools - getStudentInfo.tool - getStudentInfoTool - Error",
         error
       );

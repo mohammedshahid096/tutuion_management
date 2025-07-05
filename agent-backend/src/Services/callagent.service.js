@@ -72,7 +72,7 @@ class CallingAgentService {
       );
       const agent_tools = [
         getStudentInfoTool,
-        // getEducationalBoardsTool,
+        getEducationalBoardsTool,
         // updateStudentInfoTool,
       ];
 
