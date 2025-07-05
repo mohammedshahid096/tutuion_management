@@ -2,6 +2,7 @@ const express = require("express");
 const {
   Authentication,
   Authorization,
+  setHeaderDevelopment,
 } = require("../../Middlewares/Auth.middleware");
 
 const { ADMIN, STUDENT } = require("../../Constants/roles.constants");
@@ -18,6 +19,7 @@ const {
 const GraphRoutes = express.Router();
 
 GraphRoutes.route("/admin/dashboard").get(
+  setHeaderDevelopment,
   Authentication,
   Authorization(ADMIN),
   adminDashboardGraphController
