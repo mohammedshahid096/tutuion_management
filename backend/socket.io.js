@@ -17,6 +17,11 @@ function initializeSocketServer(httpServer) {
 
     // Admin joins their room
     socket.on(admin_receiver_listeners.join_admin_room, (adminId) => {
+      let admin_name = "edu_excellence_admin";
+      if (!adminId || adminId !== admin_name) {
+        console.error("Admin ID is required to join the room.");
+        return;
+      }
       socket.join(adminId);
       console.log(`Admin ${adminId} joined room`);
     });
