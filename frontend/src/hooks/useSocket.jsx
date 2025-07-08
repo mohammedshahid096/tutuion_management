@@ -66,7 +66,8 @@ const useSocket = ({ dependencies = [], isAdmin = false, profileDetails = null }
         socket.off('connect');
         socket.off('disconnect');
         socket.off('error');
-        socket.off(admin_receiver_listeners.adminNotification, handleNotification);
+        socket.off(admin_receiver_listeners.adminNotification);
+        socket.off(student_receiver_listeners.studentNotification);
         socket.disconnect();
         socketRef.current = null;
       }
