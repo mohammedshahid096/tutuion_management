@@ -1,5 +1,5 @@
 const { Server } = require("socket.io");
-const { CORS_ALLOW_ORIGINS } = require("./src/config/index.config");
+const { CORS_ALLOW_ORIGINS } = require("./src/Config/index.config");
 const {
   admin_receiver_listeners,
   student_receiver_listeners,
