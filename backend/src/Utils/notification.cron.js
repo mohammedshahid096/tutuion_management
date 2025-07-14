@@ -2,6 +2,7 @@ const logger = require("../Config/logger.config");
 const notificationModel = require("../Schema/notification/notification.schema");
 const errorHandling = require("../Utils/errorHandling");
 const moment = require("moment");
+const axios = require("axios");
 
 const deleteNotificationUtility = async () => {
   try {
@@ -26,6 +27,19 @@ const deleteNotificationUtility = async () => {
   }
 };
 
+const renderServerAwakeUtility = async () => {
+  try {
+    logger.info("notification.cron - renderServerAwakeUtility - Start");
+    const url = "https://tutuion-management-backend.vercel.app";
+    const response = await axios.get(url);
+    console.log(response.data);
+    logger.info("notification.cron - renderServerAwakeUtility - End");
+  } catch (error) {
+    logger.error("notification.cron - renderServerAwakeUtility - End", error);
+  }
+};
+
 module.exports = {
   deleteNotificationUtility,
+  renderServerAwakeUtility,
 };

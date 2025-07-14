@@ -19,7 +19,6 @@ const {
 const GraphRoutes = express.Router();
 
 GraphRoutes.route("/admin/dashboard").get(
-  setHeaderDevelopment,
   Authentication,
   Authorization(ADMIN),
   adminDashboardGraphController

@@ -10,7 +10,10 @@ const morganConfigFunction = require("./src/Config/morgan.config");
 const helmetConfig = require("./src/Config/helmet.config");
 const IndexRoutes = require("./src/Routes/index.route");
 const errorHandling = require("./src/Utils/errorHandling");
-const { deleteNotificationCronJob } = require("./src/Config/cron.config");
+const {
+  deleteNotificationCronJob,
+  renderServerAwakeCronJob,
+} = require("./src/Config/cron.config");
 
 const app = express();
 
@@ -23,11 +26,12 @@ MongoDataBaseConn();
 if (DEVELOPMENT_MODE === "development") {
   app.use(morganConfigFunction());
 } else {
+  renderServerAwakeCronJob();
   deleteNotificationCronJob();
 }
 
 app.use(helmetConfig);
-// app.use(ratelimitConfig);
+app.use(ratelimitConfig);
 app.use(compression({ level: 6 }));
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: false }));
