@@ -39,6 +39,14 @@ const createContactFormController = async (req, res, next) => {
       mailDetails
     );
 
+    // for admin
+    await nodeMailerService.sendMail(
+      "isthiyana786@gmail.com",
+      "adminContactFormResponseTemplate",
+      null,
+      mailDetails
+    );
+
     let newNotificationData = await notificationModel.create({
       message: "Contact-Form : " + newContactDetails.name,
       type: "contact_form",
