@@ -42,6 +42,11 @@ const ModelSchema = new mongoose.Schema(
       ],
       default: "website",
     },
+    sessionType: {
+      type: String,
+      enum: ["demo", "enrollment"],
+      default: null,
+    },
     status: {
       type: String,
       enum: ["new", "contacted", "followup", "registered", "rejected"],

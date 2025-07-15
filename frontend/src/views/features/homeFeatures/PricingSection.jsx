@@ -13,11 +13,9 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const PricingSection = () => {
   const navigate = useNavigate();
-  const handleClick = useCallback((to, sessionType) => {
-    navigate(`${to}?sessionType=${sessionType}`);
+  const handleClick = useCallback((hash, sessionType) => {
+    navigate(`/?sessionType=${sessionType}#${hash}`);
 
-    // Extract hash
-    const hash = to.split('#')[1];
     if (hash) {
       setTimeout(() => {
         const element = document.getElementById(hash);
@@ -67,7 +65,7 @@ const PricingSection = () => {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" onClick={() => handleClick('/#contact', 'demo')}>
+              <Button className="w-full" onClick={() => handleClick('contact', 'demo')}>
                 Book Demo
               </Button>
             </CardFooter>
@@ -104,7 +102,7 @@ const PricingSection = () => {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" onClick={() => handleClick('/#contact', 'enrollment')}>
+              <Button className="w-full" onClick={() => handleClick('contact', 'enrollment')}>
                 Enroll Now
               </Button>
             </CardFooter>

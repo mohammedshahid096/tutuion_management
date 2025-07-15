@@ -13,11 +13,9 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const ServiceSection = () => {
   const navigate = useNavigate();
-  const handleClick = useCallback((to, sessionType = 'demo') => {
-    navigate(`${to}?sessionType=${sessionType}`);
+  const handleClick = useCallback((hash, sessionType = 'demo') => {
+    navigate(`/?sessionType=${sessionType}#${hash}`);
 
-    // Extract hash
-    const hash = to.split('#')[1];
     if (hash) {
       setTimeout(() => {
         const element = document.getElementById(hash);
@@ -74,7 +72,7 @@ const ServiceSection = () => {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" onClick={() => handleClick('/#contact')}>
+              <Button className="w-full" onClick={() => handleClick('contact')}>
                 <Link to="#contact">Book English Demo</Link>
               </Button>
             </CardFooter>
@@ -114,7 +112,7 @@ const ServiceSection = () => {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" onClick={() => handleClick('/#contact')}>
+              <Button className="w-full" onClick={() => handleClick('contact')}>
                 Book Math Demo
               </Button>
             </CardFooter>

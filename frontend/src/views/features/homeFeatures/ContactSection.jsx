@@ -2,7 +2,7 @@ import React, { useState, memo, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, MessageSquare, Loader2, Facebook, Instagram } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { submitContactFormApi } from '@/apis/contact.api';
@@ -13,6 +13,8 @@ const preferredTime = ['any', 'morning', 'afternoon', 'evening'];
 const heardAboutUs = ['website', 'friend', 'social media', 'newspaper', 'other'];
 
 const ContactSection = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [info, setInfo] = useState({
     isSubmitting: false,
   });
@@ -66,6 +68,10 @@ const ContactSection = () => {
         heardAboutUs: values.heardAboutUs,
       };
 
+      if (searchParams.get('sessionType')) {
+        json.sessonType = searchParams.get('sessionType');
+      }
+
       if (values?.message) {
         json.message = values.message;
       }
@@ -83,9 +89,10 @@ const ContactSection = () => {
         isSubmitting: false,
       }));
     },
-    [info?.isSubmitting]
+    [info?.isSubmitting, searchParams]
   );
 
+  console.log(searchParams.get('sessionType'), 'shahid');
   return (
     <section id="contact" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
       <div className="container px-4 md:px-6">

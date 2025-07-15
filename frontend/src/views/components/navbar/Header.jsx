@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import MobileNavbar from './MobileNavbar';
@@ -8,6 +8,7 @@ import { getAccessToken } from '@/helpers/local-storage';
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navList = [
     { name: 'About', homeRoute: '#about', route: '/#about' },
     { name: 'Services', homeRoute: '#services', route: '/#services' },
@@ -23,20 +24,27 @@ const Header = () => {
     else navigate('/login');
   }, []);
 
-  const handleClick = useCallback((to) => {
-    navigate(to);
+  const handleClick = useCallback(
+    (to) => {
+      console.log(searchParams.get('sessionType'), 'shahid', 'header');
+      if (searchParams.get('sessionType')) {
+        setSearchParams({});
+      }
+      navigate(to);
 
-    // Extract hash
-    const hash = to.split('#')[1];
-    if (hash) {
-      setTimeout(() => {
-        const element = document.getElementById(hash);
-        if (element) {
-          element.scrollIntoView({ behavior: 'instant' });
-        }
-      }, 500);
-    }
-  }, []);
+      // Extract hash
+      const hash = to.split('#')[1];
+      if (hash) {
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: 'instant' });
+          }
+        }, 500);
+      }
+    },
+    [searchParams]
+  );
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
@@ -50,7 +58,15 @@ const Header = () => {
             {navList?.map((singleNav) => {
               if (location.pathname === '/') {
                 return (
-                  <a className="text-sm font-medium hover:text-primary" href={singleNav?.homeRoute}>
+                  <a
+                    className="text-sm font-medium hover:text-primary"
+                    href={singleNav?.homeRoute}
+                    onClick={() => {
+                      if (searchParams.get('sessionType')) {
+                        setSearchParams({});
+                      }
+                    }}
+                  >
                     {singleNav?.name}
                   </a>
                 );

@@ -21,6 +21,10 @@ const createContactFormValidation = celebrate({
       .valid("friend", "social media", "newspaper", "flyer", "website", "other")
       .default("website")
       .label("Heard About Us"),
+    sessionType: Joi.string()
+      .optional()
+      .valid("demo", "enrollment")
+      .label("Session Type"),
   }),
 });
 
