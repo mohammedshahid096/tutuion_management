@@ -26,7 +26,6 @@ const Header = () => {
 
   const handleClick = useCallback(
     (to) => {
-      console.log(searchParams.get('sessionType'), 'shahid', 'header');
       if (searchParams.get('sessionType')) {
         setSearchParams({});
       }
