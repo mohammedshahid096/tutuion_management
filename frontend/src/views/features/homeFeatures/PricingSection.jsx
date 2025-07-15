@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -9,9 +9,25 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Clock, Star, BookOpen, BarChart, Calendar, Laptop, MessageSquare } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const PricingSection = () => {
+  const navigate = useNavigate();
+  const handleClick = useCallback((to, sessionType) => {
+    navigate(`${to}?sessionType=${sessionType}`);
+
+    // Extract hash
+    const hash = to.split('#')[1];
+    if (hash) {
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'instant' });
+        }
+      }, 500);
+    }
+  }, []);
+
   return (
     <section id="pricing" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
       <div className="container px-4 md:px-6">
@@ -51,8 +67,8 @@ const PricingSection = () => {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" asChild>
-                <Link to="#demo">Book Demo</Link>
+              <Button className="w-full" onClick={() => handleClick('/#contact', 'demo')}>
+                Book Demo
               </Button>
             </CardFooter>
           </Card>
@@ -88,47 +104,11 @@ const PricingSection = () => {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" asChild>
-                <Link to="#book">Enroll Now</Link>
+              <Button className="w-full" onClick={() => handleClick('/#contact', 'enrollment')}>
+                Enroll Now
               </Button>
             </CardFooter>
           </Card>
-          {/* <Card>
-            <CardHeader>
-              <CardTitle>Intensive Package</CardTitle>
-              <div className="text-3xl font-bold">₹160</div>
-              <CardDescription>8 sessions per month (₹20/session)</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-primary" />
-                  <span>Eight 60-minute sessions</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Star className="h-4 w-4 text-primary" />
-                  <span>Twice weekly sessions</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Star className="h-4 w-4 text-primary" />
-                  <span>Comprehensive support</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Star className="h-4 w-4 text-primary" />
-                  <span>Exam preparation focus</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Star className="h-4 w-4 text-primary" />
-                  <span>Priority scheduling</span>
-                </li>
-              </ul>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full" asChild>
-                <Link to="#book">Book Now</Link>
-              </Button>
-            </CardFooter>
-          </Card> */}
         </div>
       </div>
     </section>

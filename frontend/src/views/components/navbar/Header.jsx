@@ -12,9 +12,9 @@ const Header = () => {
     { name: 'About', homeRoute: '#about', route: '/#about' },
     { name: 'Services', homeRoute: '#services', route: '/#services' },
     { name: 'How It Works', homeRoute: '#how-it-works', route: '/#how-it-works' },
+    { name: 'Pricing', homeRoute: '#pricing', route: '/#pricing' },
     { name: 'Testimonials', homeRoute: '#testimonials', route: '/#testimonials' },
     { name: 'Contact', homeRoute: '#contact', route: '/#contact' },
-    // { name: 'Syllabus', homeRoute: null, route: '/#boards' },
   ];
 
   const loginNavigate = useCallback(() => {
@@ -23,7 +23,7 @@ const Header = () => {
     else navigate('/login');
   }, []);
 
-  const handleClick = (to) => {
+  const handleClick = useCallback((to) => {
     navigate(to);
 
     // Extract hash
@@ -36,7 +36,7 @@ const Header = () => {
         }
       }, 500);
     }
-  };
+  }, []);
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">

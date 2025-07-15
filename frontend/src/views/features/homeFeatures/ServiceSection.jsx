@@ -1,5 +1,5 @@
-import React, { memo } from "react";
-import { Button } from "@/components/ui/button";
+import React, { memo, useCallback } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -7,22 +7,34 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { BookOpen, GraduationCap, Star } from "lucide-react";
-import { Link } from "react-router-dom";
+} from '@/components/ui/card';
+import { BookOpen, GraduationCap, Star } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ServiceSection = () => {
+  const navigate = useNavigate();
+  const handleClick = useCallback((to, sessionType = 'demo') => {
+    navigate(`${to}?sessionType=${sessionType}`);
+
+    // Extract hash
+    const hash = to.split('#')[1];
+    if (hash) {
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'instant' });
+        }
+      }, 500);
+    }
+  }, []);
   return (
     <section id="services" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-              Tutoring Services
-            </h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Tutoring Services</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Specialized one-on-one tutoring in English and Mathematics for
-              students of all levels.
+              Specialized one-on-one tutoring in English and Mathematics for students of all levels.
             </p>
           </div>
         </div>
@@ -62,8 +74,8 @@ const ServiceSection = () => {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" asChild>
-                <Link to="#book">Book English Tutoring</Link>
+              <Button className="w-full" onClick={() => handleClick('/#contact')}>
+                <Link to="#contact">Book English Demo</Link>
               </Button>
             </CardFooter>
           </Card>
@@ -102,8 +114,8 @@ const ServiceSection = () => {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" asChild>
-                <Link to="#book">Book Math Tutoring</Link>
+              <Button className="w-full" onClick={() => handleClick('/#contact')}>
+                Book Math Demo
               </Button>
             </CardFooter>
           </Card>
