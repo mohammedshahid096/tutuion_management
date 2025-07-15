@@ -1,7 +1,7 @@
 import React, { useState, memo, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Mail, MessageSquare, Loader2 } from 'lucide-react';
+import { Mail, MessageSquare, Loader2, Facebook, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -330,33 +330,52 @@ const ContactSection = () => {
 
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle>Other Ways to Connect</CardTitle>
+              <CardTitle className="text-xl">Other Ways to Connect</CardTitle>
+              <CardDescription>
+                Prefer reaching out directly? Choose your preferred method below.
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="flex items-start gap-4">
-                  <Mail className="h-6 w-6 text-primary" />
+              <div className="grid gap-6 md:grid-cols-2">
+                {/* Email Box */}
+                <a
+                  href="mailto:isthiyana786@gmail.com"
+                  className="flex items-start gap-4 border border-border rounded-lg p-5 hover:shadow-md transition-shadow bg-card cursor-pointer"
+                >
+                  <Mail className="h-6 w-6 text-primary mt-0.5" />
                   <div>
-                    <h3 className="font-medium">Email</h3>
-                    <p className="text-sm text-muted-foreground">contact@eduexcellence.com</p>
+                    <h3 className="font-medium text-lg">Email</h3>
+                    <p className="text-sm text-muted-foreground">isthiyana786@gmail.com</p>
                   </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <MessageSquare className="h-6 w-6 text-primary" />
+                </a>
+
+                {/* Social Media Box with Icons */}
+                <div className="flex items-start gap-4 border border-border rounded-lg p-5 hover:shadow-md transition-shadow bg-card">
+                  <MessageSquare className="h-6 w-6 text-primary mt-0.5" />
                   <div>
-                    <h3 className="font-medium">Social Media</h3>
-                    <div className="flex gap-2 mt-1">
-                      <Link to="#" className="text-muted-foreground hover:text-foreground">
-                        Facebook
+                    <h3 className="font-medium text-lg">Social Media</h3>
+                    <div className="flex gap-4 mt-2">
+                      <Link
+                        to="#"
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                        aria-label="Follow on Facebook"
+                      >
+                        <Facebook className="h-5 w-5" />
                       </Link>
-                      <span className="text-muted-foreground">•</span>
-                      <Link to="#" className="text-muted-foreground hover:text-foreground">
-                        Instagram
+                      <Link
+                        to="#"
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                        aria-label="Follow on Instagram"
+                      >
+                        <Instagram className="h-5 w-5" />
                       </Link>
-                      <span className="text-muted-foreground">•</span>
-                      <Link to="#" className="text-muted-foreground hover:text-foreground">
-                        Twitter
-                      </Link>
+                      {/* <Link
+                        to="#"
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                        aria-label="Follow on Twitter"
+                      >
+                        <Twitter className="h-5 w-5" />
+                      </Link> */}
                     </div>
                   </div>
                 </div>
