@@ -69,7 +69,7 @@ const ContactSection = () => {
       };
 
       if (searchParams.get('sessionType')) {
-        json.sessonType = searchParams.get('sessionType');
+        json.sessionType = searchParams.get('sessionType');
       }
 
       if (values?.message) {
@@ -80,6 +80,7 @@ const ContactSection = () => {
       if (response[2] === 201) {
         toast.success('Thank you! Your message has been received. We will contact you soon.');
         resetForm();
+        if (json.sessionType) setSearchParams({});
       } else {
         toast.error(response[1]?.message || 'something went wrong please try again later');
       }
@@ -92,7 +93,6 @@ const ContactSection = () => {
     [info?.isSubmitting, searchParams]
   );
 
-  console.log(searchParams.get('sessionType'), 'shahid');
   return (
     <section id="contact" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
       <div className="container px-4 md:px-6">

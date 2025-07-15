@@ -18,6 +18,7 @@ const headers = [
   { title: 'Message', key: 'message' },
   { title: 'Preferred Time', key: 'preferredTime' },
   { title: 'Heard From', key: 'heardAboutUs' },
+  { title: 'Session Type', key: 'sessionType' },
   { title: 'Date', key: 'date' },
   { title: 'Time Ago', key: 'timeAgo' },
 ];
@@ -38,6 +39,9 @@ const badgeStyles = {
   website:
     'bg-indigo-100 text-indigo-800 hover:bg-indigo-200 dark:bg-indigo-900 dark:text-indigo-100',
   other: 'bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-100',
+  demo: 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-100',
+  enrollment:
+    'bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900 dark:text-green-100',
   default: 'bg-gray-100 text-gray-800',
 };
 
@@ -101,6 +105,11 @@ const ContactList = () => {
           heardAboutUs: (
             <Badge className={badgeStyles[singleData?.heardAboutUs || 'default']}>
               {singleData?.heardAboutUs}
+            </Badge>
+          ),
+          sessionType: (
+            <Badge className={badgeStyles[singleData?.sessionType || 'other']}>
+              {singleData?.sessionType || 'N/A'}
             </Badge>
           ),
           date: moment(singleData?.createdAt).format('LL'),
