@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Clock, Star } from 'lucide-react';
+import { Clock, Star, BookOpen, BarChart, Calendar, Laptop, MessageSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const PricingSection = () => {
@@ -23,70 +23,77 @@ const PricingSection = () => {
             </p>
           </div>
         </div>
-        <div className="mx-auto grid max-w-5xl gap-6 py-12 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-3xl gap-6 py-12 lg:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle>Single Session</CardTitle>
-              <div className="text-3xl font-bold">₹25</div>
-              <CardDescription>Per 1-hour session</CardDescription>
+              <CardTitle>Book a Demo Session</CardTitle>
+              <div className="text-3xl font-bold">₹50</div>
+              <CardDescription>One-time 30-minute session</CardDescription>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-primary" />
-                  <span>60-minute one-on-one tutoring</span>
+                  <span>30-minute personalized demo</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Laptop className="h-4 w-4 text-primary" />
+                  <span>Live walkthrough of tools & platform</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Star className="h-4 w-4 text-primary" />
-                  <span>Personalized instruction</span>
+                  <span>Understand teaching style & process</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Star className="h-4 w-4 text-primary" />
-                  <span>Practice materials included</span>
+                  <MessageSquare className="h-4 w-4 text-primary" />
+                  <span>Ask questions & clarify doubts</span>
                 </li>
               </ul>
             </CardContent>
             <CardFooter>
               <Button className="w-full" asChild>
-                <Link to="#book">Book Now</Link>
+                <Link to="#demo">Book Demo</Link>
               </Button>
             </CardFooter>
           </Card>
-          <Card className="border-primary pt-0">
-            <CardHeader className="bg-primary text-primary-foreground py-3 rounded-t-lg">
-              <CardTitle>Weekly Package</CardTitle>
-              <div className="text-3xl font-bold">₹90</div>
-              <CardDescription className="text-primary-foreground/90">
-                4 sessions per month (₹22.50/session)
-              </CardDescription>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Regular Weekly Class</CardTitle>
+              <div className="text-3xl font-bold">₹Custom </div>
+              <CardDescription>Billed weekly (2 sessions/week, 1 hour each)</CardDescription>
             </CardHeader>
-            <CardContent className="pt-6">
+            <CardContent>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-primary" />
-                  <span>Four 60-minute sessions</span>
+                  <span>2x 60-minute sessions per week</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Star className="h-4 w-4 text-primary" />
-                  <span>Consistent weekly progress</span>
+                  <span>Personalized one-on-one instruction</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Star className="h-4 w-4 text-primary" />
-                  <span>Homework help included</span>
+                  <BookOpen className="h-4 w-4 text-primary" />
+                  <span>Weekly practice materials & homework</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Star className="h-4 w-4 text-primary" />
-                  <span>Progress tracking</span>
+                  <BarChart className="h-4 w-4 text-primary" />
+                  <span>Progress tracking & feedback</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-primary" />
+                  <span>Flexible scheduling</span>
                 </li>
               </ul>
             </CardContent>
             <CardFooter>
               <Button className="w-full" asChild>
-                <Link to="#book">Best Value</Link>
+                <Link to="#book">Enroll Now</Link>
               </Button>
             </CardFooter>
           </Card>
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Intensive Package</CardTitle>
               <div className="text-3xl font-bold">₹160</div>
@@ -121,7 +128,7 @@ const PricingSection = () => {
                 <Link to="#book">Book Now</Link>
               </Button>
             </CardFooter>
-          </Card>
+          </Card> */}
         </div>
       </div>
     </section>

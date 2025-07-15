@@ -15,7 +15,7 @@ const OtherComponents = () => {
   return (
     <>
       <Toaster />
-      <ChatComponent />
+      {/* <ChatComponent /> */}
     </>
   );
 };
