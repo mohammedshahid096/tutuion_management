@@ -26,7 +26,7 @@ MongoDataBaseConn();
 if (DEVELOPMENT_MODE === "development") {
   app.use(morganConfigFunction());
 } else {
-  renderServerAwakeCronJob();
+  // renderServerAwakeCronJob();
   deleteNotificationCronJob();
 }
 
