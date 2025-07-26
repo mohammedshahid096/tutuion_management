@@ -90,7 +90,7 @@ const Login = () => {
     <div className="flex min-h-screen flex-col">
       <MetaData title="Log In | EduExcellence" />
       <Header />
-      <div className="flex gap-6 h-full w-full items-center justify-center p-6 md:p-10">
+      <div className="flex gap-6 m-auto h-full w-full items-center justify-center p-6 md:p-10">
         <div className="w-full max-w-sm">
           <LoginForm
             handleChange={handleChange}
@@ -103,8 +103,8 @@ const Login = () => {
             setInfo={setInfo}
           />
         </div>
-        <div className="w-96 h-96 max-sm:hidden">
-          <img src={EducationImages} alt="" className="w-full h-full" />
+        <div className="max-sm:hidden">
+          <img src={EducationImages} alt="" className="w-96 h-96" />
         </div>
       </div>
     </div>
