@@ -2,12 +2,18 @@ import { memo } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import moment from 'moment';
+import { cn } from '@/lib/utils';
 
 const BatchCard = ({ batch }) => {
   return (
-    <Card className="hover:shadow-lg transition-shadow">
+    <Card
+      className={cn(
+        'hover:shadow-lg transition-shadow',
+        batch?.isActive && ' bottom-2 border-black'
+      )}
+    >
       <CardHeader>
-        <div className="flex justify-between items-start">
+        <div className="flex justify-between items-start ">
           <div>
             <CardTitle className="text-xl font-semibold">{batch?.name}</CardTitle>
             <CardDescription className="mt-1">
