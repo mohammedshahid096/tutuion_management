@@ -10,6 +10,7 @@ import { encryptPassword } from '@/utils/encryption';
 import Header from '../components/navbar/Header';
 import { useNavigate } from 'react-router-dom';
 import MetaData from '@/utils/MetaData';
+import EducationImages from '@/assets/images/education.png';
 
 const Login = () => {
   const { error, isLoginSuccess, role } = useSelector((state) => state.loginState);
@@ -89,7 +90,7 @@ const Login = () => {
     <div className="flex min-h-screen flex-col">
       <MetaData title="Log In | EduExcellence" />
       <Header />
-      <div className="flex h-full w-full items-center justify-center p-6 md:p-10">
+      <div className="flex gap-6 h-full w-full items-center justify-center p-6 md:p-10">
         <div className="w-full max-w-sm">
           <LoginForm
             handleChange={handleChange}
@@ -101,6 +102,9 @@ const Login = () => {
             info={info}
             setInfo={setInfo}
           />
+        </div>
+        <div className="w-96 h-96 max-sm:hidden">
+          <img src={EducationImages} alt="" className="w-full h-full" />
         </div>
       </div>
     </div>
