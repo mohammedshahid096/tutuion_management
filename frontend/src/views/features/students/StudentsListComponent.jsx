@@ -183,14 +183,14 @@ const StudentsListComponent = ({
                             <List className="h-4 w-4" />
                             Attendance
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="flex items-center gap-2">
+                          {/* <DropdownMenuItem className="flex items-center gap-2">
                             <Edit className="h-4 w-4" />
                             Edit
                           </DropdownMenuItem>
                           <DropdownMenuItem className="flex items-center gap-2 text-red-600">
                             <Trash2 className="h-4 w-4" />
                             Delete
-                          </DropdownMenuItem>
+                          </DropdownMenuItem> */}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>

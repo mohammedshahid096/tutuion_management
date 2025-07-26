@@ -29,9 +29,9 @@ const TableRow = memo(({ row, onDelete, onClickNavigationFunction }) => (
     <Button variant="outline" onClick={() => onClickNavigationFunction(row, 'edit')}>
       <Pencil color="black" className="cursor-pointer size-5" />
     </Button>
-    <Button variant="outline">
+    {/* <Button variant="outline">
       <Trash color="red" className="cursor-pointer size-5" onClick={() => onDelete(row)} />
-    </Button>
+    </Button> */}
   </div>
 ));
 
@@ -118,7 +118,7 @@ const NotesList = () => {
     <MainWrapper breadCrumbs={breadCrumbs}>
       <MetaData title="Notes | EduExcellence" />
 
-      <div className="flex justify-end">
+      <div className="flex justify-end mt-2">
         <Button onClick={openCreateNoteModalFunction}>Add New Notes</Button>
       </div>
 
