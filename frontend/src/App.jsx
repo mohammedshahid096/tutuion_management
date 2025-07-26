@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import allRoutesMapper from './routes';
@@ -9,6 +9,7 @@ import moment from 'moment-timezone';
 import useSocket from './hooks/useSocket';
 import { useSelector } from 'react-redux';
 import { ADMIN } from './constants/roles.constants';
+import { welocomeApi } from './apis/index.api';
 
 const OtherComponents = () => {
   const mode = import.meta.env.VITE_DEVELOPMENT_MODE || 'development';
@@ -29,6 +30,16 @@ function App() {
   });
   useEffect(() => {
     moment.tz.setDefault('Asia/Kolkata');
+    fetchWelcomeApiFunction();
+  }, []);
+
+  const fetchWelcomeApiFunction = useCallback(async () => {
+    const response = await welocomeApi();
+    if (response.status === 200) {
+      console.log('server is running');
+    } else {
+      console.error(error, 'server is not running');
+    }
   }, []);
   return (
     <div className="app">
