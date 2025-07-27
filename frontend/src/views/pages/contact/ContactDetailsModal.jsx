@@ -11,8 +11,6 @@ const ContactDetailsModal = ({ info, setInfo, details }) => {
     setInfo((prev) => ({ ...prev, details: null }));
   }, [info?.details]);
 
-  console.log(details, 'shahid');
-
   return (
     <ModalV2
       isOpen={Boolean(info?.details)}

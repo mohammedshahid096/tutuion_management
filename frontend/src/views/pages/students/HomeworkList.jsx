@@ -9,8 +9,10 @@ import MetaData from '@/utils/MetaData';
 import CustomTable1 from '@/views/components/tables/TableV1';
 import { Button } from '@/components/ui/button';
 import CreateHomework from '@/views/features/homework/CreateHomework';
-import { Trash, Pencil } from 'lucide-react';
+import { Trash, Pencil, Eye } from 'lucide-react';
 import DeleteHomework from '@/views/features/homework/DeleteHomework';
+import KeyValueGrid from '@/views/components/tables/KeyValueGrid';
+import ModalV2 from '@/views/components/modal/ModalV2';
 
 const headers = [
   { title: 'Title', key: 'title' },
@@ -20,16 +22,61 @@ const headers = [
   { title: 'Rating', key: 'rating' },
 ];
 
-const TableRow = memo(({ row, editHomeworkFunction, deleteHomeworkFunction }) => (
-  <div className="flex gap-4">
-    <Button variant="outline" onClick={() => editHomeworkFunction(row)}>
-      <Pencil color="black" className="cursor-pointer size-5" />
-    </Button>
-    <Button variant="outline" onClick={() => deleteHomeworkFunction(row)}>
-      <Trash color="red" className="cursor-pointer size-5" />
-    </Button>
-  </div>
-));
+const TableRow = memo(
+  ({ row, editHomeworkFunction, deleteHomeworkFunction, showDetailsFunction }) => (
+    <div className="flex gap-4">
+      <Button onClick={() => showDetailsFunction(row)}>
+        <Eye />{' '}
+      </Button>
+      <Button variant="outline" onClick={() => editHomeworkFunction(row)}>
+        <Pencil color="black" className="cursor-pointer size-5" />
+      </Button>
+      <Button variant="outline" onClick={() => deleteHomeworkFunction(row)}>
+        <Trash color="red" className="cursor-pointer size-5" />
+      </Button>
+    </div>
+  )
+);
+
+const HomeworkDetailsModal = memo(({ info, setInfo, details }) => {
+  const closeModalFunction = useCallback(() => {
+    setInfo((prev) => ({ ...prev, details: null }));
+  }, [info?.details]);
+
+  return (
+    <ModalV2
+      isOpen={Boolean(info?.details)}
+      onClose={closeModalFunction}
+      closeOutside={false}
+      title="Contact Details"
+      width="lg"
+    >
+      <KeyValueGrid
+        data={[
+          { key: '_id', value: details?._id },
+          { key: 'title', value: details?.title },
+          {
+            key: 'description',
+            value: <div dangerouslySetInnerHTML={{ __html: details?.description }} />,
+          },
+          { key: 'assignedBy', value: details?.assignedBy },
+          { key: 'student', value: details?.student },
+          { key: 'class', value: details?.class },
+          { key: 'enrollment', value: details?.enrollment },
+          { key: 'rating', value: details?.rating },
+          {
+            key: 'ratedOn',
+            value: details?.ratedOn ? moment(details?.ratedOn).format('LL') : null,
+          },
+          { key: 'feedback', value: details?.feedback },
+          { key: 'Date', value: moment(details?.createdAt).format('LL') },
+          { key: 'Time Ago', value: format(details?.createdAt) },
+        ]}
+        cols={3}
+      />
+    </ModalV2>
+  );
+});
 
 const HomeworkList = () => {
   const { getStudentHomeworkListAction } = studentActions;
@@ -52,6 +99,7 @@ const HomeworkList = () => {
     homeworkDetails: null,
     feedbackRating: null,
     feedbackLoading: false,
+    details: null,
   });
 
   useEffect(() => {
@@ -135,6 +183,14 @@ const HomeworkList = () => {
     [homeworkList, info?.deleteModal]
   );
 
+  const showDetailsFunctionHandler = useCallback(
+    (row) => {
+      const currentDetails = homeworkList?.docs?.find((item) => item._id === row?._id);
+      setInfo((prev) => ({ ...prev, details: currentDetails }));
+    },
+    [info?.details, homeworkList]
+  );
+
   return (
     <div>
       <div className="my-3 flex justify-end">
@@ -162,12 +218,14 @@ const HomeworkList = () => {
             row={row}
             editHomeworkFunction={editHomeworkFunction}
             deleteHomeworkFunction={deleteHomeworkFunction}
+            showDetailsFunction={showDetailsFunctionHandler}
           />
         )}
       />
 
       <CreateHomework info={info} setInfo={setInfo} closeModalFunction={closeModalFunction} />
       <DeleteHomework info={info} closeModalFunction={closeModalFunction} />
+      <HomeworkDetailsModal info={info} setInfo={setInfo} details={info?.details || {}} />
     </div>
   );
 };
