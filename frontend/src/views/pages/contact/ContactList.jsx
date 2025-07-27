@@ -7,6 +7,9 @@ import CustomTable1 from '@/views/components/tables/TableV1';
 import { Badge } from '@/components/ui/badge';
 import moment from 'moment';
 import { format } from 'timeago.js';
+import { Eye } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import ContactDetailsModal from './ContactDetailsModal';
 
 const breadCrumbs = [{ label: 'Contact Responses', href: null }];
 
@@ -15,7 +18,6 @@ const headers = [
   { title: 'email', key: 'email' },
   { title: 'Phone', key: 'phone' },
   { title: 'Class', key: 'class' },
-  { title: 'Message', key: 'message' },
   { title: 'Preferred Time', key: 'preferredTime' },
   { title: 'Heard From', key: 'heardAboutUs' },
   { title: 'Session Type', key: 'sessionType' },
@@ -23,7 +25,7 @@ const headers = [
   { title: 'Time Ago', key: 'timeAgo' },
 ];
 
-const badgeStyles = {
+export const badgeStyles = {
   morning: 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-100',
   afternoon:
     'bg-yellow-100 text-yellow-800 hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-100',
@@ -45,6 +47,14 @@ const badgeStyles = {
   default: 'bg-gray-100 text-gray-800',
 };
 
+const TableRow = memo(({ row, showDetailsFunction }) => (
+  <div className="flex gap-4">
+    <Button onClick={showDetailsFunction}>
+      <Eye />{' '}
+    </Button>
+  </div>
+));
+
 const ContactList = () => {
   const { getContactFormListAction } = contactActions;
   const dispatch = useDispatch();
@@ -54,6 +64,7 @@ const ContactList = () => {
     loading: true,
     limit: 20,
     currentPage: 1,
+    details: null,
   });
 
   useEffect(() => {
@@ -86,6 +97,14 @@ const ContactList = () => {
       fetchFormResponseListHandler(queryObject);
     },
     [info?.currentPage]
+  );
+
+  const showDetailsFunctionHandler = useCallback(
+    (row) => {
+      const currentDetails = contactList?.docs?.find((item) => item._id === row?._id);
+      setInfo((prev) => ({ ...prev, details: currentDetails }));
+    },
+    [info?.details, contactList]
   );
   return (
     <MainWrapper breadCrumbs={breadCrumbs}>
@@ -121,7 +140,12 @@ const ContactList = () => {
         currentPage={contactList?.currentPage}
         onPageChange={paginationFunctionHandler}
         limit={info?.limit}
+        actions={(row) => (
+          <TableRow row={row} showDetailsFunction={() => showDetailsFunctionHandler(row)} />
+        )}
       />
+
+      <ContactDetailsModal info={info} setInfo={setInfo} details={info?.details || {}} />
     </MainWrapper>
   );
 };
