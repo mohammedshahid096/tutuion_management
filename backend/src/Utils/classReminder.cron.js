@@ -30,6 +30,13 @@ const createNewLiveClassUtility = async () => {
       })
       .lean();
 
+    if (studentsList.length === 0) {
+      logger.info(
+        "Utils - classReminder.cron -  createNewLiveClassController - 0 students(End)"
+      );
+      return;
+    }
+
     for (const singleStudent of studentsList) {
       const studentId = singleStudent._id.toString();
       const startTime = singleStudent.timings.startTimeHHMM;
