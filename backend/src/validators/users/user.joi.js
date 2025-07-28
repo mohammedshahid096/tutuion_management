@@ -36,6 +36,7 @@ const RegisterStudentValidation = celebrate({
     })
       .required()
       .label("Days"),
+    mode: Joi.string().required().default("online").label("Mode"),
     dateOfJoining: Joi.date()
       .required()
       .default(Date.now)
@@ -77,6 +78,7 @@ const updateStudentValidation = celebrate({
     })
       .optional()
       .label("Days"),
+    mode: Joi.string().optional().default("online").label("Mode"),
     dateOfJoining: Joi.date().optional().label("Date of Joining"),
   }),
 });

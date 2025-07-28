@@ -339,7 +339,7 @@ const StudentRegistrationForm = ({
             {/* Timings */}
             <div className="grid gap-2 md:col-span-2">
               <Label>Class Timings</Label>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="timings.start">Start Time</Label>
                   <Input
@@ -370,7 +370,6 @@ const StudentRegistrationForm = ({
                     <span className="text-red-500 text-sm">{errors?.timings.end}</span>
                   )}
                 </div>
-
                 {/* Date of Joining */}
                 <div className="space-y-2">
                   <Label htmlFor="dateOfJoining">Date of Joining</Label>
@@ -401,6 +400,28 @@ const StudentRegistrationForm = ({
                   </Popover>
                   {touched?.dateOfJoining && errors?.dateOfJoining && (
                     <span className="text-red-500 text-sm">{errors?.dateOfJoining}</span>
+                  )}
+                </div>
+
+                {/* class mode */}
+                <div className="space-y-2">
+                  <Label htmlFor="classRoom">Class Mode</Label>
+                  <Select
+                    value={values?.mode || ''}
+                    onValueChange={(value) => value && setFieldValue('mode', value)}
+                    disabled={info?.isSubmitting || info?.isReadOnly}
+                    // readOnly={info?.isReadOnly}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select class" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value={'online'}>Online</SelectItem>
+                      <SelectItem value={'offline'}>Offline</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {touched?.classRoom && errors?.classRoom && (
+                    <span className="text-red-500 text-sm">{errors?.classRoom}</span>
                   )}
                 </div>
               </div>

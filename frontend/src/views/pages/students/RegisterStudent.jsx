@@ -105,6 +105,7 @@ const RegisterStudent = () => {
         saturday: false,
         sunday: false,
       },
+      mode: 'online',
       dateOfJoining: null,
     },
     registerEnrollmentModal: false,

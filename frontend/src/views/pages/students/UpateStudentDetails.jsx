@@ -104,6 +104,7 @@ const UpdateStudentDetails = () => {
         saturday: false,
         sunday: false,
       },
+      mode: 'online',
       dateOfJoining: null,
     },
   });
@@ -141,6 +142,7 @@ const UpdateStudentDetails = () => {
           start: singleStudentDetail?.timings?.startTimeHHMM ?? info?.initialValues?.timings?.start,
           end: singleStudentDetail?.timings?.endTimeHHMM ?? info?.initialValues?.timings?.end,
         },
+        mode: singleStudentDetail?.mode ?? 'online',
         dateOfJoining:
           new Date(singleStudentDetail?.dateOfJoining) ?? info?.initialValues?.dateOfJoining,
       };

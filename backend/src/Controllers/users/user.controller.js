@@ -99,6 +99,7 @@ const RegisterStudentController = async (req, res, next) => {
           .add(1, "hours")
           .format("HH:mm"),
       },
+      mode: req.body.mode,
       days: req.body.days,
       createdBy: req.user._id,
       updatedBy: req.user._id,

@@ -116,6 +116,11 @@ const ModelSchema = new mongoose.Schema(
         default: false,
       },
     },
+    mode: {
+      type: String,
+      enum: ["offline", "online"],
+      default: "online",
+    },
     dateOfJoining: {
       type: Date,
       default: Date.now,
