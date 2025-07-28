@@ -27,6 +27,7 @@ const createNewLiveClassUtility = async () => {
       .find({
         [dayQuery]: true,
         role: STUDENT,
+        mode: "online",
       })
       .lean();
 
