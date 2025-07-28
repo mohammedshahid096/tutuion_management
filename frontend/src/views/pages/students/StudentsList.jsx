@@ -71,7 +71,9 @@ const StudentsList = () => {
       fetchBoardsListHandler();
     }
 
-    fetchStudentsListHandler();
+    if (!studentsList) {
+      fetchStudentsListHandler();
+    }
   }, []);
 
   useEffect(() => {
